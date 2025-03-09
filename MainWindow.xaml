@@ -113,15 +113,15 @@
                     </StackPanel>
                 </ui:TabViewItem.Header>
                 <StackPanel>
-                    <ui:Image Source="/Image/icon.png" Height="170"/>
+                    <ui:Image Source="icon.png" Height="170"/>
                     <TextBlock Text="学号魔方" FontSize="55" HorizontalAlignment="Center"/>
                     <TextBlock Text="NameCube" FontSize="30" HorizontalAlignment="Center"/>
-                    <TextBlock>版本名：CBT-2 Alpha</TextBlock>
+                    <TextBlock>版本名：Alpha-2</TextBlock>
                     <TextBlock>版本信息：WPF测试</TextBlock>
                     <TextBlock>作者：哈阿斯（haaa4)</TextBlock>
                     <TextBlock>最后编译时间：2025年3月9日</TextBlock>
-                    <ui:Button Content="Bilibili" Icon="{ui:SymbolIcon Symbol=Share24}"/>
-                    <ui:Button Content="Github" Icon="{ui:SymbolIcon Symbol=Share24}"/>
+                    <ui:Button Content="Github" Icon="{ui:SymbolIcon Symbol=Share24}" Click="Button_Click_4"  />
+                    <ui:Button Content="Bilibili" Icon="{ui:SymbolIcon Symbol=Share24}" Click="Button_Click_5"/>
                 </StackPanel>
             </ui:TabViewItem>
         </ui:TabView>

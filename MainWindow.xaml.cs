@@ -21,6 +21,7 @@ using System.Collections.Specialized;
 using System.Timers;
 using System.Media;
 using System.Speech.Synthesis;
+using System.Diagnostics;
 
 namespace NameCube
 {
@@ -288,6 +289,16 @@ namespace NameCube
             json.Speed = (int)SpeedSlider.Value - 10;
             _speechSynthesizer.Rate= json.Speed;
             SpeedText.Text = "速度(" + json.Speed.ToString() + ")";
+        }
+
+        private void Button_Click_4(object sender, RoutedEventArgs e)
+        {
+            Process.Start("https://github.com/haaa4/NameCube");
+        }
+
+        private void Button_Click_5(object sender, RoutedEventArgs e)
+        {
+            Process.Start("https://space.bilibili.com/1440486452");
         }
     }
 }
