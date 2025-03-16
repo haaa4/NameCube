@@ -3,17 +3,17 @@
 
 #define MyAppName "学号魔方"
 #define MyAppVersion "Alpha-2"
-#define MyAppPublisher "学号魔方"
+#define MyAppPublisher "哈阿斯"
 #define MyAppURL "https://github.com/haaa4/NameCube"
 #define MyAppExeName "学号魔方.exe"
-#define MyAppAssocName MyAppName + " NameCube"
+#define MyAppAssocName MyAppName + ""
 #define MyAppAssocExt ".myp"
 #define MyAppAssocKey StringChange(MyAppAssocName, " ", "") + MyAppAssocExt
 
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application. Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
-AppId={{4ECACCEB-490A-4B82-BD26-677BA23417C0}
+AppId={{B6A9441F-206B-43E2-B4F0-749874EC6E50}
 AppName={#MyAppName}
 AppVersion={#MyAppVersion}
 ;AppVerName={#MyAppName} {#MyAppVersion}
@@ -25,10 +25,10 @@ DefaultDirName={autopf}\{#MyAppName}
 ChangesAssociations=yes
 DisableProgramGroupPage=yes
 InfoBeforeFile=D:\C#\NameCube\NameCube\bin\Need\注意.txt
-; Remove the following line to run in administrative install mode (install for all users.)
-PrivilegesRequired=lowest
+; Uncomment the following line to run in non administrative install mode (install for current user only.)
+;PrivilegesRequired=lowest
 OutputDir=D:\C#\NameCube\NameCube\bin\OutPut
-OutputBaseFilename=学号魔方—安装程序
+OutputBaseFilename=学号魔方-安装程序
 SetupIconFile=D:\C#\NameCube\NameCube\icon.ico
 Compression=lzma
 SolidCompression=yes
@@ -96,7 +96,8 @@ Source: "D:\C#\NameCube\NameCube\bin\Release\Wpf.Ui.Abstractions.xml"; DestDir: 
 Source: "D:\C#\NameCube\NameCube\bin\Release\Wpf.Ui.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "D:\C#\NameCube\NameCube\bin\Release\Wpf.Ui.pdb"; DestDir: "{app}"; Flags: ignoreversion
 Source: "D:\C#\NameCube\NameCube\bin\Release\Wpf.Ui.xml"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\C#\NameCube\NameCube\bin\Release\学号魔方.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\C#\NameCube\NameCube\bin\Release\学号魔方.exe.config"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\C#\NameCube\NameCube\bin\Release\学号魔方.pdb"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Registry]

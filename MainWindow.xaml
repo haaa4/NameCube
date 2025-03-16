@@ -6,124 +6,44 @@
         xmlns:local="clr-namespace:NameCube"
         xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
         mc:Ignorable="d"
-        Title="MainWindow" Height="600" Width="800" Closing="FluentWindow_Closing" Closed="FluentWindow_Closed">
+        Title="学号魔方" Height="600" Width="1200"  Closing="FluentWindow_Closing">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
+            <RowDefinition Height="50"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <ui:TitleBar Title="学号魔方" />
-        <ui:TabView  Grid.Row="1">
-            <ui:TabViewItem>
-                <ui:TabViewItem.Header>
-                    <StackPanel Orientation="Vertical">
-                        <ui:FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE77B;" FontSize="46"/>
-                        <ui:TextBlock Text="单人模式" FontFamily="Segoe UI" FontSize="20"/>
-                    </StackPanel>
-                </ui:TabViewItem.Header>
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="5*"/>
-                        <RowDefinition Height="4*"/>
-                        <RowDefinition Height="1*"/>
-                    </Grid.RowDefinitions>
-                    <TextBlock x:Name="NowNumberText" Text="XX" FontSize="200" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#30d7d7"/>
-                    <ui:Button x:Name="StartButton" Grid.Row="1" HorizontalAlignment="Center"  Width="200" Height="100"  FontSize="72" FontFamily="Segoe UI"  Click="StartButton_Click" Content="开始" FontWeight="Black" />
-                    <CheckBox Grid.Row="2" Content="启用语音" FontWeight="Black" x:Name="SpeechCheck" />
-                </Grid>
-            </ui:TabViewItem>
-            <ui:TabViewItem>
-                <ui:TabViewItem.Header>
-                    <StackPanel Orientation="Vertical">
-                        <ui:FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE780;" FontSize="46"/>
-                        <ui:TextBlock Text="档案编辑" FontFamily="Segoe UI Symbol" FontSize="20" />
-                    </StackPanel>
-                </ui:TabViewItem.Header>
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="40"/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-                    <StackPanel Orientation="Horizontal">
-                        <ui:Button Content="从文本文档导入" Click="Button_Click"/>
-                        <ui:TextBox Width="100" x:Name="AddNameTextBox" Margin="20 2 0 2" KeyDown="AddNameTextBox_KeyDown" />
-                        <ui:Button Content="添加" Click="Button_Click_1"/>
-                        <ui:Button Content="清空" Margin="20 0 0 0" Click="Button_Click_2"/>
-                    </StackPanel>
-                    <ui:DataGrid Grid.Row="1" ItemsSource="{Binding AllNames}" x:Name="DataGrid" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" CanUserResizeColumns="False" CanUserResizeRows="False">
-                        <ui:DataGrid.Columns>
-                            <DataGridTextColumn Header="序号" Width="60" Binding="{Binding Index}"/>
-                            <DataGridTextColumn Header="姓名" Width="auto" Binding="{Binding Name}"/>
-                            <DataGridTemplateColumn Header="操作">
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <ui:Button Content="删除" Click="Button_Click_3" CommandParameter="{Binding}"/>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                            </DataGridTemplateColumn>
-                        </ui:DataGrid.Columns>
-                    </ui:DataGrid>
-                </Grid>
-            </ui:TabViewItem>
-            <ui:TabViewItem>
-                <ui:TabViewItem.Header>
-                    <StackPanel Orientation="Vertical">
-                        <ui:FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE713;" FontSize="46"/>
-                        <ui:TextBlock Text="应用设置" FontFamily="Segoe UI Symbol" FontSize="20" />
-                    </StackPanel>
-                </ui:TabViewItem.Header>
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="100"/>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-                    <ui:Card Margin="8">
-                        <StackPanel>
-                            <TextBlock>主题</TextBlock>
-                            <CheckBox Content="关灯（敬请期待）" Checked="CheckBox_Checked" x:Name="DarkLight" IsEnabled="False"/>
-                        </StackPanel>
-                    </ui:Card>
-                    <ui:Card Margin="8" Grid.Row="1">
-                        <StackPanel>
-                            <TextBlock>朗读</TextBlock>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="100"/>
-                                    <ColumnDefinition/>
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="40"/>
-                                    <RowDefinition Height="40"/>
-                                </Grid.RowDefinitions>
-                                <TextBlock Text="音量(100%)" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15" x:Name="VolumeText"/>
-                                <Slider Grid.Column="1" VerticalAlignment="Center" Maximum="100" Value="100"  x:Name="VolumeSlider" ValueChanged="VolumeSlider_ValueChanged"/>
-                                <TextBlock Text="速度(0)" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" Grid.Row="1" x:Name="SpeedText"/>
-                                <Slider Grid.Row="1" Grid.Column="1" VerticalAlignment="Center"  Maximum="20" Value="10" x:Name="SpeedSlider" ValueChanged="SpeedSlider_ValueChanged"/>
-                            </Grid>
-                        </StackPanel>
-                    </ui:Card>
-                </Grid>
-            </ui:TabViewItem>
-            <ui:TabViewItem>
-                <ui:TabViewItem.Header>
-                    <StackPanel Orientation="Vertical">
-                        <ui:FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE946;" FontSize="46"/>
-                        <ui:TextBlock Text="应用信息" FontFamily="Segoe UI Symbol" FontSize="20" />
-                    </StackPanel>
-                </ui:TabViewItem.Header>
-                <StackPanel>
-                    <ui:Image Source="icon.png" Height="170"/>
-                    <TextBlock Text="学号魔方" FontSize="55" HorizontalAlignment="Center"/>
-                    <TextBlock Text="NameCube" FontSize="30" HorizontalAlignment="Center"/>
-                    <TextBlock>版本名：Alpha-2</TextBlock>
-                    <TextBlock>版本信息：WPF测试</TextBlock>
-                    <TextBlock>作者：哈阿斯（haaa4)</TextBlock>
-                    <TextBlock>最后编译时间：2025年3月9日</TextBlock>
-                    <ui:Button Content="Github" Icon="{ui:SymbolIcon Symbol=Share24}" Click="Button_Click_4"  />
-                    <ui:Button Content="Bilibili" Icon="{ui:SymbolIcon Symbol=Share24}" Click="Button_Click_5"/>
-                </StackPanel>
-            </ui:TabViewItem>
-        </ui:TabView>
+        <ui:TitleBar Grid.Row="0" Title="学号魔方" Icon="{ui:ImageIcon 'icon.png'}" />
+        <ui:NavigationView
+                MinHeight="300"
+                Margin="0"
+                IsBackButtonVisible="Auto"
+                IsPaneToggleVisible="True"
+                PaneDisplayMode="Left"
+                Grid.Row="1"
+                x:Name="NavigationMenu">
+            <ui:NavigationView.MenuItems>
+                <ui:NavigationViewItem
+                    Content="单人模式"
+                    Icon="{ui:SymbolIcon Symbol=Accessibility16}"
+                    TargetPageType="{x:Type local:OnePeopleMode}"/>
+                <ui:NavigationViewItem
+                    Content="档案编辑"
+                    Icon="{ui:SymbolIcon Symbol=BookContacts24}"
+                    TargetPageType="{x:Type local:Archives}"/>
+                <ui:NavigationViewItem
+                    Content="应用设置"
+                    Icon="{ui:SymbolIcon Symbol=Settings24}"
+                    TargetPageType="{x:Type local:setting}"/>
+                <ui:NavigationViewItem
+                    Content="小工具"
+                    Icon="{ui:SymbolIcon Symbol=Toolbox20}"
+                    TargetPageType="{x:Type local:Toolbox}"/>
+                <ui:NavigationViewItem
+                    Content="应用信息"
+                    Icon="{ui:ImageIcon 'icon.png'}"
+                    TargetPageType="{x:Type local:About}"/>
+            </ui:NavigationView.MenuItems>
+        </ui:NavigationView>
+
     </Grid>
 </ui:FluentWindow>
