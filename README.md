@@ -8,7 +8,7 @@
  - [x] Alpha-1 概念版
  - [x] Alpha-2 WPF测试
  - [x] Alpha-3 悬浮球初步测试
- - [ ] Alpha-4 更多模式1.0测试
+ - [x] Alpha-4 更多模式1.0测试
  - [ ] Alpha-5 UI更新
  - [ ] Alpha-6 悬浮球高级测试
  - [ ] Alpha-7 更多模式2.0测试
