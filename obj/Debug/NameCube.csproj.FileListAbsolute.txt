@@ -1,6 +1,7 @@
 D:\C#\NameCube\NameCube\bin\Debug\学号魔方.exe.config
 D:\C#\NameCube\NameCube\bin\Debug\学号魔方.exe
 D:\C#\NameCube\NameCube\bin\Debug\学号魔方.pdb
+D:\C#\NameCube\NameCube\bin\Debug\Masuit.Tools.dll
 D:\C#\NameCube\NameCube\bin\Debug\Microsoft.Bcl.AsyncInterfaces.dll
 D:\C#\NameCube\NameCube\bin\Debug\System.Buffers.dll
 D:\C#\NameCube\NameCube\bin\Debug\System.IO.Pipelines.dll
@@ -13,6 +14,9 @@ D:\C#\NameCube\NameCube\bin\Debug\System.Threading.Tasks.Extensions.dll
 D:\C#\NameCube\NameCube\bin\Debug\System.ValueTuple.dll
 D:\C#\NameCube\NameCube\bin\Debug\Wpf.Ui.Abstractions.dll
 D:\C#\NameCube\NameCube\bin\Debug\Wpf.Ui.dll
+D:\C#\NameCube\NameCube\bin\Debug\Newtonsoft.Json.dll
+D:\C#\NameCube\NameCube\bin\Debug\Masuit.Tools.pdb
+D:\C#\NameCube\NameCube\bin\Debug\Masuit.Tools.xml
 D:\C#\NameCube\NameCube\bin\Debug\Microsoft.Bcl.AsyncInterfaces.xml
 D:\C#\NameCube\NameCube\bin\Debug\System.Buffers.xml
 D:\C#\NameCube\NameCube\bin\Debug\System.IO.Pipelines.xml
@@ -37,6 +41,7 @@ D:\C#\NameCube\NameCube\obj\Debug\Bird.g.cs
 D:\C#\NameCube\NameCube\obj\Debug\MainWindow.g.cs
 D:\C#\NameCube\NameCube\obj\Debug\OnePeopleMode.g.cs
 D:\C#\NameCube\NameCube\obj\Debug\setting.g.cs
+D:\C#\NameCube\NameCube\obj\Debug\Toolbox.g.cs
 D:\C#\NameCube\NameCube\obj\Debug\App.g.cs
 D:\C#\NameCube\NameCube\obj\Debug\GeneratedInternalTypeHelper.g.cs
 D:\C#\NameCube\NameCube\obj\Debug\学号魔方_MarkupCompile.cache
@@ -47,6 +52,7 @@ D:\C#\NameCube\NameCube\obj\Debug\Archives.baml
 D:\C#\NameCube\NameCube\obj\Debug\MainWindow.baml
 D:\C#\NameCube\NameCube\obj\Debug\OnePeopleMode.baml
 D:\C#\NameCube\NameCube\obj\Debug\setting.baml
+D:\C#\NameCube\NameCube\obj\Debug\Toolbox.baml
 D:\C#\NameCube\NameCube\obj\Debug\学号魔方.g.resources
 D:\C#\NameCube\NameCube\obj\Debug\NameCube.Properties.Resources.resources
 D:\C#\NameCube\NameCube\obj\Debug\NameCube.csproj.GenerateResource.cache
@@ -54,9 +60,7 @@ D:\C#\NameCube\NameCube\obj\Debug\NameCube.csproj.CoreCompileInputs.cache
 D:\C#\NameCube\NameCube\obj\Debug\NameCube.csproj.Up2Date
 D:\C#\NameCube\NameCube\obj\Debug\学号魔方.exe
 D:\C#\NameCube\NameCube\obj\Debug\学号魔方.pdb
-D:\C#\NameCube\NameCube\obj\Debug\Toolbox.g.cs
-D:\C#\NameCube\NameCube\obj\Debug\Toolbox.baml
-D:\C#\NameCube\NameCube\bin\Debug\Masuit.Tools.dll
-D:\C#\NameCube\NameCube\bin\Debug\Newtonsoft.Json.dll
-D:\C#\NameCube\NameCube\bin\Debug\Masuit.Tools.pdb
-D:\C#\NameCube\NameCube\bin\Debug\Masuit.Tools.xml
+D:\C#\NameCube\NameCube\obj\Debug\MemoryFactorMode.g.cs
+D:\C#\NameCube\NameCube\obj\Debug\MemoryFactorMode.baml
+D:\C#\NameCube\NameCube\obj\Debug\BatchMode.g.cs
+D:\C#\NameCube\NameCube\obj\Debug\BatchMode.baml

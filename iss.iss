@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "学号魔方"
-#define MyAppVersion "Alpha-2"
+#define MyAppVersion "Alpha-3"
 #define MyAppPublisher "哈阿斯"
 #define MyAppURL "https://github.com/haaa4/NameCube"
 #define MyAppExeName "学号魔方.exe"
@@ -13,7 +13,7 @@
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application. Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
-AppId={{B6A9441F-206B-43E2-B4F0-749874EC6E50}
+AppId={{A68C6C27-1F78-4F72-8936-E1D0229B1724}
 AppName={#MyAppName}
 AppVersion={#MyAppVersion}
 ;AppVerName={#MyAppName} {#MyAppVersion}
@@ -25,10 +25,10 @@ DefaultDirName={autopf}\{#MyAppName}
 ChangesAssociations=yes
 DisableProgramGroupPage=yes
 InfoBeforeFile=D:\C#\NameCube\NameCube\bin\Need\注意.txt
-; Uncomment the following line to run in non administrative install mode (install for current user only.)
-;PrivilegesRequired=lowest
+; Remove the following line to run in administrative install mode (install for all users.)
+PrivilegesRequired=lowest
 OutputDir=D:\C#\NameCube\NameCube\bin\OutPut
-OutputBaseFilename=学号魔方-安装程序
+OutputBaseFilename=学号魔方-Alpha-3
 SetupIconFile=D:\C#\NameCube\NameCube\icon.ico
 Compression=lzma
 SolidCompression=yes
@@ -36,68 +36,46 @@ WizardStyle=modern
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
-Name: "armenian"; MessagesFile: "compiler:Languages\Armenian.isl"
-Name: "brazilianportuguese"; MessagesFile: "compiler:Languages\BrazilianPortuguese.isl"
-Name: "bulgarian"; MessagesFile: "compiler:Languages\Bulgarian.isl"
-Name: "catalan"; MessagesFile: "compiler:Languages\Catalan.isl"
 Name: "chinese"; MessagesFile: "compiler:Languages\Chinese.isl"
-Name: "corsican"; MessagesFile: "compiler:Languages\Corsican.isl"
-Name: "czech"; MessagesFile: "compiler:Languages\Czech.isl"
-Name: "danish"; MessagesFile: "compiler:Languages\Danish.isl"
-Name: "dutch"; MessagesFile: "compiler:Languages\Dutch.isl"
-Name: "finnish"; MessagesFile: "compiler:Languages\Finnish.isl"
-Name: "french"; MessagesFile: "compiler:Languages\French.isl"
-Name: "german"; MessagesFile: "compiler:Languages\German.isl"
-Name: "hebrew"; MessagesFile: "compiler:Languages\Hebrew.isl"
-Name: "hungarian"; MessagesFile: "compiler:Languages\Hungarian.isl"
-Name: "icelandic"; MessagesFile: "compiler:Languages\Icelandic.isl"
-Name: "italian"; MessagesFile: "compiler:Languages\Italian.isl"
-Name: "japanese"; MessagesFile: "compiler:Languages\Japanese.isl"
-Name: "korean"; MessagesFile: "compiler:Languages\Korean.isl"
-Name: "norwegian"; MessagesFile: "compiler:Languages\Norwegian.isl"
-Name: "polish"; MessagesFile: "compiler:Languages\Polish.isl"
-Name: "portuguese"; MessagesFile: "compiler:Languages\Portuguese.isl"
-Name: "russian"; MessagesFile: "compiler:Languages\Russian.isl"
-Name: "slovak"; MessagesFile: "compiler:Languages\Slovak.isl"
-Name: "slovenian"; MessagesFile: "compiler:Languages\Slovenian.isl"
-Name: "spanish"; MessagesFile: "compiler:Languages\Spanish.isl"
-Name: "turkish"; MessagesFile: "compiler:Languages\Turkish.isl"
-Name: "ukrainian"; MessagesFile: "compiler:Languages\Ukrainian.isl"
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "D:\C#\NameCube\NameCube\bin\Release\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\C#\NameCube\NameCube\bin\Release\config.json"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\C#\NameCube\NameCube\bin\Release\Microsoft.Bcl.AsyncInterfaces.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\C#\NameCube\NameCube\bin\Release\Microsoft.Bcl.AsyncInterfaces.xml"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\C#\NameCube\NameCube\bin\Release\System.Buffers.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\C#\NameCube\NameCube\bin\Release\System.Buffers.xml"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\C#\NameCube\NameCube\bin\Release\System.IO.Pipelines.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\C#\NameCube\NameCube\bin\Release\System.IO.Pipelines.xml"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\C#\NameCube\NameCube\bin\Release\System.Memory.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\C#\NameCube\NameCube\bin\Release\System.Memory.xml"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\C#\NameCube\NameCube\bin\Release\System.Numerics.Vectors.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\C#\NameCube\NameCube\bin\Release\System.Numerics.Vectors.xml"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\C#\NameCube\NameCube\bin\Release\System.Runtime.CompilerServices.Unsafe.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\C#\NameCube\NameCube\bin\Release\System.Runtime.CompilerServices.Unsafe.xml"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\C#\NameCube\NameCube\bin\Release\System.Text.Encodings.Web.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\C#\NameCube\NameCube\bin\Release\System.Text.Encodings.Web.xml"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\C#\NameCube\NameCube\bin\Release\System.Text.Json.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\C#\NameCube\NameCube\bin\Release\System.Text.Json.xml"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\C#\NameCube\NameCube\bin\Release\System.Threading.Tasks.Extensions.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\C#\NameCube\NameCube\bin\Release\System.Threading.Tasks.Extensions.xml"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\C#\NameCube\NameCube\bin\Release\System.ValueTuple.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\C#\NameCube\NameCube\bin\Release\System.ValueTuple.xml"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\C#\NameCube\NameCube\bin\Release\Wpf.Ui.Abstractions.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\C#\NameCube\NameCube\bin\Release\Wpf.Ui.Abstractions.pdb"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\C#\NameCube\NameCube\bin\Release\Wpf.Ui.Abstractions.xml"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\C#\NameCube\NameCube\bin\Release\Wpf.Ui.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\C#\NameCube\NameCube\bin\Release\Wpf.Ui.pdb"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\C#\NameCube\NameCube\bin\Release\Wpf.Ui.xml"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\C#\NameCube\NameCube\bin\Release\学号魔方.exe.config"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\C#\NameCube\NameCube\bin\Release\学号魔方.pdb"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\C#\NameCube\NameCube\bin\App\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\C#\NameCube\NameCube\bin\App\config.json"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\C#\NameCube\NameCube\bin\App\Masuit.Tools.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\C#\NameCube\NameCube\bin\App\Masuit.Tools.pdb"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\C#\NameCube\NameCube\bin\App\Masuit.Tools.xml"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\C#\NameCube\NameCube\bin\App\Microsoft.Bcl.AsyncInterfaces.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\C#\NameCube\NameCube\bin\App\Microsoft.Bcl.AsyncInterfaces.xml"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\C#\NameCube\NameCube\bin\App\Newtonsoft.Json.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\C#\NameCube\NameCube\bin\App\System.Buffers.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\C#\NameCube\NameCube\bin\App\System.Buffers.xml"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\C#\NameCube\NameCube\bin\App\System.IO.Pipelines.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\C#\NameCube\NameCube\bin\App\System.IO.Pipelines.xml"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\C#\NameCube\NameCube\bin\App\System.Memory.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\C#\NameCube\NameCube\bin\App\System.Memory.xml"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\C#\NameCube\NameCube\bin\App\System.Numerics.Vectors.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\C#\NameCube\NameCube\bin\App\System.Numerics.Vectors.xml"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\C#\NameCube\NameCube\bin\App\System.Runtime.CompilerServices.Unsafe.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\C#\NameCube\NameCube\bin\App\System.Runtime.CompilerServices.Unsafe.xml"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\C#\NameCube\NameCube\bin\App\System.Text.Encodings.Web.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\C#\NameCube\NameCube\bin\App\System.Text.Encodings.Web.xml"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\C#\NameCube\NameCube\bin\App\System.Text.Json.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\C#\NameCube\NameCube\bin\App\System.Text.Json.xml"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\C#\NameCube\NameCube\bin\App\System.Threading.Tasks.Extensions.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\C#\NameCube\NameCube\bin\App\System.Threading.Tasks.Extensions.xml"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\C#\NameCube\NameCube\bin\App\System.ValueTuple.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\C#\NameCube\NameCube\bin\App\System.ValueTuple.xml"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\C#\NameCube\NameCube\bin\App\Wpf.Ui.Abstractions.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\C#\NameCube\NameCube\bin\App\Wpf.Ui.Abstractions.pdb"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\C#\NameCube\NameCube\bin\App\Wpf.Ui.Abstractions.xml"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\C#\NameCube\NameCube\bin\App\Wpf.Ui.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\C#\NameCube\NameCube\bin\App\Wpf.Ui.pdb"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\C#\NameCube\NameCube\bin\App\Wpf.Ui.xml"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\C#\NameCube\NameCube\bin\App\学号魔方.exe.config"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\C#\NameCube\NameCube\bin\App\学号魔方.pdb"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Registry]

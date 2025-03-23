@@ -1,10 +1,7 @@
 ﻿using Microsoft.Win32;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.IO;
-using System.Text.Json;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -23,42 +20,18 @@ namespace NameCube
         }
 
         public ObservableCollection<AllName> AllNames { get; set; } = new ObservableCollection<AllName>();
-        Json json = new Json();
+
         bool CanChange = false;
-        public void SaveJson()
-        {
-            string jsonString = JsonSerializer.Serialize(json);
-            File.WriteAllText("config.json", jsonString);
-        }
+
         public setting()
         {
             InitializeComponent();
-            if (!File.Exists("config.json"))
-            {
-                json = new Json
-                {
-                    Name = new List<string>(),
-                    Speech = true,
-                    Dark = false,
-                    Volume = 100,
-                    Speed = 0,
-                    Wait = false,
-                };
-                json.Name.Add("张三");
-
-                SaveJson();
-            }
-            else
-            {
-                string jsonstring = File.ReadAllText("config.json");
-                json = JsonSerializer.Deserialize<Json>(jsonstring);
-            }
-            VolumeSlider.Value = json.Volume;
-            SpeedSlider.Value = json.Speed + 10;
-            DarkLight.IsChecked = json.Dark;
+            VolumeSlider.Value = GlobalVariables.json.AllSettings.Volume;
+            SpeedSlider.Value = GlobalVariables.json.AllSettings.Speed + 10;
+            DarkLight.IsChecked = GlobalVariables.json.AllSettings.Dark;
             CanChange = true;
-            BallCheck.IsChecked = json.Ball;
-            StartCheck.IsChecked = json.Start;
+            BallCheck.IsChecked = GlobalVariables.json.StartToDo.Ball;
+            StartCheck.IsChecked = GlobalVariables.json.AllSettings.Start;
         }
         private void CheckBox_Checked(object sender, RoutedEventArgs e)
         {
@@ -69,8 +42,8 @@ namespace NameCube
         {
             if (CanChange)
             {
-                json.Volume = (int)VolumeSlider.Value;
-                SaveJson();
+                GlobalVariables.json.AllSettings.Volume = (int)VolumeSlider.Value;
+                GlobalVariables.SaveJson();
             }
         }
 
@@ -78,22 +51,22 @@ namespace NameCube
         {
             if (CanChange)
             {
-                json.Speed = (int)SpeedSlider.Value - 10;
-                SaveJson();
+                GlobalVariables.json.AllSettings.Speed = (int)SpeedSlider.Value - 10;
+                GlobalVariables.SaveJson();
             }
         }
 
         private void Page_Unloaded(object sender, RoutedEventArgs e)
         {
-            SaveJson();
+            GlobalVariables.SaveJson();
         }
 
         private void DarkLight_Click(object sender, RoutedEventArgs e)
         {
             if (CanChange)
             {
-                json.Dark = DarkLight.IsChecked.Value;
-                SaveJson();
+                GlobalVariables.json.AllSettings.Dark = DarkLight.IsChecked.Value;
+                GlobalVariables.SaveJson();
                 if (DarkLight.IsChecked.Value)
                 {
                     Wpf.Ui.Appearance.ApplicationThemeManager.Apply(
@@ -117,8 +90,8 @@ namespace NameCube
         {
             if (CanChange)
             {
-                json.Ball = BallCheck.IsChecked.Value;
-                SaveJson();
+                GlobalVariables.json.StartToDo.Ball = BallCheck.IsChecked.Value;
+                GlobalVariables.SaveJson();
             }
         }
         private const string RegistryRunPath = @"Software\Microsoft\Windows\CurrentVersion\Run";
@@ -189,11 +162,11 @@ namespace NameCube
 
         private void StartCheck_Click(object sender, RoutedEventArgs e)
         {
-            if(CanChange)
+            if (CanChange)
             {
-                json.Start = StartCheck.IsChecked.Value;
-                SaveJson();
-                if(json.Start)
+                GlobalVariables.json.AllSettings.Start = StartCheck.IsChecked.Value;
+                GlobalVariables.SaveJson();
+                if (GlobalVariables.json.AllSettings.Start)
                 {
                     EnableAutoStart();
                 }

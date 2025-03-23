@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Speech.Synthesis;
 using System.Text.Json;
+using System.Threading.Tasks;
 using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
@@ -22,63 +22,28 @@ namespace NameCube
         }
 
 
-        public ObservableCollection<AllName> AllNames { get; set; } = new ObservableCollection<AllName>();
-        Json json = new Json();
         public System.Timers.Timer timer;
         int NowIndex = 0;
         bool IsReadyToStop;
         private SpeechSynthesizer _speechSynthesizer = new SpeechSynthesizer();
 
 
-        public void SaveJson()
-        {
-            string jsonString = JsonSerializer.Serialize(json);
-            File.WriteAllText("config.json", jsonString);
-        }
+
         public OnePeopleMode()
         {
             InitializeComponent();
             DataContext = this;
-            if (!File.Exists("config.json"))
-            {
-                json = new Json
-                {
-                    Name = new List<string>(),
-                    Speech = true,
-                    Dark = false,
-                    Volume = 100,
-                    Speed = 0,
-                    Wait = false,
-                };
-                json.Name.Add("张三");
-
-                SaveJson();
-            }
-            else
-            {
-                string jsonstring = File.ReadAllText("config.json");
-                json = JsonSerializer.Deserialize<Json>(jsonstring);
-            }
-            if (json.Name != null)
-            {
-                for (int i = 1; i <= json.Name.Count; i++)
-                {
-                    AllNames.Add(new AllName
-                    {
-                        Index = i.ToString(),
-                        Name = json.Name[i - 1]
-                    });
-                }
-            }
-            SpeechCheck.IsChecked = json.Speech;
-            WaitCheck.IsChecked = json.Wait;
+            SpeechCheck.IsChecked = GlobalVariables.json.OnePeopleModeSettings.Speech;
+            WaitCheck.IsChecked = GlobalVariables.json.OnePeopleModeSettings.Wait;
             timer = new System.Timers.Timer(50);
             timer.AutoReset = true;
             timer.Elapsed += Timer_Elapsed;
             _speechSynthesizer.SelectVoiceByHints(VoiceGender.Female, VoiceAge.Adult); // 选择女声
-            _speechSynthesizer.Rate = json.Speed; // 语速 (-10 ~ 10)
-            _speechSynthesizer.Volume = json.Volume;
+            _speechSynthesizer.Rate = GlobalVariables.json.AllSettings.Speed; // 语速 (-10 ~ 10)
+            _speechSynthesizer.Volume = GlobalVariables.json.AllSettings.Volume;
+
         }
+
 
         private void Timer_Elapsed(object sender, ElapsedEventArgs e)
         {
@@ -93,10 +58,10 @@ namespace NameCube
                 {
                     Dispatcher.Invoke(() =>
                     {
-                        NowNumberText.Text = AllNames[NowIndex].Name;
+                        NowNumberText.Text = GlobalVariables.json.AllSettings.Name[NowIndex];
                     });
                     NowIndex++;
-                    if (NowIndex >= AllNames.Count)
+                    if (NowIndex >= GlobalVariables.json.AllSettings.Name.Count)
                     {
                         NowIndex = 0;
 
@@ -118,14 +83,14 @@ namespace NameCube
             {
                 Dispatcher.Invoke(() =>
                 {
-                    NowNumberText.Text = AllNames[NowIndex].Name;
+                    NowNumberText.Text = GlobalVariables.json.AllSettings.Name[NowIndex];
                 });
             }
             catch (Exception ex)
             {
             }
             NowIndex++;
-            if (NowIndex >= AllNames.Count)
+            if (NowIndex >= GlobalVariables.json.AllSettings.Name.Count)
             {
                 NowIndex = 0;
             }
@@ -134,10 +99,18 @@ namespace NameCube
 
         private void StartButton_Click(object sender, RoutedEventArgs e)
         {
-            ReadJson();
-            if (AllNames.Count == 0)
+            StartButton.IsEnabled = false;
+            _speechSynthesizer.SpeakAsyncCancelAll();
+            if (GlobalVariables.json.AllSettings.Name.Count == 0)
             {
-                MessageBox.Show("请先添加学生名单！");
+                MessageBox.Show("I live alone.But I don't fell lonely\n翻译：学生名单为空！");
+                StartButton.IsEnabled = true;
+                return;
+            }
+            if(GlobalVariables.json.AllSettings.Name.Count==1)
+            {
+                MessageBox.Show("如果你要恶搞某人，建议前往小工具\n翻译：学生名单只有一位！");
+                StartButton.IsEnabled = true;
                 return;
             }
             if (StartButton.Content.ToString() == "开始")
@@ -146,10 +119,11 @@ namespace NameCube
                 timer.Interval = 20;
                 timer.Start();
                 IsReadyToStop = false;
+                StartButton.IsEnabled = true;
             }
             else
             {
-                if (!json.Wait)
+                if (!GlobalVariables.json.OnePeopleModeSettings.Wait)
                 {
                     StartButton.Content = "暂停中";
                     IsReadyToStop = true;
@@ -159,39 +133,33 @@ namespace NameCube
                 {
                     timer.Stop();
                     StartButton.Content = "开始";
-                    _speechSynthesizer.SpeakAsync(NowNumberText.Text);
+                    if (GlobalVariables.json.OnePeopleModeSettings.Speech)
+                    {
+                        _speechSynthesizer.SpeakAsync(NowNumberText.Text);
+                    }
                 }
+                StartButton.IsEnabled = true;
             }
         }
-        private void ReadJson()
-        {
-            string JsonString = File.ReadAllText("config.json");
-            json = JsonSerializer.Deserialize<Json>(JsonString);
-            json.Speech = (bool)SpeechCheck.IsChecked;
-        }
-        private void ReadAndSaveJson()
-        {
-            ReadJson();
-            SaveJson();
-        }
+
 
 
 
         private void Page_Unloaded(object sender, RoutedEventArgs e)
         {
-            SaveJson();
+            GlobalVariables.SaveJson();
         }
 
         private void SpeechCheck_Click(object sender, RoutedEventArgs e)
         {
-            json.Speech = (bool)SpeechCheck.IsChecked;
-            SaveJson();
+            GlobalVariables.json.OnePeopleModeSettings.Speech = (bool)SpeechCheck.IsChecked;
+            GlobalVariables.SaveJson();
         }
 
         private void WaitCheck_Click(object sender, RoutedEventArgs e)
         {
-            json.Wait = (bool)WaitCheck.IsChecked;
-            SaveJson();
+            GlobalVariables.json.OnePeopleModeSettings.Wait = (bool)WaitCheck.IsChecked;
+            GlobalVariables.SaveJson();
         }
     }
 }

@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
-using System.Text.Json;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -21,51 +20,26 @@ namespace NameCube
         }
 
         public ObservableCollection<AllName> AllNames { get; set; } = new ObservableCollection<AllName>();
-        Json json = new Json();
 
 
-        public void SaveJson()
-        {
-            string jsonString = JsonSerializer.Serialize(json);
-            File.WriteAllText("config.json", jsonString);
-        }
+
         public Archives()
         {
             InitializeComponent();
             DataContext = this;
-            if (!File.Exists("config.json"))
+            if (GlobalVariables.json.AllSettings.Name != null)
             {
-                json = new Json
-                {
-                    Name = new List<string>(),
-                    Speech = true,
-                    Dark = false,
-                    Volume = 100,
-                    Speed = 0,
-                    Wait = false,
-                };
-                json.Name.Add("张三");
-
-                SaveJson();
-            }
-            else
-            {
-                string jsonstring = File.ReadAllText("config.json");
-                json = JsonSerializer.Deserialize<Json>(jsonstring);
-            }
-            if (json.Name != null)
-            {
-                for (int i = 1; i <= json.Name.Count; i++)
+                for (int i = 1; i <= GlobalVariables.json.AllSettings.Name.Count; i++)
                 {
                     AllNames.Add(new AllName
                     {
-                        Name = json.Name[i - 1]
+                        Name = GlobalVariables.json.AllSettings.Name[i - 1]
                     });
                 }
             }
             else
             {
-                json.Name = new List<string>();
+                GlobalVariables.json.AllSettings.Name = new List<string>();
             }
         }
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -75,7 +49,6 @@ namespace NameCube
             openFileDialog.Filter = "文本文件 (*.txt)|*.txt|所有文件 (*.*)|*.*";
             if (openFileDialog.ShowDialog() == true)
             {
-                int index = 0;
 
                 AllNames.Clear();
                 try
@@ -86,7 +59,7 @@ namespace NameCube
                         {
                             Name = line
                         });
-                        json.Name.Add(line);
+                        GlobalVariables.json.AllSettings.Name.Add(line);
                     }
                 }
                 catch (Exception ex)
@@ -94,25 +67,29 @@ namespace NameCube
                     MessageBox.Show(ex.Message);
                 }
             }
-            SaveJson();
+            GlobalVariables.SaveJson();
         }
 
         private void FluentWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            SaveJson();
+            GlobalVariables.SaveJson();
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
 
-
+            if(AddNameTextBox.Text==""||AddNameTextBox.Text==null)
+            {
+                MessageBox.Show("大家好，我叫无名氏\n翻译：添加内容为空！");
+                return;
+            }
             AllNames.Add(new AllName
             {
                 Name = AddNameTextBox.Text
             });
-            json.Name.Add(AddNameTextBox.Text);
+            GlobalVariables.json.AllSettings.Name.Add(AddNameTextBox.Text);
             AddNameTextBox.Text = "";
-            SaveJson();
+            GlobalVariables.SaveJson();
 
         }
 
@@ -121,8 +98,8 @@ namespace NameCube
 
 
             AllNames.Clear();
-            json.Name.Clear();
-            SaveJson();
+            GlobalVariables.json.AllSettings.Name.Clear();
+            GlobalVariables.SaveJson();
         }
 
         private void Button_Click_3(object sender, RoutedEventArgs e)
@@ -133,10 +110,10 @@ namespace NameCube
                 if (button != null && button.CommandParameter is AllName allnames)
                 {
                     AllNames.Remove(allnames);
-                    json.Name.Remove(allnames.Name);
+                    GlobalVariables.json.AllSettings.Name.Remove(allnames.Name);
                 }
             }
-            SaveJson();
+            GlobalVariables.SaveJson();
         }
         private void AddNameTextBox_KeyDown(object sender, KeyEventArgs e)
         {
@@ -148,7 +125,7 @@ namespace NameCube
 
         private void AddNameTextBox_Unloaded(object sender, RoutedEventArgs e)
         {
-            SaveJson();
+            GlobalVariables.SaveJson();
         }
     }
 }

@@ -27,6 +27,14 @@
                     Icon="{ui:SymbolIcon Symbol=Accessibility16}"
                     TargetPageType="{x:Type local:OnePeopleMode}"/>
                 <ui:NavigationViewItem
+                    Content="概率因子模式"
+                    Icon="{ui:SymbolIcon Symbol=PeopleSettings24}"
+                    TargetPageType="{x:Type local:MemoryFactorMode}"/>
+                <ui:NavigationViewItem
+                    Content="批量模式"
+                    Icon="{ui:SymbolIcon Symbol=PeopleCommunity24}"
+                    TargetPageType="{x:Type local:BatchMode}"/>
+                <ui:NavigationViewItem
                     Content="档案编辑"
                     Icon="{ui:SymbolIcon Symbol=BookContacts24}"
                     TargetPageType="{x:Type local:Archives}"/>

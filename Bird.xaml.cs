@@ -1,12 +1,13 @@
-﻿using Masuit.Tools.Win32;
+﻿using Masuit.Tools.Logging;
+using Masuit.Tools.Win32;
 using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Runtime.InteropServices;
-using System.Text.Json;
+using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Threading;
+using Application = System.Windows.Application;
 using WinForms = System.Windows.Forms;
 
 namespace NameCube
@@ -16,7 +17,8 @@ namespace NameCube
     /// </summary>
     public partial class Bird
     {
-        private const double SnapThreshold = 20; // 吸附阈值
+        private NotifyIcon _notifyIcon;
+        private const double SnapThreshold = 60; // 吸附阈值
         private DispatcherTimer _longPressTimer;
         private Point _dragOffset;
         private bool _isDragging;
@@ -30,62 +32,62 @@ namespace NameCube
             public int X;
             public int Y;
         }
-        Json json = new Json();
-        public void SaveJson()
-        {
-            string jsonString = JsonSerializer.Serialize(json);
-            File.WriteAllText("config.json", jsonString);
-        }
+
+
         public Bird()
         {
             InitializeComponent();
             InitializeBehavior();
             InitializePosition();
-            if (!File.Exists("config.json"))
-            {
-                json = new Json
-                {
-                    Name = new List<string>(),
-                    Speech = true,
-                    Dark = false,
-                    Volume = 100,
-                    Speed = 0,
-                    Ball = true,
-                    Start=false,
-                    AlwaysCleanMemory = false,
-                };
-                json.Name.Add("张三");
-
-                SaveJson();
-            }
-            else
-            {
-                string jsonstring = File.ReadAllText("config.json");
-                json = JsonSerializer.Deserialize<Json>(jsonstring);
-                if (json.Dark)
-                {
-                    Wpf.Ui.Appearance.ApplicationThemeManager.Apply(
-                    Wpf.Ui.Appearance.ApplicationTheme.Dark, // Theme type
-                     Wpf.Ui.Controls.WindowBackdropType.Auto,  // Background type
-                     true                                      // Whether to change accents automatically
-                   );
-                }
-            }
-            if (!json.Ball)
+            InitializeTrayIcon();
+            if (!GlobalVariables.json.StartToDo.Ball)
             {
                 this.Hide();
+                ShowMainWindowAsync();
+            }
+            if (GlobalVariables.json.AllSettings.Dark)
+            {
+                Wpf.Ui.Appearance.ApplicationThemeManager.Apply(
+                Wpf.Ui.Appearance.ApplicationTheme.Dark, // Theme type
+                 Wpf.Ui.Controls.WindowBackdropType.Auto,  // Background type
+                 true                                      // Whether to change accents automatically
+               );
             }
             _timer = new DispatcherTimer();
-            _timer.Interval = TimeSpan.FromSeconds(600); 
+            _timer.Interval = TimeSpan.FromSeconds(600);
             _timer.Tick += Timer_Tick;
-            if(json.AlwaysCleanMemory)
+            if (GlobalVariables.json.StartToDo.AlwaysCleanMemory)
             {
                 _timer.Start();
             }
         }
+        private void InitializeTrayIcon()
+        {
+            _notifyIcon = new NotifyIcon
+            {
+                Icon = System.Drawing.Icon.ExtractAssociatedIcon(System.Windows.Forms.Application.ExecutablePath),
+                Visible = true,
+                Text = "学号魔方"
+            };
+
+            // 添加右键菜单
+            var contextMenu = new ContextMenuStrip();
+            contextMenu.Items.Add("显示窗口", null, (s, e) => ShowMainWindowAsync());
+            contextMenu.Items.Add("退出", null, (s, e) => ExitApp());
+            _notifyIcon.ContextMenuStrip = contextMenu;
+
+            // 双击托盘图标显示窗口
+            _notifyIcon.DoubleClick += (s, e) => ShowMainWindowAsync();
+        }
         private DispatcherTimer _timer;
+        private void ExitApp()
+        {
+            _notifyIcon.Dispose(); // 清理托盘图标
+            Application.Current.Shutdown(); // 手动关闭应用
+        }
         private void Timer_Tick(object sender, EventArgs e)
         {
+            LogManager.Info("开始内存清理......");
             Windows.ClearMemorySilent();
         }
 
@@ -106,8 +108,15 @@ namespace NameCube
             MouseLeftButtonDown += OnMouseLeftButtonDown;
             MouseLeftButtonUp += OnMouseLeftButtonUp;
             MouseMove += OnMouseMove;
+            MouseRightButtonDown += Bird_MouseRightButtonDown;
 
         }
+
+        private void Bird_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            ShowMainWindowAsync();
+        }
+
         private void InitializePosition()
         {
             // 明确使用WinForms别名
@@ -145,10 +154,11 @@ namespace NameCube
             Top = mousePos.Y - _dragOffset.Y;
         }
 
+
         private void LongPress_Tick(object sender, EventArgs e)
         {
             _longPressTimer.Stop();
-            ShowMainWindow();
+            ShowMainWindowAsync();
         }
 
         private void SnapToEdges()
@@ -197,17 +207,18 @@ namespace NameCube
             return SystemParameters.WorkArea; // 默认主屏幕
         }
 
-        private void ShowMainWindow()
+        private async Task ShowMainWindowAsync()
         {
-            // 明确使用WPF的Application
-            var mainWindow = System.Windows.Application.Current.MainWindow as MainWindow;
-            if (mainWindow != null)
+            await Application.Current.Dispatcher.InvokeAsync(() =>
             {
-                mainWindow.Show();
-                mainWindow.WindowState = WindowState.Normal;
-                mainWindow.Activate();
-                mainWindow.OnShowAfterLongPress();
-            }
+                var mainWindow = Application.Current.MainWindow as MainWindow;
+                if (mainWindow != null)
+                {
+                    mainWindow.Show();
+                    mainWindow.Activate();
+                    mainWindow.NavigationMenu.Navigate(typeof(OnePeopleMode));
+                }
+            });
         }
 
         protected override void OnClosed(EventArgs e)

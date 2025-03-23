@@ -20,7 +20,7 @@
             <ui:Button Content="添加" Click="Button_Click_1"/>
             <ui:Button Content="清空" Margin="20 0 0 0" Click="Button_Click_2"/>
         </StackPanel>
-        <ui:DataGrid Grid.Row="1" ItemsSource="{Binding AllNames}" x:Name="DataGrid" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" CanUserResizeColumns="False" CanUserResizeRows="False">
+        <ui:DataGrid Grid.Row="1" ItemsSource="{Binding AllNames}" x:Name="DataGrid" IsReadOnly="True" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" CanUserResizeColumns="False" CanUserResizeRows="False">
             <ui:DataGrid.Columns>
                 <DataGridTextColumn Header="姓名" Width="auto" Binding="{Binding Name}"/>
                 <DataGridTemplateColumn Header="操作">

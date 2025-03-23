@@ -14,10 +14,10 @@
             <ui:Image Source="icon.png" Height="170"/>
             <TextBlock Text="学号魔方" FontSize="55" HorizontalAlignment="Center"/>
             <TextBlock Text="NameCube" FontSize="30" HorizontalAlignment="Center"/>
-            <TextBlock>版本名：Alpha-3</TextBlock>
-            <TextBlock>版本信息：悬浮球初步测试</TextBlock>
+            <TextBlock>版本名：Alpha-4</TextBlock>
+            <TextBlock>版本信息：更多模式1.0测试</TextBlock>
             <TextBlock>作者：哈阿斯（haaa4)</TextBlock>
-            <TextBlock>最后编译时间：2025年3月16日</TextBlock>
+            <TextBlock>最后编译时间：2025年3月23日</TextBlock>
             <ui:HyperlinkButton
                     Grid.Column="0"
                     Content="github项目"
@@ -28,8 +28,8 @@
                  Content="作者B站主页"
                  Icon="{ui:SymbolIcon Link24}"
                  NavigateUri="https://space.bilibili.com/1440486452" />
-            <TextBlock Text="♪塞西莉亚，塞西莉亚。盛开在起风的地方，沐浴九月的骄阳♪" FontStyle="Italic" Margin="5 0 0 0"/>
-            <TextBlock Text="少年应有鸿鹄志 当骑骏马踏平川  少年有志不言愁 有梦凌云誓方休" FontStyle="Italic" Margin="5 0 0 0"/>
+            <TextBlock Text="♪wait wait wait wait...what hell！！！(一阵强烈的音乐传来)♪" FontStyle="Italic" Margin="5 0 0 0"/>
+            <TextBlock Text="恭喜@点击输入文字@114514@即等10位同学中奖，已私信通知，详情请点击抽奖查看。" FontStyle="Italic" Margin="5 0 0 0"/>
         </StackPanel>
     </Grid>
 </Page>

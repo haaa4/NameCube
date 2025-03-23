@@ -25,7 +25,6 @@ D:\C#\NameCube\NameCube\bin\Release\Wpf.Ui.xml
 D:\C#\NameCube\NameCube\bin\Release\Wpf.Ui.Abstractions.pdb
 D:\C#\NameCube\NameCube\bin\Release\Wpf.Ui.Abstractions.xml
 D:\C#\NameCube\NameCube\obj\Release\NameCube.csproj.AssemblyReference.cache
-D:\C#\NameCube\NameCube\obj\Release\NameCube.csproj.SuggestedBindingRedirects.cache
 D:\C#\NameCube\NameCube\obj\Release\MainWindow.g.cs
 D:\C#\NameCube\NameCube\obj\Release\App.g.cs
 D:\C#\NameCube\NameCube\obj\Release\App.baml
@@ -37,7 +36,6 @@ D:\C#\NameCube\NameCube\obj\Release\NameCube.csproj.Up2Date
 D:\C#\NameCube\NameCube\bin\Release\学号魔方.exe.config
 D:\C#\NameCube\NameCube\bin\Release\学号魔方.exe
 D:\C#\NameCube\NameCube\bin\Release\学号魔方.pdb
-D:\C#\NameCube\NameCube\obj\Release\学号魔方.exe.config
 D:\C#\NameCube\NameCube\obj\Release\学号魔方_MarkupCompile.cache
 D:\C#\NameCube\NameCube\obj\Release\学号魔方_MarkupCompile.lref
 D:\C#\NameCube\NameCube\obj\Release\学号魔方.g.resources
@@ -60,3 +58,10 @@ D:\C#\NameCube\NameCube\obj\Release\Archives.baml
 D:\C#\NameCube\NameCube\obj\Release\OnePeopleMode.baml
 D:\C#\NameCube\NameCube\obj\Release\setting.baml
 D:\C#\NameCube\NameCube\obj\Release\Toolbox.baml
+D:\C#\NameCube\NameCube\obj\Release\BatchMode.g.cs
+D:\C#\NameCube\NameCube\obj\Release\MemoryFactorMode.g.cs
+D:\C#\NameCube\NameCube\obj\Release\BatchMode.baml
+D:\C#\NameCube\NameCube\obj\Release\MemoryFactorMode.baml
+D:\C#\输出\Release\学号魔方.exe.config
+D:\C#\输出\Release\学号魔方.exe
+D:\C#\输出\Release\学号魔方.pdb
