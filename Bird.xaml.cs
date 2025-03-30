@@ -1,6 +1,9 @@
 ﻿using Masuit.Tools.Logging;
 using Masuit.Tools.Win32;
+using NameCube.Setting;
 using System;
+using System.Diagnostics;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows;
@@ -73,6 +76,9 @@ namespace NameCube
             // 添加右键菜单
             var contextMenu = new ContextMenuStrip();
             contextMenu.Items.Add("显示窗口", null, (s, e) => ShowMainWindowAsync());
+            contextMenu.Items.Add("小工具", null, (s, e) => ShowToolboxWindowAsync());
+            contextMenu.Items.Add("设置", null, (s, e) => ShowSettingsWindowAsync());
+            contextMenu.Items.Add("重启", null, (s, e) => Restart());
             contextMenu.Items.Add("退出", null, (s, e) => ExitApp());
             _notifyIcon.ContextMenuStrip = contextMenu;
 
@@ -220,11 +226,58 @@ namespace NameCube
                 }
             });
         }
+        private async Task ShowSettingsWindowAsync()
+        {
+            await Application.Current.Dispatcher.InvokeAsync(() =>
+            {
+                var settingsWindow = Application.Current.Windows.OfType<SettingsWindow>().FirstOrDefault();
 
+                if (settingsWindow == null)
+                {
+                    // 创建新实例
+                    settingsWindow = new SettingsWindow();
+                }
+
+                // 确保窗口可见并激活
+                settingsWindow.Show();
+                settingsWindow.Activate();
+                settingsWindow.WindowState = WindowState.Normal;
+            });
+        }
+        private async Task ShowToolboxWindowAsync()
+        {
+            await Application.Current.Dispatcher.InvokeAsync(() =>
+            {
+                var toolboxWindow = Application.Current.Windows.OfType<ToolboxWindow>().FirstOrDefault();
+
+                if (toolboxWindow == null)
+                {
+                    // 创建新实例
+                    toolboxWindow = new ToolboxWindow();
+                }
+
+                // 确保窗口可见并激活
+                toolboxWindow.Show();
+                toolboxWindow.Activate();
+                toolboxWindow.WindowState = WindowState.Normal;
+            });
+        }
+        private void Restart()
+        {
+            string[] args = Environment.GetCommandLineArgs();
+            Application.Current.Shutdown();
+            Process.Start(Application.ResourceAssembly.Location, string.Join(" ", args.Skip(1)));
+        }
         protected override void OnClosed(EventArgs e)
         {
             _longPressTimer.Stop();
             base.OnClosed(e);
+        }
+
+        protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
+        {
+            e.Cancel = true;
+            base.OnClosing(e);
         }
     }
 }

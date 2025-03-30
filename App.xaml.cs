@@ -1,8 +1,8 @@
 ﻿using Masuit.Tools.Logging;
+using NameCube.Setting;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Net.NetworkInformation;
 using System.Text.Json;
 using System.Threading;
 using System.Windows;
@@ -35,6 +35,14 @@ namespace NameCube
         /// 开机自启动
         /// </summary>
         public bool Start { get; set; }
+        /// <summary>
+        /// 使用系统设置的朗读
+        /// </summary>
+        public bool SystemSpeech { get; set; }
+        /// <summary>
+        /// 主窗口始终置顶
+        /// </summary>
+        public bool Top { get; set; }
     }
     public class onePeopleModeSettings
     {
@@ -46,6 +54,14 @@ namespace NameCube
         /// 禁用等待
         /// </summary>
         public bool Wait { get; set; }
+        /// <summary>
+        /// 是否允许修改
+        /// </summary>
+        public bool Locked { get; set; }
+        /// <summary>
+        /// 主界面字体跳动速度
+        /// </summary>
+        public int Speed { get; set; }
 
     }
     public class startToDo
@@ -64,22 +80,30 @@ namespace NameCube
         /// <summary>
         /// 启用朗读
         /// </summary>
-        public bool Speech {  set; get; }
+        public bool Speech { set; get; }
+        /// <summary>
+        /// 是否允许修改
+        /// </summary>
+        public bool Locked { get; set; }
+        /// <summary>
+        /// 主界面字体跳动速度
+        /// </summary>
+        public int Speed { get; set; }
     }
     public class BatchModeSettings
     {
         /// <summary>
         /// 是否为数字模式
         /// </summary>
-        public bool NumberMode {  get; set; }
+        public bool NumberMode { get; set; }
         /// <summary>
         /// 数字数量
         /// </summary>
-        public int Number {  get; set; }
+        public int Number { get; set; }
         /// <summary>
         /// 抽取数量
         /// </summary>
-        public int Index {  get; set; }
+        public int Index { get; set; }
         /// <summary>
         /// 允许重复
         /// </summary>
@@ -110,6 +134,10 @@ namespace NameCube
         /// 批量模式设置
         /// </summary>
         public BatchModeSettings BatchModeSettings { get; set; }
+        /// <summary>
+        /// 当前版本
+        /// </summary>
+        public string Version="Alpha-5" ;
 
 
     }
@@ -146,14 +174,14 @@ namespace NameCube
             catch (Exception ex)
             {
                 // 记录错误或提示用户
-                MessageBox.Show($"保存配置失败: {ex.Message}");
+                System.Windows.MessageBox.Show($"保存配置失败: {ex.Message}");
                 LogManager.Error(ex);
             }
         }
 
     }
 
-    public partial class App : Application
+    public partial class App : System.Windows.Application
     {
         Mutex mutex;
         public App()
@@ -167,7 +195,7 @@ namespace NameCube
             mutex = new Mutex(true, "NameCube", out ret);
             if (!ret)
             {
-                MessageBox.Show("哥们，你已经启动一个实例了,看看系统托盘吧（笑 \n" +
+                System.Windows.MessageBox.Show("哥们，你已经启动一个实例了,看看系统托盘吧（笑 \n" +
                     "翻译：你已经启动了软件");
                 Environment.Exit(0);
             }
@@ -180,44 +208,49 @@ namespace NameCube
             {
                 // 确保目录存在
                 Directory.CreateDirectory(configDir);
+                GlobalVariables.json = new Json
+                {
+                    AllSettings = new allSettings
+                    {
+                        Name = new List<string> { "张三" },
+                        Dark = false,
+                        Volume = 100,
+                        Speed = 0,
+                        Start = false,
+                        SystemSpeech = false,
+                        Top = true
+                    },
+                    StartToDo = new startToDo
+                    {
+                        Ball = false,
+                        AlwaysCleanMemory = false
+                    },
+                    OnePeopleModeSettings = new onePeopleModeSettings
+                    {
+                        Speech = true,
+                        Wait = false,
+                        Locked = false,
+                        Speed = 20,
+                    },
+                    MemoryFactorModeSettings = new memoryFactorModeSettings
+                    {
+                        Speech = true,
+                        Locked = false,
+                        Speed = 20,
+                    },
+                    BatchModeSettings = new BatchModeSettings
+                    {
+                        NumberMode = false,
+                        Number = 53,
+                        Index = 10,
+                        Repetition = false
+                    }
 
+                };
                 if (!File.Exists(configPath))
                 {
                     LogManager.Info("找不到文件");
                     // 初始化默认配置
-                    GlobalVariables.json = new Json
-                    {
-                        AllSettings = new allSettings
-                        {
-                            Name = new List<string> { "张三" },
-                            Dark = false,
-                            Volume = 100,
-                            Speed = 0,
-                            Start = false
-                        },
-                        StartToDo = new startToDo
-                        {
-                            Ball = false,
-                            AlwaysCleanMemory = false
-                        },
-                        OnePeopleModeSettings = new onePeopleModeSettings
-                        {
-                            Speech = true,
-                            Wait = false
-                        },
-                        MemoryFactorModeSettings = new memoryFactorModeSettings
-                        {
-                            Speech = true
-                        },
-                        BatchModeSettings = new BatchModeSettings
-                        {
-                            NumberMode = false,
-                            Number = 53,
-                            Index = 10,
-                            Repetition = false
-                        }
-
-                    };
                     GlobalVariables.SaveJson(); // 确保保存成功
                 }
 
@@ -234,11 +267,12 @@ namespace NameCube
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"启动失败: {ex.Message}", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.MessageBox.Show($"启动失败: {ex.Message}", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
                 Environment.Exit(1);
             }
             LogManager.Info("程序启动");
-            MainWindow mainWindow = new MainWindow(); 
+            MainWindow mainWindow = new MainWindow();
+            SettingsWindow settingsWindow = new SettingsWindow();
         }
     }
 }

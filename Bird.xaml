@@ -8,8 +8,7 @@
         WindowStyle="None"
         AllowsTransparency="True"
         ResizeMode="NoResize"
-        Background="Transparent"
-
+        Background="Transparent"   
         >
     <Grid>
         <ui:Image 

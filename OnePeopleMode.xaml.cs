@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.ObjectModel;
-using System.IO;
 using System.Speech.Synthesis;
-using System.Text.Json;
-using System.Threading.Tasks;
 using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
@@ -35,12 +31,17 @@ namespace NameCube
             DataContext = this;
             SpeechCheck.IsChecked = GlobalVariables.json.OnePeopleModeSettings.Speech;
             WaitCheck.IsChecked = GlobalVariables.json.OnePeopleModeSettings.Wait;
-            timer = new System.Timers.Timer(50);
+            SpeechCheck.IsEnabled = !GlobalVariables.json.OnePeopleModeSettings.Locked;
+            WaitCheck.IsEnabled = !GlobalVariables.json.OnePeopleModeSettings.Locked;
+            timer = new System.Timers.Timer(GlobalVariables.json.OnePeopleModeSettings.Speed);
             timer.AutoReset = true;
             timer.Elapsed += Timer_Elapsed;
-            _speechSynthesizer.SelectVoiceByHints(VoiceGender.Female, VoiceAge.Adult); // 选择女声
-            _speechSynthesizer.Rate = GlobalVariables.json.AllSettings.Speed; // 语速 (-10 ~ 10)
-            _speechSynthesizer.Volume = GlobalVariables.json.AllSettings.Volume;
+            if (!GlobalVariables.json.AllSettings.SystemSpeech)
+            {
+                _speechSynthesizer.SelectVoiceByHints(VoiceGender.Female, VoiceAge.Adult); // 选择女声
+                _speechSynthesizer.Rate = GlobalVariables.json.AllSettings.Speed; // 语速 (-10 ~ 10)
+                _speechSynthesizer.Volume = GlobalVariables.json.AllSettings.Volume;
+            }
 
         }
 
@@ -107,7 +108,7 @@ namespace NameCube
                 StartButton.IsEnabled = true;
                 return;
             }
-            if(GlobalVariables.json.AllSettings.Name.Count==1)
+            if (GlobalVariables.json.AllSettings.Name.Count == 1)
             {
                 MessageBox.Show("如果你要恶搞某人，建议前往小工具\n翻译：学生名单只有一位！");
                 StartButton.IsEnabled = true;
@@ -115,8 +116,10 @@ namespace NameCube
             }
             if (StartButton.Content.ToString() == "开始")
             {
+                FinishText.Visibility = Visibility.Hidden;
+                NowNumberText.Visibility = Visibility.Visible;
                 StartButton.Content = "结束";
-                timer.Interval = 20;
+                timer.Interval = GlobalVariables.json.OnePeopleModeSettings.Speed;
                 timer.Start();
                 IsReadyToStop = false;
                 StartButton.IsEnabled = true;
@@ -131,12 +134,16 @@ namespace NameCube
                 }
                 else
                 {
+                    string Text = NowNumberText.Text;
                     timer.Stop();
                     StartButton.Content = "开始";
                     if (GlobalVariables.json.OnePeopleModeSettings.Speech)
                     {
-                        _speechSynthesizer.SpeakAsync(NowNumberText.Text);
+                        _speechSynthesizer.SpeakAsync(Text);
                     }
+                    FinishText.Text = Text;
+                    NowNumberText.Visibility = Visibility.Hidden;
+                    FinishText.Visibility = Visibility.Visible;
                 }
                 StartButton.IsEnabled = true;
             }

@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:NameCube"
         xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
         mc:Ignorable="d"
-        Title="学号魔方" Height="600" Width="1200"  Closing="FluentWindow_Closing">
+        Title="学号魔方" Height="600" Width="1400"  Closing="FluentWindow_Closing" >
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
@@ -34,22 +34,7 @@
                     Content="批量模式"
                     Icon="{ui:SymbolIcon Symbol=PeopleCommunity24}"
                     TargetPageType="{x:Type local:BatchMode}"/>
-                <ui:NavigationViewItem
-                    Content="档案编辑"
-                    Icon="{ui:SymbolIcon Symbol=BookContacts24}"
-                    TargetPageType="{x:Type local:Archives}"/>
-                <ui:NavigationViewItem
-                    Content="应用设置"
-                    Icon="{ui:SymbolIcon Symbol=Settings24}"
-                    TargetPageType="{x:Type local:setting}"/>
-                <ui:NavigationViewItem
-                    Content="小工具"
-                    Icon="{ui:SymbolIcon Symbol=Toolbox20}"
-                    TargetPageType="{x:Type local:Toolbox}"/>
-                <ui:NavigationViewItem
-                    Content="应用信息"
-                    Icon="{ui:ImageIcon 'icon.png'}"
-                    TargetPageType="{x:Type local:About}"/>
+
             </ui:NavigationView.MenuItems>
         </ui:NavigationView>
 

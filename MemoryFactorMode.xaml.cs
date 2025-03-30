@@ -5,22 +5,12 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
-using System.Linq;
-using System.Runtime.Remoting.Contexts;
 using System.Speech.Synthesis;
-using System.Text;
 using System.Text.Json;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Forms;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using MessageBox = System.Windows.Forms.MessageBox;
 
 namespace NameCube
@@ -30,33 +20,60 @@ namespace NameCube
     /// </summary>
     public partial class MemoryFactorMode : Page
     {
-        public class ThisModeJson
+        public class ThisModeJson : INotifyPropertyChanged
         {
-            /// <summary>
-            /// 姓名名单
-            /// </summary>
-            public string Name { get; set; }
-            /// <summary>
-            /// 概率因子名单
-            /// </summary>
-            public int Factor { get; set; }
+            private string _name;
+            private int _factor;
+
+            public string Name
+            {
+                get => _name;
+                set
+                {
+                    _name = value;
+                    OnPropertyChanged(nameof(Name));
+                }
+            }
+
+            public int Factor
+            {
+                get => _factor;
+                set
+                {
+                    _factor = value;
+                    OnPropertyChanged(nameof(Factor));
+                }
+            }
+
+            public event PropertyChangedEventHandler PropertyChanged;
+
+            protected virtual void OnPropertyChanged(string propertyName)
+            {
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            }
         }
         /// <summary>
         /// 本模式的局部设置
         /// </summary>
-        public ObservableCollection<ThisModeJson> thisModeJson { get; set; } =new ObservableCollection<ThisModeJson>();
-        public System.Timers.Timer timer=new System.Timers.Timer();
+        public ObservableCollection<ThisModeJson> thisModeJson { get; set; } = new ObservableCollection<ThisModeJson>();
+        public System.Timers.Timer timer = new System.Timers.Timer();
         public SpeechSynthesizer _speechSynthesizer = new SpeechSynthesizer();
+        public bool IsCanStop = false;
         public List<string> Trainings { get; set; } = new List<string>();
         public MemoryFactorMode()
         {
             InitializeComponent();
             DataContext = this;
-            _speechSynthesizer.SelectVoiceByHints(VoiceGender.Female, VoiceAge.Adult); // 选择女声
-            _speechSynthesizer.Rate = GlobalVariables.json.AllSettings.Speed; // 语速 (-10 ~ 10)
-            _speechSynthesizer.Volume = GlobalVariables.json.AllSettings.Volume;
+            if (!GlobalVariables.json.AllSettings.SystemSpeech)
+            {
+                _speechSynthesizer.SelectVoiceByHints(VoiceGender.Female, VoiceAge.Adult); // 选择女声
+                _speechSynthesizer.Rate = GlobalVariables.json.AllSettings.Speed; // 语速 (-10 ~ 10)
+                _speechSynthesizer.Volume = GlobalVariables.json.AllSettings.Volume;
+            }
             timer.Elapsed += Timer_Elapsed;
             SpeechButton.IsChecked = GlobalVariables.json.MemoryFactorModeSettings.Speech;
+            SpeechButton.IsEnabled = !GlobalVariables.json.MemoryFactorModeSettings.Locked;
+            ResetButton.IsEnabled = !GlobalVariables.json.MemoryFactorModeSettings.Locked;
             string FilePath = System.IO.Path.Combine(GlobalVariables.configDir, "Mode_data", "MemoryFactoryMode");
             Directory.CreateDirectory(FilePath);
             StartLoad();
@@ -73,7 +90,8 @@ namespace NameCube
                     LogManager.Info("找不到文件");
                     if (GlobalVariables.json.AllSettings.Name.Count <= 1)
                     {
-                        this.Dispatcher.Invoke(new Action(() => {
+                        this.Dispatcher.Invoke(new Action(() =>
+                        {
                             StartButton.IsEnabled = false;
                             ResetButton.IsEnabled = false;
                         }));
@@ -98,43 +116,54 @@ namespace NameCube
                     // 反序列化后合并到现有集合
                     string jsonString = File.ReadAllText(Path.Combine(FilePath, "Memory.json"));
                     var loadedData = JsonSerializer.Deserialize<ObservableCollection<ThisModeJson>>(jsonString);
-                    this.Dispatcher.Invoke(new Action(() => {
+                    this.Dispatcher.Invoke(() =>
+                    {
                         thisModeJson.Clear();
                         foreach (var item in loadedData)
                         {
                             thisModeJson.Add(item);
                         }
-                    }));
-                   
+                    });
+
                 }
-                for(int i=0;i<thisModeJson.Count;i++)
+                for (int i = 0; i < thisModeJson.Count; i++)
                 {
-                    for(int ii = 1; ii <= thisModeJson[i].Factor;ii++)
+                    for (int ii = 1; ii <= thisModeJson[i].Factor; ii++)
                     {
                         Trainings.Add(thisModeJson[i].Name);
                     }
                 }
-                var view = CollectionViewSource.GetDefaultView(thisModeJson);
-                view.SortDescriptions.Clear();
-                view.SortDescriptions.Add(new SortDescription("Factor", ListSortDirection.Ascending));
-                view.Refresh();
+                this.Dispatcher.Invoke(() =>
+                {
+                    Count.Text = "总概率因子数量:" + Trainings.Count.ToString();
+                });
+
             });
 
         }
         private void Timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
             Random rnd = new Random();
-            this.Dispatcher.Invoke(new Action(() => {
+            if (IsCanStop)
+            {
+                return;
+            }
+            this.Dispatcher.Invoke(new Action(() =>
+            {
                 NowNumberText.Text = Trainings[rnd.StrictNext(Trainings.Count)];
             }));
-           
+            if (IsCanStop)
+            {
+                IsCanStop = false;
+            }
+
         }
 
         public void SaveThisJson()
         {
             LogManager.Info("保存基因因子设置");
 
-            string configPath = Path.Combine(GlobalVariables.configDir , "Mode_data" , "MemoryFactoryMode","Memory.json");
+            string configPath = Path.Combine(GlobalVariables.configDir, "Mode_data", "MemoryFactoryMode", "Memory.json");
 
             try
             {
@@ -152,25 +181,18 @@ namespace NameCube
             }
         }
 
-        private void DataGrid_Loaded(object sender, RoutedEventArgs e)
-        {
-            var column = DataGrid.Columns[1];
-            column.SortDirection = ListSortDirection.Descending;
-            DataGrid.Items.SortDescriptions.Clear();
-            DataGrid.Items.SortDescriptions.Add(
-                new SortDescription("Factor", ListSortDirection.Ascending)
-            );
-            DataGrid.Items.Refresh();
-        }
+
 
         private void StartButton_Click(object sender, RoutedEventArgs e)
         {
             StartButton.IsEnabled = false;
             _speechSynthesizer.SpeakAsyncCancelAll();
-            if(StartButton.Content.ToString()=="开始")
+            if (StartButton.Content.ToString() == "开始")
             {
+                FinishNumberText.Visibility = Visibility.Hidden;
+                NowNumberText.Visibility = Visibility.Visible;
                 StartButton.Content = "结束";
-                timer.Interval = 50;
+                timer.Interval = GlobalVariables.json.MemoryFactorModeSettings.Speed;
                 timer.Start();
                 StartButton.IsEnabled = true;
             }
@@ -178,26 +200,37 @@ namespace NameCube
             {
                 StartButton.Content = "开始";
                 timer.Stop();
-                Thread.Sleep(55);
-                if(GlobalVariables.json.MemoryFactorModeSettings.Speech)
+                IsCanStop = true;
+                string NowNumberTextValue = NowNumberText.Text;
+                FinishNumberText.Text = NowNumberTextValue;
+                NowNumberText.Visibility = Visibility.Hidden;
+                FinishNumberText.Visibility = Visibility.Visible;
+                if (GlobalVariables.json.MemoryFactorModeSettings.Speech)
                 {
-                    _speechSynthesizer.SpeakAsync(NowNumberText.Text);
+                    _speechSynthesizer.SpeakAsync(NowNumberTextValue);
                 }
-                int delete=0;
-                for (int i = 0; i < thisModeJson.Count; i++) {
-                    thisModeJson[i].Factor++;
-                    Trainings.Add(thisModeJson[i].Name);
-                    if(thisModeJson[i].Name== NowNumberText.Text)
+                int delete = 0, GetRandom;
+                Random random = new Random();
+                for (int i = 0; i < thisModeJson.Count; i++)
+                {
+                    GetRandom = random.StrictNext(4);
+                    thisModeJson[i].Factor += GetRandom;
+                    for (int j = 1; j <= GetRandom; j++)
+                    {
+                        Trainings.Add(thisModeJson[i].Name);
+                    }
+                    if (thisModeJson[i].Name == NowNumberTextValue)
                     {
                         delete = i;
                     }
                 }
                 thisModeJson[delete].Factor = 0;
-                Trainings.RemoveAll(s=>s== NowNumberText.Text);
-                var view = CollectionViewSource.GetDefaultView(thisModeJson);
-                view.Refresh();
+                Trainings.RemoveAll(s => s == NowNumberTextValue);
                 SaveThisJson();
                 StartButton.IsEnabled = true;
+                IsCanStop = false;
+                NowNumberText.Text = NowNumberTextValue;
+                Count.Text = "总概率因子数量:" + Trainings.Count.ToString();
             }
         }
 
@@ -209,7 +242,7 @@ namespace NameCube
         private void ResetButton_Click(object sender, RoutedEventArgs e)
         {
             DialogResult result = MessageBox.Show("确定重置概率因子吗？\n（重置概率因子后配置文件不会删除，而是会创建一个备份", "确认", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-            if (result == DialogResult.Yes) 
+            if (result == DialogResult.Yes)
             {
                 try
                 {
@@ -219,9 +252,9 @@ namespace NameCube
                     File.Delete(Path.Combine(GlobalVariables.configDir, "Mode_data", "MemoryFactoryMode", "Memory.json"));
                     StartButton.IsEnabled = false;
                     ResetButton.IsEnabled = false;
-                    MessageBox.Show("重置成功，请重新打开界面","完成");
+                    MessageBox.Show("重置成功，请重新打开界面", "完成");
                 }
-                catch(Exception ex) 
+                catch (Exception ex)
                 {
                     MessageBox.Show("出错" + ex.Message, "错误");
                     LogManager.Error(ex);
@@ -229,5 +262,7 @@ namespace NameCube
                 }
             }
         }
+
+
     }
 }

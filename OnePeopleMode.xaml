@@ -16,6 +16,7 @@
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
         <TextBlock x:Name="NowNumberText" Text="XXX" FontSize="200" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#30d7d7"/>
+        <TextBlock x:Name="FinishText" Text="XXX" FontSize="200" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#30d7d7" Visibility="Hidden"/>
         <ui:Button x:Name="StartButton" Grid.Row="1" HorizontalAlignment="Center"  Width="200" Height="100" Click="StartButton_Click" FontSize="72" FontFamily="Segoe UI"   Content="开始" FontWeight="Black" />
         <StackPanel Grid.Row="2" Orientation="Horizontal">
             <CheckBox Content="启用语音" FontWeight="Black" x:Name="SpeechCheck" Click="SpeechCheck_Click" />

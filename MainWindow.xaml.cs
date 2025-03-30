@@ -10,6 +10,7 @@ namespace NameCube
     public partial class MainWindow
     {
         private NotifyIcon _notifyIcon;
+        Timer Timer=new Timer();
 
         public void OnShowAfterLongPress()
         {
@@ -21,7 +22,9 @@ namespace NameCube
             InitializeComponent();
             Application.Current.ShutdownMode = ShutdownMode.OnExplicitShutdown;
             DataContext = this;
-
+            Timer.Interval = 2000;
+            Timer.Tick += Timer_Tick;
+            Timer.Start();
             if (GlobalVariables.json.AllSettings.Dark)
             {
                 Wpf.Ui.Appearance.ApplicationThemeManager.Apply(
@@ -30,17 +33,24 @@ namespace NameCube
                  true                                      // Whether to change accents automatically
                );
             }
-
             Loaded += (sender, args) =>
             {
+                
+
                 // 导航到第一个菜单项
                 NavigationMenu.Navigate(typeof(OnePeopleMode));
             };
 
         }
 
+        private void Timer_Tick(object sender, System.EventArgs e)
+        {
+            this.Topmost = GlobalVariables.json.AllSettings.Top;
+        }
+
         private void ShowWindow()
         {
+
             this.Show();
             this.WindowState = WindowState.Normal; // 恢复窗口状态
             this.Activate(); // 激活窗口到前台

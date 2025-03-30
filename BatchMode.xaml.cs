@@ -2,18 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace NameCube
 {
@@ -32,7 +22,7 @@ namespace NameCube
         {
             InitializeComponent();
             DataContext = this;
-            Numberbox.Value=GlobalVariables.json.BatchModeSettings.Number;
+            Numberbox.Value = GlobalVariables.json.BatchModeSettings.Number;
             NameSwitch.IsChecked = GlobalVariables.json.BatchModeSettings.NumberMode;
             Numberbox.IsEnabled = GlobalVariables.json.BatchModeSettings.NumberMode;
             Indexbox.Value = GlobalVariables.json.BatchModeSettings.Index;
@@ -42,16 +32,16 @@ namespace NameCube
         private void NameSwitch_Click(object sender, RoutedEventArgs e)
         {
             GlobalVariables.json.BatchModeSettings.NumberMode = NameSwitch.IsChecked.Value;
-            Numberbox.IsEnabled= NameSwitch.IsChecked.Value;
+            Numberbox.IsEnabled = NameSwitch.IsChecked.Value;
             GlobalVariables.SaveJson();
         }
 
         private void Numberbox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            GlobalVariables.json.BatchModeSettings.Number=Numberbox.Text.ToInt32(-114514);
+            GlobalVariables.json.BatchModeSettings.Number = Numberbox.Text.ToInt32(-114514);
             if (GlobalVariables.json.BatchModeSettings.Number == -114514)
             {
-                GlobalVariables.json.BatchModeSettings.Number= 53;
+                GlobalVariables.json.BatchModeSettings.Number = 53;
                 Numberbox.Value = 53;
             }
             GlobalVariables.SaveJson();
@@ -62,18 +52,18 @@ namespace NameCube
             StartButton.IsEnabled = false;
             Numberbox.IsEnabled = false;
             NameSwitch.IsEnabled = false;
-            Indexbox.IsEnabled= false;
-            ReCheckBox.IsEnabled= false;
+            Indexbox.IsEnabled = false;
+            ReCheckBox.IsEnabled = false;
             List<int> numbers = new List<int>();
             AllNames.Clear();
-            if (GlobalVariables.json.AllSettings.Name.Count<=2)
+            if (GlobalVariables.json.AllSettings.Name.Count <= 2)
             {
                 MessageBox.Show("学生名单怎么空空的？\n翻译：学生人数少于3人");
                 return;
             }
             if (GlobalVariables.json.BatchModeSettings.NumberMode)
             {
-                if(GlobalVariables.json.BatchModeSettings.Index>GlobalVariables.json.BatchModeSettings.Number&&!GlobalVariables.json
+                if (GlobalVariables.json.BatchModeSettings.Index > GlobalVariables.json.BatchModeSettings.Number && !GlobalVariables.json
                     .BatchModeSettings.Repetition)
                 {
                     MessageBox.Show("无 中 生 有\n翻译：抽取数量大于实际可抽取数量");
@@ -84,7 +74,7 @@ namespace NameCube
                     ReCheckBox.IsEnabled = true;
                     return;
                 }
-                for(int i=1;i<=GlobalVariables.json.BatchModeSettings.Number;i++)
+                for (int i = 1; i <= GlobalVariables.json.BatchModeSettings.Number; i++)
                 {
                     numbers.Add(i);
                 }
@@ -102,14 +92,14 @@ namespace NameCube
                     ReCheckBox.IsEnabled = true;
                     return;
                 }
-                for (int i=1;i<=GlobalVariables.json.AllSettings.Name.Count;i++)
+                for (int i = 1; i <= GlobalVariables.json.AllSettings.Name.Count; i++)
                 {
                     numbers.Add(i);
                 }
             }
             Random random = new Random();
             int now;
-            for(int i=1;i<=GlobalVariables.json.BatchModeSettings.Index;i++)
+            for (int i = 1; i <= GlobalVariables.json.BatchModeSettings.Index; i++)
             {
                 now = random.StrictNext(numbers.Count);
                 if (GlobalVariables.json.BatchModeSettings.NumberMode)
@@ -118,9 +108,9 @@ namespace NameCube
                 }
                 else
                 {
-                    AllNames.Add(new AllName { Name = GlobalVariables.json.AllSettings.Name[numbers[now]-1] });
+                    AllNames.Add(new AllName { Name = GlobalVariables.json.AllSettings.Name[numbers[now] - 1] });
                 }
-                if(!GlobalVariables.json.BatchModeSettings.Repetition)
+                if (!GlobalVariables.json.BatchModeSettings.Repetition)
                 {
                     numbers.RemoveAt(now);
                 }
@@ -134,8 +124,8 @@ namespace NameCube
 
         private void Indexbox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            GlobalVariables.json.BatchModeSettings.Index=Indexbox.Text.ToInt32(-114514);
-            if(GlobalVariables.json.BatchModeSettings.Index==-114514)
+            GlobalVariables.json.BatchModeSettings.Index = Indexbox.Text.ToInt32(-114514);
+            if (GlobalVariables.json.BatchModeSettings.Index == -114514)
             {
                 GlobalVariables.json.BatchModeSettings.Index = 10;
                 Indexbox.Value = 10;
@@ -157,7 +147,7 @@ namespace NameCube
 
         private void Indexbox_ValueChanged(object sender, Wpf.Ui.Controls.NumberBoxValueChangedEventArgs args)
         {
-            GlobalVariables.json.BatchModeSettings.Index= (int)Indexbox.Value;
+            GlobalVariables.json.BatchModeSettings.Index = (int)Indexbox.Value;
             GlobalVariables.SaveJson();
         }
     }
