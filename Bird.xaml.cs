@@ -1,15 +1,21 @@
-﻿using Masuit.Tools.Logging;
+﻿using Masuit.Tools;
+using Masuit.Tools.Logging;
 using Masuit.Tools.Win32;
 using NameCube.Setting;
 using System;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Runtime.InteropServices;
+using System.Runtime.Remoting.Contexts;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
+using System.Windows.Media.Imaging;
 using System.Windows.Threading;
+using Wpf.Ui.Controls;
 using Application = System.Windows.Application;
 using WinForms = System.Windows.Forms;
 
@@ -21,11 +27,12 @@ namespace NameCube
     public partial class Bird
     {
         private NotifyIcon _notifyIcon;
-        private const double SnapThreshold = 60; // 吸附阈值
+        private double SnapThreshold = 60; // 吸附阈值
         private DispatcherTimer _longPressTimer;
         private Point _dragOffset;
         private bool _isDragging;
-
+        System.Timers.Timer PowerOffTimer = new System.Timers.Timer();
+        System.Timers.Timer Ab = new System.Timers.Timer();
         [DllImport("user32.dll")]
         private static extern bool GetCursorPos(out POINT lpPoint);
 
@@ -43,6 +50,7 @@ namespace NameCube
             InitializeBehavior();
             InitializePosition();
             InitializeTrayIcon();
+            Initialize();
             if (!GlobalVariables.json.StartToDo.Ball)
             {
                 this.Hide();
@@ -59,11 +67,30 @@ namespace NameCube
             _timer = new DispatcherTimer();
             _timer.Interval = TimeSpan.FromSeconds(600);
             _timer.Tick += Timer_Tick;
+            PowerOffTimer.Interval = 5000;
+            PowerOffTimer.Elapsed += PowerOffTimer_Elapsed;
+            PowerOffTimer.Start();
+            Ab.Interval = 10000;
+            Ab.Elapsed += Ab_Elapsed;
+            Directory.CreateDirectory(Path.Combine(GlobalVariables.configDir, "Bird_data", "Image"));
             if (GlobalVariables.json.StartToDo.AlwaysCleanMemory)
             {
                 _timer.Start();
             }
         }
+
+        private void Ab_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            SnapThreshold = SystemParameters.PrimaryScreenWidth/2;
+
+            this.Dispatcher.Invoke(new Action(() =>
+            {
+                SnapToEdges(0);
+                SnapThreshold = GlobalVariables.json.BirdSettings.AdsorbValue;
+            }));
+            
+        }
+
         private void InitializeTrayIcon()
         {
             _notifyIcon = new NotifyIcon
@@ -115,12 +142,25 @@ namespace NameCube
             MouseLeftButtonUp += OnMouseLeftButtonUp;
             MouseMove += OnMouseMove;
             MouseRightButtonDown += Bird_MouseRightButtonDown;
+            MouseLeftButtonDown += Bird_MouseLeftButtonDown;
 
+        }
+
+        private void Bird_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if(GlobalVariables.json.BirdSettings.StartWay==0|| GlobalVariables.json.BirdSettings.StartWay == 3)
+            {
+                ShowMainWindowAsync();
+            }
         }
 
         private void Bird_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
-            ShowMainWindowAsync();
+            if(GlobalVariables.json.BirdSettings.StartWay==1|| GlobalVariables.json.BirdSettings.StartWay == 3|| GlobalVariables.json.BirdSettings.StartWay == 4)
+            {
+                ShowMainWindowAsync();
+            }
+
         }
 
         private void InitializePosition()
@@ -139,6 +179,7 @@ namespace NameCube
 
             // 启动长按计时
             _longPressTimer.Start();
+            Ab.Stop();
         }
 
         private void OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
@@ -149,7 +190,8 @@ namespace NameCube
             _longPressTimer.Stop();
 
             // 自动吸附
-            SnapToEdges();
+            SnapToEdges(1);
+            Ab.Start();
         }
 
         private void OnMouseMove(object sender, System.Windows.Input.MouseEventArgs e)
@@ -164,10 +206,14 @@ namespace NameCube
         private void LongPress_Tick(object sender, EventArgs e)
         {
             _longPressTimer.Stop();
-            ShowMainWindowAsync();
+            if(GlobalVariables.json.BirdSettings.StartWay==2||GlobalVariables.json.BirdSettings.StartWay==4)
+            {
+                ShowMainWindowAsync();
+            }
+
         }
 
-        private void SnapToEdges()
+        private void SnapToEdges(int get)
         {
             var screen = GetCurrentScreen();
             double rightEdge = Left + Width;
@@ -182,15 +228,17 @@ namespace NameCube
             {
                 Left = screen.Right - Width;
             }
-
-            // 垂直吸附
-            if (Math.Abs(Top - screen.Top) < SnapThreshold)
+            if (get == 1)
             {
-                Top = screen.Top;
-            }
-            else if (Math.Abs(screen.Bottom - bottomEdge) < SnapThreshold)
-            {
-                Top = screen.Bottom - Height;
+                // 垂直吸附
+                if (Math.Abs(Top - screen.Top) < SnapThreshold)
+                {
+                    Top = screen.Top;
+                }
+                else if (Math.Abs(screen.Bottom - bottomEdge) < SnapThreshold)
+                {
+                    Top = screen.Bottom - Height;
+                }
             }
         }
         private Rect GetCurrentScreen()
@@ -222,7 +270,7 @@ namespace NameCube
                 {
                     mainWindow.Show();
                     mainWindow.Activate();
-                    mainWindow.NavigationMenu.Navigate(typeof(OnePeopleMode));
+                    mainWindow.NavigationMenu.Navigate(typeof(Mode.OnePeopleMode));
                 }
             });
         }
@@ -248,12 +296,12 @@ namespace NameCube
         {
             await Application.Current.Dispatcher.InvokeAsync(() =>
             {
-                var toolboxWindow = Application.Current.Windows.OfType<ToolboxWindow>().FirstOrDefault();
+                var toolboxWindow = Application.Current.Windows.OfType<ToolBox.ToolboxWindow>().FirstOrDefault();
 
                 if (toolboxWindow == null)
                 {
                     // 创建新实例
-                    toolboxWindow = new ToolboxWindow();
+                    toolboxWindow = new ToolBox.ToolboxWindow();
                 }
 
                 // 确保窗口可见并激活
@@ -265,6 +313,7 @@ namespace NameCube
         private void Restart()
         {
             string[] args = Environment.GetCommandLineArgs();
+            File.WriteAllText(Path.Combine(GlobalVariables.configDir, "START"), "The cake is a lie");
             Application.Current.Shutdown();
             Process.Start(Application.ResourceAssembly.Location, string.Join(" ", args.Skip(1)));
         }
@@ -278,6 +327,43 @@ namespace NameCube
         {
             e.Cancel = true;
             base.OnClosing(e);
+        }
+        private void PowerOffTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            if (DateTime.Now.ToString("H,m") ==
+                GlobalVariables.json.StartToDo.HourPowerOff.ToString() + "," + GlobalVariables.json.StartToDo.MinPowerOff.ToString() &&
+                GlobalVariables.json.StartToDo.PowerOff
+                )
+            {
+                this.Dispatcher.Invoke(new Action(() =>
+                {
+                    PowerOffWindow powerOffWindow = new PowerOffWindow();
+                    powerOffWindow.Show();
+
+                }));
+                PowerOffTimer.Stop();
+
+            }
+        }
+        public void Initialize()
+        {
+            if (GlobalVariables.json.BirdSettings.UseDefinedImage)
+            {
+                BitmapImage bitmap = new BitmapImage();
+                bitmap.BeginInit();
+                bitmap.UriSource = new Uri(Path.Combine(GlobalVariables.configDir, "Bird_data", "Image", "image.png"));
+                bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                bitmap.EndInit();
+                ImageBox.Source = bitmap;
+            }
+            else
+            {
+                ImageBox.Source = new BitmapImage(new Uri("pack://application:,,,/icon.ico"));
+            }
+            SnapThreshold=GlobalVariables.json.BirdSettings.AdsorbValue;
+            ImageBox.Opacity=GlobalVariables.json.BirdSettings.diaphaneity.ToDouble()/100;
+
+
         }
     }
 }

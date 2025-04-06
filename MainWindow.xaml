@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NameCube"
+        xmlns:mode="clr-namespace:NameCube.Mode"
         xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
         mc:Ignorable="d"
         Title="学号魔方" Height="600" Width="1400"  Closing="FluentWindow_Closing" >
@@ -25,15 +26,15 @@
                 <ui:NavigationViewItem
                     Content="单人模式"
                     Icon="{ui:SymbolIcon Symbol=Accessibility16}"
-                    TargetPageType="{x:Type local:OnePeopleMode}"/>
+                    TargetPageType="{x:Type mode:OnePeopleMode}"/>
                 <ui:NavigationViewItem
                     Content="概率因子模式"
                     Icon="{ui:SymbolIcon Symbol=PeopleSettings24}"
-                    TargetPageType="{x:Type local:MemoryFactorMode}"/>
+                    TargetPageType="{x:Type mode:MemoryFactorMode}"/>
                 <ui:NavigationViewItem
                     Content="批量模式"
                     Icon="{ui:SymbolIcon Symbol=PeopleCommunity24}"
-                    TargetPageType="{x:Type local:BatchMode}"/>
+                    TargetPageType="{x:Type mode:BatchMode}"/>
 
             </ui:NavigationView.MenuItems>
         </ui:NavigationView>

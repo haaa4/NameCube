@@ -64,6 +64,9 @@
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=9.0.0.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.9.0.2\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="SharpCompress, Version=0.39.0.0, Culture=neutral, PublicKeyToken=afb0a02973931d96, processorArchitecture=MSIL">
       <HintPath>..\packages\SharpCompress.0.39.0\lib\netstandard2.0\SharpCompress.dll</HintPath>
     </Reference>
@@ -89,12 +92,6 @@
     <Reference Include="System.Speech" />
     <Reference Include="System.Text.Encoding.CodePages, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Text.Encoding.CodePages.8.0.0\lib\net462\System.Text.Encoding.CodePages.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Text.Encodings.Web, Version=9.0.0.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Text.Encodings.Web.9.0.2\lib\net462\System.Text.Encodings.Web.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Text.Json, Version=9.0.0.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Text.Json.9.0.2\lib\net462\System.Text.Json.dll</HintPath>
     </Reference>
     <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
@@ -130,19 +127,22 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="PowerOffWindow.xaml.cs">
+      <DependentUpon>PowerOffWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Setting\About.xaml.cs">
       <DependentUpon>About.xaml</DependentUpon>
     </Compile>
     <Compile Include="Setting\Archives.xaml.cs">
       <DependentUpon>Archives.xaml</DependentUpon>
     </Compile>
-    <Compile Include="BatchMode.xaml.cs">
+    <Compile Include="Mode\BatchMode.xaml.cs">
       <DependentUpon>BatchMode.xaml</DependentUpon>
     </Compile>
     <Compile Include="Bird.xaml.cs">
       <DependentUpon>Bird.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MemoryFactorMode.xaml.cs">
+    <Compile Include="Mode\MemoryFactorMode.xaml.cs">
       <DependentUpon>MemoryFactorMode.xaml</DependentUpon>
     </Compile>
     <Compile Include="Setting\Appearance.xaml.cs">
@@ -166,7 +166,7 @@
     <Compile Include="Setting\SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="OnePeopleMode.xaml.cs">
+    <Compile Include="Mode\OnePeopleMode.xaml.cs">
       <DependentUpon>OnePeopleMode.xaml</DependentUpon>
     </Compile>
     <Compile Include="Setting\Speech.xaml.cs">
@@ -175,9 +175,25 @@
     <Compile Include="Setting\Update.xaml.cs">
       <DependentUpon>Update.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ToolboxWindow.xaml.cs">
+    <Compile Include="ToolBox\Document.xaml.cs">
+      <DependentUpon>Document.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ToolBox\MemoryToolbox.xaml.cs">
+      <DependentUpon>MemoryToolbox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ToolBox\ShutDown.xaml.cs">
+      <DependentUpon>ShutDown.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ToolBox\SpeechToolbox.xaml.cs">
+      <DependentUpon>SpeechToolbox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ToolBox\ToolboxWindow.xaml.cs">
       <DependentUpon>ToolboxWindow.xaml</DependentUpon>
     </Compile>
+    <Page Include="PowerOffWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Setting\About.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -186,7 +202,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="BatchMode.xaml">
+    <Page Include="Mode\BatchMode.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -206,7 +222,7 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="MemoryFactorMode.xaml">
+    <Page Include="Mode\MemoryFactorMode.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -238,7 +254,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="OnePeopleMode.xaml">
+    <Page Include="Mode\OnePeopleMode.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -250,7 +266,23 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ToolboxWindow.xaml">
+    <Page Include="ToolBox\Document.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ToolBox\MemoryToolbox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ToolBox\ShutDown.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ToolBox\SpeechToolbox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ToolBox\ToolboxWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

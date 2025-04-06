@@ -14,7 +14,7 @@ namespace NameCube
 
         public void OnShowAfterLongPress()
         {
-            NavigationMenu.Navigate(typeof(OnePeopleMode));
+            NavigationMenu.Navigate(typeof(Mode.OnePeopleMode));
         }
 
         public MainWindow()
@@ -38,7 +38,7 @@ namespace NameCube
                 
 
                 // 导航到第一个菜单项
-                NavigationMenu.Navigate(typeof(OnePeopleMode));
+                NavigationMenu.Navigate(typeof(Mode.OnePeopleMode));
             };
 
         }

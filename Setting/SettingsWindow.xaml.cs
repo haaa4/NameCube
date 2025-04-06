@@ -9,5 +9,10 @@
         {
             InitializeComponent();
         }
+
+        private void NavigationMenu_Loaded(object sender, System.Windows.RoutedEventArgs e)
+        {
+            NavigationMenu.Navigate(typeof(Setting.Appearance));
+        }
     }
 }

@@ -6,10 +6,12 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -33,22 +35,43 @@ namespace NameCube.Setting
 
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
+            if (!IsRunAsAdmin())
+            {
+                MessageBox.Show("我们需要获得您的管理员权限");
+                File.WriteAllText(System.IO.Path.Combine(GlobalVariables.configDir, "START"), "The cake is a lie");
+                // 重新启动程序并请求管理员权限
+                var exeName = Process.GetCurrentProcess().MainModule.FileName;
+                ProcessStartInfo startInfo = new ProcessStartInfo(exeName)
+                {
+                    Verb = "runas", // 触发UAC提示
+                    UseShellExecute = true
+                };
+
+                try
+                {
+                    Process.Start(startInfo);
+                    Application.Current.Shutdown();
+                }
+                catch
+                {
+                    MessageBox.Show("我们需要获得您的管理员权限");
+                    Application.Current.Shutdown();
+                }
+                return;
+            }
+
             Ring.Visibility = Visibility.Visible;
             ComputerButton.IsEnabled = false;
             NowText.Text = "解压缩包中......";
-            if(await UpdataFromThisComputer()==1)
-            {
-                NowText.Text = "安装中断...";
-                ComputerButton.IsEnabled = true;
-                Ring.Visibility = Visibility.Hidden;
-            }
-            NowText.Text = "解压缩完成";
-            ComputerButton.IsEnabled = true;
-            Ring.Visibility = Visibility.Hidden;
-            Application.Current.Shutdown();
-            Process.Start("NameUpdate.exe");
+            UpdataFromThisComputer();
         }
-        static async Task<int> UpdataFromThisComputer()
+        private static bool IsRunAsAdmin()
+        {
+            WindowsIdentity id = WindowsIdentity.GetCurrent();
+            WindowsPrincipal principal = new WindowsPrincipal(id);
+            return principal.IsInRole(WindowsBuiltInRole.Administrator);
+        }
+        private async Task UpdataFromThisComputer()
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.Title = "从本地安装";
@@ -59,16 +82,37 @@ namespace NameCube.Setting
                 { 
                     Directory.CreateDirectory("Updata");
                     SevenZipCompressor.Decompress(openFileDialog.FileName, "Updata");
-                    return 0;
+                    this.Dispatcher.Invoke(new Action(() =>
+                    {
+                        NowText.Text = "解压缩完成";
+                        ComputerButton.IsEnabled = true;
+                        Ring.Visibility = Visibility.Hidden;
+                        Application.Current.Shutdown();
+                        Process.Start("NameUpdate.exe");
+                    }));
                 }
                 catch(Exception ex)
                 {
                     MessageBox.Show(ex.Message);
                     LogManager.Error(ex);
-                    return 1;
+                    this.Dispatcher.Invoke(new Action(() =>
+                    {
+                        NowText.Text = "安装中断...";
+                        ComputerButton.IsEnabled = true;
+                        Ring.Visibility = Visibility.Hidden;
+                    }));
                 }
             }
-            return 1;
+            else
+            {
+                this.Dispatcher.Invoke(new Action(() =>
+                {
+                    NowText.Text = "安装中断...";
+                    ComputerButton.IsEnabled = true;
+                    Ring.Visibility = Visibility.Hidden;
+                }));
+                return;
+            }
         }
     }
 }

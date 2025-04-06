@@ -20,7 +20,7 @@
         IsPaneToggleVisible="True"
         PaneDisplayMode="Top"
         Grid.Row="1"
-        x:Name="NavigationMenu">
+        x:Name="NavigationMenu" Loaded="NavigationMenu_Loaded">
             <ui:NavigationView.MenuItems>
                 <ui:NavigationViewItem
                     Content="档案编辑"

@@ -119,6 +119,7 @@ namespace NameCube.Setting
         {
             if (e.Key == Key.Enter)
             {
+                e.Handled = true;
                 Button_Click_1(sender, e);
             }
         }

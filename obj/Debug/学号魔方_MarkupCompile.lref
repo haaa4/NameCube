@@ -2,9 +2,9 @@
 FD:\C#\NameCube\NameCube\App.xaml;;
 FD:\C#\NameCube\NameCube\Setting\About.xaml;;
 FD:\C#\NameCube\NameCube\Setting\Archives.xaml;;
-FD:\C#\NameCube\NameCube\BatchMode.xaml;;
+FD:\C#\NameCube\NameCube\Mode\BatchMode.xaml;;
 FD:\C#\NameCube\NameCube\MainWindow.xaml;;
-FD:\C#\NameCube\NameCube\MemoryFactorMode.xaml;;
+FD:\C#\NameCube\NameCube\Mode\MemoryFactorMode.xaml;;
 FD:\C#\NameCube\NameCube\Setting\Appearance.xaml;;
 FD:\C#\NameCube\NameCube\Setting\BirdSettings.xaml;;
 FD:\C#\NameCube\NameCube\Setting\MemoryFactorModeSettings.xaml;;
@@ -12,8 +12,12 @@ FD:\C#\NameCube\NameCube\Setting\ModeSettings.xaml;;
 FD:\C#\NameCube\NameCube\Setting\OnePeopleModeSetting.xaml;;
 FD:\C#\NameCube\NameCube\Setting\Other.xaml;;
 FD:\C#\NameCube\NameCube\Setting\SettingsWindow.xaml;;
-FD:\C#\NameCube\NameCube\OnePeopleMode.xaml;;
+FD:\C#\NameCube\NameCube\Mode\OnePeopleMode.xaml;;
 FD:\C#\NameCube\NameCube\Setting\Speech.xaml;;
 FD:\C#\NameCube\NameCube\Setting\Update.xaml;;
-FD:\C#\NameCube\NameCube\ToolboxWindow.xaml;;
+FD:\C#\NameCube\NameCube\ToolBox\ToolboxWindow.xaml;;
+FD:\C#\NameCube\NameCube\ToolBox\MemoryToolbox.xaml;;
+FD:\C#\NameCube\NameCube\ToolBox\SpeechToolbox.xaml;;
+FD:\C#\NameCube\NameCube\ToolBox\Document.xaml;;
+FD:\C#\NameCube\NameCube\ToolBox\ShutDown.xaml;;
 

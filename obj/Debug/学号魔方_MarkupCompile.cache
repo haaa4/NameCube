@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 D:\C#\NameCube\NameCube\App.xaml
-172134037641
+2271123427
 
-21-2060098855
-34-1796461875
-Setting\About.xaml;Setting\Archives.xaml;BatchMode.xaml;Bird.xaml;MainWindow.xaml;MemoryFactorMode.xaml;Setting\Appearance.xaml;Setting\BirdSettings.xaml;Setting\MemoryFactorModeSettings.xaml;Setting\ModeSettings.xaml;Setting\OnePeopleModeSetting.xaml;Setting\Other.xaml;Setting\SettingsWindow.xaml;OnePeopleMode.xaml;Setting\Speech.xaml;Setting\Update.xaml;ToolboxWindow.xaml;
+261337582195
+33868815880
+PowerOffWindow.xaml;Setting\About.xaml;Setting\Archives.xaml;Mode\BatchMode.xaml;Bird.xaml;MainWindow.xaml;Mode\MemoryFactorMode.xaml;Setting\Appearance.xaml;Setting\BirdSettings.xaml;Setting\MemoryFactorModeSettings.xaml;Setting\ModeSettings.xaml;Setting\OnePeopleModeSetting.xaml;Setting\Other.xaml;Setting\SettingsWindow.xaml;Mode\OnePeopleMode.xaml;Setting\Speech.xaml;Setting\Update.xaml;ToolBox\Document.xaml;ToolBox\MemoryToolbox.xaml;ToolBox\ShutDown.xaml;ToolBox\SpeechToolbox.xaml;ToolBox\ToolboxWindow.xaml;
 
 False
 
