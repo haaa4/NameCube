@@ -1,0 +1,64 @@
+﻿<Page x:Class="NameCube.ToolBox.ShutDown"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:NameCube.ToolBox"
+      xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="ShutDown" >
+
+    <StackPanel>
+        <ui:CardExpander Grid.Column="0" Icon="{ui:SymbolIcon Symbol=Power24}">
+            <ui:CardExpander.Header>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <ui:TextBlock
+                                Grid.Row="0"
+                                Grid.Column="0"
+                                FontSize="16"
+                                FontTypography="Body"
+                                Text="自动关机" />
+                    <ui:TextBlock
+                                Grid.Row="1"
+                                Grid.Column="0"
+                                FontSize="12"
+                                Foreground="Gray"
+                                Text="启用自动关机" />
+                    <ui:ToggleSwitch
+                                Grid.Row="0"
+                                Grid.RowSpan="2"
+                                Grid.Column="1"
+                                Margin="0,0,16,0"
+                                OffContent="关"
+                                OnContent="开"
+                                x:Name="PowerOffSwitch"
+                                Click="PowerOffSwitch_Click"/>
+                </Grid>
+            </ui:CardExpander.Header>
+            <Grid Margin="24,0.5,24,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="40"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="150"/>
+                    <ColumnDefinition Width="40"/>
+                    <ColumnDefinition Width="150"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <ui:NumberBox x:Name="Hour" Minimum="0" Maximum="23" TextChanged="Hour_TextChanged" ValueChanged="Hour_ValueChanged"/>
+                <TextBlock Text="  :" Grid.Column="1" FontSize="30"/>
+                <ui:NumberBox x:Name="Min" Grid.Column="2" Minimum="0" Maximum="59" TextChanged="Min_TextChanged" ValueChanged="Min_ValueChanged"/>
+            </Grid>
+        </ui:CardExpander>
+        <ui:SnackbarPresenter x:Name="SnackbarPresenterHost"/>
+    </StackPanel>
+</Page>

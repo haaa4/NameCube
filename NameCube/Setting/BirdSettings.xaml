@@ -1,0 +1,169 @@
+﻿<Page x:Class="NameCube.Setting.BirdSettings"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+      xmlns:local="clr-namespace:NameCube.Setting"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="BirdSettings">
+
+    <Grid>
+        <StackPanel>
+            <ui:CardControl
+Margin="4"
+Padding="20,10,20,10"
+Icon="{ui:SymbolIcon Symbol=SportBaseball24}">
+                <ui:CardControl.Header>
+                    <StackPanel>
+                        <ui:TextBlock
+            Margin="0"
+            FontTypography="BodyStrong"
+            Text="悬浮球"
+            TextWrapping="WrapWithOverflow" />
+                        <ui:TextBlock
+            Appearance="Secondary"
+            Text="开启后，将在桌面显示悬浮球(重启后应用）"
+            TextWrapping="WrapWithOverflow" />
+                    </StackPanel>
+                </ui:CardControl.Header>
+                <ui:ToggleSwitch
+       HorizontalContentAlignment="Left"
+       IsEnabled="True"
+       OffContent="关"
+       OnContent="开" 
+       x:Name="BallCheck"
+           Click="BallCheck_Click"
+              />
+            </ui:CardControl>
+            <ui:SnackbarPresenter x:Name="SnackbarPresenterHost"/>
+            <ui:CardControl
+Margin="4"
+Padding="20,10,20,10"
+Icon="{ui:SymbolIcon Symbol=CursorClick24}">
+                <ui:CardControl.Header>
+                    <StackPanel>
+                        <ui:TextBlock
+            Margin="0"
+            FontTypography="BodyStrong"
+            Text="主界面启动方式"
+            TextWrapping="WrapWithOverflow" />
+                        <ui:TextBlock
+            Appearance="Secondary"
+            Text="选择适合的启动方式"
+            TextWrapping="WrapWithOverflow" />
+                    </StackPanel>
+                </ui:CardControl.Header>
+                <ui:DropDownButton Content="启动方式" x:Name="DropWay" >
+                    <ui:DropDownButton.Flyout>
+                        <ContextMenu>
+                            <MenuItem Header="左键" Click="MenuItem_Click"/>
+                            <MenuItem Header="右键" Click="MenuItem_Click_1"/>
+                            <MenuItem Header="长按" Click="MenuItem_Click_2"/>
+                            <MenuItem Header="左键+右键" Click="MenuItem_Click_3"/>
+                            <MenuItem Header="长按+右键" Click="MenuItem_Click_4"/>
+                        </ContextMenu>
+                    </ui:DropDownButton.Flyout>
+                </ui:DropDownButton>
+
+            </ui:CardControl>
+            <ui:CardControl
+                    Margin="4"
+                    Padding="20,10,20,10"
+                    Icon="{ui:SymbolIcon Symbol=Image28}">
+                <ui:CardControl.Header>
+                    <StackPanel>
+                        <ui:TextBlock
+                            Margin="0"
+                            FontTypography="BodyStrong"
+                            Text="图标图片"
+                            TextWrapping="WrapWithOverflow" />
+                        <ui:TextBlock
+                            Appearance="Secondary"
+                            Text="点击右侧可自定义图标文件"
+                            TextWrapping="WrapWithOverflow" />
+                    </StackPanel>
+                </ui:CardControl.Header>
+                <StackPanel>
+                    <ui:ProgressRing IsIndeterminate="True" Visibility="Collapsed" Width="90" Height="90" x:Name="Ring"/>
+                    <ui:Image Source="pack://application:,,,/icon.ico" Width="90" Height="90" x:Name="ImageIcon" MouseDown="ImageIcon_MouseDown" />
+                    <Button Content="恢复默认" HorizontalAlignment="Center" Click="Button_Click_1"/>
+                </StackPanel>
+
+            </ui:CardControl>
+            <ui:CardControl
+        Margin="4"
+        Padding="20,10,20,10"
+        Icon="{ui:SymbolIcon Symbol=PaddingLeft24}">
+                <ui:CardControl.Header>
+                    <StackPanel>
+                        <ui:TextBlock
+                Margin="0"
+                FontTypography="BodyStrong"
+                Text="吸附阈值"
+                TextWrapping="WrapWithOverflow" />
+                        <ui:TextBlock
+                Appearance="Secondary"
+                Text="阈值越高，图标越容易被吸附屏幕上"
+                TextWrapping="WrapWithOverflow" />
+                    </StackPanel>
+                </ui:CardControl.Header>
+                <Slider Minimum="0" Maximum="120" x:Name="ABSlider" ValueChanged="ABSlider_ValueChanged"/>
+
+            </ui:CardControl>
+                <ui:CardControl
+Margin="4"
+Padding="20,10,20,10"
+Icon="{ui:SymbolIcon Symbol=PaddingLeft24}">
+        <ui:CardControl.Header>
+            <StackPanel>
+                <ui:TextBlock
+        Margin="0"
+        FontTypography="BodyStrong"
+        Text="自动吸附"
+        TextWrapping="WrapWithOverflow" />
+                <ui:TextBlock
+        Appearance="Secondary"
+        Text="一段时间未吸附后，图标自动吸附到最近的屏幕上"
+        TextWrapping="WrapWithOverflow" />
+            </StackPanel>
+        </ui:CardControl.Header>
+                <ui:ToggleSwitch
+HorizontalContentAlignment="Left"
+IsEnabled="True"
+OffContent="关"
+OnContent="开" 
+x:Name="AutoAdsorb"
+    Click="AutoAdsorb_Click"/>
+
+    </ui:CardControl>
+            
+            <ui:CardControl
+Margin="4"
+Padding="20,10,20,10"
+Icon="{ui:SymbolIcon Symbol=Eye12}">
+                <ui:CardControl.Header>
+                    <StackPanel>
+                        <ui:TextBlock
+        Margin="0"
+        FontTypography="BodyStrong"
+        Text="悬浮球透明度"
+        TextWrapping="WrapWithOverflow" />
+                        <ui:TextBlock
+        Appearance="Secondary"
+        Text="这个还需要解释啥(⊙_⊙)?"
+        TextWrapping="WrapWithOverflow" />
+                    </StackPanel>
+                </ui:CardControl.Header>
+                <Slider Minimum="0" Maximum="100" x:Name="Diaphaneity" ValueChanged="Diaphaneity_ValueChanged"/>
+
+            </ui:CardControl>
+
+            <ui:CardAction Icon="{ui:SymbolIcon Symbol=ArchiveArrowBack28}" 
+       Content="重启软件" Click="Button_Click"  Margin="4"/>
+            
+        </StackPanel>
+    </Grid>
+    
+</Page>
