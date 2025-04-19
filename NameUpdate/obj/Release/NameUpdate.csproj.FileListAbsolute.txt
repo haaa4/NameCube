@@ -1,0 +1,15 @@
+D:\C#\输出\Release\NameUpdate.exe.config
+D:\C#\输出\Release\NameUpdate.exe
+D:\C#\输出\Release\NameUpdate.pdb
+D:\C#\NameCube\NameUpdate\obj\Release\NameUpdate.csproj.AssemblyReference.cache
+D:\C#\NameCube\NameUpdate\obj\Release\MainWindow.g.cs
+D:\C#\NameCube\NameUpdate\obj\Release\App.g.cs
+D:\C#\NameCube\NameUpdate\obj\Release\NameUpdate_MarkupCompile.cache
+D:\C#\NameCube\NameUpdate\obj\Release\NameUpdate_MarkupCompile.lref
+D:\C#\NameCube\NameUpdate\obj\Release\MainWindow.baml
+D:\C#\NameCube\NameUpdate\obj\Release\NameUpdate.g.resources
+D:\C#\NameCube\NameUpdate\obj\Release\NameUpdate.Properties.Resources.resources
+D:\C#\NameCube\NameUpdate\obj\Release\NameUpdate.csproj.GenerateResource.cache
+D:\C#\NameCube\NameUpdate\obj\Release\NameUpdate.csproj.CoreCompileInputs.cache
+D:\C#\NameCube\NameUpdate\obj\Release\NameUpdate.exe
+D:\C#\NameCube\NameUpdate\obj\Release\NameUpdate.pdb
