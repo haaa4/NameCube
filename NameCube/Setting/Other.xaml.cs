@@ -91,9 +91,6 @@ namespace NameCube.Setting
             }
         }
 
-        private void CardAction_Click(object sender, RoutedEventArgs e)
-        {
-            Process.Start(GlobalVariables.configDir);
-        }
+
     }
 }

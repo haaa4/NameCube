@@ -14,10 +14,10 @@
             <ui:Image Source="pack://application:,,,/icon.ico" Height="170"/>
             <TextBlock Text="学号魔方" FontSize="55" HorizontalAlignment="Center"/>
             <TextBlock Text="NameCube" FontSize="30" HorizontalAlignment="Center"/>
-            <TextBlock>版本名：Alpha-6</TextBlock>
-            <TextBlock>版本信息：悬浮球高级测试</TextBlock>
+            <TextBlock>版本名：Alpha-7</TextBlock>
+            <TextBlock>版本信息：更多模式2.0测试</TextBlock>
             <TextBlock>作者：哈阿斯（haaa4)</TextBlock>
-            <TextBlock>最后编译时间：2025年4月6日</TextBlock>
+            <TextBlock>最后编译时间：2025年4月20日</TextBlock>
             <ui:HyperlinkButton
                     Grid.Column="0"
                     Content="github项目"
@@ -28,8 +28,8 @@
                  Content="作者B站主页"
                  Icon="{ui:SymbolIcon Link24}"
                  NavigateUri="https://space.bilibili.com/1440486452" />
-            <TextBlock Text="♪永不放弃你，从不让你失望 永不舍弃你 永不让你哭泣，从不对你说再见♪" FontStyle="Italic" Margin="5 0 0 0"/>
-            <TextBlock Text="问：这个版本本软件不是要改名换图标了吗？答：没时间弄" FontStyle="Italic" Margin="5 0 0 0"/>
+            <TextBlock Text="♪go go go,出发咯！♪" FontStyle="Italic" Margin="5 0 0 0"/>
+            <TextBlock Text="这个界面上没有彩蛋" FontStyle="Italic" Margin="5 0 0 0"/>
         </StackPanel>
     </Grid>
 </Page>

@@ -36,6 +36,10 @@ namespace NameCube.Mode
             timer = new System.Timers.Timer(GlobalVariables.json.OnePeopleModeSettings.Speed);
             timer.AutoReset = true;
             timer.Elapsed += Timer_Elapsed;
+            if (GlobalVariables.json.OnePeopleModeSettings.Speed == 0)
+            {
+                GlobalVariables.json.OnePeopleModeSettings.Speed = 20;
+            }
             if (!GlobalVariables.json.AllSettings.SystemSpeech)
             {
                 _speechSynthesizer.SelectVoiceByHints(VoiceGender.Female, VoiceAge.Adult); // 选择女声

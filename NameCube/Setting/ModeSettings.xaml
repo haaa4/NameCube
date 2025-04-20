@@ -5,6 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:NameCube.Setting"
       xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+      xmlns:mode="clr-namespace:NameCube.Setting.ModeSetting"
       mc:Ignorable="d" 
       d:DesignHeight="100" d:DesignWidth="800"
       Title="ModeSettings">
@@ -21,11 +22,23 @@
                 <ui:NavigationViewItem
                     Content="单人模式"
                     Icon="{ui:SymbolIcon Symbol=Accessibility16}"
-                    TargetPageType="{x:Type local:OnePeopleModeSetting}"/>
+                    TargetPageType="{x:Type mode:OnePeopleModeSetting}"/>
                 <ui:NavigationViewItem
-                    Content="概率因子模式"
+                    Content="因子模式"
                     Icon="{ui:SymbolIcon Symbol=PeopleSettings24}"
-                    TargetPageType="{x:Type local:MemoryFactorModeSettings}"/>
+                    TargetPageType="{x:Type mode:MemoryFactorModeSettings}"/>
+                <ui:NavigationViewItem
+                    Content="批量模式"
+                    Icon="{ui:SymbolIcon Symbol=PeopleCommunity24}"
+                    TargetPageType="{x:Type mode:BatchModeSetting}"/>
+                <ui:NavigationViewItem
+                    Content="数字模式"
+                    Icon="{ui:SymbolIcon Symbol=NumberSymbol24}"
+                    TargetPageType="{x:Type mode:NumberModeSetting}"/>
+                <ui:NavigationViewItem
+                    Content="预备模式"
+                    Icon="{ui:SymbolIcon Symbol=Run24}"
+                    TargetPageType="{x:Type mode:PrepareModeSetting}"/>
             </ui:NavigationView.MenuItems>
         </ui:NavigationView>
     </Grid>

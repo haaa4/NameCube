@@ -1,0 +1,58 @@
+﻿
+    
+<Page x:Class="NameCube.Mode.MemoryMode"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:NameCube.Mode"
+      xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="MemoryMode">
+    
+<Grid>
+    
+    <Grid.RowDefinitions>
+        <RowDefinition Height="3*"/>
+        <RowDefinition Height="3*"/>
+        <RowDefinition Height="1*"/>
+    </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="4*"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+    <TextBlock x:Name="NowNumberText" Text="XXX" FontSize="200" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#30d7d7"/>
+    <TextBlock x:Name="FinishText" Text="XXX" FontSize="200" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#30d7d7" Visibility="Hidden"/>
+    <ui:Button x:Name="StartButton" Grid.Row="1" HorizontalAlignment="Center"  Width="200" Height="100" FontSize="72" FontFamily="Segoe UI"   Content="开始" FontWeight="Black" Click="StartButton_Click"/>
+    <StackPanel Grid.Row="2" Orientation="Horizontal">
+            <CheckBox Content="启用语音" FontWeight="Black" x:Name="SpeakCheck"  Click="SpeechCheck_Click"/>
+            <ComboBox ItemsSource="{Binding AllFiles}" SelectedItem="1" x:Name="ComboBox" SelectionChanged="ComboBox_SelectionChanged"/>
+            <ui:Button Content="转为常驻名单" Margin="12 0 0 0" x:Name="ChangeButton" Click="ChangeButton_Click"/>
+            <ui:Button Content="删除此名单" Foreground="Red" Margin="12 0 0 0" Click="Button_Click"/>
+    </StackPanel>
+        <ui:DataGrid Grid.Column="1" Grid.RowSpan="2" ItemsSource="{Binding AllNames}" x:Name="DataGrid" IsReadOnly="True" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" CanUserResizeColumns="False" CanUserResizeRows="False" MaxHeight="400">
+            <ui:DataGrid.Columns>
+                <DataGridTextColumn Header="姓名" Width="auto" Binding="{Binding}"/>
+            </ui:DataGrid.Columns>
+        </ui:DataGrid>
+        <ui:ContentDialog
+              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+              Title="转为常驻名单"
+              PrimaryButtonText="确定"
+            Grid.RowSpan="3"
+            Grid.ColumnSpan="2"
+            CloseButtonText="取消"
+            Visibility="Collapsed"
+            x:Name="ContentDialog1"
+            Closing="ContentDialog1_Closing"
+            >
+            <StackPanel>
+                <TextBlock Text="请输入名单名字:" Foreground="Black" x:Name="WriteNameText"/>
+                <TextBox x:Name="InputTextBox"/>
+            </StackPanel>
+        </ui:ContentDialog>
+    </Grid>
+    
+</Page>

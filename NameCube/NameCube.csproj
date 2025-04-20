@@ -133,7 +133,16 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Initialization.cs" />
+    <Compile Include="Data.cs" />
+    <Compile Include="Mode\MemoryMode.xaml.cs">
+      <DependentUpon>MemoryMode.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Mode\NumberMode.xaml.cs">
+      <DependentUpon>NumberMode.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Mode\PrepareMode.xaml.cs">
+      <DependentUpon>PrepareMode.xaml</DependentUpon>
+    </Compile>
     <Compile Include="PowerOffWindow.xaml.cs">
       <DependentUpon>PowerOffWindow.xaml</DependentUpon>
     </Compile>
@@ -158,14 +167,23 @@
     <Compile Include="Setting\BirdSettings.xaml.cs">
       <DependentUpon>BirdSettings.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Setting\MemoryFactorModeSettings.xaml.cs">
+    <Compile Include="Setting\ModeSetting\BatchModeSetting.xaml.cs">
+      <DependentUpon>BatchModeSetting.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Setting\ModeSetting\MemoryFactorModeSettings.xaml.cs">
       <DependentUpon>MemoryFactorModeSettings.xaml</DependentUpon>
     </Compile>
     <Compile Include="Setting\ModeSettings.xaml.cs">
       <DependentUpon>ModeSettings.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Setting\OnePeopleModeSetting.xaml.cs">
+    <Compile Include="Setting\ModeSetting\NumberModeSetting.xaml.cs">
+      <DependentUpon>NumberModeSetting.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Setting\ModeSetting\OnePeopleModeSetting.xaml.cs">
       <DependentUpon>OnePeopleModeSetting.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Setting\ModeSetting\PrepareModeSetting.xaml.cs">
+      <DependentUpon>PrepareModeSetting.xaml</DependentUpon>
     </Compile>
     <Compile Include="Setting\Other.xaml.cs">
       <DependentUpon>Other.xaml</DependentUpon>
@@ -197,6 +215,18 @@
     <Compile Include="ToolBox\ToolboxWindow.xaml.cs">
       <DependentUpon>ToolboxWindow.xaml</DependentUpon>
     </Compile>
+    <Page Include="Mode\MemoryMode.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Mode\NumberMode.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Mode\PrepareMode.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="PowerOffWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -241,7 +271,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Setting\MemoryFactorModeSettings.xaml">
+    <Page Include="Setting\ModeSetting\BatchModeSetting.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Setting\ModeSetting\MemoryFactorModeSettings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -249,7 +283,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Setting\OnePeopleModeSetting.xaml">
+    <Page Include="Setting\ModeSetting\NumberModeSetting.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Setting\ModeSetting\OnePeopleModeSetting.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Setting\ModeSetting\PrepareModeSetting.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -327,10 +369,6 @@
   <ItemGroup>
     <Resource Include="icon.png" />
   </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Connected Services\" />
-  </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
       <Visible>False</Visible>

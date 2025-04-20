@@ -32,6 +32,13 @@ namespace NameCube.Mode
                 IndexText.Visibility = Visibility.Collapsed;
                 Numberbox.Visibility = Visibility.Collapsed;
             }
+            if (GlobalVariables.json.BatchModeSettings.Locked) 
+            {
+                NameSwitch.IsEnabled = false;
+                Numberbox.IsEnabled = false;
+                Indexbox.IsEnabled = false;
+                ReCheckBox.IsEnabled = false;
+            }
         }
 
         private void NameSwitch_Click(object sender, RoutedEventArgs e)
@@ -130,11 +137,14 @@ namespace NameCube.Mode
                     numbers.RemoveAt(now);
                 }
             }
+            if(!GlobalVariables.json.BatchModeSettings.Locked)
+            {
+                Numberbox.IsEnabled = true;
+                NameSwitch.IsEnabled = true;
+                Indexbox.IsEnabled = true;
+                ReCheckBox.IsEnabled = true;
+            }
             StartButton.IsEnabled = true;
-            Numberbox.IsEnabled = true;
-            NameSwitch.IsEnabled = true;
-            Indexbox.IsEnabled = true;
-            ReCheckBox.IsEnabled = true;
         }
 
         private void Indexbox_TextChanged(object sender, TextChangedEventArgs e)
@@ -156,12 +166,20 @@ namespace NameCube.Mode
 
         private void Numberbox_ValueChanged(object sender, Wpf.Ui.Controls.NumberBoxValueChangedEventArgs args)
         {
+            if(Numberbox.Value==null)
+            {
+                Numberbox.Value = 53;
+            }
             GlobalVariables.json.BatchModeSettings.Number = (int)Numberbox.Value;
             GlobalVariables.SaveJson();
         }
 
         private void Indexbox_ValueChanged(object sender, Wpf.Ui.Controls.NumberBoxValueChangedEventArgs args)
         {
+            if(Indexbox.Value==null)
+            {
+                Indexbox.Value = 10;
+            }
             GlobalVariables.json.BatchModeSettings.Index = (int)Indexbox.Value;
             GlobalVariables.SaveJson();
         }

@@ -27,11 +27,13 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="300"/>
-            <RowDefinition Height="1*"/>
+            <RowDefinition Height="100"/>
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
         <TextBlock x:Name="NowNumberText" Text="XXX" FontSize="150" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#30d7d7"/>
         <TextBlock x:Name="FinishNumberText" Text="XXX" FontSize="150" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#30d7d7" Visibility="Hidden"/>
+        <TextBlock Text="当前概率最高:" FontSize="30" x:Name="MaxName"/>
+        <TextBlock Text="概率双倍增加：" FontSize="30" x:Name="multiply" Margin="0 32 0 0"/>
         <ui:Button x:Name="StartButton" Grid.Row="1" Click="StartButton_Click" HorizontalAlignment="Center" 
                    Width="200" Height="100" FontSize="72" FontFamily="Segoe UI"   Content="开始"
                    FontWeight="Black" Grid.RowSpan="2"/>

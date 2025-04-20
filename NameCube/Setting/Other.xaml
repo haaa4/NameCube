@@ -60,6 +60,5 @@ Icon="{ui:SymbolIcon Symbol=PaddingTop24}">
        x:Name="TopCheck"
            Click="TopCheck_Click"/>
         </ui:CardControl>
-        <ui:CardAction Icon="{ui:SymbolIcon Symbol=WindowSettings20}" Content="打开软件配置文件文件夹" Click="CardAction_Click" Margin="5 0"/>
     </StackPanel>
 </Page>

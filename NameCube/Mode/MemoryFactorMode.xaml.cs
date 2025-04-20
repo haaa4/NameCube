@@ -80,6 +80,10 @@ namespace NameCube.Mode
             ResetButton.IsEnabled = !GlobalVariables.json.MemoryFactorModeSettings.Locked;
             string FilePath = System.IO.Path.Combine(GlobalVariables.configDir, "Mode_data", "MemoryFactoryMode");
             Directory.CreateDirectory(FilePath);
+            if (GlobalVariables.json.MemoryFactorModeSettings.Speed == 0)
+            {
+                GlobalVariables.json.MemoryFactorModeSettings.Speed = 20;
+            }
             StartLoad();
 
         }
@@ -130,16 +134,26 @@ namespace NameCube.Mode
                     });
 
                 }
+                int max = 0, MaxIndex = -1;
                 for (int i = 0; i < thisModeJson.Count; i++)
                 {
                     for (int ii = 1; ii <= thisModeJson[i].Factor; ii++)
                     {
                         Trainings.Add(thisModeJson[i].Name);
                     }
+                    if (thisModeJson[i].Factor>max)
+                    {
+                        max = thisModeJson[i].Factor ;
+                        MaxIndex = i;
+                    }
                 }
                 this.Dispatcher.Invoke(() =>
                 {
                     Count.Text = "总概率因子数量:" + Trainings.Count.ToString();
+                    if (MaxIndex != -1)
+                    {
+                        MaxName.Text = "当前概率最高:" + thisModeJson[MaxIndex].Name + "---" + thisModeJson[MaxIndex].Factor.ToString();
+                    }
                 });
 
             });
@@ -213,7 +227,7 @@ namespace NameCube.Mode
                 {
                     _speechSynthesizer.SpeakAsync(NowNumberTextValue);
                 }
-                int delete = 0, GetRandom;
+                int delete = 0, GetRandom,max=0,MaxIndex=-1;
                 Random random = new Random();
                 for (int i = 0; i < thisModeJson.Count; i++)
                 {
@@ -227,9 +241,30 @@ namespace NameCube.Mode
                     {
                         delete = i;
                     }
+                    else if (thisModeJson[i].Factor>max)
+                    {
+                        max = thisModeJson[i].Factor;
+                        MaxIndex = i;
+                    }
                 }
                 thisModeJson[delete].Factor = 0;
                 Trainings.RemoveAll(s => s == NowNumberTextValue);
+                GetRandom = random.StrictNext(thisModeJson.Count);
+                int Past = thisModeJson[GetRandom].Factor;
+                for(int i = 1; i <= thisModeJson[GetRandom].Factor;i++)
+                {
+                    Trainings.Add(thisModeJson[GetRandom].Name);
+                }
+                thisModeJson[GetRandom].Factor *= 2;
+                multiply.Text= "概率双倍增加:" + thisModeJson[GetRandom].Name + "---" + Past.ToString() + "→" + thisModeJson[GetRandom].Factor.ToString();
+                if (thisModeJson[GetRandom].Factor>max)
+                {
+                    MaxIndex = GetRandom;
+                }
+                if (MaxIndex != -1)
+                {
+                    MaxName.Text = "当前概率最高:" + thisModeJson[MaxIndex].Name + "---" + thisModeJson[MaxIndex].Factor.ToString();
+                }
                 SaveThisJson();
                 StartButton.IsEnabled = true;
                 IsCanStop = false;

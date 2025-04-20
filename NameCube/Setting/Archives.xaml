@@ -19,6 +19,7 @@
             <ui:TextBox Width="100" x:Name="AddNameTextBox" Margin="20 2 0 2" KeyDown="AddNameTextBox_KeyDown" Unloaded="AddNameTextBox_Unloaded" />
             <ui:Button Content="添加" Click="Button_Click_1"/>
             <ui:Button Content="清空" Margin="20 0 0 0" Click="Button_Click_2"/>
+            <TextBlock Text="(不推荐五字及以上的名字）" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="20 0 0 0"/>
         </StackPanel>
         <ui:DataGrid Grid.Row="1" ItemsSource="{Binding AllNames}" x:Name="DataGrid" IsReadOnly="True" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" CanUserResizeColumns="False" CanUserResizeRows="False">
             <ui:DataGrid.Columns>

@@ -28,13 +28,25 @@
                     Icon="{ui:SymbolIcon Symbol=Accessibility16}"
                     TargetPageType="{x:Type mode:OnePeopleMode}"/>
                 <ui:NavigationViewItem
-                    Content="概率因子模式"
+                    Content="因子模式"
                     Icon="{ui:SymbolIcon Symbol=PeopleSettings24}"
                     TargetPageType="{x:Type mode:MemoryFactorMode}"/>
                 <ui:NavigationViewItem
                     Content="批量模式"
                     Icon="{ui:SymbolIcon Symbol=PeopleCommunity24}"
                     TargetPageType="{x:Type mode:BatchMode}"/>
+                <ui:NavigationViewItem
+                    Content="数字模式(New)"
+                    Icon="{ui:SymbolIcon Symbol=NumberSymbol24}"
+                    TargetPageType="{x:Type mode:NumberMode}"/>
+                <ui:NavigationViewItem
+                    Content="预备模式(New)"
+                    Icon="{ui:SymbolIcon Symbol=Run24}"
+                    TargetPageType="{x:Type mode:PrepareMode}"/>
+                <ui:NavigationViewItem
+                    Content="记忆模式(New)"
+                    Icon="{ui:SymbolIcon Symbol=BrainCircuit24}"
+                    TargetPageType="{x:Type mode:MemoryMode}"/>
 
             </ui:NavigationView.MenuItems>
             <ui:NavigationView.PaneFooter>

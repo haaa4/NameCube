@@ -29,8 +29,8 @@ namespace NameCube.ToolBox
             if(!GlobalVariables.json.AllSettings.SystemSpeech)
             {
                 _speechSynthesizer.SelectVoiceByHints(VoiceGender.Female, VoiceAge.Adult);
-                _speechSynthesizer.Volume = 100;
-                _speechSynthesizer.Rate = 0;
+                _speechSynthesizer.Volume = GlobalVariables.json.AllSettings.Volume;
+                _speechSynthesizer.Rate = GlobalVariables.json.AllSettings.Speed;
             }
            
         }

@@ -1,0 +1,28 @@
+﻿<Page x:Class="NameCube.Mode.NumberMode"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:NameCube.Mode"
+      xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="NumberMode">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="5*"/>
+            <RowDefinition Height="4*"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+        <TextBlock x:Name="NowNumberText" Text="XX" FontSize="200" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#30d7d7"/>
+        <TextBlock x:Name="FinishText" Text="XX" FontSize="200" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#30d7d7" Visibility="Hidden"/>
+        <ui:Button x:Name="StartButton" Grid.Row="1" HorizontalAlignment="Center"  Width="200" Height="100" FontSize="72" FontFamily="Segoe UI"   Content="开始" FontWeight="Black" Click="StartButton_Click"/>
+        <StackPanel Grid.Row="2" Orientation="Horizontal">
+            <CheckBox Content="启用语音" FontWeight="Black" x:Name="SpeakCheck"  Click="SpeechCheck_Click"/>
+            <ui:NumberBox Value="53" x:Name="NumberBox" Maximum="300" Minimum="1" ValueChanged="NumberBox_ValueChanged" TextChanged="NumberBox_TextChanged"/>
+            <ui:Button Content="设置为档案人数" Margin="10 0 0 0" Click="Button_Click" x:Name="Button1"/>
+        </StackPanel>
+
+    </Grid>
+</Page>
