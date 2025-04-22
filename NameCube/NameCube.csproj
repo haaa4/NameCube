@@ -176,6 +176,9 @@
     <Compile Include="Setting\ModeSettings.xaml.cs">
       <DependentUpon>ModeSettings.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Setting\ModeSetting\MemoryModeSetting.xaml.cs">
+      <DependentUpon>MemoryModeSetting.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Setting\ModeSetting\NumberModeSetting.xaml.cs">
       <DependentUpon>NumberModeSetting.xaml</DependentUpon>
     </Compile>
@@ -280,6 +283,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Setting\ModeSettings.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Setting\ModeSetting\MemoryModeSetting.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

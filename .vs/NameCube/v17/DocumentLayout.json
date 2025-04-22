@@ -1,30 +1,34 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "D:\\C#\\NameCube-git\\NameCube\\",
+  "WorkspaceRootPath": "D:\\NameCube\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{710DCBE6-2310-445D-88E0-CE43D37DDABD}|NameCube\\NameCube.csproj|d:\\c#\\namecube-git\\namecube\\namecube\\setting\\about.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
-      "RelativeMoniker": "D:0:0:{710DCBE6-2310-445D-88E0-CE43D37DDABD}|NameCube\\NameCube.csproj|solutionrelative:namecube\\setting\\about.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+      "AbsoluteMoniker": "D:0:0:{710DCBE6-2310-445D-88E0-CE43D37DDABD}|NameCube\\NameCube.csproj|d:\\namecube\\namecube\\mode\\memorymode.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{710DCBE6-2310-445D-88E0-CE43D37DDABD}|NameCube\\NameCube.csproj|solutionrelative:namecube\\mode\\memorymode.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{710DCBE6-2310-445D-88E0-CE43D37DDABD}|NameCube\\NameCube.csproj|D:\\C#\\NameCube-git\\NameCube\\namecube\\data.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{710DCBE6-2310-445D-88E0-CE43D37DDABD}|NameCube\\NameCube.csproj|solutionrelative:namecube\\data.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{710DCBE6-2310-445D-88E0-CE43D37DDABD}|NameCube\\NameCube.csproj|D:\\C#\\NameCube-git\\NameCube\\namecube\\mode\\memorymode.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "AbsoluteMoniker": "D:0:0:{710DCBE6-2310-445D-88E0-CE43D37DDABD}|NameCube\\NameCube.csproj|D:\\NameCube\\namecube\\mode\\memorymode.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
       "RelativeMoniker": "D:0:0:{710DCBE6-2310-445D-88E0-CE43D37DDABD}|NameCube\\NameCube.csproj|solutionrelative:namecube\\mode\\memorymode.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\C#\\NameCube-git\\NameCube\\README.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:README.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}"
+      "AbsoluteMoniker": "D:0:0:{710DCBE6-2310-445D-88E0-CE43D37DDABD}|NameCube\\NameCube.csproj|D:\\NameCube\\namecube\\setting\\modesetting\\memorymodesetting.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{710DCBE6-2310-445D-88E0-CE43D37DDABD}|NameCube\\NameCube.csproj|solutionrelative:namecube\\setting\\modesetting\\memorymodesetting.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{710DCBE6-2310-445D-88E0-CE43D37DDABD}|NameCube\\NameCube.csproj|D:\\C#\\NameCube-git\\NameCube\\namecube\\app.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{710DCBE6-2310-445D-88E0-CE43D37DDABD}|NameCube\\NameCube.csproj|solutionrelative:namecube\\app.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{710DCBE6-2310-445D-88E0-CE43D37DDABD}|NameCube\\NameCube.csproj|D:\\NameCube\\namecube\\setting\\modesetting\\numbermodesetting.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{710DCBE6-2310-445D-88E0-CE43D37DDABD}|NameCube\\NameCube.csproj|solutionrelative:namecube\\setting\\modesetting\\numbermodesetting.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{710DCBE6-2310-445D-88E0-CE43D37DDABD}|NameCube\\NameCube.csproj|D:\\C#\\NameCube-git\\NameCube\\namecube\\mode\\memorymode.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{710DCBE6-2310-445D-88E0-CE43D37DDABD}|NameCube\\NameCube.csproj|solutionrelative:namecube\\mode\\memorymode.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{710DCBE6-2310-445D-88E0-CE43D37DDABD}|NameCube\\NameCube.csproj|D:\\NameCube\\namecube\\setting\\modesettings.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{710DCBE6-2310-445D-88E0-CE43D37DDABD}|NameCube\\NameCube.csproj|solutionrelative:namecube\\setting\\modesettings.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{710DCBE6-2310-445D-88E0-CE43D37DDABD}|NameCube\\NameCube.csproj|D:\\NameCube\\namecube\\setting\\modesetting\\numbermodesetting.xaml.cs||{8B382828-6202-11D1-8870-0000F87579D2}|",
+      "RelativeMoniker": "D:0:0:{710DCBE6-2310-445D-88E0-CE43D37DDABD}|NameCube\\NameCube.csproj|solutionrelative:namecube\\setting\\modesetting\\numbermodesetting.xaml.cs||{8B382828-6202-11D1-8870-0000F87579D2}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{710DCBE6-2310-445D-88E0-CE43D37DDABD}|NameCube\\NameCube.csproj|D:\\NameCube\\namecube\\setting\\modesetting\\memorymodesetting.xaml.cs||{8B382828-6202-11D1-8870-0000F87579D2}|",
+      "RelativeMoniker": "D:0:0:{710DCBE6-2310-445D-88E0-CE43D37DDABD}|NameCube\\NameCube.csproj|solutionrelative:namecube\\setting\\modesetting\\memorymodesetting.xaml.cs||{8B382828-6202-11D1-8870-0000F87579D2}|"
     }
   ],
   "DocumentGroupContainers": [
@@ -34,96 +38,88 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 3,
           "Children": [
             {
-              "$type": "Bookmark",
-              "Name": "ST:1424915320:0:{83107a3e-496a-485e-b455-16ddb978e55e}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
-            },
-            {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "About.xaml",
-              "DocumentMoniker": "D:\\C#\\NameCube-git\\NameCube\\NameCube\\Setting\\About.xaml",
-              "RelativeDocumentMoniker": "NameCube\\Setting\\About.xaml",
-              "ToolTip": "D:\\C#\\NameCube-git\\NameCube\\NameCube\\Setting\\About.xaml",
-              "RelativeToolTip": "NameCube\\Setting\\About.xaml",
+              "DocumentIndex": 4,
+              "Title": "ModeSettings.xaml",
+              "DocumentMoniker": "D:\\NameCube\\NameCube\\Setting\\ModeSettings.xaml",
+              "RelativeDocumentMoniker": "NameCube\\Setting\\ModeSettings.xaml",
+              "ToolTip": "D:\\NameCube\\NameCube\\Setting\\ModeSettings.xaml",
+              "RelativeToolTip": "NameCube\\Setting\\ModeSettings.xaml",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2025-04-20T08:49:39.775Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-22T10:21:49.545Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 3,
-              "Title": "README.md",
-              "DocumentMoniker": "D:\\C#\\NameCube-git\\NameCube\\README.md",
-              "RelativeDocumentMoniker": "README.md",
-              "ToolTip": "D:\\C#\\NameCube-git\\NameCube\\README.md",
-              "RelativeToolTip": "README.md",
-              "ViewState": "AgIAAAAAAAAAAAAAAADwvw0AAAAFAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
-              "WhenOpened": "2025-04-20T08:47:49.846Z"
+              "Title": "NumberModeSetting.xaml",
+              "DocumentMoniker": "D:\\NameCube\\NameCube\\Setting\\ModeSetting\\NumberModeSetting.xaml",
+              "RelativeDocumentMoniker": "NameCube\\Setting\\ModeSetting\\NumberModeSetting.xaml",
+              "ToolTip": "D:\\NameCube\\NameCube\\Setting\\ModeSetting\\NumberModeSetting.xaml",
+              "RelativeToolTip": "NameCube\\Setting\\ModeSetting\\NumberModeSetting.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-04-22T10:19:53.764Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 1,
               "Title": "MemoryMode.xaml",
-              "DocumentMoniker": "D:\\C#\\NameCube-git\\NameCube\\NameCube\\Mode\\MemoryMode.xaml",
+              "DocumentMoniker": "D:\\NameCube\\NameCube\\Mode\\MemoryMode.xaml",
               "RelativeDocumentMoniker": "NameCube\\Mode\\MemoryMode.xaml",
-              "ToolTip": "D:\\C#\\NameCube-git\\NameCube\\NameCube\\Mode\\MemoryMode.xaml",
+              "ToolTip": "D:\\NameCube\\NameCube\\Mode\\MemoryMode.xaml",
               "RelativeToolTip": "NameCube\\Mode\\MemoryMode.xaml",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
               "WhenOpened": "2025-04-20T08:31:40.295Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "App.xaml.cs",
-              "DocumentMoniker": "D:\\C#\\NameCube-git\\NameCube\\NameCube\\App.xaml.cs",
-              "RelativeDocumentMoniker": "NameCube\\App.xaml.cs",
-              "ToolTip": "D:\\C#\\NameCube-git\\NameCube\\NameCube\\App.xaml.cs",
-              "RelativeToolTip": "NameCube\\App.xaml.cs",
-              "ViewState": "AgIAAHQAAAAAAAAAAAAuwH0AAAAlAAAAAAAAAA==",
+              "DocumentIndex": 0,
+              "Title": "MemoryMode.xaml.cs",
+              "DocumentMoniker": "D:\\NameCube\\NameCube\\Mode\\MemoryMode.xaml.cs",
+              "RelativeDocumentMoniker": "NameCube\\Mode\\MemoryMode.xaml.cs",
+              "ToolTip": "D:\\NameCube\\NameCube\\Mode\\MemoryMode.xaml.cs",
+              "RelativeToolTip": "NameCube\\Mode\\MemoryMode.xaml.cs",
+              "ViewState": "AgIAAIkAAAAAAAAAAAAUwJ4AAAA0AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-20T08:25:14.092Z"
+              "WhenOpened": "2025-04-20T08:24:08.03Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "Data.cs",
-              "DocumentMoniker": "D:\\C#\\NameCube-git\\NameCube\\NameCube\\Data.cs",
-              "RelativeDocumentMoniker": "NameCube\\Data.cs",
-              "ToolTip": "D:\\C#\\NameCube-git\\NameCube\\NameCube\\Data.cs",
-              "RelativeToolTip": "NameCube\\Data.cs",
-              "ViewState": "AgIAAEYBAAAAAAAAAAAmwGEBAAAVAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-20T08:24:54.682Z"
+              "DocumentIndex": 2,
+              "Title": "MemoryModeSetting.xaml",
+              "DocumentMoniker": "D:\\NameCube\\NameCube\\Setting\\ModeSetting\\MemoryModeSetting.xaml",
+              "RelativeDocumentMoniker": "NameCube\\Setting\\ModeSetting\\MemoryModeSetting.xaml",
+              "ToolTip": "D:\\NameCube\\NameCube\\Setting\\ModeSetting\\MemoryModeSetting.xaml",
+              "RelativeToolTip": "NameCube\\Setting\\ModeSetting\\MemoryModeSetting.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-04-22T10:24:56.26Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 5,
-              "Title": "MemoryMode.xaml.cs",
-              "DocumentMoniker": "D:\\C#\\NameCube-git\\NameCube\\NameCube\\Mode\\MemoryMode.xaml.cs",
-              "RelativeDocumentMoniker": "NameCube\\Mode\\MemoryMode.xaml.cs",
-              "ToolTip": "D:\\C#\\NameCube-git\\NameCube\\NameCube\\Mode\\MemoryMode.xaml.cs",
-              "RelativeToolTip": "NameCube\\Mode\\MemoryMode.xaml.cs",
-              "ViewState": "AgIAAKkAAAAAAAAAAAAYwMgAAAARAAAAAAAAAA==",
+              "Title": "NumberModeSetting.xaml.cs",
+              "DocumentMoniker": "D:\\NameCube\\NameCube\\Setting\\ModeSetting\\NumberModeSetting.xaml.cs",
+              "RelativeDocumentMoniker": "NameCube\\Setting\\ModeSetting\\NumberModeSetting.xaml.cs",
+              "ToolTip": "D:\\NameCube\\NameCube\\Setting\\ModeSetting\\NumberModeSetting.xaml.cs",
+              "RelativeToolTip": "NameCube\\Setting\\ModeSetting\\NumberModeSetting.xaml.cs",
+              "ViewState": "AgIAACYAAAAAAAAAAAAAADAAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-20T08:24:08.03Z"
-            }
-          ]
-        },
-        {
-          "DockedWidth": 109,
-          "SelectedChildIndex": -1,
-          "Children": [
+              "WhenOpened": "2025-04-22T10:20:26.254Z"
+            },
             {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{b1e99781-ab81-11d0-b683-00aa00a3ee26}"
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "MemoryModeSetting.xaml.cs",
+              "DocumentMoniker": "D:\\NameCube\\NameCube\\Setting\\ModeSetting\\MemoryModeSetting.xaml.cs",
+              "RelativeDocumentMoniker": "NameCube\\Setting\\ModeSetting\\MemoryModeSetting.xaml.cs",
+              "ToolTip": "D:\\NameCube\\NameCube\\Setting\\ModeSetting\\MemoryModeSetting.xaml.cs",
+              "RelativeToolTip": "NameCube\\Setting\\ModeSetting\\MemoryModeSetting.xaml.cs",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAkwBIAAAAkAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-22T10:25:18.034Z"
             }
           ]
         }

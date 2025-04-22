@@ -29,7 +29,7 @@
             <CheckBox Content="启用语音" FontWeight="Black" x:Name="SpeakCheck"  Click="SpeechCheck_Click"/>
             <ComboBox ItemsSource="{Binding AllFiles}" SelectedItem="1" x:Name="ComboBox" SelectionChanged="ComboBox_SelectionChanged"/>
             <ui:Button Content="转为常驻名单" Margin="12 0 0 0" x:Name="ChangeButton" Click="ChangeButton_Click"/>
-            <ui:Button Content="删除此名单" Foreground="Red" Margin="12 0 0 0" Click="Button_Click"/>
+            <ui:Button Content="删除此名单" Foreground="Red" Margin="12 0 0 0" Click="Button_Click" x:Name="DelButton"/>
     </StackPanel>
         <ui:DataGrid Grid.Column="1" Grid.RowSpan="2" ItemsSource="{Binding AllNames}" x:Name="DataGrid" IsReadOnly="True" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" CanUserResizeColumns="False" CanUserResizeRows="False" MaxHeight="400">
             <ui:DataGrid.Columns>

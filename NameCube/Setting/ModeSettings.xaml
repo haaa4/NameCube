@@ -39,6 +39,10 @@
                     Content="预备模式"
                     Icon="{ui:SymbolIcon Symbol=Run24}"
                     TargetPageType="{x:Type mode:PrepareModeSetting}"/>
+                <ui:NavigationViewItem
+                    Content="记忆模式"
+                    Icon="{ui:SymbolIcon Symbol=BrainCircuit24}"
+                    TargetPageType="{x:Type mode:MemoryModeSetting}"/>
             </ui:NavigationView.MenuItems>
         </ui:NavigationView>
     </Grid>

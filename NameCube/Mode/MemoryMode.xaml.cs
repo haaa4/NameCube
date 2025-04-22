@@ -85,6 +85,8 @@ namespace NameCube.Mode
             if (GlobalVariables.json.MemoryModeSettings.Locked)
             {
                 SpeakCheck.IsEnabled = false;
+                ChangeButton.IsEnabled=false;
+                DelButton.IsEnabled=false;
             }
             ComboBox.SelectedIndex= 0;
         }
@@ -154,7 +156,7 @@ namespace NameCube.Mode
                 }
                 if(AllNames.Count==0)
                 {
-                    MessageBox.Show("提示", "名单已完成，将删除");
+                    MessageBox.Show("名单已完成，将删除", "提示");
                     if(AllFiles.Count<=1)
                     {
                         foreach (string name in GlobalVariables.json.AllSettings.Name)
@@ -191,7 +193,11 @@ namespace NameCube.Mode
                 else
                 {
                     jsonstring = File.ReadAllText(path2);
-                    ChangeButton.IsEnabled = true;
+                    if (!GlobalVariables.json.MemoryModeSettings.Locked) 
+                    {
+                        ChangeButton.IsEnabled = true;
+                    }
+
                 }
                 AllNames.Clear();
                 var newNames = JsonConvert.DeserializeObject<ObservableCollection<string>>(jsonstring);
