@@ -18,6 +18,12 @@ namespace NameCube.Setting
             CanChange = false;
             StartCheck.IsChecked = GlobalVariables.json.AllSettings.Start;
             TopCheck.IsChecked = GlobalVariables.json.AllSettings.Top;
+            ModeCombox.SelectedIndex = GlobalVariables.json.AllSettings.NameCubeMode;
+            if(GlobalVariables.json.AllSettings.NameCubeMode==1)
+            {
+                StartActionCard.Visibility = Visibility.Collapsed;
+                TopActionCard.Visibility = Visibility.Collapsed;
+            }
             CanChange = true;
         }
         private void StartCheck_Click(object sender, RoutedEventArgs e)
@@ -91,6 +97,14 @@ namespace NameCube.Setting
             }
         }
 
-
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if(CanChange)
+            {
+                GlobalVariables.json.AllSettings.NameCubeMode=ModeCombox.SelectedIndex;
+                GlobalVariables.SaveJson();
+                AppFunction.Restart();
+            }
+        }
     }
 }

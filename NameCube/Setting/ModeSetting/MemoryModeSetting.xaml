@@ -1,0 +1,92 @@
+﻿<Page
+    x:Class="NameCube.Setting.ModeSetting.MemoryModeSetting"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:NameCube.Setting.ModeSetting"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    Title="MemoryModeSetting"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+
+    <StackPanel>
+        <ui:CardControl
+            Margin="4"
+            Padding="20,10,20,10"
+            Icon="{ui:SymbolIcon Symbol=LockClosed20}">
+            <ui:CardControl.Header>
+                <StackPanel>
+                    <ui:TextBlock
+                        Margin="0"
+                        FontTypography="BodyStrong"
+                        Text="禁用修改"
+                        TextWrapping="WrapWithOverflow" />
+                    <ui:TextBlock
+                        Appearance="Secondary"
+                        Text="主界面不允许修改设置"
+                        TextWrapping="WrapWithOverflow" />
+                </StackPanel>
+            </ui:CardControl.Header>
+            <ui:ToggleSwitch
+                x:Name="LockedCheck"
+                HorizontalContentAlignment="Left"
+                Click="LockedCheck_Click"
+                IsEnabled="True"
+                OffContent="关"
+                OnContent="开" />
+        </ui:CardControl>
+        <ui:CardControl
+            Margin="4"
+            Padding="20,10,20,10"
+            Icon="{ui:SymbolIcon Symbol=TopSpeed24}">
+            <ui:CardControl.Header>
+                <StackPanel>
+                    <ui:TextBlock
+                        Margin="0"
+                        FontTypography="BodyStrong"
+                        Text="速度"
+                        TextWrapping="WrapWithOverflow" />
+                    <ui:TextBlock
+                        Appearance="Secondary"
+                        Text="改变文字的跳动速度"
+                        TextWrapping="WrapWithOverflow" />
+                </StackPanel>
+            </ui:CardControl.Header>
+            <Slider
+                x:Name="Speed"
+                Grid.Column="1"
+                VerticalAlignment="Center"
+                Maximum="90"
+                TickFrequency="1"
+                ValueChanged="Speed_ValueChanged"
+                Value="100" />
+        </ui:CardControl>
+        <ui:CardControl
+            Margin="4"
+            Padding="20,10,20,10"
+            Icon="{ui:SymbolIcon Symbol=Clipboard24}">
+            <ui:CardControl.Header>
+                <StackPanel>
+                    <ui:TextBlock
+                        Margin="0"
+                        FontTypography="BodyStrong"
+                        Text="自动增加名单"
+                        TextWrapping="WrapWithOverflow" />
+                    <ui:TextBlock
+                        Appearance="Secondary"
+                        Text="启用后，每次进入该模式，应用都会自动新建一个临时名单"
+                        TextWrapping="WrapWithOverflow" />
+                </StackPanel>
+            </ui:CardControl.Header>
+            <ui:ToggleSwitch
+                x:Name="AddSwitch"
+                HorizontalContentAlignment="Left"
+                Click="AddSwitch_Click"
+                IsEnabled="True"
+                OffContent="关"
+                OnContent="开" />
+        </ui:CardControl>
+    </StackPanel>
+</Page>

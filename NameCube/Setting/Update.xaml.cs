@@ -30,14 +30,14 @@ namespace NameCube.Setting
         public Update()
         {
             InitializeComponent();
-            VersionText.Text=GlobalVariables.json.Version;
+            VersionText.Text=GlobalVariables.Version;
         }
 
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
             if (!IsRunAsAdmin())
             {
-                MessageBox.Show("我们需要获得您的管理员权限");
+                MessageBoxFunction.ShowMessageBoxInfo("我们需要获得您的管理员权限");
                 File.WriteAllText(System.IO.Path.Combine(GlobalVariables.configDir, "START"), "The cake is a lie");
                 // 重新启动程序并请求管理员权限
                 var exeName = Process.GetCurrentProcess().MainModule.FileName;
@@ -54,7 +54,7 @@ namespace NameCube.Setting
                 }
                 catch
                 {
-                    MessageBox.Show("我们需要获得您的管理员权限");
+                    MessageBoxFunction.ShowMessageBoxInfo("我们需要获得您的管理员权限");
                     Application.Current.Shutdown();
                 }
                 return;
@@ -93,8 +93,7 @@ namespace NameCube.Setting
                 }
                 catch(Exception ex)
                 {
-                    MessageBox.Show(ex.Message);
-                    LogManager.Error(ex);
+                    MessageBoxFunction.ShowMessageBoxError(ex.Message);
                     this.Dispatcher.Invoke(new Action(() =>
                     {
                         NowText.Text = "安装中断...";

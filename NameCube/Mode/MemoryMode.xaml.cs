@@ -42,13 +42,16 @@ namespace NameCube.Mode
             DataContext = this;
             Directory.CreateDirectory(Path.Combine(GlobalVariables.configDir ,"Mode_data" , "MemoryMode" , "permanent"));
             Directory.CreateDirectory(Path.Combine(GlobalVariables.configDir , "Mode_data" , "MemoryMode" , "temporary"));
-            foreach (string name in GlobalVariables.json.AllSettings.Name)
+            string filename = DateTime.Now.ToString("yyyy_M_d_H_m_s ") + ".json";
+            if (GlobalVariables.json.MemoryModeSettings.AutoAddFile)
             {
-                AllNames.Add(name);
-            }
-            string filename = DateTime.Now.GetTotalMilliseconds().ToString() + ".json";
-            File.WriteAllText(Path.Combine(GlobalVariables.configDir , "Mode_data" , "MemoryMode" , "temporary", filename), JsonConvert.SerializeObject(AllNames));
-            AllFiles.Add(filename);
+                foreach (string name in GlobalVariables.json.AllSettings.Name)
+                {
+                    AllNames.Add(name);
+                }
+                File.WriteAllText(Path.Combine(GlobalVariables.configDir, "Mode_data", "MemoryMode", "temporary", filename), JsonConvert.SerializeObject(AllNames));
+                AllFiles.Add(filename);
+            }          
             string[] fileNames1 = Directory.GetFiles(Path.Combine(GlobalVariables.configDir, "Mode_data", "MemoryMode", "permanent"));
             string[] fileNames2 = Directory.GetFiles(Path.Combine(GlobalVariables.configDir, "Mode_data", "MemoryMode", "temporary"));
             foreach (string file in fileNames1)
@@ -85,8 +88,16 @@ namespace NameCube.Mode
             if (GlobalVariables.json.MemoryModeSettings.Locked)
             {
                 SpeakCheck.IsEnabled = false;
+                ChangeButton.IsEnabled=false;
+                DelButton.IsEnabled=false;
             }
             ComboBox.SelectedIndex= 0;
+            if(AllFiles.Count==0)
+            {
+                StartButton.IsEnabled = false;
+                ChangeButton.IsEnabled = false;
+                DelButton.IsEnabled = false;
+            }
         }
 
 
@@ -124,6 +135,8 @@ namespace NameCube.Mode
                 timer.Interval = GlobalVariables.json.MemoryModeSettings.Speed;
                 FinishText.Visibility = Visibility.Hidden;
                 NowNumberText.Visibility = Visibility.Visible;
+                ChangeButton.IsEnabled = false;
+                DelButton.IsEnabled = false;
                 StartButton.Content = "结束";
                 timer.Start();
                 StartButton.IsEnabled = true;
@@ -154,7 +167,7 @@ namespace NameCube.Mode
                 }
                 if(AllNames.Count==0)
                 {
-                    MessageBox.Show("提示", "名单已完成，将删除");
+                    MessageBoxFunction.ShowMessageBoxInfo("名单已完成，将删除");
                     if(AllFiles.Count<=1)
                     {
                         foreach (string name in GlobalVariables.json.AllSettings.Name)
@@ -167,6 +180,8 @@ namespace NameCube.Mode
                     Button_Click(sender, e);
                 }
                 StartButton.IsEnabled = true;
+                ChangeButton.IsEnabled = true;
+                DelButton.IsEnabled = true;
             }
         }
         bool Canchange;
@@ -175,30 +190,48 @@ namespace NameCube.Mode
         {
             if(Canchange)
             {
-                if(ComboBox.SelectedIndex==-1)
+                if(AllFiles.Count==0)
                 {
-                    ComboBox.SelectedIndex = 0;
-                }
-                string path1 = Path.Combine(GlobalVariables.configDir, "Mode_data", "MemoryMode", "permanent", AllFiles[ComboBox.SelectedIndex]);
-                string path2 = Path.Combine(GlobalVariables.configDir, "Mode_data", "MemoryMode", "temporary", AllFiles[ComboBox.SelectedIndex]);
-                string jsonstring;
-                now = 0;
-                if (File.Exists(path1))
-                {
-                    jsonstring = File.ReadAllText(path1);
+                    AllNames.Clear();
+                    StartButton.IsEnabled = false;
                     ChangeButton.IsEnabled = false;
+                    DelButton.IsEnabled = false;
                 }
                 else
                 {
-                    jsonstring = File.ReadAllText(path2);
-                    ChangeButton.IsEnabled = true;
+                    StartButton.IsEnabled= true;
+                    ChangeButton.IsEnabled= true;
+                    DelButton.IsEnabled= true;
+                    if (ComboBox.SelectedIndex == -1)
+                    {
+                        ComboBox.SelectedIndex = 0;
+                    }
+                    string path1 = Path.Combine(GlobalVariables.configDir, "Mode_data", "MemoryMode", "permanent", AllFiles[ComboBox.SelectedIndex]);
+                    string path2 = Path.Combine(GlobalVariables.configDir, "Mode_data", "MemoryMode", "temporary", AllFiles[ComboBox.SelectedIndex]);
+                    string jsonstring;
+                    now = 0;
+                    if (File.Exists(path1))
+                    {
+                        jsonstring = File.ReadAllText(path1);
+                        ChangeButton.IsEnabled = false;
+                    }
+                    else
+                    {
+                        jsonstring = File.ReadAllText(path2);
+                        if (!GlobalVariables.json.MemoryModeSettings.Locked)
+                        {
+                            ChangeButton.IsEnabled = true;
+                        }
+
+                    }
+                    AllNames.Clear();
+                    var newNames = JsonConvert.DeserializeObject<ObservableCollection<string>>(jsonstring);
+                    foreach (var name in newNames)
+                    {
+                        AllNames.Add(name);
+                    }
                 }
-                AllNames.Clear();
-                var newNames = JsonConvert.DeserializeObject<ObservableCollection<string>>(jsonstring);
-                foreach (var name in newNames)
-                {
-                    AllNames.Add(name);
-                }
+                
             }
             
         }
@@ -233,7 +266,7 @@ namespace NameCube.Mode
                     }
                     catch (Exception ex) 
                     {
-                        System.Windows.Forms.MessageBox.Show(ex.Message);
+                        MessageBoxFunction.ShowMessageBoxError(ex.Message);
                     }
                 }
             }
@@ -241,8 +274,7 @@ namespace NameCube.Mode
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            if(AllFiles.Count>1)
-            {
+           
                 string path1 = Path.Combine(GlobalVariables.configDir, "Mode_data", "MemoryMode", "permanent", AllFiles[ComboBox.SelectedIndex]);
                 string path2 = Path.Combine(GlobalVariables.configDir, "Mode_data", "MemoryMode", "temporary", AllFiles[ComboBox.SelectedIndex]);
                 try
@@ -258,13 +290,26 @@ namespace NameCube.Mode
                 }
                 catch (Exception ex)
                 {
-                    System.Windows.Forms.MessageBox.Show(ex.Message);
+                     MessageBoxFunction.ShowMessageBoxError(ex.Message);
                 }
                 AllFiles.Remove(AllFiles[ComboBox.SelectedIndex]);
                 ComboBox.SelectedIndex = 0;
 
-            }
+            
 
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            List<string> NameList= new List<string>();
+            foreach(string name in GlobalVariables.json.AllSettings.Name)
+            {
+                NameList.Add(name);
+            }
+            string filename = DateTime.Now.ToString("yyyy_M_d_H_m_s ") + ".json";
+            File.WriteAllText(Path.Combine(GlobalVariables.configDir, "Mode_data", "MemoryMode", "temporary", filename), JsonConvert.SerializeObject(NameList));
+            AllFiles.Insert(0, filename);
+            ComboBox.SelectedIndex = 0;
         }
     }
 }

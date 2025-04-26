@@ -6,8 +6,8 @@ using System.Windows;
 // 有关程序集的一般信息由以下
 // 控制。更改这些特性值可修改
 // 与程序集关联的信息。
-[assembly: AssemblyTitle("学号魔方")]
-[assembly: AssemblyDescription("这是一个抽姓名的软件")]
+[assembly: AssemblyTitle("点鸣魔方")]
+[assembly: AssemblyDescription("班级点名器")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("哈阿斯")]
 [assembly: AssemblyProduct("NameCube")]

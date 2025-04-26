@@ -4,10 +4,16 @@ using NameCube.Setting;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Media;
+using Wpf.Ui.Controls;
 
 namespace NameCube
 {
@@ -96,6 +102,11 @@ namespace NameCube
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
         public bool Top { get; set; } = true;
+        /// <summary>
+        /// 学号魔方模式（0:长期运行模式 1：单次运行模式）
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+        public int NameCubeMode { get; set; } = 0;
     }
     public class onePeopleModeSettings
     {
@@ -223,6 +234,31 @@ namespace NameCube
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
         public int diaphaneity { get; set; } = 0;
+        /// <summary>
+        /// 启动位置（0:屏幕左侧，1:屏幕右侧，2:上一次位置）
+        /// </summary>
+        [JsonProperty (DefaultValueHandling = DefaultValueHandling.Populate)]
+        public int StartLocationWay { get; set; } = 0;
+        /// <summary>
+        /// 启动位置x坐标
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+        public double StartLocationX { get; set; } = 0;
+        /// <summary>
+        /// 启动位置y坐标
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+        public double StartLocationY { get; set; } = 0;
+        /// <summary>
+        /// 悬浮球长度
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+        public int Width { get; set; } = 50;
+        /// <summary>
+        /// 悬浮球高度
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+        public int Height { get; set; } = 50;
     }
     public class NumberModeSettings
     {
@@ -288,6 +324,11 @@ namespace NameCube
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
         public int Speed { get; set; } = 20;
+        /// <summary>
+        /// 自动增加临时名单
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+        public bool AutoAddFile { get; set; } = true;
     }
 
     public class Json
@@ -339,10 +380,7 @@ namespace NameCube
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
         public MemoryModeSettings MemoryModeSettings { get; set; }=new MemoryModeSettings();
-        /// <summary>
-        /// 当前版本
-        /// </summary>
-        public string Version = "Alpha-7";
+
 
 
     }
@@ -379,10 +417,63 @@ namespace NameCube
             catch (Exception ex)
             {
                 // 记录错误或提示用户
-                System.Windows.MessageBox.Show($"保存配置失败: {ex.Message}");
+                MessageBoxFunction.ShowMessageBoxWarning($"保存配置失败: {ex.Message}");
                 LogManager.Error(ex);
             }
         }
-
+        /// <summary>
+        /// 当前版本
+        /// </summary>
+        public static string Version = "V1.0.0 Beta-1";
     }
+    internal class MessageBoxFunction
+    {
+        public static void ShowMessageBoxInfo(string message)
+        {
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                Wpf.Ui.Controls.MessageBox messageBox = new Wpf.Ui.Controls.MessageBox();
+                messageBox.Content = message;
+                messageBox.Title = "提示";
+                messageBox.CloseButtonText = "知道了";
+                messageBox.ShowDialogAsync();
+            });
+        }
+
+        public static void ShowMessageBoxWarning(string message)
+        {
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                Wpf.Ui.Controls.MessageBox messageBox = new Wpf.Ui.Controls.MessageBox();
+                messageBox.Content = message;
+                messageBox.Title = "警告";
+                messageBox.CloseButtonText = "知道了";
+                messageBox.ShowDialogAsync();
+            });
+        }
+
+        public static void ShowMessageBoxError(string message)
+        {
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                Wpf.Ui.Controls.MessageBox messageBox = new Wpf.Ui.Controls.MessageBox();
+                messageBox.Content = message;
+                LogManager.Error("严重错误", message);
+                messageBox.Title = "错误";
+                messageBox.CloseButtonText = "知道了";
+                messageBox.ShowDialogAsync();
+            });
+        }
+    }
+    internal class AppFunction
+    {
+        public static void Restart()
+        {
+            string[] args = Environment.GetCommandLineArgs();
+            File.WriteAllText(Path.Combine(GlobalVariables.configDir, "START"), "The cake is a lie");
+            Application.Current.Shutdown();
+            Process.Start(Application.ResourceAssembly.Location, string.Join(" ", args.Skip(1)));
+        }
+    }
+
 }

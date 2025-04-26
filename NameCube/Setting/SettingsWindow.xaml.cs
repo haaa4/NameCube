@@ -11,6 +11,10 @@ namespace NameCube.Setting
         public SettingsWindow()
         {
             InitializeComponent();
+            if(GlobalVariables.json.AllSettings.NameCubeMode==1)
+            {
+                BallSetting.Visibility=System.Windows.Visibility.Collapsed;
+            }
         }
 
         private void NavigationMenu_Loaded(object sender, System.Windows.RoutedEventArgs e)

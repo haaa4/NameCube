@@ -9,6 +9,7 @@ using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Media.Imaging;
 using Wpf.Ui.Controls;
+using Application = System.Windows.Application;
 
 namespace NameCube.Setting
 {
@@ -31,14 +32,19 @@ namespace NameCube.Setting
             {
                 GlobalVariables.json.StartToDo.Ball = BallCheck.IsChecked.Value;
                 GlobalVariables.SaveJson();
-                var snackbar = new Snackbar(SnackbarPresenterHost)
+                var bird = Application.Current.Windows.OfType<Bird>().FirstOrDefault();
+                if(bird==null)
                 {
-                    Content = "设置已保存,请重启软件", // 设置提示内容
-                    Title="提示",
-                    Appearance=ControlAppearance.Info,
-                    Timeout = TimeSpan.FromSeconds(10) // 显示时长
-                };
-                snackbar.Show();
+                    bird=new Bird();
+                }
+                if(GlobalVariables.json.StartToDo.Ball)
+                {
+                    bird.Show();
+                }
+                else
+                {
+                    bird.Hide();
+                }
             }
         }
 
@@ -50,45 +56,10 @@ namespace NameCube.Setting
             Process.Start(System.Windows.Application.ResourceAssembly.Location, string.Join(" ", args.Skip(1)));
         }
 
-        
-         //巨史警告
-         
 
 
-        private void MenuItem_Click(object sender, RoutedEventArgs e)
-        {
-            GlobalVariables.json.BirdSettings.StartWay = 0;
-            GlobalVariables.SaveJson();
-            DropWay.Content = "左键";
-        }
 
-        private void MenuItem_Click_1(object sender, RoutedEventArgs e)
-        {
-            GlobalVariables.json.BirdSettings.StartWay = 1;
-            GlobalVariables.SaveJson();
-            DropWay.Content = "右键";
-        }
 
-        private void MenuItem_Click_2(object sender, RoutedEventArgs e)
-        {
-            GlobalVariables.json.BirdSettings.StartWay = 2;
-            GlobalVariables.SaveJson();
-            DropWay.Content = "长按";
-        }
-
-        private void MenuItem_Click_3(object sender, RoutedEventArgs e)
-        {
-            GlobalVariables.json.BirdSettings.StartWay = 3;
-            GlobalVariables.SaveJson();
-            DropWay.Content = "左键+右键";
-        }
-
-        private void MenuItem_Click_4(object sender, RoutedEventArgs e)
-        {
-            GlobalVariables.json.BirdSettings.StartWay = 4;
-            GlobalVariables.SaveJson();
-            DropWay.Content = "长按+右键";
-        }
 
         private void ImageIcon_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
@@ -128,7 +99,7 @@ namespace NameCube.Setting
                     bitmap.CacheOption = BitmapCacheOption.OnLoad;
                     bitmap.EndInit();
                     ImageIcon.Source = bitmap;
-                    Ring.Visibility= Visibility.Collapsed;
+                    Ring.Visibility = Visibility.Collapsed;
                     ImageIcon.Visibility = Visibility.Visible;
                     ChangeBird();
                 }));
@@ -140,10 +111,10 @@ namespace NameCube.Setting
         {
             if (CanChange)
             {
-                ImageIcon.Source = new BitmapImage(new Uri("pack://application:,,,/icon.ico"));
+                ImageIcon.Source = new BitmapImage(new Uri("pack://application:,,,/BallPicture.png"));
                 GlobalVariables.json.BirdSettings.UseDefinedImage = false;
                 GlobalVariables.SaveJson();
-                ChangeBird() ;
+                ChangeBird();
             }
         }
 
@@ -153,7 +124,7 @@ namespace NameCube.Setting
             {
                 GlobalVariables.json.BirdSettings.AdsorbValue = ABSlider.Value.ToInt32();
                 GlobalVariables.SaveJson();
-                ChangeBird() ;  
+                ChangeBird();
             }
         }
 
@@ -163,7 +134,7 @@ namespace NameCube.Setting
             {
                 GlobalVariables.json.BirdSettings.AutoAbsord = AutoAdsorb.IsChecked.Value;
                 GlobalVariables.SaveJson();
-                ChangeBird() ;
+                ChangeBird();
             }
         }
 
@@ -173,34 +144,14 @@ namespace NameCube.Setting
             {
                 GlobalVariables.json.BirdSettings.diaphaneity = Diaphaneity.Value.ToInt32();
                 GlobalVariables.SaveJson();
-                ChangeBird() ;
+                ChangeBird();
             }
         }
         private void Initialize()
         {
             BallCheck.IsChecked = GlobalVariables.json.StartToDo.Ball;
-            if (GlobalVariables.json.BirdSettings.StartWay == 0)
-            {
-                DropWay.Content = "左键";
-            }
-            else if (GlobalVariables.json.BirdSettings.StartWay == 1)
-            {
-                DropWay.Content = "右键";
-            }
-            else if (GlobalVariables.json.BirdSettings.StartWay == 2)
-            {
-                DropWay.Content = "长按";
-            }
-            else if (GlobalVariables.json.BirdSettings.StartWay == 3)
-            {
-                DropWay.Content = "左键+右键";
-
-            }
-            else if (GlobalVariables.json.BirdSettings.StartWay == 4)
-            {
-                DropWay.Content = "右键+长按";
-            }
-            if (GlobalVariables.json.BirdSettings.UseDefinedImage) 
+            StartWayComboBox.SelectedIndex = GlobalVariables.json.BirdSettings.StartWay;
+            if (GlobalVariables.json.BirdSettings.UseDefinedImage)
             {
                 BitmapImage bitmap = new BitmapImage();
                 bitmap.BeginInit();
@@ -209,9 +160,16 @@ namespace NameCube.Setting
                 bitmap.EndInit();
                 ImageIcon.Source = bitmap;
             }
+            if (GlobalVariables.json.BirdSettings.diaphaneity == 0)
+            {
+                GlobalVariables.json.BirdSettings.diaphaneity = 100;
+            }
             ABSlider.Value = GlobalVariables.json.BirdSettings.AdsorbValue;
             AutoAdsorb.IsChecked = GlobalVariables.json.BirdSettings.AutoAbsord;
-            Diaphaneity.Value=GlobalVariables.json.BirdSettings.diaphaneity;
+            Diaphaneity.Value = GlobalVariables.json.BirdSettings.diaphaneity;
+            StartLocationWay.SelectedIndex = GlobalVariables.json.BirdSettings.StartLocationWay;
+            BallWidth.Value = GlobalVariables.json.BirdSettings.Width;
+            BallHeight.Value = GlobalVariables.json.BirdSettings.Height;
         }
         private void ChangeBird()
         {
@@ -225,6 +183,44 @@ namespace NameCube.Setting
 
             // 确保窗口可见并激活
             Bird.Initialize();
+        }
+
+        private void StartWayComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (CanChange)
+            {
+                GlobalVariables.json.BirdSettings.StartWay = StartWayComboBox.SelectedIndex;
+                GlobalVariables.SaveJson();
+            }
+        }
+
+        private void StartLocationWay_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (CanChange)
+            {
+                GlobalVariables.json.BirdSettings.StartLocationWay = StartLocationWay.SelectedIndex;
+                GlobalVariables.SaveJson();
+            }
+        }
+
+        private void BallWidthHeight_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (CanChange)
+            {
+                GlobalVariables.json.BirdSettings.Width = BallWidth.Value.ToInt32();
+                GlobalVariables.json.BirdSettings.Height = BallHeight.Value.ToInt32();
+                GlobalVariables.SaveJson();
+                var Bird = System.Windows.Application.Current.Windows.OfType<Bird>().FirstOrDefault();
+
+                if (Bird == null)
+                {
+                    // 创建新实例
+                    Bird = new Bird();
+                }
+
+                // 确保窗口可见并激活
+                Bird.ShowReRectangle();
+            }
         }
     }
 }

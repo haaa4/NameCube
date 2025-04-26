@@ -80,7 +80,7 @@ namespace NameCube.Mode
             AllNames.Clear();
             if (GlobalVariables.json.AllSettings.Name.Count <= 2)
             {
-                MessageBox.Show("学生名单怎么空空的？\n翻译：学生人数少于3人");
+                MessageBoxFunction.ShowMessageBoxWarning("学生名单怎么空空的？\n翻译：学生人数少于3人");
                 return;
             }
             if (GlobalVariables.json.BatchModeSettings.NumberMode)
@@ -88,7 +88,7 @@ namespace NameCube.Mode
                 if (GlobalVariables.json.BatchModeSettings.Index > GlobalVariables.json.BatchModeSettings.Number && !GlobalVariables.json
                     .BatchModeSettings.Repetition)
                 {
-                    MessageBox.Show("无 中 生 有\n翻译：抽取数量大于实际可抽取数量");
+                    MessageBoxFunction.ShowMessageBoxWarning("无 中 生 有\n翻译：抽取数量大于实际可抽取数量");
                     StartButton.IsEnabled = true;
                     Numberbox.IsEnabled = true;
                     NameSwitch.IsEnabled = true;
@@ -106,7 +106,7 @@ namespace NameCube.Mode
                 if (GlobalVariables.json.BatchModeSettings.Index > GlobalVariables.json.AllSettings.Name.Count && !GlobalVariables.json
                     .BatchModeSettings.Repetition)
                 {
-                    MessageBox.Show("无 中 生 有\n翻译：抽取数量大于实际可抽取数量");
+                    MessageBoxFunction.ShowMessageBoxWarning("无 中 生 有\n翻译：抽取数量大于实际可抽取数量");
                     StartButton.IsEnabled = true;
                     Numberbox.IsEnabled = true;
                     NameSwitch.IsEnabled = true;

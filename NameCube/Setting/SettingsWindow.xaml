@@ -1,67 +1,73 @@
-﻿<ui:FluentWindow x:Class="NameCube.Setting.SettingsWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:NameCube.Setting"
-        xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
-        mc:Ignorable="d"
-        Title="应用设置" Height="450" Width="1000">
+﻿<ui:FluentWindow
+    x:Class="NameCube.Setting.SettingsWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:NameCube.Setting"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    Title="应用设置"
+    Width="1000"
+    Height="450"
+    mc:Ignorable="d">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="50"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="50" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <ui:TitleBar Grid.Row="0" Title="应用设置" Icon="{ui:ImageIcon 'pack://application:,,,/icon.ico'}" />
+        <ui:TitleBar
+            Title="应用设置"
+            Grid.Row="0"
+            Icon="{ui:ImageIcon 'pack://application:,,,/icon.ico'}" />
         <ui:NavigationView
-        MinHeight="300"
-        Margin="0"
-        IsBackButtonVisible="Auto"
-        IsPaneToggleVisible="True"
-        PaneDisplayMode="LeftMinimal"
-        Grid.Row="1"
-        x:Name="NavigationMenu" Loaded="NavigationMenu_Loaded"
-            >
-            <ui:NavigationView.MenuItems >
+            x:Name="NavigationMenu"
+            Grid.Row="1"
+            MinHeight="300"
+            Margin="0"
+            IsBackButtonVisible="Auto"
+            IsPaneToggleVisible="True"
+            Loaded="NavigationMenu_Loaded"
+            PaneDisplayMode="LeftMinimal">
+            <ui:NavigationView.MenuItems>
                 <ui:NavigationViewItem
                     Content="档案编辑"
                     Icon="{ui:SymbolIcon Symbol=BookContacts24}"
-                    TargetPageType="{x:Type local:Archives}"/>
+                    TargetPageType="{x:Type local:Archives}" />
                 <ui:NavigationViewItem
                     Content="模式设置"
                     Icon="{ui:SymbolIcon Symbol=Settings24}"
-                    TargetPageType="{x:Type local:ModeSettings}"/>
+                    TargetPageType="{x:Type local:ModeSettings}" />
                 <ui:NavigationViewItem
                     Content="外观"
                     Icon="{ui:SymbolIcon Symbol=Collections24}"
-                    TargetPageType="{x:Type local:Appearance}"/>
+                    TargetPageType="{x:Type local:Appearance}" />
                 <ui:NavigationViewItem
                     Content="讲述人"
                     Icon="{ui:SymbolIcon Symbol=PersonVoice24}"
-                    TargetPageType="{x:Type local:Speech}"/>
+                    TargetPageType="{x:Type local:Speech}" />
                 <ui:NavigationViewItem
+                    x:Name="BallSetting"
                     Content="悬浮球"
                     Icon="{ui:SymbolIcon Symbol=Balloon12}"
-                    TargetPageType="{x:Type local:BirdSettings}"
-                 />
+                    TargetPageType="{x:Type local:BirdSettings}" />
                 <ui:NavigationViewItem
                     Content="配置文件"
                     Icon="{ui:SymbolIcon Symbol=Document24}"
-                    TargetPageType="{x:Type local:Document}"/>
+                    TargetPageType="{x:Type local:Document}" />
                 <ui:NavigationViewItem
                     Content="更新"
                     Icon="{ui:SymbolIcon Symbol=ArrowUpload24}"
-                    TargetPageType="{x:Type local:Update}"/>
+                    TargetPageType="{x:Type local:Update}" />
                 <ui:NavigationViewItem
                     Content="其他"
                     Icon="{ui:SymbolIcon Symbol=MoreCircle24}"
-                    TargetPageType="{x:Type local:Other}"/>
+                    TargetPageType="{x:Type local:Other}" />
                 <ui:NavigationViewItem
-                     Content="关于"
-                     Icon="{ui:SymbolIcon Symbol=Info24}"
-                     TargetPageType="{x:Type local:About}"/>
+                    Content="关于"
+                    Icon="{ui:SymbolIcon Symbol=Info24}"
+                    TargetPageType="{x:Type local:About}" />
             </ui:NavigationView.MenuItems>
         </ui:NavigationView>
-        <ui:SnackbarPresenter x:Name="SnackbarPresenterHost" Grid.Row="1"/>
+        <ui:SnackbarPresenter x:Name="SnackbarPresenterHost" Grid.Row="1" />
     </Grid>
 </ui:FluentWindow>

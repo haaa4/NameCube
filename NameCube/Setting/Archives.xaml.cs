@@ -64,7 +64,7 @@ namespace NameCube.Setting
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message);
+                    MessageBoxFunction.ShowMessageBoxError(ex.Message);
                 }
             }
             GlobalVariables.SaveJson();
@@ -80,7 +80,7 @@ namespace NameCube.Setting
 
             if (AddNameTextBox.Text == "" || AddNameTextBox.Text == null)
             {
-                MessageBox.Show("大家好，我叫无名氏\n翻译：添加内容为空！");
+                MessageBoxFunction.ShowMessageBoxWarning("大家好，我叫无名氏\n翻译：添加内容为空！");
                 return;
             }
             AllNames.Add(new AllName

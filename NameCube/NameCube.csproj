@@ -7,7 +7,7 @@
     <ProjectGuid>{710DCBE6-2310-445D-88E0-CE43D37DDABD}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>NameCube</RootNamespace>
-    <AssemblyName>学号魔方</AssemblyName>
+    <AssemblyName>点鸣魔方</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -80,20 +80,56 @@
     <Reference Include="System.Buffers, Version=4.0.4.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Buffers.4.6.0\lib\net462\System.Buffers.dll</HintPath>
     </Reference>
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.IO, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.4.3.0\lib\net462\System.IO.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.IO.Pipelines, Version=9.0.0.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.IO.Pipelines.9.0.2\lib\net462\System.IO.Pipelines.dll</HintPath>
     </Reference>
     <Reference Include="System.Memory, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Memory.4.6.0\lib\net462\System.Memory.dll</HintPath>
     </Reference>
+    <Reference Include="System.Net.Http, Version=4.1.1.3, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Net.Http.4.3.4\lib\net46\System.Net.Http.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Numerics" />
     <Reference Include="System.Numerics.Vectors, Version=4.1.5.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Numerics.Vectors.4.6.0\lib\net462\System.Numerics.Vectors.dll</HintPath>
     </Reference>
+    <Reference Include="System.Runtime, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.4.3.0\lib\net462\System.Runtime.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.6.1.0\lib\net462\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.Algorithms, Version=4.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Cryptography.Algorithms.4.3.0\lib\net463\System.Security.Cryptography.Algorithms.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.Encoding, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Cryptography.Encoding.4.3.0\lib\net46\System.Security.Cryptography.Encoding.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.Primitives, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Cryptography.Primitives.4.3.0\lib\net46\System.Security.Cryptography.Primitives.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.X509Certificates, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Cryptography.X509Certificates.4.3.0\lib\net461\System.Security.Cryptography.X509Certificates.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Speech" />
     <Reference Include="System.Text.Encoding.CodePages, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -111,7 +147,6 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Net.Http" />
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
@@ -119,10 +154,13 @@
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="Wpf.Ui, Version=4.0.0.0, Culture=neutral, PublicKeyToken=11f9f5cc97b3ffd6, processorArchitecture=MSIL">
-      <HintPath>..\packages\WPF-UI.4.0.0\lib\net472\Wpf.Ui.dll</HintPath>
+      <HintPath>..\packages\WPF-UI.4.0.2\lib\net472\Wpf.Ui.dll</HintPath>
     </Reference>
     <Reference Include="Wpf.Ui.Abstractions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=11f9f5cc97b3ffd6, processorArchitecture=MSIL">
-      <HintPath>..\packages\WPF-UI.Abstractions.4.0.0\lib\net472\Wpf.Ui.Abstractions.dll</HintPath>
+      <HintPath>..\packages\WPF-UI.Abstractions.4.0.2\lib\net472\Wpf.Ui.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Wpf.Ui.Violeta, Version=4.0.2.3, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\WPF-UI.Violeta.4.0.2.3\lib\net472\Wpf.Ui.Violeta.dll</HintPath>
     </Reference>
     <Reference Include="ZstdSharp, Version=0.8.4.0, Culture=neutral, PublicKeyToken=8d151af33a4ad5cf, processorArchitecture=MSIL">
       <HintPath>..\packages\ZstdSharp.Port.0.8.4\lib\net462\ZstdSharp.dll</HintPath>
@@ -134,6 +172,27 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Data.cs" />
+    <Compile Include="FirstUse\About.xaml.cs">
+      <DependentUpon>About.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="FirstUse\Archives.xaml.cs">
+      <DependentUpon>Archives.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="FirstUse\BirdSettings.xaml.cs">
+      <DependentUpon>BirdSettings.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="FirstUse\FirstUseWindow.xaml.cs">
+      <DependentUpon>FirstUseWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="FirstUse\NameCubeMode.xaml.cs">
+      <DependentUpon>NameCubeMode.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="FirstUse\Other.xaml.cs">
+      <DependentUpon>Other.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Mode\Home.xaml.cs">
+      <DependentUpon>Home.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Mode\MemoryMode.xaml.cs">
       <DependentUpon>MemoryMode.xaml</DependentUpon>
     </Compile>
@@ -145,6 +204,9 @@
     </Compile>
     <Compile Include="PowerOffWindow.xaml.cs">
       <DependentUpon>PowerOffWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="RepeatWarning.xaml.cs">
+      <DependentUpon>RepeatWarning.xaml</DependentUpon>
     </Compile>
     <Compile Include="Setting\About.xaml.cs">
       <DependentUpon>About.xaml</DependentUpon>
@@ -175,6 +237,9 @@
     </Compile>
     <Compile Include="Setting\ModeSettings.xaml.cs">
       <DependentUpon>ModeSettings.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Setting\ModeSetting\MemoryModeSetting.xaml.cs">
+      <DependentUpon>MemoryModeSetting.xaml</DependentUpon>
     </Compile>
     <Compile Include="Setting\ModeSetting\NumberModeSetting.xaml.cs">
       <DependentUpon>NumberModeSetting.xaml</DependentUpon>
@@ -215,6 +280,34 @@
     <Compile Include="ToolBox\ToolboxWindow.xaml.cs">
       <DependentUpon>ToolboxWindow.xaml</DependentUpon>
     </Compile>
+    <Page Include="FirstUse\About.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="FirstUse\Archives.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="FirstUse\BirdSettings.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="FirstUse\FirstUseWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="FirstUse\NameCubeMode.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="FirstUse\Other.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Mode\Home.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Mode\MemoryMode.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -228,6 +321,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="PowerOffWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="RepeatWarning.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -280,6 +377,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Setting\ModeSettings.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Setting\ModeSetting\MemoryModeSetting.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -354,6 +455,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="attention.md" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -380,6 +482,23 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Big.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="BallPicture.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\海报.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\RepeatWarning.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Video\1.mp4" />
+    <Resource Include="Video\2.mp4" />
+    <Resource Include="Video\3.mp4" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

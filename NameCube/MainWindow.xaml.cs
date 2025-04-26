@@ -16,13 +16,17 @@ namespace NameCube
 
         public void OnShowAfterLongPress()
         {
-            NavigationMenu.Navigate(typeof(Mode.OnePeopleMode));
+            NavigationMenu.Navigate(typeof(Mode.Home));
         }
 
         public MainWindow()
         {
             InitializeComponent();
             Application.Current.ShutdownMode = ShutdownMode.OnExplicitShutdown;
+            if(GlobalVariables.json.AllSettings.NameCubeMode==1)
+            {
+                ToolBoxCardAction.Visibility = Visibility.Hidden;
+            }
             DataContext = this;
             Timer.Interval = 2000;
             Timer.Tick += Timer_Tick;
@@ -36,11 +40,8 @@ namespace NameCube
                );
             }
             Loaded += (sender, args) =>
-            {
-                
-
-                // 导航到第一个菜单项
-                NavigationMenu.Navigate(typeof(Mode.OnePeopleMode));
+            {               // 导航到第一个菜单项
+                NavigationMenu.Navigate(typeof(Mode.Home));
             };
 
         }
@@ -68,6 +69,10 @@ namespace NameCube
         {
             e.Cancel = true;
             this.Hide();
+            if(GlobalVariables.json.AllSettings.NameCubeMode==1)
+            {
+                Application.Current.Shutdown();
+            }
         }
 
         private void CardAction_Click(object sender, RoutedEventArgs e)

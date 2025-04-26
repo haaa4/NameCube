@@ -108,13 +108,13 @@ namespace NameCube.Mode
             _speechSynthesizer.SpeakAsyncCancelAll();
             if (GlobalVariables.json.AllSettings.Name.Count == 0)
             {
-                MessageBox.Show("I live alone.But I don't fell lonely\n翻译：学生名单为空！");
+                MessageBoxFunction.ShowMessageBoxWarning("I live alone.But I don't fell lonely\n翻译：学生名单为空！");
                 StartButton.IsEnabled = true;
                 return;
             }
             if (GlobalVariables.json.AllSettings.Name.Count == 1)
             {
-                MessageBox.Show("如果你要恶搞某人，建议前往小工具\n翻译：学生名单只有一位！");
+                MessageBoxFunction.ShowMessageBoxWarning("如果你要恶搞某人，建议前往小工具\n翻译：学生名单只有一位！");
                 StartButton.IsEnabled = true;
                 return;
             }

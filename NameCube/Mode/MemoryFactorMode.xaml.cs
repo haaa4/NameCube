@@ -95,7 +95,6 @@ namespace NameCube.Mode
                 string FilePath = System.IO.Path.Combine(GlobalVariables.configDir, "Mode_data", "MemoryFactoryMode");
                 if (!File.Exists(Path.Combine(FilePath, "Memory.json")))
                 {
-                    LogManager.Info("找不到文件");
                     if (GlobalVariables.json.AllSettings.Name.Count <= 1)
                     {
                         this.Dispatcher.Invoke(new Action(() =>
@@ -103,7 +102,7 @@ namespace NameCube.Mode
                             StartButton.IsEnabled = false;
                             ResetButton.IsEnabled = false;
                         }));
-                        System.Windows.Forms.MessageBox.Show("我们，拒 绝 签 字\n翻译：学生名单少于两位，无法初始化");
+                        MessageBoxFunction.ShowMessageBoxWarning("我们，拒 绝 签 字\n翻译：学生名单少于两位，无法初始化");
                         return;
                     }
 
@@ -194,8 +193,7 @@ namespace NameCube.Mode
             catch (Exception ex)
             {
                 // 记录错误或提示用户
-                System.Windows.Forms.MessageBox.Show($"保存配置失败: {ex.Message}");
-                LogManager.Error(ex);
+                MessageBoxFunction.ShowMessageBoxError($"保存配置失败: {ex.Message}");
             }
         }
 
@@ -280,9 +278,6 @@ namespace NameCube.Mode
 
         private void ResetButton_Click(object sender, RoutedEventArgs e)
         {
-            DialogResult result = MessageBox.Show("确定重置概率因子吗？\n（重置概率因子后配置文件不会删除，而是会创建一个备份", "确认", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-            if (result == DialogResult.Yes)
-            {
                 try
                 {
                     Directory.CreateDirectory(Path.Combine(GlobalVariables.configDir, "Mode_data", "MemoryFactoryMode", "Backups"));
@@ -291,15 +286,13 @@ namespace NameCube.Mode
                     File.Delete(Path.Combine(GlobalVariables.configDir, "Mode_data", "MemoryFactoryMode", "Memory.json"));
                     StartButton.IsEnabled = false;
                     ResetButton.IsEnabled = false;
-                    MessageBox.Show("重置成功，请重新打开界面", "完成");
+                    MessageBoxFunction.ShowMessageBoxInfo("重置成功，请重新打开界面");
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("出错" + ex.Message, "错误");
-                    LogManager.Error(ex);
+                    MessageBoxFunction.ShowMessageBoxError("出错" + ex.Message);
                     return;
                 }
-            }
         }
 
 

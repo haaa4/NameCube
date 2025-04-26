@@ -31,6 +31,7 @@ namespace NameCube
         private DispatcherTimer _longPressTimer;
         private Point _dragOffset;
         private bool _isDragging;
+        System.Timers.Timer Hidetimer = new System.Timers.Timer();
         System.Timers.Timer PowerOffTimer = new System.Timers.Timer();
         System.Timers.Timer Ab = new System.Timers.Timer();
         [DllImport("user32.dll")]
@@ -49,9 +50,8 @@ namespace NameCube
             InitializeComponent();
             InitializeBehavior();
             InitializePosition();
-            InitializeTrayIcon();
             Initialize();
-            if (!GlobalVariables.json.StartToDo.Ball)
+            if (!GlobalVariables.json.StartToDo.Ball||GlobalVariables.json.AllSettings.NameCubeMode==1)
             {
                 this.Hide();
                 ShowMainWindowAsync();
@@ -72,6 +72,8 @@ namespace NameCube
             PowerOffTimer.Start();
             Ab.Interval = 10000;
             Ab.Elapsed += Ab_Elapsed;
+            Hidetimer.Elapsed+= HideTimer_Elapsed;
+            Hidetimer.Interval = 3000;
             Directory.CreateDirectory(Path.Combine(GlobalVariables.configDir, "Bird_data", "Image"));
             if (GlobalVariables.json.StartToDo.AlwaysCleanMemory)
             {
@@ -81,37 +83,16 @@ namespace NameCube
 
         private void Ab_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
-            SnapThreshold = SystemParameters.PrimaryScreenWidth/2;
+            SnapThreshold = SystemParameters.PrimaryScreenWidth / 2;
 
             this.Dispatcher.Invoke(new Action(() =>
             {
                 SnapToEdges(0);
                 SnapThreshold = GlobalVariables.json.BirdSettings.AdsorbValue;
             }));
-            
+
         }
 
-        private void InitializeTrayIcon()
-        {
-            _notifyIcon = new NotifyIcon
-            {
-                Icon = System.Drawing.Icon.ExtractAssociatedIcon(System.Windows.Forms.Application.ExecutablePath),
-                Visible = true,
-                Text = "学号魔方"
-            };
-
-            // 添加右键菜单
-            var contextMenu = new ContextMenuStrip();
-            contextMenu.Items.Add("显示窗口", null, (s, e) => ShowMainWindowAsync());
-            contextMenu.Items.Add("小工具", null, (s, e) => ShowToolboxWindowAsync());
-            contextMenu.Items.Add("设置", null, (s, e) => ShowSettingsWindowAsync());
-            contextMenu.Items.Add("重启", null, (s, e) => Restart());
-            contextMenu.Items.Add("退出", null, (s, e) => ExitApp());
-            _notifyIcon.ContextMenuStrip = contextMenu;
-
-            // 双击托盘图标显示窗口
-            _notifyIcon.DoubleClick += (s, e) => ShowMainWindowAsync();
-        }
         private DispatcherTimer _timer;
         private void ExitApp()
         {
@@ -148,7 +129,7 @@ namespace NameCube
 
         private void Bird_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if(GlobalVariables.json.BirdSettings.StartWay==0|| GlobalVariables.json.BirdSettings.StartWay == 3)
+            if (GlobalVariables.json.BirdSettings.StartWay == 0 || GlobalVariables.json.BirdSettings.StartWay == 3)
             {
                 ShowMainWindowAsync();
             }
@@ -156,7 +137,7 @@ namespace NameCube
 
         private void Bird_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if(GlobalVariables.json.BirdSettings.StartWay==1|| GlobalVariables.json.BirdSettings.StartWay == 3|| GlobalVariables.json.BirdSettings.StartWay == 4)
+            if (GlobalVariables.json.BirdSettings.StartWay == 1 || GlobalVariables.json.BirdSettings.StartWay == 3 || GlobalVariables.json.BirdSettings.StartWay == 4)
             {
                 ShowMainWindowAsync();
             }
@@ -167,8 +148,22 @@ namespace NameCube
         {
             // 明确使用WinForms别名
             var screen = WinForms.Screen.PrimaryScreen.WorkingArea;
-            Left = screen.Left;
-            Top = screen.Height / 2 - Height / 2;
+            if (GlobalVariables.json.BirdSettings.StartLocationWay == 0)
+            {
+                Left = screen.Left;
+                Top = screen.Height / 2 - Height / 2;
+            }
+            else if (GlobalVariables.json.BirdSettings.StartLocationWay == 1)
+            {
+                Left = screen.Right - this.Width;
+                Top = screen.Height / 2 - Height / 2;
+            }
+            else
+            {
+                Left = GlobalVariables.json.BirdSettings.StartLocationX;
+                Top = GlobalVariables.json.BirdSettings.StartLocationY;
+            }
+
         }
         private void OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
@@ -186,6 +181,9 @@ namespace NameCube
         {
             // 结束拖动
             _isDragging = false;
+            GlobalVariables.json.BirdSettings.StartLocationX = Left;
+            GlobalVariables.json.BirdSettings.StartLocationY = Top;
+            GlobalVariables.SaveJson();
             ReleaseMouseCapture();
             _longPressTimer.Stop();
 
@@ -206,7 +204,7 @@ namespace NameCube
         private void LongPress_Tick(object sender, EventArgs e)
         {
             _longPressTimer.Stop();
-            if(GlobalVariables.json.BirdSettings.StartWay==2||GlobalVariables.json.BirdSettings.StartWay==4)
+            if (GlobalVariables.json.BirdSettings.StartWay == 2 || GlobalVariables.json.BirdSettings.StartWay == 4)
             {
                 ShowMainWindowAsync();
             }
@@ -270,53 +268,11 @@ namespace NameCube
                 {
                     mainWindow.Show();
                     mainWindow.Activate();
-                    mainWindow.NavigationMenu.Navigate(typeof(Mode.OnePeopleMode));
+                    mainWindow.NavigationMenu.Navigate(typeof(Mode.Home));
                 }
             });
         }
-        private async Task ShowSettingsWindowAsync()
-        {
-            await Application.Current.Dispatcher.InvokeAsync(() =>
-            {
-                var settingsWindow = Application.Current.Windows.OfType<SettingsWindow>().FirstOrDefault();
-
-                if (settingsWindow == null)
-                {
-                    // 创建新实例
-                    settingsWindow = new SettingsWindow();
-                }
-
-                // 确保窗口可见并激活
-                settingsWindow.Show();
-                settingsWindow.Activate();
-                settingsWindow.WindowState = WindowState.Normal;
-            });
-        }
-        private async Task ShowToolboxWindowAsync()
-        {
-            await Application.Current.Dispatcher.InvokeAsync(() =>
-            {
-                var toolboxWindow = Application.Current.Windows.OfType<ToolBox.ToolboxWindow>().FirstOrDefault();
-
-                if (toolboxWindow == null)
-                {
-                    // 创建新实例
-                    toolboxWindow = new ToolBox.ToolboxWindow();
-                }
-
-                // 确保窗口可见并激活
-                toolboxWindow.Show();
-                toolboxWindow.Activate();
-                toolboxWindow.WindowState = WindowState.Normal;
-            });
-        }
-        private void Restart()
-        {
-            string[] args = Environment.GetCommandLineArgs();
-            File.WriteAllText(Path.Combine(GlobalVariables.configDir, "START"), "The cake is a lie");
-            Application.Current.Shutdown();
-            Process.Start(Application.ResourceAssembly.Location, string.Join(" ", args.Skip(1)));
-        }
+        
         protected override void OnClosed(EventArgs e)
         {
             _longPressTimer.Stop();
@@ -339,11 +295,24 @@ namespace NameCube
                 {
                     PowerOffWindow powerOffWindow = new PowerOffWindow();
                     powerOffWindow.Show();
-
+                    powerOffWindow.Activate();
+                    powerOffWindow.WindowState=WindowState.Normal;
                 }));
                 PowerOffTimer.Stop();
 
             }
+        }
+        private void HideTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+
+                this.Dispatcher.Invoke(new Action(() =>
+                {
+                    rec1.Visibility = Visibility.Collapsed;
+                    rec2.Visibility = Visibility.Collapsed;
+                    rec3.Visibility = Visibility.Collapsed;
+                    rec4.Visibility = Visibility.Collapsed;
+
+                }));
         }
         public void Initialize()
         {
@@ -358,12 +327,29 @@ namespace NameCube
             }
             else
             {
-                ImageBox.Source = new BitmapImage(new Uri("pack://application:,,,/icon.ico"));
+                ImageBox.Source = new BitmapImage(new Uri("pack://application:,,,/BallPicture.png"));
             }
-            SnapThreshold=GlobalVariables.json.BirdSettings.AdsorbValue;
-            ImageBox.Opacity=GlobalVariables.json.BirdSettings.diaphaneity.ToDouble()/100;
+            SnapThreshold = GlobalVariables.json.BirdSettings.AdsorbValue;
+            ImageBox.Opacity = GlobalVariables.json.BirdSettings.diaphaneity.ToDouble() / 100;
+            ImageBox.Height = GlobalVariables.json.BirdSettings.Height;
+            ImageBox.Width = GlobalVariables.json.BirdSettings.Width;
+            Width = GlobalVariables.json.BirdSettings.Width + 20;
+            Height=GlobalVariables.json.BirdSettings.Height + 20;
 
-
+        }
+        public void ShowReRectangle()
+        {
+            Hidetimer.Stop();
+            rec1.Visibility = Visibility.Visible;
+            rec2.Visibility = Visibility.Visible;
+            rec3.Visibility = Visibility.Visible;
+            rec4.Visibility = Visibility.Visible;
+            ImageBox.Height = GlobalVariables.json.BirdSettings.Height;
+            ImageBox.Width = GlobalVariables.json.BirdSettings.Width;
+            Width = GlobalVariables.json.BirdSettings.Width + 20;
+            Height = GlobalVariables.json.BirdSettings.Height + 20;
+            Hidetimer.Interval = 3000;
+            Hidetimer.Start();
         }
     }
 }

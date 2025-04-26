@@ -1,27 +1,48 @@
-﻿<Page x:Class="NameCube.ToolBox.SpeechToolbox"
-      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:NameCube.ToolBox"
-      xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
-      mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
-      Title="SpeechToolbox">
+﻿<Page
+    x:Class="NameCube.ToolBox.SpeechToolbox"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:NameCube.ToolBox"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    Title="SpeechToolbox"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
 
     <StackPanel>
-        <ui:TextBlock Text="自定义朗读" FontSize="20" Margin="5"/>
+        <ui:TextBlock
+            Margin="5"
+            FontSize="20"
+            Text="自定义朗读" />
         <Grid Height="40">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="5*"/>
-                <ColumnDefinition Width="1*"/>
-                <ColumnDefinition Width="5*"/>
-                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="5*" />
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="5*" />
+                <ColumnDefinition Width="1*" />
             </Grid.ColumnDefinitions>
-            <ui:TextBox Margin="3" x:Name="Read1" KeyDown="Read1_KeyDown"/>
-            <ui:TextBlock Text="+" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" />
-            <ui:TextBox Margin="3" Grid.Column="2" x:Name="Read2" KeyDown="Read2_KeyDown"/>
-            <ui:Button Content="朗读" Grid.Column="3" x:Name="ReadButton" Click="ReadButton_Click"/>
+            <ui:TextBox
+                x:Name="Read1"
+                Margin="3"
+                KeyDown="Read1_KeyDown" />
+            <ui:TextBlock
+                Grid.Column="1"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                FontSize="20"
+                Text="+" />
+            <ui:TextBox
+                x:Name="Read2"
+                Grid.Column="2"
+                Margin="3"
+                KeyDown="Read2_KeyDown" />
+            <ui:Button
+                x:Name="ReadButton"
+                Grid.Column="3"
+                Click="ReadButton_Click"
+                Content="朗读" />
 
         </Grid>
     </StackPanel>

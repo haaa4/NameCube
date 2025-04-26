@@ -1,64 +1,90 @@
-﻿<Page x:Class="NameCube.Setting.Other"
-      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
-      xmlns:local="clr-namespace:NameCube.Setting"
-      mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
-      Title="Other">
+﻿<Page
+    x:Class="NameCube.Setting.Other"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:NameCube.Setting"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    Title="Other"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
 
     <StackPanel>
         <ui:CardControl
-Margin="4"
-Padding="20,10,20,10"
-Icon="{ui:SymbolIcon Symbol=CalendarSettings20}">
+            x:Name="StartActionCard"
+            Margin="4"
+            Padding="20,10,20,10"
+            Icon="{ui:SymbolIcon Symbol=CalendarSettings20}">
             <ui:CardControl.Header>
                 <StackPanel>
                     <ui:TextBlock
-            Margin="0"
-            FontTypography="BodyStrong"
-            Text="开机自启"
-            TextWrapping="WrapWithOverflow" />
+                        Margin="0"
+                        FontTypography="BodyStrong"
+                        Text="开机自启"
+                        TextWrapping="WrapWithOverflow" />
                     <ui:TextBlock
-            Appearance="Secondary"
-            Text="开机时将自动启动"
-            TextWrapping="WrapWithOverflow" />
+                        Appearance="Secondary"
+                        Text="开机时将自动启动"
+                        TextWrapping="WrapWithOverflow" />
                 </StackPanel>
             </ui:CardControl.Header>
             <ui:ToggleSwitch
-       HorizontalContentAlignment="Left"
-       IsEnabled="True"
-       OffContent="关"
-       OnContent="开" 
-       x:Name="StartCheck"
-           Click="StartCheck_Click"/>
+                x:Name="StartCheck"
+                HorizontalContentAlignment="Left"
+                Click="StartCheck_Click"
+                IsEnabled="True"
+                OffContent="关"
+                OnContent="开" />
         </ui:CardControl>
         <ui:CardControl
-Margin="4"
-Padding="20,10,20,10"
-Icon="{ui:SymbolIcon Symbol=PaddingTop24}">
+            x:Name="TopActionCard"
+            Margin="4"
+            Padding="20,10,20,10"
+            Icon="{ui:SymbolIcon Symbol=PaddingTop24}">
             <ui:CardControl.Header>
                 <StackPanel>
                     <ui:TextBlock
-            Margin="0"
-            FontTypography="BodyStrong"
-            Text="窗口置顶"
-            TextWrapping="WrapWithOverflow" />
+                        Margin="0"
+                        FontTypography="BodyStrong"
+                        Text="窗口置顶"
+                        TextWrapping="WrapWithOverflow" />
                     <ui:TextBlock
-            Appearance="Secondary"
-            Text="主窗口始终置顶"
-            TextWrapping="WrapWithOverflow" />
+                        Appearance="Secondary"
+                        Text="主窗口始终置顶"
+                        TextWrapping="WrapWithOverflow" />
                 </StackPanel>
             </ui:CardControl.Header>
             <ui:ToggleSwitch
-       HorizontalContentAlignment="Left"
-       IsEnabled="True"
-       OffContent="关"
-       OnContent="开" 
-       x:Name="TopCheck"
-           Click="TopCheck_Click"/>
+                x:Name="TopCheck"
+                HorizontalContentAlignment="Left"
+                Click="TopCheck_Click"
+                IsEnabled="True"
+                OffContent="关"
+                OnContent="开" />
+        </ui:CardControl>
+        <ui:CardControl
+            Margin="4"
+            Padding="20,10,20,10"
+            Icon="{ui:SymbolIcon Symbol=AppRecent24}">
+            <ui:CardControl.Header>
+                <StackPanel>
+                    <ui:TextBlock
+                        Margin="0"
+                        FontTypography="BodyStrong"
+                        Text="运行模式"
+                        TextWrapping="WrapWithOverflow" />
+                    <ui:TextBlock
+                        Appearance="Secondary"
+                        Text="切换点鸣魔方的运行模式（切换后将重启）"
+                        TextWrapping="WrapWithOverflow" />
+                </StackPanel>
+            </ui:CardControl.Header>
+            <ComboBox x:Name="ModeCombox" SelectionChanged="ComboBox_SelectionChanged">
+                <ComboBoxItem Content="长期运行模式" />
+                <ComboBoxItem Content="单次运行模式" />
+            </ComboBox>
         </ui:CardControl>
     </StackPanel>
 </Page>
