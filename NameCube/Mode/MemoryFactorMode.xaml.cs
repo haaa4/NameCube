@@ -151,7 +151,7 @@ namespace NameCube.Mode
                     Count.Text = "总概率因子数量:" + Trainings.Count.ToString();
                     if (MaxIndex != -1)
                     {
-                        MaxName.Text = "当前概率最高:" + thisModeJson[MaxIndex].Name + "---" + thisModeJson[MaxIndex].Factor.ToString();
+                        MaxName.Text = "当前概率最高:" + thisModeJson[MaxIndex].Name + "---" + thisModeJson[MaxIndex].Factor.ToString() + "(" + (Math.Round((double)thisModeJson[MaxIndex].Factor / Trainings.Count * 100, 2)).ToString() + "%)";
                     }
                 });
 
@@ -261,7 +261,7 @@ namespace NameCube.Mode
                 }
                 if (MaxIndex != -1)
                 {
-                    MaxName.Text = "当前概率最高:" + thisModeJson[MaxIndex].Name + "---" + thisModeJson[MaxIndex].Factor.ToString();
+                    MaxName.Text = "当前概率最高:" + thisModeJson[MaxIndex].Name + "---" + thisModeJson[MaxIndex].Factor.ToString() + "(" + (Math.Round((double)thisModeJson[MaxIndex].Factor / Trainings.Count * 100,2)).ToString() + "%)";
                 }
                 SaveThisJson();
                 StartButton.IsEnabled = true;

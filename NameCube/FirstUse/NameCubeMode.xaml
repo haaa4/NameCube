@@ -29,7 +29,7 @@
             HorizontalAlignment="Left"
             LoadedBehavior="Manual"
             MediaEnded="Media1_MediaEnded"
-            Source="pack://application:,,,/video/1.mp4" />
+            Source="pack://application:,,,/Video/1.mp4" />
         <RadioButton
             Margin="20,20,20,0"
             Click="RadioButton_Click"
@@ -48,6 +48,6 @@
             LoadedBehavior="Manual"
             MediaEnded="Media2_MediaEnded"
             MediaFailed="Media2_MediaFailed"
-            Source="pack://application:,,,/video/2.mp4" />
+            Source="pack://application:,,,/Video/2.mp4" />
     </StackPanel>
 </Page>
