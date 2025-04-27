@@ -1,0 +1,15 @@
+D:\输出\Debug\NameUpdate.exe.config
+D:\输出\Debug\NameUpdate.exe
+D:\输出\Debug\NameUpdate.pdb
+D:\NameCube\NameUpdate\obj\Debug\NameUpdate.csproj.AssemblyReference.cache
+D:\NameCube\NameUpdate\obj\Debug\MainWindow.g.cs
+D:\NameCube\NameUpdate\obj\Debug\App.g.cs
+D:\NameCube\NameUpdate\obj\Debug\NameUpdate_MarkupCompile.cache
+D:\NameCube\NameUpdate\obj\Debug\NameUpdate_MarkupCompile.lref
+D:\NameCube\NameUpdate\obj\Debug\MainWindow.baml
+D:\NameCube\NameUpdate\obj\Debug\NameUpdate.g.resources
+D:\NameCube\NameUpdate\obj\Debug\NameUpdate.Properties.Resources.resources
+D:\NameCube\NameUpdate\obj\Debug\NameUpdate.csproj.GenerateResource.cache
+D:\NameCube\NameUpdate\obj\Debug\NameUpdate.csproj.CoreCompileInputs.cache
+D:\NameCube\NameUpdate\obj\Debug\NameUpdate.exe
+D:\NameCube\NameUpdate\obj\Debug\NameUpdate.pdb
