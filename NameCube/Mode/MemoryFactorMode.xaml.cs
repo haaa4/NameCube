@@ -254,7 +254,7 @@ namespace NameCube.Mode
                     Trainings.Add(thisModeJson[GetRandom].Name);
                 }
                 thisModeJson[GetRandom].Factor *= 2;
-                multiply.Text= "概率双倍增加:" + thisModeJson[GetRandom].Name + "---" + Past.ToString() + "→" + thisModeJson[GetRandom].Factor.ToString();
+                multiply.Text= "概率双倍增加:" + thisModeJson[GetRandom].Name + "---" + Past.ToString() + "→" + thisModeJson[GetRandom].Factor.ToString() + "(" + (Math.Round((double)thisModeJson[GetRandom].Factor / Trainings.Count * 100, 2)).ToString() + "%)";
                 if (thisModeJson[GetRandom].Factor>max)
                 {
                     MaxIndex = GetRandom;
