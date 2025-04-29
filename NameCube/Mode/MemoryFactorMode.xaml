@@ -72,14 +72,15 @@
             FontWeight="Black" />
         <ui:DataGrid
             Grid.RowSpan="2"
+
             Grid.Column="2"
             AutoGenerateColumns="False"
             IsReadOnly="True"
             IsSynchronizedWithCurrentItem="False"
             ItemsSource="{Binding Source={StaticResource DescendingView}}">
             <ui:DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding Name}" Header="姓名" />
-                <DataGridTextColumn Binding="{Binding Factor}" Header="因子" />
+                <DataGridTextColumn Binding="{Binding Name}" Header="姓名"             FontSize="25"/>
+                <DataGridTextColumn Binding="{Binding Factor}" Header="因子" FontSize="25" />
             </ui:DataGrid.Columns>
         </ui:DataGrid>
         <StackPanel

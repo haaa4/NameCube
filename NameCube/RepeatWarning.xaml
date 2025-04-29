@@ -16,11 +16,14 @@
             Title="点鸣魔方"
             Grid.Row="0"
             Icon="{ui:ImageIcon 'icon.png'}" />
-        <TextBlock Margin="10,0,0,0" Text="点鸣魔方已经启动，应用暂不支持多开，请检查您的用户托盘。如果未发现，请尝试任务管理器关闭应用" />
+        <TextBlock Margin="10,0,0,0" Text="点鸣魔方已经启动，应用暂不支持多开，如果你是长期运行模式，请检查您的用户托盘（如下图）。如果未发现，请尝试任务管理器关闭应用" 
+                   x:Name="Text"
+                   TextWrapping="Wrap"/>
         <ui:Image
             MaxHeight="200"
             Margin="20"
-            Source="Image/RepeatWarning.png" />
+            Source="Image/RepeatWarning.png" 
+            x:Name="Image"/>
         <ui:Button
             Margin="20,0,0,0"
             HorizontalAlignment="Left"

@@ -3,6 +3,30 @@
   "WorkspaceRootPath": "D:\\NameCube\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{710DCBE6-2310-445D-88E0-CE43D37DDABD}|NameCube\\NameCube.csproj|d:\\namecube\\namecube\\repeatwarning.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{710DCBE6-2310-445D-88E0-CE43D37DDABD}|NameCube\\NameCube.csproj|solutionrelative:namecube\\repeatwarning.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{710DCBE6-2310-445D-88E0-CE43D37DDABD}|NameCube\\NameCube.csproj|D:\\NameCube\\namecube\\app.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{710DCBE6-2310-445D-88E0-CE43D37DDABD}|NameCube\\NameCube.csproj|solutionrelative:namecube\\app.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{710DCBE6-2310-445D-88E0-CE43D37DDABD}|NameCube\\NameCube.csproj|D:\\NameCube\\namecube\\app.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{710DCBE6-2310-445D-88E0-CE43D37DDABD}|NameCube\\NameCube.csproj|solutionrelative:namecube\\app.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{710DCBE6-2310-445D-88E0-CE43D37DDABD}|NameCube\\NameCube.csproj|D:\\NameCube\\namecube\\repeatwarning.xaml.cs||{8B382828-6202-11D1-8870-0000F87579D2}|",
+      "RelativeMoniker": "D:0:0:{710DCBE6-2310-445D-88E0-CE43D37DDABD}|NameCube\\NameCube.csproj|solutionrelative:namecube\\repeatwarning.xaml.cs||{8B382828-6202-11D1-8870-0000F87579D2}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{710DCBE6-2310-445D-88E0-CE43D37DDABD}|NameCube\\NameCube.csproj|D:\\NameCube\\namecube\\mode\\memorymode.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{710DCBE6-2310-445D-88E0-CE43D37DDABD}|NameCube\\NameCube.csproj|solutionrelative:namecube\\mode\\memorymode.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{710DCBE6-2310-445D-88E0-CE43D37DDABD}|NameCube\\NameCube.csproj|D:\\NameCube\\namecube\\mode\\memoryfactormode.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{710DCBE6-2310-445D-88E0-CE43D37DDABD}|NameCube\\NameCube.csproj|solutionrelative:namecube\\mode\\memoryfactormode.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{710DCBE6-2310-445D-88E0-CE43D37DDABD}|NameCube\\NameCube.csproj|D:\\NameCube\\namecube\\mode\\memoryfactormode.xaml.cs||{8B382828-6202-11D1-8870-0000F87579D2}|",
       "RelativeMoniker": "D:0:0:{710DCBE6-2310-445D-88E0-CE43D37DDABD}|NameCube\\NameCube.csproj|solutionrelative:namecube\\mode\\memoryfactormode.xaml.cs||{8B382828-6202-11D1-8870-0000F87579D2}|"
     }
@@ -14,7 +38,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Bookmark",
@@ -26,7 +50,77 @@
             },
             {
               "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "RepeatWarning.xaml.cs",
+              "DocumentMoniker": "D:\\NameCube\\NameCube\\RepeatWarning.xaml.cs",
+              "RelativeDocumentMoniker": "NameCube\\RepeatWarning.xaml.cs",
+              "ToolTip": "D:\\NameCube\\NameCube\\RepeatWarning.xaml.cs",
+              "RelativeToolTip": "NameCube\\RepeatWarning.xaml.cs",
+              "ViewState": "AgIAAAwAAAAAAAAAAADwvxsAAAA4AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-29T04:34:41.095Z"
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "RepeatWarning.xaml",
+              "DocumentMoniker": "D:\\NameCube\\NameCube\\RepeatWarning.xaml",
+              "RelativeDocumentMoniker": "NameCube\\RepeatWarning.xaml",
+              "ToolTip": "D:\\NameCube\\NameCube\\RepeatWarning.xaml",
+              "RelativeToolTip": "NameCube\\RepeatWarning.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-04-29T04:33:58.458Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "App.xaml.cs",
+              "DocumentMoniker": "D:\\NameCube\\NameCube\\App.xaml.cs",
+              "RelativeDocumentMoniker": "NameCube\\App.xaml.cs",
+              "ToolTip": "D:\\NameCube\\NameCube\\App.xaml.cs",
+              "RelativeToolTip": "NameCube\\App.xaml.cs",
+              "ViewState": "AgIAABwAAAAAAAAAAAAIwD4AAAAlAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-29T04:33:33.311Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "App.xaml",
+              "DocumentMoniker": "D:\\NameCube\\NameCube\\App.xaml",
+              "RelativeDocumentMoniker": "NameCube\\App.xaml",
+              "ToolTip": "D:\\NameCube\\NameCube\\App.xaml",
+              "RelativeToolTip": "NameCube\\App.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-04-29T04:33:30.448Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "MemoryMode.xaml",
+              "DocumentMoniker": "D:\\NameCube\\NameCube\\Mode\\MemoryMode.xaml",
+              "RelativeDocumentMoniker": "NameCube\\Mode\\MemoryMode.xaml",
+              "ToolTip": "D:\\NameCube\\NameCube\\Mode\\MemoryMode.xaml",
+              "RelativeToolTip": "NameCube\\Mode\\MemoryMode.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-04-29T04:32:18.38Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "MemoryFactorMode.xaml",
+              "DocumentMoniker": "D:\\NameCube\\NameCube\\Mode\\MemoryFactorMode.xaml",
+              "RelativeDocumentMoniker": "NameCube\\Mode\\MemoryFactorMode.xaml",
+              "ToolTip": "D:\\NameCube\\NameCube\\Mode\\MemoryFactorMode.xaml",
+              "RelativeToolTip": "NameCube\\Mode\\MemoryFactorMode.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-04-29T03:34:04.768Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
               "Title": "MemoryFactorMode.xaml.cs",
               "DocumentMoniker": "D:\\NameCube\\NameCube\\Mode\\MemoryFactorMode.xaml.cs",
               "RelativeDocumentMoniker": "NameCube\\Mode\\MemoryFactorMode.xaml.cs",
@@ -34,8 +128,7 @@
               "RelativeToolTip": "NameCube\\Mode\\MemoryFactorMode.xaml.cs",
               "ViewState": "AgIAAOgAAAAAAAAAAAAmwPcAAAAwAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-27T04:49:20.846Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-27T04:49:20.846Z"
             }
           ]
         },

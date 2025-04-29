@@ -17,11 +17,16 @@ namespace NameCube
     /// <summary>
     /// RepeatWarning.xaml 的交互逻辑
     /// </summary>
-    public partial class RepeatWarning 
+    public partial class RepeatWarning
     {
         public RepeatWarning()
         {
             InitializeComponent();
+            if (GlobalVariables.json.AllSettings.NameCubeMode == 1)
+            {
+                Text.Text = "点鸣魔方已经启动，请勿再次启动";
+                Image.Visibility = Visibility.Collapsed;
+            }
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

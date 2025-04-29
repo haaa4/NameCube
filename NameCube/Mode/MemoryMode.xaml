@@ -93,7 +93,8 @@
                 <DataGridTextColumn
                     Width="auto"
                     Binding="{Binding}"
-                    Header="姓名" />
+                    Header="姓名"
+                    FontSize="35"/>
             </ui:DataGrid.Columns>
         </ui:DataGrid>
         <ui:ContentDialog
