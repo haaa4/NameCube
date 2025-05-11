@@ -47,7 +47,18 @@ namespace NameCube
                 //关机
                 ProcessStartInfo startInfo = new ProcessStartInfo();
                 startInfo.FileName = "cmd.exe"; // 使用cmd.exe
-                startInfo.Arguments = "/c shutdown /s /t 0"; // 参数：/s 表示关机，/t 0 表示立即关机
+                if(GlobalVariables.json.StartToDo.ShutDownWay==0)
+                {
+                    startInfo.Arguments = "/c shutdown /s /t 0"; // 参数：/s 表示关机，/t 0 表示立即关机
+                }
+                else if(GlobalVariables.json.StartToDo.ShutDownWay==1)
+                {
+                    startInfo.Arguments = "/c shutdown /s"; // 参数：/s 表示关机，/t 0 表示立即关机
+                }
+                else
+                {
+                    startInfo.Arguments = "/c shutdown /s /f /t 0";
+                }
                 startInfo.CreateNoWindow = true; // 不显示命令行窗口
                 startInfo.UseShellExecute = false; // 不使用Shell启动进程
 
@@ -65,7 +76,18 @@ namespace NameCube
             //关机
             ProcessStartInfo startInfo = new ProcessStartInfo();
             startInfo.FileName = "cmd.exe"; // 使用cmd.exe
-            startInfo.Arguments = "/c shutdown /s /t 0 "; // 参数：/s 表示关机，/t 0 表示立即关机
+            if (GlobalVariables.json.StartToDo.ShutDownWay == 0)
+            {
+                startInfo.Arguments = "/c shutdown /s /t 0"; // 参数：/s 表示关机，/t 0 表示立即关机
+            }
+            else if (GlobalVariables.json.StartToDo.ShutDownWay == 1)
+            {
+                startInfo.Arguments = "/c shutdown /s"; // 参数：/s 表示关机，/t 0 表示立即关机
+            }
+            else
+            {
+                startInfo.Arguments = "/c shutdown /s /f /t 0";
+            }
             startInfo.CreateNoWindow = true; // 不显示命令行窗口
             startInfo.UseShellExecute = false; // 不使用Shell启动进程
 

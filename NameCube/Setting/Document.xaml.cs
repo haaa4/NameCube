@@ -81,6 +81,7 @@ namespace NameCube.Setting
                 {
                     try
                     {
+                        var SevenZipCompressor=new SevenZipCompressor(null);
                         SevenZipCompressor.Zip(new List<string>() { GlobalVariables.configDir }, saveFileDialog.FileName);
                         MessageBoxFunction.ShowMessageBoxInfo("保存成功");
                     }
@@ -105,6 +106,7 @@ namespace NameCube.Setting
                 {
                     Directory.Delete(GlobalVariables.configDir, true);
                     Directory.CreateDirectory(GlobalVariables.configDir);
+                    var SevenZipCompressor = new SevenZipCompressor(null);
                     SevenZipCompressor.Decompress(openFileDialog.FileName, GlobalVariables.configDir);
                     MessageBoxFunction.ShowMessageBoxInfo("覆盖成功，请自行启动软件");
                     System.Windows.Application.Current.Shutdown();

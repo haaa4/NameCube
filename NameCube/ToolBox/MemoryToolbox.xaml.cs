@@ -45,7 +45,7 @@ namespace NameCube.ToolBox
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             LogManager.Info("开始内存清理......");
-            Windows.ClearMemorySilent();
+            Masuit.Tools.Win32.Windows.ClearMemory();
             var snackbar = new Snackbar(SnackbarPresenterHost2)
             {
                 Content = "内存清理完成", // 设置提示内容

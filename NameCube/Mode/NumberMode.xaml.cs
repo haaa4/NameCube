@@ -52,6 +52,10 @@ namespace NameCube.Mode
                 NumberBox.IsEnabled = false;
                 Button1.IsEnabled = false;
             }
+            NowNumberText.Foreground = GlobalVariables.json.AllSettings.color;
+            FinishText.Foreground = GlobalVariables.json.AllSettings.color;
+            NowNumberText.FontFamily = GlobalVariables.json.AllSettings.Font;
+            FinishText.FontFamily = GlobalVariables.json.AllSettings.Font;
         }
 
         private void Timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)

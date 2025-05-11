@@ -23,11 +23,13 @@
             </CollectionViewSource.LiveSortingProperties>
             <CollectionViewSource.IsLiveSortingRequested>True</CollectionViewSource.IsLiveSortingRequested>
         </CollectionViewSource>
+
     </Page.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="4*" />
-            <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="3*" />
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="200" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="300" />
@@ -50,6 +52,12 @@
             Text="XXX"
             Visibility="Hidden" />
         <TextBlock
+            x:Name="LastFactorText"
+            Grid.Row="1"
+            HorizontalAlignment="Center"
+            FontSize="30"
+            Text="......" />
+        <!--<TextBlock
             x:Name="MaxName"
             FontSize="30"
             Text="当前概率最高:" />
@@ -57,7 +65,7 @@
             x:Name="multiply"
             Margin="0,32,0,0"
             FontSize="30"
-            Text="概率双倍增加：" />
+            Text="概率UP：" />-->
         <ui:Button
             x:Name="StartButton"
             Grid.Row="1"
@@ -72,26 +80,27 @@
             FontWeight="Black" />
         <ui:DataGrid
             Grid.RowSpan="2"
-
-            Grid.Column="2"
+            Grid.Column="1"
             AutoGenerateColumns="False"
             IsReadOnly="True"
             IsSynchronizedWithCurrentItem="False"
             ItemsSource="{Binding Source={StaticResource DescendingView}}">
             <ui:DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding Name}" Header="姓名"             FontSize="25"/>
-                <DataGridTextColumn Binding="{Binding Factor}" Header="因子" FontSize="25" />
+                <DataGridTextColumn
+                    Binding="{Binding Name}"
+                    FontSize="25"
+                    Header="姓名" />
+                <DataGridTextColumn
+                    Binding="{Binding Factor}"
+                    FontSize="25"
+                    Header="因子" />
             </ui:DataGrid.Columns>
         </ui:DataGrid>
         <StackPanel
             Grid.Row="2"
             Grid.Column="1"
             Grid.ColumnSpan="2">
-            <TextBlock
-                x:Name="Count"
-                Margin="5,20,0,0"
-                FontSize="18"
-                Text="总概率因子数量：" />
+
             <ui:Button
                 x:Name="ResetButton"
                 Grid.Row="1"
@@ -104,7 +113,7 @@
                 <ui:FlyoutService.Flyout>
                     <ui:Flyout Placement="Bottom">
                         <StackPanel>
-                            <TextBlock HorizontalAlignment="Left" Text="确定重置概率因子吗？（重置概率因子后配置文件不会删除，而是会创建一个备份）" />
+                            <TextBlock HorizontalAlignment="Left" Text="确定重置概率因子吗？（重置概率因子后配置文件不会删除，而是会创建一个备份,但保底数据会被清空）" />
                             <Button Click="ResetButton_Click" Content="确定" />
                         </StackPanel>
                     </ui:Flyout>
@@ -115,7 +124,98 @@
                 Click="CheckBox_Click"
                 Content="启用朗读" />
         </StackPanel>
+        <StackPanel Grid.RowSpan="3" Grid.Column="2">
+            <TextBlock
+                HorizontalAlignment="Center"
+                FontSize="30"
+                Text="当前概率最高" />
+            <TextBlock
+                x:Name="MaxIndexName"
+                HorizontalAlignment="Center"
+                FontSize="30"
+                Text="XXX" />
+            <TextBlock
+                x:Name="MaxIndexText"
+                HorizontalAlignment="Center"
+                FontSize="30"
+                Text="XXX" />
+            <TextBlock
+                HorizontalAlignment="Center"
+                FontSize="20"
+                Text="真实概率" />
+            <TextBlock
+                x:Name="MaxIndexRealProbability"
+                HorizontalAlignment="Center"
+                FontSize="20"
+                Text="XXX" />
+            <TextBlock
+                x:Name="Mininum"
+                HorizontalAlignment="Center"
+                FontSize="20"
+                Text="距离进入保底阶段"
+                Visibility="Visible" />
 
+            <TextBlock
+                x:Name="MinimumText"
+                HorizontalAlignment="Center"
+                FontSize="20"
+                Text="XXX"
+                Visibility="Visible" />
+
+            <TextBlock
+                x:Name="MininumState"
+                Margin="5,0,5,0"
+                HorizontalAlignment="Center"
+                FontSize="20"
+                FontStyle="Italic"
+                Text="当前进入保底阶段，每抽一次概率增加25%"
+                TextWrapping="Wrap"
+                Visibility="Collapsed" />
+            <Rectangle Height="3" Fill="Black" />
+            <TextBlock
+                Margin="0,10,0,0"
+                HorizontalAlignment="Center"
+                FontSize="30"
+                Text="概率UP" />
+            <TextBlock
+                x:Name="UpName"
+                HorizontalAlignment="Center"
+                FontSize="30"
+                Text="XXX" />
+            <TextBlock
+                x:Name="UpFactor"
+                HorizontalAlignment="Center"
+                FontSize="30"
+                Text="XXX" />
+            <TextBlock
+                HorizontalAlignment="Center"
+                FontSize="20"
+                Text="真实概率" />
+            <TextBlock
+                x:Name="UpRealProbability"
+                HorizontalAlignment="Center"
+                FontSize="20"
+                Text="XXX" />
+            <Rectangle Height="3" Fill="Black" />
+            <TextBlock
+                Margin="0,10,0,0"
+                HorizontalAlignment="Center"
+                FontSize="25"
+                Text="总概率因子数量" />
+            <TextBlock
+                x:Name="Count"
+                HorizontalAlignment="Center"
+                FontSize="18"
+                Text="" />
+            <Rectangle Height="3" Fill="Black" />
+            <TextBlock
+                Margin="5,10,5,0"
+                HorizontalAlignment="Center"
+                FontSize="20"
+                FontStyle="Italic"
+                Text="真实概率=概率因子数量÷总概率因子数量"
+                TextWrapping="Wrap" />
+        </StackPanel>
 
     </Grid>
 </Page>

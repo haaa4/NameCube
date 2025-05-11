@@ -1,0 +1,62 @@
+﻿<Page
+    x:Class="NameCube.Setting.Updata"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:NameCube.Setting"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    Title="Updata"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+
+    <StackPanel>
+        <TextBlock
+            HorizontalAlignment="Center"
+            FontSize="30"
+            Text="当前版本" />
+        <TextBlock
+            x:Name="VersionText"
+            HorizontalAlignment="Center"
+            FontSize="50"
+            Text="Unknow" />
+        <ProgressBar
+            x:Name="NowProgressBar"
+            Height="10"
+            Margin="10,0"
+            Maximum="100"
+            Minimum="0"
+            Value="100" />
+        <TextBlock
+            x:Name="CaseText"
+            Margin="10,0"
+            FontSize="20"
+            Text="当前已是最新版本" />
+        <TextBlock
+            x:Name="CheckText"
+            Margin="10,0"
+            FontSize="20"
+            Text="上次检查时间：Unknow" />
+        <ui:Button
+            x:Name="CheckButton"
+            Margin="10"
+            Appearance="Primary"
+            Click="CheckButton_Click"
+            Content="检查更新"
+            FontWeight="Black" />
+        <ui:Button Margin="10,0,0,0" Content="从本地安装">
+            <ui:FlyoutService.Flyout>
+                <ui:Flyout Placement="Bottom">
+                    <StackPanel>
+                        <TextBlock HorizontalAlignment="Left" Text="请确保更新文件是正确的，否则可能导致软件丢失！" />
+                        <Button
+                            x:Name="UpdataFromComputerButton"
+                            Click="UpdataFromComputerButton_Click"
+                            Content="继续" />
+                    </StackPanel>
+                </ui:Flyout>
+            </ui:FlyoutService.Flyout>
+        </ui:Button>
+    </StackPanel>
+</Page>

@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Drawing;
 using System.Speech.Synthesis;
 using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace NameCube.Mode
 {
@@ -34,6 +36,7 @@ namespace NameCube.Mode
             SpeechCheck.IsEnabled = !GlobalVariables.json.OnePeopleModeSettings.Locked;
             WaitCheck.IsEnabled = !GlobalVariables.json.OnePeopleModeSettings.Locked;
             timer = new System.Timers.Timer(GlobalVariables.json.OnePeopleModeSettings.Speed);
+            
             timer.AutoReset = true;
             timer.Elapsed += Timer_Elapsed;
             if (GlobalVariables.json.OnePeopleModeSettings.Speed == 0)
@@ -46,7 +49,10 @@ namespace NameCube.Mode
                 _speechSynthesizer.Rate = GlobalVariables.json.AllSettings.Speed; // 语速 (-10 ~ 10)
                 _speechSynthesizer.Volume = GlobalVariables.json.AllSettings.Volume;
             }
-
+            NowNumberText.Foreground = GlobalVariables.json.AllSettings.color;
+            FinishText.Foreground = GlobalVariables.json.AllSettings.color;
+            NowNumberText.FontFamily = GlobalVariables.json.AllSettings.Font;
+            FinishText.FontFamily = GlobalVariables.json.AllSettings.Font;
         }
 
 

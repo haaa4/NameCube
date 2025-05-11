@@ -8,10 +8,10 @@
     xmlns:mode="clr-namespace:NameCube.Mode"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     Title="点鸣魔方"
-    Icon="pack://application:,,,/icon.ico"
     Width="1000"
     Height="450"
     Closing="FluentWindow_Closing"
+    Icon="pack://application:,,,/icon.ico"
     mc:Ignorable="d">
     <Grid>
         <Grid.RowDefinitions>

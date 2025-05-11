@@ -1,4 +1,5 @@
 ﻿using Masuit.Tools.Logging;
+using Microsoft.Toolkit.Uwp.Notifications;
 using NameCube.Setting;
 using Newtonsoft.Json;
 using System;
@@ -11,6 +12,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
+using System.Windows.Media;
 using Application = System.Windows.Application;
 
 namespace NameCube
@@ -34,6 +36,13 @@ namespace NameCube
         {
             bool ret;
             mutex = new Mutex(true, "NameCube", out ret);
+            if (File.Exists(Path.Combine(GlobalVariables.configDir, "Fuck.txt")))
+            {
+                Egg.Egg egg= new Egg.Egg();
+                egg.Show();
+                egg.Activate();
+                File.Delete(Path.Combine(GlobalVariables.configDir, "Fuck.txt"));
+            }
             if (!ret && !File.Exists(Path.Combine(GlobalVariables.configDir, "START")))
             {
                 RepeatWarning repeat = new RepeatWarning();
@@ -41,6 +50,40 @@ namespace NameCube
                 repeat.Activate();
                 repeat.WindowState = WindowState.Normal;
                 return;
+            }
+            if(Directory.Exists(Path.Combine(GlobalVariables.configDir,"Updata")))
+            {
+                if(File.Exists(Path.Combine(GlobalVariables.configDir, "UpdataZip.zip")))
+                {
+                    File.Delete(Path.Combine(GlobalVariables.configDir, "UpdataZip.zip"));
+                }
+                if(File.Exists(Path.Combine(GlobalVariables.configDir, "Updata","Success")))
+                {
+                    string username = System.Security.Principal.WindowsIdentity.GetCurrent().Name;
+                    new ToastContentBuilder()
+                            .AddArgument("action", "viewConversation")
+                            .AddArgument("conversationId", 9813)
+                            .AddText("点鸣魔方")
+                            .AddText("点鸣魔方已经升级到"+GlobalVariables.Version+"。"+username+"，欢迎")
+                            .Show();
+                }
+                else
+                {
+                    new ToastContentBuilder()
+                            .AddArgument("action", "viewConversation")
+                            .AddArgument("conversationId", 9813)
+                            .AddText("点鸣魔方")
+                            .AddText("当前版本是："+ GlobalVariables.Version+"。升级遇到问题？尝试去Github项目询问")
+                            .Show();
+                }
+                try
+                {
+                    Directory.Delete(Path.Combine(GlobalVariables.configDir, "Updata"),true);
+                }
+                catch(Exception ex)
+                {
+                    MessageBoxFunction.ShowMessageBoxError(ex.Message);
+                }
             }
             string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
             string configDir = Path.Combine(appDataPath, "NameCube");
@@ -54,82 +97,7 @@ namespace NameCube
             {
                 // 确保目录存在
                 Directory.CreateDirectory(configDir);
-                GlobalVariables.json = new Json
-                {
-                    AllSettings = new allSettings
-                    {
-                        Name = new List<string> { "张三" },
-                        Dark = false,
-                        Volume = 100,
-                        Speed = 0,
-                        Start = false,
-                        SystemSpeech = false,
-                        Top = true,
-                        NameCubeMode = 0
-                    },
-                    StartToDo = new startToDo
-                    {
-                        Ball = false,
-                        AlwaysCleanMemory = false
-                    },
-                    BirdSettings = new BirdSettings
-                    {
-                        StartWay = 4,
-                        UseDefinedImage = false,
-                        AdsorbValue = 60,
-                        AutoAbsord = false,
-                        diaphaneity = 0,
-                        StartLocationWay = 0,
-                        StartLocationX = 0,
-                        StartLocationY = 0,
-                        Width = 50,
-                        Height = 50,
-                    },
-
-                    OnePeopleModeSettings = new onePeopleModeSettings
-                    {
-                        Speech = true,
-                        Wait = false,
-                        Locked = false,
-                        Speed = 20,
-                    },
-                    MemoryFactorModeSettings = new memoryFactorModeSettings
-                    {
-                        Speech = true,
-                        Locked = false,
-                        Speed = 20,
-                    },
-                    BatchModeSettings = new BatchModeSettings
-                    {
-                        NumberMode = false,
-                        Number = 53,
-                        Index = 10,
-                        Repetition = false,
-                        Locked = false,
-                    },
-                    NumberModeSettings = new NumberModeSettings
-                    {
-                        Num = 53,
-                        Speak = true,
-                        Locked = false,
-                        Speed = 20,
-                    },
-                    PrepareModeSetting = new PrepareModeSetting
-                    {
-                        Speak = true,
-                        Locked = false,
-                        Speed = 20,
-                        Name = new List<string>()
-                    },
-                    MemoryModeSettings = new MemoryModeSettings
-                    {
-                        Speak = true,
-                        Locked = false,
-                        Speed = 20,
-                        AutoAddFile = true,
-                    },
-
-                };
+                InitializationAll.InitializeData();
                 if (!File.Exists(configPath))
                 {
                     LogManager.Info("找不到文件");
@@ -152,7 +120,7 @@ namespace NameCube
                         DefaultValueHandling = DefaultValueHandling.Populate
                     };
                     GlobalVariables.json = JsonConvert.DeserializeObject<Json>(jsonString);
-                    InitializationAll.InitializationData();
+                    InitializationAll.KeepDataNotNull();
                 }
                 else
                 {

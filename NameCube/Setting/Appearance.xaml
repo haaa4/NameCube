@@ -25,7 +25,7 @@
                         TextWrapping="WrapWithOverflow" />
                     <ui:TextBlock
                         Appearance="Secondary"
-                        Text="改变ui整体黑白主题"
+                        Text="改变界面黑白主题"
                         TextWrapping="WrapWithOverflow" />
                 </StackPanel>
             </ui:CardControl.Header>
@@ -36,6 +36,70 @@
                 IsEnabled="True"
                 OffContent="关"
                 OnContent="开" />
+        </ui:CardControl>
+        <ui:CardControl
+            Margin="4"
+            Padding="20,10,20,10"
+            Icon="{ui:SymbolIcon Symbol=PaintBrush24}">
+            <ui:CardControl.Header>
+                <StackPanel>
+                    <ui:TextBlock
+                        Margin="0"
+                        FontTypography="BodyStrong"
+                        Text="字体颜色"
+                        TextWrapping="WrapWithOverflow" />
+                    <ui:TextBlock
+                        Appearance="Secondary"
+                        Text="改变主界面字体颜色，如需参考，可访问下列网址"
+                        TextWrapping="WrapWithOverflow" />
+                    <ui:HyperlinkButton
+                        Content="在线取色盘"
+                        Icon="{ui:SymbolIcon Link24}"
+                        NavigateUri="https://www.peiseka.com/zaixiansepan.html" />
+                </StackPanel>
+            </ui:CardControl.Header>
+            <Grid>
+                <ui:TextBox
+                    x:Name="ColorTextBox"
+                    Width="200"
+                    Margin="20,0,0,0"
+                    KeyDown="TextBox_KeyDown"
+                    MaxLength="9"
+                    PlaceholderText="如:#30d7d7"
+                    TextChanged="ColorTextBox_TextChanged" />
+            </Grid>
+        </ui:CardControl>
+        <ui:CardControl
+            Margin="4"
+            Padding="20,10,20,10"
+            Icon="{ui:SymbolIcon Symbol=Lightbulb20}">
+            <ui:CardControl.Header>
+                <StackPanel>
+                    <ui:TextBlock
+                        Margin="0"
+                        FontTypography="BodyStrong"
+                        Text="字体"
+                        TextWrapping="WrapWithOverflow" />
+                    <ui:TextBlock
+                        Appearance="Secondary"
+                        Text="主界面的字体类型"
+                        TextWrapping="WrapWithOverflow" />
+                </StackPanel>
+            </ui:CardControl.Header>
+            <ComboBox
+                x:Name="FontComboBox"
+                ItemsSource="{Binding Source={x:Static Fonts.SystemFontFamilies}}"
+                SelectionChanged="FontComboBox_SelectionChanged" />
+        </ui:CardControl>
+        <ui:CardControl Margin="4" Padding="20,10,20,10">
+            <ui:CardControl.Header>
+                <StackPanel>
+                    <TextBlock>字体预览</TextBlock>
+                </StackPanel>
+            </ui:CardControl.Header>
+            <StackPanel>
+                <TextBlock x:Name="PreviewText" Text="123456789金木水火土齉褨蕧祃蠃櫱瘝滍 你好 Hello 안녕 こんにちは привет" />
+            </StackPanel>
         </ui:CardControl>
     </StackPanel>
 </Page>

@@ -57,7 +57,7 @@
                 <ui:NavigationViewItem
                     Content="更新"
                     Icon="{ui:SymbolIcon Symbol=ArrowUpload24}"
-                    TargetPageType="{x:Type local:Update}" />
+                    TargetPageType="{x:Type local:Updata}" />
                 <ui:NavigationViewItem
                     Content="其他"
                     Icon="{ui:SymbolIcon Symbol=MoreCircle24}"

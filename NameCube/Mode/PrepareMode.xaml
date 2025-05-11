@@ -29,7 +29,8 @@
                 VerticalAlignment="Top"
                 FontSize="120"
                 Foreground="#30d7d7"
-                Text="XXX" />
+                Text="XXX"
+                Margin="0 30 0 0"/>
             <TextBlock
                 x:Name="FinishText"
                 Grid.Column="2"
@@ -38,7 +39,8 @@
                 FontSize="120"
                 Foreground="#30d7d7"
                 Text="XX"
-                Visibility="Hidden" />
+                Visibility="Hidden" 
+                Margin="0 30 0 0"/>
             <ui:Button
                 x:Name="StartButton"
                 Grid.Row="1"

@@ -15,6 +15,10 @@ namespace NameCube.Setting
             {
                 BallSetting.Visibility=System.Windows.Visibility.Collapsed;
             }
+            if(GlobalVariables.json.AllSettings.Top)
+            {
+                Topmost = true;
+            }
         }
 
         private void NavigationMenu_Loaded(object sender, System.Windows.RoutedEventArgs e)

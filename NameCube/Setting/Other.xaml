@@ -86,5 +86,24 @@
                 <ComboBoxItem Content="单次运行模式" />
             </ComboBox>
         </ui:CardControl>
+        <ui:CardControl
+            Margin="4"
+            Padding="20,10,20,10"
+            Icon="{ui:SymbolIcon Symbol=ArrowTurnLeftUp20}">
+            <ui:CardControl.Header>
+                <StackPanel>
+                    <ui:TextBlock
+                        Margin="0"
+                        FontTypography="BodyStrong"
+                        Text="桌面图标"
+                        TextWrapping="WrapWithOverflow" />
+                    <ui:TextBlock
+                        Appearance="Secondary"
+                        Text="在桌面上创建快捷图标"
+                        TextWrapping="WrapWithOverflow" />
+                </StackPanel>
+            </ui:CardControl.Header>
+            <Button Click="Button_Click" Content="创建" />
+        </ui:CardControl>
     </StackPanel>
 </Page>

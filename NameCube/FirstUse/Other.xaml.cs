@@ -1,4 +1,5 @@
-﻿using Microsoft.Win32;
+﻿using Masuit.Tools.Logging;
+using Microsoft.Win32;
 using System;
 using System.Diagnostics;
 using System.Windows;
@@ -16,7 +17,7 @@ namespace NameCube.FirstUse
         {
             InitializeComponent();
             CanChange = false;
-            StartCheck.IsChecked = GlobalVariables.json.AllSettings.Start;
+            StartCheck.IsChecked = IsStartupApplication(AppName);
             TopCheck.IsChecked = GlobalVariables.json.AllSettings.Top;
             if(GlobalVariables.json.AllSettings.NameCubeMode==1)
             {
@@ -29,8 +30,7 @@ namespace NameCube.FirstUse
         {
             if (CanChange)
             {
-                GlobalVariables.json.AllSettings.Start = StartCheck.IsChecked.Value;
-                if (GlobalVariables.json.AllSettings.Start)
+                if (StartCheck.IsChecked.Value)
                 {
                     EnableAutoStart();
                 }
@@ -93,7 +93,33 @@ namespace NameCube.FirstUse
                 GlobalVariables.json.AllSettings.Top = TopCheck.IsChecked.Value;
             }
         }
-
+        static bool IsStartupApplication(string appName)
+        {
+            try
+            {
+                using (RegistryKey runKey = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run"))
+                {
+                    if (runKey != null)
+                    {
+                        string[] valueNames = runKey.GetValueNames();
+                        foreach (string valueName in valueNames)
+                        {
+                            if (valueName.EndsWith(appName, StringComparison.OrdinalIgnoreCase))
+                            {
+                                return true;
+                            }
+                        }
+                    }
+                }
+                return false;
+            }
+            catch (Exception ex)
+            {
+                MessageBoxFunction.ShowMessageBoxError(ex.Message, false);
+                LogManager.Error(ex);
+                return false;
+            }
+        }
 
     }
 }

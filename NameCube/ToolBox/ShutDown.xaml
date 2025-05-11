@@ -26,6 +26,7 @@
                     <ui:TextBlock
                         Grid.Row="0"
                         Grid.Column="0"
+                        FontFamily="Microsoft YaHei UI"
                         FontSize="16"
                         FontTypography="Body"
                         Text="自动关机" />
@@ -49,6 +50,7 @@
             <Grid Margin="24,0.5,24,0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="40" />
+                    <RowDefinition />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="150" />
@@ -60,6 +62,7 @@
                     x:Name="Hour"
                     Maximum="23"
                     Minimum="0"
+                    PlaceholderText="时"
                     TextChanged="Hour_TextChanged"
                     ValueChanged="Hour_ValueChanged" />
                 <TextBlock
@@ -71,8 +74,20 @@
                     Grid.Column="2"
                     Maximum="59"
                     Minimum="0"
+                    PlaceholderText="分"
                     TextChanged="Min_TextChanged"
                     ValueChanged="Min_ValueChanged" />
+                <StackPanel Grid.Row="1">
+                    <TextBlock Margin="0,8,0,0" Text="关机方式" />
+                    <ComboBox
+                        x:Name="ShutdownWay"
+                        Margin="10,0,0,0"
+                        SelectionChanged="ComboBox_SelectionChanged">
+                        <ComboBoxItem Content="立即关机" />
+                        <ComboBoxItem Content="一般关机" />
+                        <ComboBoxItem Content="强制关机" />
+                    </ComboBox>
+                </StackPanel>
             </Grid>
         </ui:CardExpander>
         <ui:SnackbarPresenter x:Name="SnackbarPresenterHost" />

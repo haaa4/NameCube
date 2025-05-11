@@ -102,7 +102,7 @@ namespace NameCube
         private void Timer_Tick(object sender, EventArgs e)
         {
             LogManager.Info("开始内存清理......");
-            Windows.ClearMemorySilent();
+            Masuit.Tools.Win32.Windows.ClearMemory();
         }
 
         private void InitializeBehavior()

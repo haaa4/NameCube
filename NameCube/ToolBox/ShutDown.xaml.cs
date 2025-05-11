@@ -1,6 +1,7 @@
 ﻿using Masuit.Tools;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -30,6 +31,7 @@ namespace NameCube.ToolBox
             PowerOffSwitch.IsChecked = GlobalVariables.json.StartToDo.PowerOff;
             Hour.Value = GlobalVariables.json.StartToDo.HourPowerOff;
             Min.Value = GlobalVariables.json.StartToDo.MinPowerOff;
+            ShutdownWay.SelectedIndex= GlobalVariables.json.StartToDo.ShutDownWay;
             CanChange= true;
         }
 
@@ -90,6 +92,15 @@ namespace NameCube.ToolBox
             if (CanChange)
             {
                 GlobalVariables.json.StartToDo.MinPowerOff = (int)Min.Value;
+                GlobalVariables.SaveJson();
+            }
+        }
+
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if(CanChange)
+            {
+                GlobalVariables.json.StartToDo.ShutDownWay = ShutdownWay.SelectedIndex;
                 GlobalVariables.SaveJson();
             }
         }

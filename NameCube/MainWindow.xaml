@@ -10,7 +10,9 @@
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     Title="点鸣魔方"
     Width="1400"
-    Height="600"
+    Height="650"
+    MinHeight="650"
+    MinWidth="1400"
     Closing="FluentWindow_Closing"
     mc:Ignorable="d">
     <Grid>

@@ -98,6 +98,10 @@ namespace NameCube.Mode
                 ChangeButton.IsEnabled = false;
                 DelButton.IsEnabled = false;
             }
+            NowNumberText.Foreground = GlobalVariables.json.AllSettings.color;
+            FinishText.Foreground = GlobalVariables.json.AllSettings.color;
+            NowNumberText.FontFamily = GlobalVariables.json.AllSettings.Font;
+            FinishText.FontFamily = GlobalVariables.json.AllSettings.Font;
         }
 
 

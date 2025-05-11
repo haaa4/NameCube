@@ -25,7 +25,7 @@
                 KeyDown="AddNameTextBox_KeyDown"
                 Unloaded="AddNameTextBox_Unloaded" />
             <ui:Button Click="Button_Click_1" Content="添加" />
-            <ui:Button Click="Button_Click_4"  Content="使用默认名单" />
+            <ui:Button Click="Button_Click_4" Content="使用默认名单" />
             <ui:Button Margin="20,0,0,0" Content="清空">
                 <ui:FlyoutService.Flyout>
                     <ui:Flyout Placement="Bottom">

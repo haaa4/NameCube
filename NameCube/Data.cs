@@ -14,6 +14,8 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 using Wpf.Ui.Controls;
+using Brush = System.Windows.Media.Brush;
+using FontFamily = System.Windows.Media.FontFamily;
 
 namespace NameCube
 {
@@ -23,9 +25,92 @@ namespace NameCube
     internal class InitializationAll
     {
         /// <summary>
-        /// 重置数据
+        /// 初始化数据
         /// </summary>
-        public static void InitializationData()
+        public static void InitializeData()
+        {
+            GlobalVariables.json = new Json
+            {
+                AllSettings = new allSettings
+                {
+                    Name = new List<string> { "张三", "李四", "王五" },
+                    Dark = false,
+                    Volume = 100,
+                    Speed = 0,
+                    SystemSpeech = false,
+                    Top = true,
+                    NameCubeMode = 0,
+                    color = (Brush)new BrushConverter().ConvertFromInvariantString("#30d7d7"),
+                },
+                StartToDo = new startToDo
+                {
+                    Ball = false,
+                    AlwaysCleanMemory = false,
+                    ShutDownWay = 0,
+                },
+                BirdSettings = new BirdSettings
+                {
+                    StartWay = 4,
+                    UseDefinedImage = false,
+                    AdsorbValue = 60,
+                    AutoAbsord = false,
+                    diaphaneity = 0,
+                    StartLocationWay = 0,
+                    StartLocationX = 0,
+                    StartLocationY = 0,
+                    Width = 50,
+                    Height = 50,
+                },
+
+                OnePeopleModeSettings = new onePeopleModeSettings
+                {
+                    Speech = true,
+                    Wait = false,
+                    Locked = false,
+                    Speed = 20,
+                },
+                MemoryFactorModeSettings = new memoryFactorModeSettings
+                {
+                    Speech = true,
+                    Locked = false,
+                    Speed = 20,
+                },
+                BatchModeSettings = new BatchModeSettings
+                {
+                    NumberMode = false,
+                    Number = 53,
+                    Index = 10,
+                    Repetition = false,
+                    Locked = false,
+                },
+                NumberModeSettings = new NumberModeSettings
+                {
+                    Num = 53,
+                    Speak = true,
+                    Locked = false,
+                    Speed = 20,
+                },
+                PrepareModeSetting = new PrepareModeSetting
+                {
+                    Speak = true,
+                    Locked = false,
+                    Speed = 20,
+                    Name = new List<string>()
+                },
+                MemoryModeSettings = new MemoryModeSettings
+                {
+                    Speak = true,
+                    Locked = false,
+                    Speed = 20,
+                    AutoAddFile = true,
+                },
+
+            };
+        }
+        /// <summary>
+        /// 保证数据非null
+        /// </summary>
+        public static void KeepDataNotNull()
         {
             if(GlobalVariables.json.AllSettings==null)
             {
@@ -63,6 +148,38 @@ namespace NameCube
             {
                 GlobalVariables.json.MemoryModeSettings = new MemoryModeSettings();
             }
+            if(GlobalVariables.json.AllSettings.color==null)
+            {
+                GlobalVariables.json.AllSettings.color = (Brush)new BrushConverter().ConvertFromInvariantString("#30d7d7");
+            }
+            if (GlobalVariables.json.BirdSettings.diaphaneity==0)
+            {
+                GlobalVariables.json.BirdSettings.diaphaneity=100;
+            }
+            if(GlobalVariables.json.AllSettings.Font==null)
+            {
+                GlobalVariables.json.AllSettings.Font=new FontFamily("Arial");
+            }
+            if(GlobalVariables.json.OnePeopleModeSettings.Speed==0)
+            {
+                GlobalVariables.json.OnePeopleModeSettings.Speed = 20;
+            }
+            if (GlobalVariables.json.MemoryFactorModeSettings.Speed == 0)
+            {
+                GlobalVariables.json.MemoryFactorModeSettings.Speed = 20;
+            }
+            if (GlobalVariables.json.NumberModeSettings.Speed == 0)
+            {
+                GlobalVariables.json.NumberModeSettings.Speed = 20;
+            }
+            if (GlobalVariables.json.PrepareModeSetting.Speed == 0)
+            {
+                GlobalVariables.json.PrepareModeSetting.Speed = 20;
+            }
+            if (GlobalVariables.json.MemoryModeSettings.Speed == 0)
+            {
+                GlobalVariables.json.MemoryModeSettings.Speed = 20;
+            }
         }
     }
     public class allSettings
@@ -71,7 +188,7 @@ namespace NameCube
         /// 姓名表
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
-        public List<string> Name { get; set; } = new List<string> { "张三" };
+        public List<string> Name { get; set; } = new List<string> { "张三","李四","王五" };
         /// <summary>
         /// 黑暗模式
         /// </summary>
@@ -88,11 +205,6 @@ namespace NameCube
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
         public int Speed { get; set; } = 0;
         /// <summary>
-        /// 开机自启动
-        /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
-        public bool Start { get; set; } = false;
-        /// <summary>
         /// 使用系统设置的朗读
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
@@ -107,6 +219,21 @@ namespace NameCube
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
         public int NameCubeMode { get; set; } = 0;
+        /// <summary>
+        /// 字体颜色
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+        public Brush color { get; set; } = (Brush)new BrushConverter().ConvertFromInvariantString("#30d7d7");
+        /// <summary>
+        /// 字体类型
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+        public FontFamily Font { get; set; } = new FontFamily("Arial");
+        /// <summary>
+        /// 上次更新的检查时间
+        /// </summary>
+        public string UpdataTime;
+        
     }
     public class onePeopleModeSettings
     {
@@ -130,6 +257,7 @@ namespace NameCube
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
         public int Speed { get; set; } = 20;
+
 
     }
     public class startToDo
@@ -159,6 +287,11 @@ namespace NameCube
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
         public bool PowerOff { get; set; } = false;
+        /// <summary>
+        /// 关机方式（0：立即关机 1：一般关机 2：强制关机）
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+        public int ShutDownWay { get; set; } = 0;
 
     }
     public class memoryFactorModeSettings
@@ -178,6 +311,14 @@ namespace NameCube
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
         public int Speed { get; set; } = 20;
+        /// <summary>
+        /// 保底人姓名
+        /// </summary>
+        public string MaxName { get; set; }
+        /// <summary>
+        /// 保底人重复次数
+        /// </summary>
+        public int MaxTimes { get; set; }
     }
     public class BatchModeSettings
     {
@@ -424,10 +565,14 @@ namespace NameCube
         /// <summary>
         /// 当前版本
         /// </summary>
-        public static string Version = "V1.0.0 Beta-1";
+        public static string Version = "V1.0.0-beta-2";
     }
     internal class MessageBoxFunction
     {
+        /// <summary>
+        /// 创建一个提示选择框
+        /// </summary>
+        /// <param name="message">提醒消息</param>
         public static void ShowMessageBoxInfo(string message)
         {
             Application.Current.Dispatcher.Invoke(() =>
@@ -439,7 +584,10 @@ namespace NameCube
                 messageBox.ShowDialogAsync();
             });
         }
-
+        /// <summary>
+        /// 创建一个警告选择框
+        /// </summary>
+        /// <param name="message">警告消息</param>
         public static void ShowMessageBoxWarning(string message)
         {
             Application.Current.Dispatcher.Invoke(() =>
@@ -451,14 +599,21 @@ namespace NameCube
                 messageBox.ShowDialogAsync();
             });
         }
-
-        public static void ShowMessageBoxError(string message)
+        /// <summary>
+        /// 创建一个报错选择框
+        /// </summary>
+        /// <param name="message">报错信息</param>
+        /// <param name="Log">是否写入日志</param>
+        public static void ShowMessageBoxError(string message,bool Log=true)
         {
             Application.Current.Dispatcher.Invoke(() =>
             {
                 Wpf.Ui.Controls.MessageBox messageBox = new Wpf.Ui.Controls.MessageBox();
                 messageBox.Content = message;
-                LogManager.Error("严重错误", message);
+                if(Log)
+                {
+                    LogManager.Error("严重错误", message);
+                }
                 messageBox.Title = "错误";
                 messageBox.CloseButtonText = "知道了";
                 messageBox.ShowDialogAsync();

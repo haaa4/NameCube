@@ -1,8 +1,14 @@
-﻿using Microsoft.Win32;
+﻿using IWshRuntimeLibrary;
+using Masuit.Tools.Logging;
+using Microsoft.Win32;
 using System;
 using System.Diagnostics;
+using System.IO;
+using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
+using File = System.IO.File;
 
 namespace NameCube.Setting
 {
@@ -16,7 +22,7 @@ namespace NameCube.Setting
         {
             InitializeComponent();
             CanChange = false;
-            StartCheck.IsChecked = GlobalVariables.json.AllSettings.Start;
+            StartCheck.IsChecked = IsStartupApplication("NameCube");
             TopCheck.IsChecked = GlobalVariables.json.AllSettings.Top;
             ModeCombox.SelectedIndex = GlobalVariables.json.AllSettings.NameCubeMode;
             if(GlobalVariables.json.AllSettings.NameCubeMode==1)
@@ -30,9 +36,7 @@ namespace NameCube.Setting
         {
             if (CanChange)
             {
-                GlobalVariables.json.AllSettings.Start = StartCheck.IsChecked.Value;
-                GlobalVariables.SaveJson();
-                if (GlobalVariables.json.AllSettings.Start)
+                if (StartCheck.IsChecked.Value)
                 {
                     EnableAutoStart();
                 }
@@ -104,6 +108,78 @@ namespace NameCube.Setting
                 GlobalVariables.json.AllSettings.NameCubeMode=ModeCombox.SelectedIndex;
                 GlobalVariables.SaveJson();
                 AppFunction.Restart();
+            }
+        }
+        static bool IsStartupApplication(string appName)
+        {
+            try
+            {
+                using (RegistryKey runKey = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run"))
+                {
+                    if (runKey != null)
+                    {
+                        string[] valueNames = runKey.GetValueNames();
+                        foreach (string valueName in valueNames)
+                        {
+                            if (valueName.EndsWith(appName, StringComparison.OrdinalIgnoreCase))
+                            {
+                                return true;
+                            }
+                        }
+                    }
+                }
+                return false;
+            }
+            catch (Exception ex)
+            {
+                MessageBoxFunction.ShowMessageBoxError(ex.Message,false);
+                LogManager.Error(ex);
+                return false;
+            }
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            CreateDesktopShortcut();
+        }
+        public static bool CreateDesktopShortcut()
+        {
+            WshShell shell = null;
+            try
+            {
+                string desktop = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
+                string shortcutPath = Path.Combine(desktop, "学号魔方.lnk");
+                string appPath = Assembly.GetExecutingAssembly().Location;
+
+                if (!File.Exists(appPath))
+                    throw new FileNotFoundException("应用程序路径无效");
+
+                shell = new WshShell();
+                IWshShortcut shortcut = (IWshShortcut)shell.CreateShortcut(shortcutPath);
+
+                shortcut.TargetPath = appPath;
+                shortcut.WorkingDirectory = Path.GetDirectoryName(appPath);
+                shortcut.IconLocation = $"{appPath},0";
+                shortcut.Description = "启动学号魔方";
+                shortcut.Save();
+                MessageBoxFunction.ShowMessageBoxInfo("创建成功");
+                return true;
+            }
+            catch (COMException comEx)
+            {
+                MessageBoxFunction.ShowMessageBoxError($"COM 错误: {comEx.Message}");
+                return false;
+            }
+            catch (Exception ex)
+            {
+                MessageBoxFunction.ShowMessageBoxError($"错误: {ex.Message}");
+                return false;
+            }
+            finally
+            {
+                // 可选：手动释放 COM 对象
+                if (shell != null)
+                    Marshal.ReleaseComObject(shell);
             }
         }
     }

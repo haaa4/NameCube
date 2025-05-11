@@ -15,6 +15,10 @@ namespace NameCube.ToolBox
         public ToolboxWindow()
         {
             InitializeComponent();
+            if (GlobalVariables.json.AllSettings.Top)
+            {
+                Topmost = true;
+            }
 
         }
 
