@@ -419,6 +419,11 @@
     <Resource Include="Video\3.mp4" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Costura.Fody">
+      <Version>6.0.0</Version>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
     <PackageReference Include="Masuit.Tools.Abstractions">
       <Version>2025.1.9</Version>
     </PackageReference>

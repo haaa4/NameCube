@@ -148,7 +148,7 @@ namespace NameCube.Setting
             try
             {
                 string desktop = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
-                string shortcutPath = Path.Combine(desktop, "学号魔方.lnk");
+                string shortcutPath = Path.Combine(desktop, "点鸣魔方.lnk");
                 string appPath = Assembly.GetExecutingAssembly().Location;
 
                 if (!File.Exists(appPath))
@@ -160,7 +160,7 @@ namespace NameCube.Setting
                 shortcut.TargetPath = appPath;
                 shortcut.WorkingDirectory = Path.GetDirectoryName(appPath);
                 shortcut.IconLocation = $"{appPath},0";
-                shortcut.Description = "启动学号魔方";
+                shortcut.Description = "抽学号，点名器";
                 shortcut.Save();
                 MessageBoxFunction.ShowMessageBoxInfo("创建成功");
                 return true;
