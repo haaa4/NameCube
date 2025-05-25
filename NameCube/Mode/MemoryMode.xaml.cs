@@ -33,7 +33,6 @@ namespace NameCube.Mode
         public ObservableCollection<string> AllNames { get; set; } = new ObservableCollection<string>();
         bool CanChange;
         public System.Timers.Timer timer = new System.Timers.Timer();
-        Random Random;
         private SpeechSynthesizer _speechSynthesizer = new SpeechSynthesizer();
         int now = 0;
         public MemoryMode()
@@ -102,6 +101,10 @@ namespace NameCube.Mode
             FinishText.Foreground = GlobalVariables.json.AllSettings.color;
             NowNumberText.FontFamily = GlobalVariables.json.AllSettings.Font;
             FinishText.FontFamily = GlobalVariables.json.AllSettings.Font;
+            if (GlobalVariables.json.MemoryModeSettings.LastName!=null)
+            {
+                NowNumberText.Text = GlobalVariables.json.MemoryModeSettings.LastName;
+            }
         }
 
 
@@ -159,6 +162,7 @@ namespace NameCube.Mode
                     _speechSynthesizer.SpeakAsync(get);
                 }
                 AllNames.Remove(get);
+                GlobalVariables.json.MemoryModeSettings.LastName= get;
                 string path1 = Path.Combine(GlobalVariables.configDir, "Mode_data", "MemoryMode", "permanent", AllFiles[ComboBox.SelectedIndex]);
                 string path2 = Path.Combine(GlobalVariables.configDir, "Mode_data", "MemoryMode", "temporary", AllFiles[ComboBox.SelectedIndex]);
                 if(File.Exists(path1))

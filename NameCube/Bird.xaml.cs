@@ -26,7 +26,7 @@ namespace NameCube
     /// </summary>
     public partial class Bird
     {
-        private NotifyIcon _notifyIcon;
+        //private NotifyIcon _notifyIcon;
         private double SnapThreshold = 60; // 吸附阈值
         private DispatcherTimer _longPressTimer;
         private Point _dragOffset;
@@ -34,6 +34,7 @@ namespace NameCube
         System.Timers.Timer Hidetimer = new System.Timers.Timer();
         System.Timers.Timer PowerOffTimer = new System.Timers.Timer();
         System.Timers.Timer Ab = new System.Timers.Timer();
+
         [DllImport("user32.dll")]
         private static extern bool GetCursorPos(out POINT lpPoint);
 
@@ -44,12 +45,12 @@ namespace NameCube
             public int Y;
         }
 
-
         public Bird()
         {
             InitializeComponent();
             InitializeBehavior();
             InitializePosition();
+            //InitializeTrayIcon();
             Initialize();
             if (!GlobalVariables.json.StartToDo.Ball||GlobalVariables.json.AllSettings.NameCubeMode==1)
             {
@@ -92,11 +93,46 @@ namespace NameCube
             }));
 
         }
+        private async Task ShowSettingsWindowAsync()
+        {
+            await Application.Current.Dispatcher.InvokeAsync(() =>
+            {
+                var settingsWindow = Application.Current.Windows.OfType<SettingsWindow>().FirstOrDefault();
 
+                if (settingsWindow == null)
+                {
+                    // 创建新实例
+                    settingsWindow = new SettingsWindow();
+                }
+
+                // 确保窗口可见并激活
+                settingsWindow.Show();
+                settingsWindow.Activate();
+                settingsWindow.WindowState = WindowState.Normal;
+            });
+        }
+        private async Task ShowToolboxWindowAsync()
+        {
+            await Application.Current.Dispatcher.InvokeAsync(() =>
+            {
+                var toolboxWindow = Application.Current.Windows.OfType<ToolBox.ToolboxWindow>().FirstOrDefault();
+
+                if (toolboxWindow == null)
+                {
+                    // 创建新实例
+                    toolboxWindow = new ToolBox.ToolboxWindow();
+                }
+
+                // 确保窗口可见并激活
+                toolboxWindow.Show();
+                toolboxWindow.Activate();
+                toolboxWindow.WindowState = WindowState.Normal;
+            });
+        }
         private DispatcherTimer _timer;
         private void ExitApp()
         {
-            _notifyIcon.Dispose(); // 清理托盘图标
+/*            _notifyIcon.Dispose(); */// 清理托盘图标
             Application.Current.Shutdown(); // 手动关闭应用
         }
         private void Timer_Tick(object sender, EventArgs e)
@@ -259,7 +295,7 @@ namespace NameCube
             return SystemParameters.WorkArea; // 默认主屏幕
         }
 
-        private async Task ShowMainWindowAsync()
+        private async void ShowMainWindowAsync()
         {
             await Application.Current.Dispatcher.InvokeAsync(() =>
             {
@@ -268,6 +304,7 @@ namespace NameCube
                 {
                     mainWindow.Show();
                     mainWindow.Activate();
+                    mainWindow.WindowState=WindowState.Normal;
                     mainWindow.NavigationMenu.Navigate(typeof(Mode.Home));
                 }
             });
@@ -350,6 +387,26 @@ namespace NameCube
             Height = GlobalVariables.json.BirdSettings.Height + 20;
             Hidetimer.Interval = 3000;
             Hidetimer.Start();
+        }
+
+        private void OnTrayLeftDoubleClick(Wpf.Ui.Tray.Controls.NotifyIcon sender, RoutedEventArgs e)
+        {
+            ShowMainWindowAsync();
+        }
+
+        private void MenuOpen_Click(object sender, RoutedEventArgs e)
+        {
+            ShowMainWindowAsync();
+        }
+
+        private void MenuExit_Click(object sender, RoutedEventArgs e)
+        {
+            ExitApp();
+        }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+
         }
     }
 }

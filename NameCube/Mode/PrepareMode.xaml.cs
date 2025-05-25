@@ -55,6 +55,10 @@ namespace NameCube.Mode
                 }
 
             }
+            if (GlobalVariables.json.PrepareModeSetting.LastName!=null)
+            {
+                NowNumberText.Text = GlobalVariables.json.PrepareModeSetting.LastName;
+            }
             Ready1.Text = GlobalVariables.json.PrepareModeSetting.Name[0];
             Ready2.Text = GlobalVariables.json.PrepareModeSetting.Name[1];
             Ready3.Text = GlobalVariables.json.PrepareModeSetting.Name[2];
@@ -87,7 +91,7 @@ namespace NameCube.Mode
         }
         bool CanChange;
         public System.Timers.Timer timer = new System.Timers.Timer();
-        Random Random;
+        Random Random=new Random();
         private SpeechSynthesizer _speechSynthesizer = new SpeechSynthesizer();
         int now;
 
@@ -180,6 +184,7 @@ namespace NameCube.Mode
                 FinishReady4.Visibility = Visibility.Visible;
                 FinishReady5.Visibility = Visibility.Visible;
                 GlobalVariables.json.PrepareModeSetting.Name = new List<string> { get1,get2,get3,get4,get5};
+                GlobalVariables.json.PrepareModeSetting.LastName = get;
                 if (GlobalVariables.json.PrepareModeSetting.Speak)
                 {
                     _speechSynthesizer.SpeakAsync(get);

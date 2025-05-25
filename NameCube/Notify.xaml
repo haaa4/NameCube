@@ -1,0 +1,105 @@
+﻿<Window
+    x:Class="NameCube.Notify"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:NameCube"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    Title="Notify"
+    Width="170"
+    Height="350"
+    Background="LightGray"
+    Deactivated="Window_Deactivated"
+    ResizeMode="NoResize"
+    ShowInTaskbar="False"
+    Topmost="True"
+    WindowStyle="None"
+    mc:Ignorable="d">
+    <Grid Margin="0,0,0,5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="2*" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="1*" />
+        </Grid.RowDefinitions>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+            </Grid.RowDefinitions>
+            <ui:Image
+                Grid.RowSpan="2"
+                RenderOptions.BitmapScalingMode="HighQuality"
+                Source="Icon.png" />
+            <TextBlock
+                Grid.Column="1"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                FontSize="18"
+                Text="点鸣魔方" />
+            <TextBlock
+                Grid.Row="1"
+                Grid.Column="1"
+                FontSize="13"
+                Text="Made by haaa4"
+                TextWrapping="Wrap" />
+            <TextBlock
+                x:Name="VersonText"
+                Grid.Row="2"
+                Grid.ColumnSpan="2"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                FontSize="20"
+                Text="Unkown" />
+        </Grid>
+        <ui:Button
+            Grid.Row="1"
+            Width="150"
+            Height="48"
+            HorizontalAlignment="Center"
+            Click="ShowMainWindowAsync"
+            Content="打开主界面"
+            Icon="{ui:SymbolIcon Symbol=Open24}" />
+        <ui:Button
+            Grid.Row="2"
+            Width="150"
+            Height="48"
+            HorizontalAlignment="Center"
+            Click="ShowSettingsWindowAsync"
+            Content="应用设置"
+            Icon="{ui:SymbolIcon Symbol=Settings24}" />
+        <ui:Button
+            Grid.Row="3"
+            Width="150"
+            Height="48"
+            HorizontalAlignment="Center"
+            Click="ShowToolboxWindowAsync"
+            Content="小工具"
+            Icon="{ui:SymbolIcon Symbol=Toolbox24}" />
+        <ui:Button
+            Grid.Row="4"
+            Width="150"
+            Height="48"
+            HorizontalAlignment="Center"
+            Click="Button_Click_1"
+            Content="重启应用"
+            Icon="{ui:SymbolIcon Symbol=ArrowClockwise24}" />
+        <ui:Button
+            Grid.Row="5"
+            Width="150"
+            Height="48"
+            HorizontalAlignment="Center"
+            Click="ExitApp"
+            Content="退出应用"
+            Icon="{ui:SymbolIcon Symbol=ArrowExit20}" />
+    </Grid>
+
+</Window>

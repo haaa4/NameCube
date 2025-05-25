@@ -93,7 +93,6 @@
                 <DataGridTextColumn
                     Width="auto"
                     Binding="{Binding}"
-                    FontSize="35"
                     Header="姓名" />
             </ui:DataGrid.Columns>
         </ui:DataGrid>

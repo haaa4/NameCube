@@ -58,5 +58,58 @@
                 </ui:Flyout>
             </ui:FlyoutService.Flyout>
         </ui:Button>
+        <ui:CardControl
+            Margin="4"
+            Padding="20,10,20,10"
+            Icon="{ui:SymbolIcon Symbol=DualScreenUpdate24}">
+            <ui:CardControl.Header>
+                <StackPanel>
+                    <ui:TextBlock
+                        Margin="0"
+                        FontTypography="BodyStrong"
+                        Text="更新获取"
+                        TextWrapping="WrapWithOverflow" />
+                    <ui:TextBlock
+                        Appearance="Secondary"
+                        Text="测试版本包括未完成的功能，请谨慎选择"
+                        TextWrapping="WrapWithOverflow" />
+                </StackPanel>
+            </ui:CardControl.Header>
+            <ComboBox x:Name="UpdataWayComboBox" SelectionChanged="UpdataWayComboBox_SelectionChanged">
+                <ComboBoxItem Content="仅正式版本" />
+                <ComboBoxItem Content="所有版本" />
+            </ComboBox>
+
+        </ui:CardControl>
+        <ui:CardControl
+            Margin="4"
+            Padding="20,10,20,10"
+            Icon="{ui:SymbolIcon Symbol=Alert20}">
+            <ui:CardControl.Header>
+                <StackPanel>
+                    <ui:TextBlock
+                        Margin="0"
+                        FontTypography="BodyStrong"
+                        Text="自动检查"
+                        TextWrapping="WrapWithOverflow" />
+                    <ui:TextBlock
+                        Appearance="Secondary"
+                        Text="应用启动时，将会自动检测最新版本"
+                        TextWrapping="WrapWithOverflow" />
+                </StackPanel>
+            </ui:CardControl.Header>
+            <ui:ToggleSwitch
+                x:Name="AutoStart"
+                HorizontalContentAlignment="Left"
+                Click="AutoStart_Click"
+                IsEnabled="True"
+                OffContent="关"
+                OnContent="开" />
+
+        </ui:CardControl>
+        <ui:HyperlinkButton
+            Content="无法连接？"
+            Icon="{ui:SymbolIcon Link24}"
+            NavigateUri="https://docs.qq.com/doc/DZmhXS3BvYnZHWnRy" />
     </StackPanel>
 </Page>

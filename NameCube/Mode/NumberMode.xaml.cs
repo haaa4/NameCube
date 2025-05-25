@@ -25,7 +25,7 @@ namespace NameCube.Mode
     {
         bool CanChange;
         public System.Timers.Timer timer = new System.Timers.Timer();
-        Random Random;
+        Random Random=new Random();
         private SpeechSynthesizer _speechSynthesizer = new SpeechSynthesizer();
 
         public NumberMode()
@@ -51,6 +51,10 @@ namespace NameCube.Mode
                 SpeakCheck.IsEnabled = false;
                 NumberBox.IsEnabled = false;
                 Button1.IsEnabled = false;
+            }
+            if (GlobalVariables.json.NumberModeSettings.LastName!=null)
+            {
+                NowNumberText.Text = GlobalVariables.json.NumberModeSettings.LastName;
             }
             NowNumberText.Foreground = GlobalVariables.json.AllSettings.color;
             FinishText.Foreground = GlobalVariables.json.AllSettings.color;
@@ -144,6 +148,7 @@ namespace NameCube.Mode
                 {
                     _speechSynthesizer.SpeakAsync(get);
                 }
+                GlobalVariables.json.NumberModeSettings.LastName = get;
                 StartButton.IsEnabled = true;
             }
         }

@@ -61,18 +61,22 @@ namespace NameCube.Setting
                         });
                         GlobalVariables.json.AllSettings.Name.Add(line);
                     }
+                    
                 }
                 catch (Exception ex)
                 {
                     MessageBoxFunction.ShowMessageBoxError(ex.Message);
                 }
+                if (GlobalVariables.json.AllSettings.Name.Count >= 120)
+                {
+                    WarningInfoBar.IsOpen = true;
+                }
             }
-            GlobalVariables.SaveJson();
         }
 
         private void FluentWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            GlobalVariables.SaveJson();
+
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
@@ -89,7 +93,10 @@ namespace NameCube.Setting
             });
             GlobalVariables.json.AllSettings.Name.Add(AddNameTextBox.Text);
             AddNameTextBox.Text = "";
-            GlobalVariables.SaveJson();
+            if (GlobalVariables.json.AllSettings.Name.Count >= 120)
+            {
+                WarningInfoBar.IsOpen = true;
+            }
 
         }
 
@@ -99,7 +106,7 @@ namespace NameCube.Setting
 
             AllNames.Clear();
             GlobalVariables.json.AllSettings.Name.Clear();
-            GlobalVariables.SaveJson();
+
         }
 
         private void Button_Click_3(object sender, RoutedEventArgs e)
@@ -113,7 +120,6 @@ namespace NameCube.Setting
                     GlobalVariables.json.AllSettings.Name.Remove(allnames.Name);
                 }
             }
-            GlobalVariables.SaveJson();
         }
         private void AddNameTextBox_KeyDown(object sender, KeyEventArgs e)
         {
@@ -126,7 +132,66 @@ namespace NameCube.Setting
 
         private void AddNameTextBox_Unloaded(object sender, RoutedEventArgs e)
         {
-            GlobalVariables.SaveJson();
+
+        }
+
+        private void Button_Click_4(object sender, RoutedEventArgs e)
+        {
+            AllNames.Clear();
+            GlobalVariables.json.AllSettings.Name.Clear();
+            //这是在干嘛(#`O′)
+            List<string> Names = new List<string>
+            {
+                "王梓轩",
+                "李若汐",
+                "张峻豪",
+                "陈思妍",
+                "刘翊航",
+                "杨雨桐",
+                "黄皓宇",
+                "周瑾萱",
+                "吴泽楷",
+                "徐婉晴",
+                "孙慕辰",
+                "朱语桐",
+                "何昱珩",
+                "郭婧瑶",
+                "林子墨",
+                "许若琳",
+                "郑皓然",
+                "冯悦彤",
+                "邓嘉树",
+                "蒋舒然",
+                "蔡景行",
+                "沈奕辰",
+                "韩雨萌",
+                "谢明哲",
+                "曹沐妍",
+                "丁昊然",
+                "魏瑾瑜",
+                "苏允哲",
+                "杜心怡",
+                "卢泽言",
+                "叶思远",
+                "潘晨熙",
+                "姚星野",
+                "董一诺",
+                "袁梦琪",
+                "夏子谦",
+                "薛梓萌",
+                "钟雨墨",
+                "谭睿泽",
+                "邵清妍",
+            };
+            foreach (string name in Names)
+            {
+                AllNames.Add(new AllName { Name = name });
+                GlobalVariables.json.AllSettings.Name.Add(name);
+            }
+            if (GlobalVariables.json.AllSettings.Name.Count >= 120)
+            {
+                WarningInfoBar.IsOpen = true;
+            }
         }
     }
 }

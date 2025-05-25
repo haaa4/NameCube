@@ -26,5 +26,10 @@ namespace NameCube.ToolBox
         {
             NavigationMenu.Navigate(typeof(ToolBox.SpeechToolbox));
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            AppFunction.Restart();
+        }
     }
 }

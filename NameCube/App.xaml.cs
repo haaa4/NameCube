@@ -36,13 +36,6 @@ namespace NameCube
         {
             bool ret;
             mutex = new Mutex(true, "NameCube", out ret);
-            if (File.Exists(Path.Combine(GlobalVariables.configDir, "Fuck.txt")))
-            {
-                Egg.Egg egg= new Egg.Egg();
-                egg.Show();
-                egg.Activate();
-                File.Delete(Path.Combine(GlobalVariables.configDir, "Fuck.txt"));
-            }
             if (!ret && !File.Exists(Path.Combine(GlobalVariables.configDir, "START")))
             {
                 RepeatWarning repeat = new RepeatWarning();
@@ -144,96 +137,33 @@ namespace NameCube
             {
                 LogManager.Error(ex);
             }
+            StartToDoSomething.GetUpdata();
             LogManager.Info("程序启动");
             MainWindow mainWindow = new MainWindow();
-            if (GlobalVariables.json.AllSettings.NameCubeMode==0)
-            {
-                InitializeTrayIcon();
-            }
-            else
+            if (GlobalVariables.json.AllSettings.NameCubeMode != 0)
             {
                 mainWindow.Show();
             }
-
-
-        }
-        NotifyIcon _notifyIcon;
-        private void InitializeTrayIcon()
-        {
-
-            _notifyIcon = new NotifyIcon
-            {
-                Icon = System.Drawing.Icon.ExtractAssociatedIcon(System.Windows.Forms.Application.ExecutablePath),
-                Visible = true,
-                Text = "点鸣魔方"
-            };
-
-            // 添加右键菜单
-            var contextMenu = new ContextMenuStrip();
-            contextMenu.Items.Add("显示窗口", null, (s, e) => ShowMainWindowAsync());
-            contextMenu.Items.Add("小工具", null, (s, e) => ShowToolboxWindowAsync());
-            contextMenu.Items.Add("设置", null, (s, e) => ShowSettingsWindowAsync());
-            contextMenu.Items.Add("重启", null, (s, e) => AppFunction.Restart());
-            contextMenu.Items.Add("退出", null, (s, e) => ExitApp());
-            _notifyIcon.ContextMenuStrip = contextMenu;
-
-            // 双击托盘图标显示窗口
-            _notifyIcon.DoubleClick += (s, e) => ShowMainWindowAsync();
-        }
-        private async Task ShowMainWindowAsync()
-        {
-            await Application.Current.Dispatcher.InvokeAsync(() =>
-            {
-                var mainWindow = Application.Current.MainWindow as MainWindow;
-                if (mainWindow != null)
-                {
-                    mainWindow.Show();
-                    mainWindow.Activate();
-                    mainWindow.NavigationMenu.Navigate(typeof(Mode.Home));
-                }
-            });
-        }
-        private async Task ShowSettingsWindowAsync()
-        {
-            await Application.Current.Dispatcher.InvokeAsync(() =>
-            {
-                var settingsWindow = Application.Current.Windows.OfType<SettingsWindow>().FirstOrDefault();
-
-                if (settingsWindow == null)
-                {
-                    // 创建新实例
-                    settingsWindow = new SettingsWindow();
-                }
-
-                // 确保窗口可见并激活
-                settingsWindow.Show();
-                settingsWindow.Activate();
-                settingsWindow.WindowState = WindowState.Normal;
-            });
-        }
-        private async Task ShowToolboxWindowAsync()
-        {
-            await Application.Current.Dispatcher.InvokeAsync(() =>
-            {
-                var toolboxWindow = Application.Current.Windows.OfType<ToolBox.ToolboxWindow>().FirstOrDefault();
-
-                if (toolboxWindow == null)
-                {
-                    // 创建新实例
-                    toolboxWindow = new ToolBox.ToolboxWindow();
-                }
-
-                // 确保窗口可见并激活
-                toolboxWindow.Show();
-                toolboxWindow.Activate();
-                toolboxWindow.WindowState = WindowState.Normal;
-            });
+           Notify notify = new Notify();
         }
        
-        private void ExitApp()
+
+        private async void ShowNotifyIcon()
         {
-            _notifyIcon.Dispose(); // 清理托盘图标
-            Application.Current.Shutdown(); // 手动关闭应用
+            await Application.Current.Dispatcher.InvokeAsync(() =>
+            {
+                var notify = Application.Current.Windows.OfType<Notify>().FirstOrDefault();
+
+                if (notify == null)
+                {
+                    // 创建新实例
+                    notify = new Notify();
+                }
+
+                notify.InitializeLocation();
+            });
         }
+
+
     }
 }

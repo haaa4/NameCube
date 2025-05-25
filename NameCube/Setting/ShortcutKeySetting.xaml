@@ -1,0 +1,74 @@
+﻿<Page
+    x:Class="NameCube.Setting.ShortcutKeySetting"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:NameCube.Setting"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    Title="ShortcutKeySetting"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    Unloaded="Page_Unloaded"
+    mc:Ignorable="d">
+    <StackPanel>
+        <ui:InfoBar
+            Title="提醒"
+            IsClosable="False"
+            IsOpen="True"
+            Message="快捷键功能仅供展示，更多操作敬请期待" />
+        <ui:CardControl
+            Margin="4"
+            Padding="20,10,20,10"
+            Icon="{ui:SymbolIcon Symbol=Keyboard24}">
+            <ui:CardControl.Header>
+                <StackPanel>
+                    <ui:TextBlock
+                        Margin="0"
+                        FontTypography="BodyStrong"
+                        Text="快捷键组合"
+                        TextWrapping="WrapWithOverflow" />
+                    <ui:TextBlock
+                        Appearance="Secondary"
+                        Text="快捷键的触发按键（5个及以下）"
+                        TextWrapping="WrapWithOverflow" />
+                </StackPanel>
+            </ui:CardControl.Header>
+            <DockPanel>
+                <ui:Button
+                    x:Name="KeyChooseButton"
+                    Click="KeyChooseButton_Click"
+                    Content="编辑"
+                    KeyDown="KeyChooseButton_KeyDown" />
+                <TextBlock
+                    x:Name="KeyText"
+                    VerticalAlignment="Center"
+                    FontSize="15" />
+            </DockPanel>
+        </ui:CardControl>
+        <ui:CardControl
+            Margin="4"
+            Padding="20,10,20,10"
+            Icon="{ui:SymbolIcon Symbol=KeyboardLayoutResize24}">
+            <ui:CardControl.Header>
+                <StackPanel>
+                    <ui:TextBlock
+                        Margin="0"
+                        FontTypography="BodyStrong"
+                        Text="快捷键触发"
+                        TextWrapping="WrapWithOverflow" />
+                    <ui:TextBlock
+                        Appearance="Secondary"
+                        Text="快捷键的触发之后要做的"
+                        TextWrapping="WrapWithOverflow" />
+                </StackPanel>
+            </ui:CardControl.Header>
+            <ComboBox x:Name="Operation" SelectionChanged="Operation_SelectionChanged">
+                <ComboBoxItem Content="无" />
+                <ComboBoxItem Content="打开主页" />
+                <ComboBoxItem Content="打开单人模式" />
+                <ComboBoxItem Content="打开因子模式" />
+            </ComboBox>
+        </ui:CardControl>
+    </StackPanel>
+</Page>

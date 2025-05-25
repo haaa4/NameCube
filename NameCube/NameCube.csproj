@@ -17,7 +17,7 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
-    <PublishUrl>publish\</PublishUrl>
+    <PublishUrl>D:\C#\NameCube-git\输出\Publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
     <UpdateEnabled>false</UpdateEnabled>
@@ -27,9 +27,10 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationRevision>1</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -57,6 +58,21 @@
   <PropertyGroup>
     <ApplicationIcon>icon.ico</ApplicationIcon>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestCertificateThumbprint>E5F3AADEFEEEFB83790AB25EF4754A34C681E1B9</ManifestCertificateThumbprint>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestKeyFile>NameCube_TemporaryKey.pfx</ManifestKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>true</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>true</SignManifests>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
@@ -83,15 +99,6 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Data.cs" />
-    <Compile Include="Egg\Egg.xaml.cs">
-      <DependentUpon>Egg.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="FirstUse\About.xaml.cs">
-      <DependentUpon>About.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="FirstUse\Archives.xaml.cs">
-      <DependentUpon>Archives.xaml</DependentUpon>
-    </Compile>
     <Compile Include="FirstUse\BirdSettings.xaml.cs">
       <DependentUpon>BirdSettings.xaml</DependentUpon>
     </Compile>
@@ -116,6 +123,9 @@
     </Compile>
     <Compile Include="Mode\PrepareMode.xaml.cs">
       <DependentUpon>PrepareMode.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Notify.xaml.cs">
+      <DependentUpon>Notify.xaml</DependentUpon>
     </Compile>
     <Compile Include="PowerOffWindow.xaml.cs">
       <DependentUpon>PowerOffWindow.xaml</DependentUpon>
@@ -174,6 +184,9 @@
     <Compile Include="Mode\OnePeopleMode.xaml.cs">
       <DependentUpon>OnePeopleMode.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Setting\ShortcutKeySetting.xaml.cs">
+      <DependentUpon>ShortcutKeySetting.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Setting\Speech.xaml.cs">
       <DependentUpon>Speech.xaml</DependentUpon>
     </Compile>
@@ -183,6 +196,7 @@
     <Compile Include="Setting\Document.xaml.cs">
       <DependentUpon>Document.xaml</DependentUpon>
     </Compile>
+    <Compile Include="StartToDoSomething.cs" />
     <Compile Include="ToolBox\MemoryToolbox.xaml.cs">
       <DependentUpon>MemoryToolbox.xaml</DependentUpon>
     </Compile>
@@ -195,18 +209,6 @@
     <Compile Include="ToolBox\ToolboxWindow.xaml.cs">
       <DependentUpon>ToolboxWindow.xaml</DependentUpon>
     </Compile>
-    <Page Include="Egg\Egg.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="FirstUse\About.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="FirstUse\Archives.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="FirstUse\BirdSettings.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -236,6 +238,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Mode\PrepareMode.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Notify.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -327,6 +333,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Setting\ShortcutKeySetting.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Setting\Speech.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -374,7 +384,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="app.manifest" />
     <None Include="attention.md" />
+    <None Include="NameCube_TemporaryKey.pfx" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -414,27 +426,22 @@
     <Resource Include="Image\RepeatWarning.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Video\1.mp4" />
-    <Resource Include="Video\2.mp4" />
-    <Resource Include="Video\3.mp4" />
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="Costura.Fody">
       <Version>6.0.0</Version>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Masuit.Tools.Abstractions">
-      <Version>2025.1.9</Version>
+      <Version>2025.2.0</Version>
     </PackageReference>
     <PackageReference Include="Masuit.Tools.Net">
-      <Version>2025.1.9</Version>
+      <Version>2025.2.0</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.AspNet.Mvc">
       <Version>5.3.0</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection">
-      <Version>9.0.4</Version>
+      <Version>9.0.5</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies">
       <Version>1.0.3</Version>
@@ -443,9 +450,6 @@
     </PackageReference>
     <PackageReference Include="Microsoft.Toolkit.Uwp.Notifications">
       <Version>7.1.3</Version>
-    </PackageReference>
-    <PackageReference Include="Microsoft.Web.WebView2">
-      <Version>1.0.3240.44</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Windows.SDK.Contracts">
       <Version>10.0.26100.3916</Version>
@@ -460,10 +464,13 @@
       <Version>2.8.37</Version>
     </PackageReference>
     <PackageReference Include="System.IO.Pipelines">
-      <Version>9.0.4</Version>
+      <Version>9.0.5</Version>
     </PackageReference>
     <PackageReference Include="System.ValueTuple">
-      <Version>4.6.1</Version>
+      <Version>4.5.0</Version>
+    </PackageReference>
+    <PackageReference Include="WPF-UI.Tray">
+      <Version>4.0.2</Version>
     </PackageReference>
     <PackageReference Include="WPF-UI.Violeta">
       <Version>4.0.2.3</Version>
@@ -479,6 +486,9 @@
       <Isolated>False</Isolated>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\V1.0.0.0.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

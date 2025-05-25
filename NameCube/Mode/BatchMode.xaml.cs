@@ -39,6 +39,15 @@ namespace NameCube.Mode
                 Indexbox.IsEnabled = false;
                 ReCheckBox.IsEnabled = false;
             }
+            if (GlobalVariables.json.BatchModeSettings.LastName!=null&&GlobalVariables.json.BatchModeSettings.LastName.Count!=0)
+            {
+                foreach (string name in GlobalVariables.json.BatchModeSettings.LastName)
+                {
+                    AllName allNames = new AllName();
+                    allNames.Name = name;
+                    AllNames.Add(allNames);
+                }
+            }
         }
 
         private void NameSwitch_Click(object sender, RoutedEventArgs e)
@@ -143,6 +152,18 @@ namespace NameCube.Mode
                 NameSwitch.IsEnabled = true;
                 Indexbox.IsEnabled = true;
                 ReCheckBox.IsEnabled = true;
+            }
+            if (GlobalVariables.json.BatchModeSettings.LastName!=null)
+            {
+                GlobalVariables.json.BatchModeSettings.LastName.Clear();
+            }
+            else
+            {
+                GlobalVariables.json.BatchModeSettings.LastName = new List<string>();
+            }
+            foreach (AllName allName in AllNames)
+            {
+                GlobalVariables.json.BatchModeSettings.LastName.Add(allName.Name);
             }
             StartButton.IsEnabled = true;
         }

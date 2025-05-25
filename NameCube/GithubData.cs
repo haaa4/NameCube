@@ -55,14 +55,30 @@ namespace NameCube
                     var content = await response.Content.ReadAsStringAsync();
                     var releases = JsonConvert.DeserializeObject<List<GitHubRelease>>(content);
 
-                    // 筛选有效Release
-                    var validReleases = releases?
-                        .Where(r => !r.IsDraft)
-                        .OrderByDescending(r => r.PublishedAt)
-                        .ToList();
+                    if(GlobalVariables.json.AllSettings.UpdataGet==0)
+                    {
+                        // 筛选有效Release
+                        var validReleases = releases?
+                            .Where(r => !r.IsDraft && !r.IsPrerelease)
+                            .OrderByDescending(r => r.PublishedAt)
+                            .ToList();
 
-                    return validReleases?.FirstOrDefault()?.TagName
-                           ?? throw new Exception("No valid releases found");
+
+                        return validReleases?.FirstOrDefault()?.TagName
+                               ?? throw new Exception("No valid releases found");
+                    }
+                    else
+                    {
+                        var validReleases = releases?
+                           .Where(r => !r.IsDraft)
+                           .OrderByDescending(r => r.PublishedAt)
+                           .ToList();
+
+
+                        return validReleases?.FirstOrDefault()?.TagName
+                               ?? throw new Exception("No valid releases found");
+                    }
+
                 }
                 catch (HttpRequestException ex)
                 {
@@ -82,22 +98,19 @@ namespace NameCube
     public class DownloadHelper
     {
         private readonly HttpClient _client;
-        private CancellationTokenSource _cts;
-        private Stopwatch _stopwatch;
-        private long _totalBytes;
-        private long _bytesRead;
+        private CancellationTokenSource _cts=new CancellationTokenSource();
+        private Stopwatch _stopwatch=new Stopwatch();
+        private long _totalBytes=0;
+        private long _bytesRead=0;
 
         public event Action<long, long, double, double> ProgressChanged;
-        public event Action<bool> Completed;
 
         public DownloadHelper()
         {
             _client = new HttpClient { Timeout = TimeSpan.FromMinutes(30) };
         }
 
-        public async Task DownloadFileAsync(string url, string savePath, CancellationToken cancellationToken = default)
-        {   
-        }
+
 
         private void ReportProgress()
         {

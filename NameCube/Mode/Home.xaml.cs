@@ -24,6 +24,11 @@ namespace NameCube.Mode
         public Home()
         {
             InitializeComponent();
+            if(GlobalVariables.json.AllSettings.Recommend==GlobalVariables.Version||GlobalVariables.json.AllSettings.Recommend=="None")
+            {
+                Recommend.Visibility = Visibility.Collapsed;
+                CloseRecommendButtom.Visibility = Visibility.Collapsed;
+            }
         }
 
         private void CardAction_Click(object sender, RoutedEventArgs e)
@@ -60,6 +65,15 @@ namespace NameCube.Mode
         {
             var mainWindow = Application.Current.MainWindow as MainWindow;
             mainWindow.NavigationMenu.Navigate(typeof(Mode.MemoryMode));
+        }
+
+        private void CloseRecommendButtom_Click(object sender, RoutedEventArgs e)
+        {
+            GlobalVariables.json.AllSettings.Recommend = GlobalVariables.Version;
+            GlobalVariables.SaveJson();
+            MessageBoxFunction.ShowMessageBoxInfo("本版本内，推荐将不再显示。如果想要永久关闭，请到应用设置->其他");
+            Recommend.Visibility = Visibility.Collapsed;
+            CloseRecommendButtom.Visibility = Visibility.Collapsed;
         }
     }
 }

@@ -44,6 +44,18 @@
                     TargetPageType="{x:Type Toolbox:ShutDown}" />
 
             </ui:NavigationView.MenuItems>
+            <ui:NavigationView.PaneHeader>
+                <ui:Button Icon="{ui:SymbolIcon Symbol=ArrowClockwise24}">
+                    <ui:FlyoutService.Flyout>
+                        <ui:Flyout Placement="Bottom">
+                            <StackPanel>
+                                <TextBlock HorizontalAlignment="Left" Text="你确定重启应用吗？" />
+                                <Button Click="Button_Click" Content="确定" />
+                            </StackPanel>
+                        </ui:Flyout>
+                    </ui:FlyoutService.Flyout>
+                </ui:Button>
+            </ui:NavigationView.PaneHeader>
         </ui:NavigationView>
     </Grid>
 </ui:FluentWindow>

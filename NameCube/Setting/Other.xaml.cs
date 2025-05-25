@@ -25,7 +25,15 @@ namespace NameCube.Setting
             StartCheck.IsChecked = IsStartupApplication("NameCube");
             TopCheck.IsChecked = GlobalVariables.json.AllSettings.Top;
             ModeCombox.SelectedIndex = GlobalVariables.json.AllSettings.NameCubeMode;
-            if(GlobalVariables.json.AllSettings.NameCubeMode==1)
+            if (GlobalVariables.json.AllSettings.Recommend=="None")
+            {
+                RecommendCheck.IsChecked=true;
+            }
+            else
+            {
+                RecommendCheck.IsChecked = false;
+            }
+            if (GlobalVariables.json.AllSettings.NameCubeMode==1)
             {
                 StartActionCard.Visibility = Visibility.Collapsed;
                 TopActionCard.Visibility = Visibility.Collapsed;
@@ -180,6 +188,22 @@ namespace NameCube.Setting
                 // 可选：手动释放 COM 对象
                 if (shell != null)
                     Marshal.ReleaseComObject(shell);
+            }
+        }
+
+        private void RecommendCheck_Click(object sender, RoutedEventArgs e)
+        {
+            if(CanChange)
+            {
+                if(RecommendCheck.IsChecked.Value)
+                {
+                    GlobalVariables.json.AllSettings.Recommend = "None";
+                }
+                else
+                {
+                    GlobalVariables.json.AllSettings.Recommend = null;
+                }
+                GlobalVariables.SaveJson();
             }
         }
     }

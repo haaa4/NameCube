@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Masuit.Tools.Logging;
+using System;
 using System.Drawing;
 using System.Speech.Synthesis;
 using System.Timers;
@@ -53,6 +54,10 @@ namespace NameCube.Mode
             FinishText.Foreground = GlobalVariables.json.AllSettings.color;
             NowNumberText.FontFamily = GlobalVariables.json.AllSettings.Font;
             FinishText.FontFamily = GlobalVariables.json.AllSettings.Font;
+            if (GlobalVariables.json.OnePeopleModeSettings.LastName != null)
+            {
+                NowNumberText.Text = GlobalVariables.json.OnePeopleModeSettings.LastName;
+            }
         }
 
 
@@ -99,6 +104,7 @@ namespace NameCube.Mode
             }
             catch (Exception ex)
             {
+                LogManager.Error(ex);
             }
             NowIndex++;
             if (NowIndex >= GlobalVariables.json.AllSettings.Name.Count)
@@ -145,6 +151,7 @@ namespace NameCube.Mode
                 else
                 {
                     string Text = NowNumberText.Text;
+                    GlobalVariables.json.OnePeopleModeSettings.LastName = Text;
                     timer.Stop();
                     StartButton.Content = "开始";
                     if (GlobalVariables.json.OnePeopleModeSettings.Speech)

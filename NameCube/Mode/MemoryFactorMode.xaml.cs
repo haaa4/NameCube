@@ -91,6 +91,10 @@ namespace NameCube.Mode
             FinishNumberText.Foreground=GlobalVariables.json.AllSettings.color;
             NowNumberText.FontFamily = GlobalVariables.json.AllSettings.Font;
             FinishNumberText.FontFamily = GlobalVariables.json.AllSettings.Font;
+            if (GlobalVariables.json.MemoryFactorModeSettings.LastName!=null)
+            {
+                NowNumberText.Text = GlobalVariables.json.MemoryFactorModeSettings.LastName;
+            }
         }
         private async void StartLoad()
         {
@@ -158,25 +162,6 @@ namespace NameCube.Mode
                 this.Dispatcher.Invoke(() =>
                 {
                     Count.Text=Trainings.Count.ToString();
-                    //if (MaxIndex != -1)
-                    //{
-                    //    MaxName.Text = "当前概率最高:" + thisModeJson[MaxIndex].Name + "---" + thisModeJson[MaxIndex].Factor.ToString() + "(" + (Math.Round((double)thisModeJson[MaxIndex].Factor / Trainings.Count * 100, 2)).ToString() + "%)";
-                    //}
-                    //if (GlobalVariables.json.MemoryFactorModeSettings.MaxTimes >= 5 && GlobalVariables.json.MemoryFactorModeSettings.MaxTimes < 10)
-                    //{
-                    //    MaxName.Text = MaxName.Text + "(剩" + (10 - GlobalVariables.json.MemoryFactorModeSettings.MaxTimes).ToString() + "次触发保底)";
-                    //    MaxName.Foreground = Brushes.Black;
-                    //}
-                    //else if (GlobalVariables.json.MemoryFactorModeSettings.MaxTimes >= 10 && GlobalVariables.json.MemoryFactorModeSettings.MaxTimes <= 12)
-                    //{
-                    //    MaxName.Text = "当前概率最高:" + thisModeJson[MaxIndex].Name + "---" + thisModeJson[MaxIndex].Factor.ToString() + "(" + ((GlobalVariables.json.MemoryFactorModeSettings.MaxTimes - 9) * 25) + "%)";
-                    //    MaxName.Foreground = GlobalVariables.json.AllSettings.color;
-                    //}
-                    //else if (GlobalVariables.json.MemoryFactorModeSettings.MaxTimes >= 13)
-                    //{
-                    //    MaxName.Text = "当前概率最高:" + thisModeJson[MaxIndex].Name + "---" + thisModeJson[MaxIndex].Factor.ToString() + "(100%)";
-                    //    MaxName.Foreground = Brushes.Red;
-                    //}
                     MaxIndexName.Text= thisModeJson[MaxIndex].Name;
                     MaxIndexText.Text = thisModeJson[MaxIndex].Factor.ToString();
                     if(GlobalVariables.json.MemoryFactorModeSettings.MaxTimes<10)
@@ -319,7 +304,6 @@ namespace NameCube.Mode
                     Trainings.Add(thisModeJson[GetRandom].Name);
                 }
                 thisModeJson[GetRandom].Factor *= 2;
-                //multiply.Text= "概率UP:" + thisModeJson[GetRandom].Name + "---" + Past.ToString() + "→" + thisModeJson[GetRandom].Factor.ToString() + "(" + (Math.Round((double)thisModeJson[GetRandom].Factor / Trainings.Count * 100, 2)).ToString() + "%)";
                 UpName.Text= thisModeJson[GetRandom].Name;
                 UpFactor.Text = Past.ToString() + "→" + thisModeJson[GetRandom].Factor.ToString();
                 UpRealProbability.Text= (Math.Round((double)thisModeJson[GetRandom].Factor / Trainings.Count * 100, 2)).ToString() + "%";
@@ -391,6 +375,7 @@ namespace NameCube.Mode
                 GlobalVariables.SaveJson();
                 StartButton.IsEnabled = true;
                 IsCanStop = false;
+                GlobalVariables.json.MemoryFactorModeSettings.LastName = FinishNumberText.Text;
                 NowNumberText.Text = NowNumberTextValue;
                 Count.Text = Trainings.Count.ToString();
             }

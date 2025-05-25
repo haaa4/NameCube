@@ -45,7 +45,7 @@
             Fill="White" />
         <StackPanel Grid.Row="1">
             <TextBlock
-                x:Name="Title"
+                x:Name="TitleGet"
                 Margin="20,0,0,0"
                 FontSize="40"
                 FontWeight="Black"
@@ -63,6 +63,12 @@
                 Appearance="Primary"
                 Click="Button_Click"
                 Content="  继续  " />
+            <ui:Button
+                Margin="10,5,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Bottom"
+                Click="Button_Click_1"
+                Content="从已有的配置文件开始" />
         </StackPanel>
     </Grid>
 </ui:FluentWindow>

@@ -10,65 +10,74 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
+    <StackPanel>
+        <ui:InfoBar
+            Title="建议"
+            IsClosable="False"
+            IsOpen="True"
+            Message="名字尽量不要超过5个字，可能会导致显示不全" />
+        <ui:InfoBar
+            x:Name="WarningInfoBar"
+            Title="警告"
+            Message="数量尽量不要超过120个，可能会导致卡顿"
+            Severity="Warning" />
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40" />
+                <RowDefinition Height="300" />
+            </Grid.RowDefinitions>
+            <StackPanel Orientation="Horizontal">
+                <ui:Button Click="Button_Click" Content="从文本文档导入" />
+                <ui:TextBox
+                    x:Name="AddNameTextBox"
+                    Width="100"
+                    Margin="20,2,0,2"
+                    KeyDown="AddNameTextBox_KeyDown"
+                    Unloaded="AddNameTextBox_Unloaded" />
+                <ui:Button Click="Button_Click_1" Content="添加" />
+                <ui:Button Click="Button_Click_4" Content="使用默认名单" />
+                <ui:Button Margin="20,0,0,0" Content="清空">
+                    <ui:FlyoutService.Flyout>
+                        <ui:Flyout Placement="Bottom">
+                            <StackPanel>
+                                <TextBlock HorizontalAlignment="Left" Text="你确定继续执行操作吗？此操作不可逆转" />
+                                <Button Click="Button_Click_2" Content="确定" />
+                            </StackPanel>
+                        </ui:Flyout>
+                    </ui:FlyoutService.Flyout>
+                </ui:Button>
+            </StackPanel>
+            <ui:DataGrid
+                x:Name="DataGrid"
+                Grid.Row="1"
+                AutoGenerateColumns="False"
+                CanUserAddRows="False"
+                CanUserDeleteRows="False"
+                CanUserResizeColumns="False"
+                CanUserResizeRows="False"
+                IsReadOnly="True"
+                ItemsSource="{Binding AllNames}">
+                <ui:DataGrid.Columns>
+                    <DataGridTextColumn
+                        Width="auto"
+                        Binding="{Binding Name}"
+                        Header="姓名" />
+                    <DataGridTemplateColumn Header="操作">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <ui:Button
+                                    Click="Button_Click_3"
+                                    CommandParameter="{Binding}"
+                                    Content="删除" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </ui:DataGrid.Columns>
+            </ui:DataGrid>
+        </Grid>
 
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="40" />
-            <RowDefinition />
-        </Grid.RowDefinitions>
-        <StackPanel Orientation="Horizontal">
-            <ui:Button Click="Button_Click" Content="从文本文档导入" />
-            <ui:TextBox
-                x:Name="AddNameTextBox"
-                Width="100"
-                Margin="20,2,0,2"
-                KeyDown="AddNameTextBox_KeyDown"
-                Unloaded="AddNameTextBox_Unloaded" />
-            <ui:Button Click="Button_Click_1" Content="添加" />
-            <ui:Button Margin="20,0,0,0" Content="清空">
-                <ui:FlyoutService.Flyout>
-                    <ui:Flyout Placement="Bottom">
-                        <StackPanel>
-                            <TextBlock HorizontalAlignment="Left" Text="你确定继续执行操作吗？此操作不可逆转" />
-                            <Button Click="Button_Click_2" Content="确定" />
-                        </StackPanel>
-                    </ui:Flyout>
-                </ui:FlyoutService.Flyout>
-            </ui:Button>
-            <TextBlock
-                Margin="20,0,0,0"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Center"
-                Text="(不推荐五字及以上的名字）" />
-        </StackPanel>
-        <ui:DataGrid
-            x:Name="DataGrid"
-            Grid.Row="1"
-            AutoGenerateColumns="False"
-            CanUserAddRows="False"
-            CanUserDeleteRows="False"
-            CanUserResizeColumns="False"
-            CanUserResizeRows="False"
-            IsReadOnly="True"
-            ItemsSource="{Binding AllNames}">
-            <ui:DataGrid.Columns>
-                <DataGridTextColumn
-                    Width="auto"
-                    Binding="{Binding Name}"
-                    Header="姓名" />
-                <DataGridTemplateColumn Header="操作">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <ui:Button
-                                Click="Button_Click_3"
-                                CommandParameter="{Binding}"
-                                Content="删除" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-            </ui:DataGrid.Columns>
-        </ui:DataGrid>
-    </Grid>
+    </StackPanel>
+
 
 
 </Page>

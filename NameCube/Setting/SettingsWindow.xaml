@@ -51,6 +51,10 @@
                     Icon="{ui:SymbolIcon Symbol=Balloon12}"
                     TargetPageType="{x:Type local:BirdSettings}" />
                 <ui:NavigationViewItem
+                    Content="快捷键"
+                    Icon="{ui:SymbolIcon Symbol=Keyboard24}"
+                    TargetPageType="{x:Type local:ShortcutKeySetting}" />
+                <ui:NavigationViewItem
                     Content="配置文件"
                     Icon="{ui:SymbolIcon Symbol=Document24}"
                     TargetPageType="{x:Type local:Document}" />
@@ -67,6 +71,18 @@
                     Icon="{ui:SymbolIcon Symbol=Info24}"
                     TargetPageType="{x:Type local:About}" />
             </ui:NavigationView.MenuItems>
+            <ui:NavigationView.PaneHeader>
+                <ui:Button Icon="{ui:SymbolIcon Symbol=ArrowClockwise24}">
+                    <ui:FlyoutService.Flyout>
+                        <ui:Flyout Placement="Bottom">
+                            <StackPanel>
+                                <TextBlock HorizontalAlignment="Left" Text="你确定重启应用吗？" />
+                                <Button Click="Button_Click" Content="确定" />
+                            </StackPanel>
+                        </ui:Flyout>
+                    </ui:FlyoutService.Flyout>
+                </ui:Button>
+            </ui:NavigationView.PaneHeader>
         </ui:NavigationView>
         <ui:SnackbarPresenter x:Name="SnackbarPresenterHost" Grid.Row="1" />
     </Grid>

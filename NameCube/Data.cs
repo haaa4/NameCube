@@ -12,6 +12,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Media;
 using Wpf.Ui.Controls;
 using Brush = System.Windows.Media.Brush;
@@ -41,12 +42,14 @@ namespace NameCube
                     Top = true,
                     NameCubeMode = 0,
                     color = (Brush)new BrushConverter().ConvertFromInvariantString("#30d7d7"),
+                    UpdataGet = 0
                 },
                 StartToDo = new startToDo
                 {
                     Ball = false,
                     AlwaysCleanMemory = false,
                     ShutDownWay = 0,
+                    AutoUpdata = true,
                 },
                 BirdSettings = new BirdSettings
                 {
@@ -104,8 +107,14 @@ namespace NameCube
                     Speed = 20,
                     AutoAddFile = true,
                 },
+                ShortCutKey = new ShortCutKey
+                {
+                    keys = new List<Key>(),
+                    Way=0,
+                }
 
             };
+
         }
         /// <summary>
         /// 保证数据非null
@@ -180,6 +189,10 @@ namespace NameCube
             {
                 GlobalVariables.json.MemoryModeSettings.Speed = 20;
             }
+            if(GlobalVariables.json.ShortCutKey==null)
+            {
+                GlobalVariables.json.ShortCutKey=new ShortCutKey();
+            }
         }
     }
     public class allSettings
@@ -233,7 +246,17 @@ namespace NameCube
         /// 上次更新的检查时间
         /// </summary>
         public string UpdataTime;
-        
+        /// <summary>
+        /// 更新获取通道（0：仅正式版本，1：所有版本）
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+        public int UpdataGet { get; set; } = 0;
+        /// <summary>
+        /// 是否显示推荐，如果为当前版本名或者None，则不显示
+        /// </summary>
+        public string Recommend {  get; set; }
+
+
     }
     public class onePeopleModeSettings
     {
@@ -257,6 +280,10 @@ namespace NameCube
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
         public int Speed { get; set; } = 20;
+        /// <summary>
+        /// 上一次抽取的姓名
+        /// </summary>
+        public string LastName {  get; set; }
 
 
     }
@@ -292,6 +319,8 @@ namespace NameCube
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
         public int ShutDownWay { get; set; } = 0;
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+        public bool AutoUpdata { get; set; } = true;
 
     }
     public class memoryFactorModeSettings
@@ -319,6 +348,10 @@ namespace NameCube
         /// 保底人重复次数
         /// </summary>
         public int MaxTimes { get; set; }
+        /// <summary>
+        /// 上一次抽取的姓名
+        /// </summary>
+        public string LastName { get; set; }
     }
     public class BatchModeSettings
     {
@@ -347,6 +380,10 @@ namespace NameCube
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
         public bool Locked { get; set; } = false;
+        /// <summary>
+        /// 上一次抽取的姓名表
+        /// </summary>
+        public List<string> LastName { get; set; } = new List<string>();
     }
     public class BirdSettings
     {
@@ -423,6 +460,10 @@ namespace NameCube
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
         public int Speed { get; set; } = 20;
+        /// <summary>
+        /// 上一次抽取的数字
+        /// </summary>
+        public string LastName { get; set; }
     }
     public class PrepareModeSetting
     {
@@ -446,6 +487,10 @@ namespace NameCube
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
         public List<string> Name { get; set; }= new List<string>();
+        /// <summary>
+        /// 上一次抽取的姓名
+        /// </summary>
+        public string LastName { get; set; }
     }
 
     public class MemoryModeSettings
@@ -470,6 +515,23 @@ namespace NameCube
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
         public bool AutoAddFile { get; set; } = true;
+        /// <summary>
+        /// 上一次抽取的姓名
+        /// </summary>
+        public string LastName { get; set; }
+    }
+    public class ShortCutKey
+    {
+        /// <summary>
+        /// 快捷键组合
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+        public List<Key> keys=new List<Key>();
+        /// <summary>
+        /// 快捷键要做的事（0=无，1=打开主页，2=打开单人模式，3=打开因子模式）
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+        public int Way = 0;
     }
 
     public class Json
@@ -521,7 +583,11 @@ namespace NameCube
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
         public MemoryModeSettings MemoryModeSettings { get; set; }=new MemoryModeSettings();
-
+        /// <summary>
+        /// 快捷键设置
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+        public ShortCutKey ShortCutKey { get; set; }=new ShortCutKey();
 
 
     }
@@ -565,7 +631,7 @@ namespace NameCube
         /// <summary>
         /// 当前版本
         /// </summary>
-        public static string Version = "V1.0.0-beta-2";
+        public static string Version = "V1.0.0.0";
     }
     internal class MessageBoxFunction
     {

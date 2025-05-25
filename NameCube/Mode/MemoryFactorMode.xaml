@@ -205,7 +205,7 @@
             <TextBlock
                 x:Name="Count"
                 HorizontalAlignment="Center"
-                FontSize="18"
+                FontSize="25"
                 Text="" />
             <Rectangle Height="3" Fill="Black" />
             <TextBlock

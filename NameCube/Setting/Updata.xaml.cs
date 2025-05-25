@@ -40,7 +40,12 @@ namespace NameCube.Setting
         public Updata()
         {
             InitializeComponent();
+            Canchange = false;
             VersionText.Text = GlobalVariables.Version;
+            UpdataWayComboBox.SelectedIndex = GlobalVariables.json.AllSettings.UpdataGet;
+            AutoStart.IsChecked = GlobalVariables.json.StartToDo.AutoUpdata;
+            Canchange = true;
+
             if (GlobalVariables.json.AllSettings.UpdataTime != null)
             {
                 CheckText.Text = "上次检查时间:" + GlobalVariables.json.AllSettings.UpdataTime;
@@ -50,7 +55,7 @@ namespace NameCube.Setting
                 CheckText.Text = "上次检查时间:从未检查过";
             }
         }
-        private CancellationTokenSource _cts;
+        bool Canchange;
         private void UpdataFromComputerButton_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
@@ -276,7 +281,25 @@ namespace NameCube.Setting
             }
             catch (Exception ex)
             {
-                throw;
+                throw ex;
+            }
+        }
+
+        private void UpdataWayComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if(Canchange)
+            {
+                GlobalVariables.json.AllSettings.UpdataGet = UpdataWayComboBox.SelectedIndex;
+                GlobalVariables.SaveJson();
+            }
+        }
+
+        private void AutoStart_Click(object sender, RoutedEventArgs e)
+        {
+            if(Canchange)
+            {
+                GlobalVariables.json.StartToDo.AutoUpdata = AutoStart.IsChecked.Value;
+                GlobalVariables.SaveJson();
             }
         }
     }

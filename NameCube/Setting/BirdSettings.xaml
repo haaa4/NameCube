@@ -26,7 +26,7 @@
                             TextWrapping="WrapWithOverflow" />
                         <ui:TextBlock
                             Appearance="Secondary"
-                            Text="开启后，将在桌面显示悬浮球(重启后应用）"
+                            Text="开启后，将在桌面显示悬浮球"
                             TextWrapping="WrapWithOverflow" />
                     </StackPanel>
                 </ui:CardControl.Header>
@@ -94,6 +94,7 @@
                         Width="90"
                         Height="90"
                         MouseDown="ImageIcon_MouseDown"
+                        RenderOptions.BitmapScalingMode="HighQuality"
                         Source="pack://application:,,,/BallPicture.png" />
                     <Button
                         HorizontalAlignment="Center"
@@ -250,11 +251,7 @@
                     ValueChanged="BallWidthHeight_ValueChanged" />
             </ui:CardControl>
 
-            <ui:CardAction
-                Margin="4"
-                Click="Button_Click"
-                Content="重启软件"
-                Icon="{ui:SymbolIcon Symbol=ArchiveArrowBack28}" />
+
 
         </StackPanel>
     </Grid>

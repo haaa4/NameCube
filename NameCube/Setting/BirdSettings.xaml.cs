@@ -84,7 +84,7 @@ namespace NameCube.Setting
                 }
             }
         }
-        private async Task CopyImage(string Filename)
+        private async void CopyImage(string Filename)
         {
             await Task.Run(() =>
             {

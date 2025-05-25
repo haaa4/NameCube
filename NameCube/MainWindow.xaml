@@ -11,8 +11,8 @@
     Title="点鸣魔方"
     Width="1400"
     Height="650"
-    MinHeight="650"
     MinWidth="1400"
+    MinHeight="650"
     Closing="FluentWindow_Closing"
     mc:Ignorable="d">
     <Grid>
