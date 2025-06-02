@@ -130,5 +130,30 @@
             </ui:CardControl.Header>
             <Button Click="Button_Click" Content="创建" />
         </ui:CardControl>
+        <!--<ui:CardControl
+    Margin="4"
+    Padding="20,10,20,10"
+    Icon="{ui:SymbolIcon Symbol=Memory16}">
+            <ui:CardControl.Header>
+                <StackPanel>
+                    <ui:TextBlock
+                Margin="0"
+                FontTypography="BodyStrong"
+                Text="低内存模式"
+                TextWrapping="WrapWithOverflow" />
+                    <ui:TextBlock
+                Appearance="Secondary"
+                Text="自动释放主界面内存，但是加载速度会变长"
+                TextWrapping="WrapWithOverflow" />
+                </StackPanel>
+            </ui:CardControl.Header>
+            <ui:ToggleSwitch
+        x:Name="LowMemoryCheck"
+        HorizontalContentAlignment="Left"
+        Click="LowMemoryCheck_Click"
+        IsEnabled="True"
+        OffContent="关"
+        OnContent="开" />
+        </ui:CardControl>-->
     </StackPanel>
 </Page>

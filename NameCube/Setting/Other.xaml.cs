@@ -25,6 +25,7 @@ namespace NameCube.Setting
             StartCheck.IsChecked = IsStartupApplication("NameCube");
             TopCheck.IsChecked = GlobalVariables.json.AllSettings.Top;
             ModeCombox.SelectedIndex = GlobalVariables.json.AllSettings.NameCubeMode;
+            //LowMemoryCheck.IsChecked=GlobalVariables.json.AllSettings.LowMemoryMode;
             if (GlobalVariables.json.AllSettings.Recommend=="None")
             {
                 RecommendCheck.IsChecked=true;
@@ -206,5 +207,14 @@ namespace NameCube.Setting
                 GlobalVariables.SaveJson();
             }
         }
+
+        //private void LowMemoryCheck_Click(object sender, RoutedEventArgs e)
+        //{
+        //    if(CanChange)
+        //    {
+        //        GlobalVariables.json.AllSettings.LowMemoryMode = LowMemoryCheck.IsChecked.Value;
+        //        GlobalVariables.SaveJson();
+        //    }
+        //}
     }
 }

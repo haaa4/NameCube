@@ -54,6 +54,10 @@ namespace NameCube.Setting
             {
                 CheckText.Text = "上次检查时间:从未检查过";
             }
+            if (GlobalVariables.IsBeta)
+            {
+                WarningInfo.IsOpen = true;
+            }
         }
         bool Canchange;
         private void UpdataFromComputerButton_Click(object sender, RoutedEventArgs e)

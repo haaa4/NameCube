@@ -25,7 +25,7 @@ namespace NameCube
     /// <summary>
     /// Notify.xaml 的交互逻辑
     /// </summary>
-    public partial class Notify:Window
+    public partial class Notify:FluentWindow
     {
         private NotifyIcon _notifyIcon;
         private Storyboard _currentStoryboard;
@@ -245,9 +245,13 @@ namespace NameCube
             await Application.Current.Dispatcher.InvokeAsync(() =>
             {
                 var mainWindow = Application.Current.MainWindow as MainWindow;
+                if(mainWindow==null)
+                {
+                    mainWindow=new MainWindow();
+                }
                 if (mainWindow != null)
                 {
-                    mainWindow.Show();
+                    mainWindow.ShowThisWindow();
                     mainWindow.Activate();
                     mainWindow.WindowState = WindowState.Normal;
                     mainWindow.NavigationMenu.Navigate(typeof(Mode.Home));

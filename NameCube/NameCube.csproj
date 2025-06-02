@@ -386,7 +386,6 @@
     </EmbeddedResource>
     <None Include="app.manifest" />
     <None Include="attention.md" />
-    <None Include="NameCube_TemporaryKey.pfx" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

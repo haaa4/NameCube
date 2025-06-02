@@ -81,6 +81,11 @@
             </ComboBox>
 
         </ui:CardControl>
+        <ui:InfoBar
+            x:Name="WarningInfo"
+            Title="注意"
+            Message="在测试版本中更新，可能会更新至之前的正式版本，请注意版本号"
+            Severity="Warning" />
         <ui:CardControl
             Margin="4"
             Padding="20,10,20,10"

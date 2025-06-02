@@ -109,8 +109,7 @@ namespace NameCube
                 },
                 ShortCutKey = new ShortCutKey
                 {
-                    keys = new List<Key>(),
-                    Way=0,
+                    keysGrounp = new List<ShortCut>(),
                 }
 
             };
@@ -193,6 +192,8 @@ namespace NameCube
             {
                 GlobalVariables.json.ShortCutKey=new ShortCutKey();
             }
+            //未来的开发请注意！！！！
+            GlobalVariables.json.AllSettings.LowMemoryMode = false;
         }
     }
     public class allSettings
@@ -254,7 +255,13 @@ namespace NameCube
         /// <summary>
         /// 是否显示推荐，如果为当前版本名或者None，则不显示
         /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
         public string Recommend {  get; set; }
+        /// <summary>
+        /// 低内存模式
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+        public bool LowMemoryMode { get; set; }
 
 
     }
@@ -492,6 +499,19 @@ namespace NameCube
         /// </summary>
         public string LastName { get; set; }
     }
+    public class ShortCut
+    {
+        /// <summary>
+        /// 快捷键
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+        public List<Key> keys { get; set; }=new List<Key>();
+        /// <summary>
+        /// 启动方式
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+        public int openWay { get; set; } = -1;
+    }
 
     public class MemoryModeSettings
     {
@@ -526,12 +546,7 @@ namespace NameCube
         /// 快捷键组合
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
-        public List<Key> keys=new List<Key>();
-        /// <summary>
-        /// 快捷键要做的事（0=无，1=打开主页，2=打开单人模式，3=打开因子模式）
-        /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
-        public int Way = 0;
+        public List<ShortCut> keysGrounp=new List<ShortCut>();
     }
 
     public class Json
@@ -632,11 +647,13 @@ namespace NameCube
         /// 当前版本
         /// </summary>
         public static string Version = "V1.0.0.0";
+        public static bool IsBeta = true;
+        public static bool ret=false;
     }
     internal class MessageBoxFunction
     {
         /// <summary>
-        /// 创建一个提示选择框
+        /// 创建一个提示信息框
         /// </summary>
         /// <param name="message">提醒消息</param>
         public static void ShowMessageBoxInfo(string message)
@@ -651,7 +668,7 @@ namespace NameCube
             });
         }
         /// <summary>
-        /// 创建一个警告选择框
+        /// 创建一个警告信息框
         /// </summary>
         /// <param name="message">警告消息</param>
         public static void ShowMessageBoxWarning(string message)
@@ -666,7 +683,7 @@ namespace NameCube
             });
         }
         /// <summary>
-        /// 创建一个报错选择框
+        /// 创建一个报错信息框
         /// </summary>
         /// <param name="message">报错信息</param>
         /// <param name="Log">是否写入日志</param>

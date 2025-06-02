@@ -36,6 +36,7 @@ namespace NameCube
         {
             bool ret;
             mutex = new Mutex(true, "NameCube", out ret);
+            GlobalVariables.ret=ret;
             if (!ret && !File.Exists(Path.Combine(GlobalVariables.configDir, "START")))
             {
                 RepeatWarning repeat = new RepeatWarning();
@@ -142,7 +143,7 @@ namespace NameCube
             MainWindow mainWindow = new MainWindow();
             if (GlobalVariables.json.AllSettings.NameCubeMode != 0)
             {
-                mainWindow.Show();
+                mainWindow.ShowThisWindow();
             }
            Notify notify = new Notify();
         }

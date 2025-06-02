@@ -47,6 +47,12 @@ namespace NameCube
 
         public Bird()
         {
+            if(!GlobalVariables.ret)
+            {
+                this.Hide();
+                this.Close();
+                return;
+            }
             InitializeComponent();
             InitializeBehavior();
             InitializePosition();
@@ -300,9 +306,13 @@ namespace NameCube
             await Application.Current.Dispatcher.InvokeAsync(() =>
             {
                 var mainWindow = Application.Current.MainWindow as MainWindow;
+                if(mainWindow==null)
+                {
+                    mainWindow = new MainWindow();
+                }
                 if (mainWindow != null)
                 {
-                    mainWindow.Show();
+                    mainWindow.ShowThisWindow();
                     mainWindow.Activate();
                     mainWindow.WindowState=WindowState.Normal;
                     mainWindow.NavigationMenu.Navigate(typeof(Mode.Home));
