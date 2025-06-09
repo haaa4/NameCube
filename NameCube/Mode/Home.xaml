@@ -29,7 +29,7 @@
                 FontWeight="Black"
                 Text="主页" />
         </StackPanel>
-        <Image Source="pack://application:,,,/Image/v1.0.0.0.png" x:Name="Recommend"/>
+        <Image Source="pack://application:,,,/Image/v1.0.1.0.png" x:Name="Recommend"/>
         <ui:Button Content="关闭" VerticalAlignment="Top" x:Name="CloseRecommendButtom" Click="CloseRecommendButtom_Click"/>
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>

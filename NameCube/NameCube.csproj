@@ -111,6 +111,7 @@
     <Compile Include="FirstUse\Other.xaml.cs">
       <DependentUpon>Other.xaml</DependentUpon>
     </Compile>
+    <Compile Include="FolderMover.cs" />
     <Compile Include="GithubData.cs" />
     <Compile Include="Mode\Home.xaml.cs">
       <DependentUpon>Home.xaml</DependentUpon>
@@ -487,7 +488,10 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Image\V1.0.0.0.png" />
+    <None Include="Image\V1.0.0.0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\V1.0.1.0.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

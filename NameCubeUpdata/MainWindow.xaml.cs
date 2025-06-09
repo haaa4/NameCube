@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -16,6 +17,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Path = System.IO.Path;
+using Timer = System.Timers.Timer;
 
 namespace NameCubeUpdata
 {
@@ -28,27 +30,71 @@ namespace NameCubeUpdata
         {
             InitializeComponent();
             Task.Run(() => Updata());
+            Timer timer = new Timer();
+            timer.Elapsed += (sender, e) =>
+            {
+                Random random= new Random();
+                int get = random.Next(0, 13);
+                this.Dispatcher.Invoke(() =>
+                {
+                    HappyText.Text = someHappyText[get];
+                });
+            };
+            timer.Interval = 500;
+            timer.Start();
         }
+        List<string> someHappyText = new List<string>
+        {
+            "(^_−)☆",
+            "(*^▽^*)",
+            "o(´^｀)o",
+            "o(╥﹏╥)o",
+            "!!!∑(ﾟДﾟノ)ノ",
+            "ψ(*｀ー´)ψ",
+            "(•́へ•́╬)",
+            "ヽ(ー_ー)ノ",
+            "|ू･ω･` )",
+            "(✪ω✪)",
+            "(ಥ_ಥ)",
+            "┗( ▔, ▔ )┛",
+            "凸(｀0´)凸"
+        };
         public void Updata()
         {
             try
             {
                 Thread.Sleep(5000);
+                ProcessAdd("删除文件中");
                 string ProgramFile = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
                 string UpdataFile = File.ReadAllText(Path.Combine(ProgramFile, "Path.txt"));
                 File.Delete(Path.Combine(ProgramFile, "Path.txt"));
 
                 try
                 {
-                    Directory.Delete(UpdataFile, true);
+                    DirectoryInfo parentDirectory = new DirectoryInfo(UpdataFile);
+                    DirectoryInfo[] subDirectories = parentDirectory.GetDirectories();
+                    foreach (DirectoryInfo subDir in subDirectories)
+                    {
+                        if (subDir.Name != "Namecube")
+                        {
+                            subDir.Delete(true);
+                        }
+                    }
+                    FileInfo[] files = parentDirectory.GetFiles();
+                    foreach (FileInfo file in files)
+                    {
+                        file.Delete();
+                    }
                 }
-                catch
+                catch(Exception ex)
                 {
-                    //这里不需要管
+                    throw ex;
                 }
-
+                ProcessAdd("复制文件中");
                 CopyDirectory(Path.Combine(ProgramFile, "Data"), UpdataFile);
+                ProcessAdd("收尾中");
                 File.WriteAllText(Path.Combine(ProgramFile, "Success"), "Yhea!");
+                ProcessAdd("完成");
                 MessageBox.Show("更新已完成，请自行开启程序", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
                 this.Dispatcher.Invoke(() =>
                 {
@@ -97,6 +143,15 @@ namespace NameCubeUpdata
         {
             e.Cancel = true;
             base.OnClosed(e);
+        }
+        private void ProcessAdd(string message)
+        {
+            this.Dispatcher.Invoke(() =>
+            {
+                CaseText.Text = message;
+                processBar.Value++;
+            });
+
         }
     }
 }

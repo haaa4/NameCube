@@ -27,23 +27,35 @@ namespace NameCube
             [JsonProperty("draft")]
             public bool IsDraft { get; set; }
         }
+
         /// <summary>
-        /// 获取最新仓库版本
+        /// 获取最新仓库版本（支持 GitHub 令牌认证）
         /// </summary>
         /// <param name="owner">仓库的所有者</param>
         /// <param name="repoName">仓库的名称</param>
+        /// <param name="githubToken">GitHub 个人访问令牌（可选）</param>
         /// <returns></returns>
         /// <exception cref="Exception">响应失败</exception>
-        public static async Task<string> GetLatestReleaseVersionAsync(string owner, string repoName)
+        public static async Task<string> GetLatestReleaseVersionAsync(
+            string owner,
+            string repoName,
+            string githubToken = null)  // 添加可选令牌参数
         {
-            using (var httpClient = new HttpClient()) // 改为传统using语法
+            using (var httpClient = new HttpClient())
             {
                 const string userAgent = "WPF-Update-Checker";
 
                 try
                 {
-                    // 配置请求头
+                    // 配置基础请求头
                     httpClient.DefaultRequestHeaders.UserAgent.ParseAdd(userAgent);
+
+                    // 添加 GitHub 令牌认证（如果提供了令牌）
+                    if (!string.IsNullOrWhiteSpace(githubToken))
+                    {
+                        httpClient.DefaultRequestHeaders.Authorization =
+                            new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", githubToken);
+                    }
 
                     // 发送API请求
                     var response = await httpClient.GetAsync(
@@ -55,30 +67,28 @@ namespace NameCube
                     var content = await response.Content.ReadAsStringAsync();
                     var releases = JsonConvert.DeserializeObject<List<GitHubRelease>>(content);
 
-                    if(GlobalVariables.json.AllSettings.UpdataGet==0)
+                    if (GlobalVariables.json.AllSettings.UpdataGet == 0)
                     {
-                        // 筛选有效Release
+                        // 筛选正式版 Release
                         var validReleases = releases?
                             .Where(r => !r.IsDraft && !r.IsPrerelease)
                             .OrderByDescending(r => r.PublishedAt)
                             .ToList();
 
-
                         return validReleases?.FirstOrDefault()?.TagName
-                               ?? throw new Exception("No valid releases found");
+                               ?? throw new Exception("未找到有效版本");
                     }
                     else
                     {
+                        // 包含预发布版本
                         var validReleases = releases?
                            .Where(r => !r.IsDraft)
                            .OrderByDescending(r => r.PublishedAt)
                            .ToList();
 
-
                         return validReleases?.FirstOrDefault()?.TagName
-                               ?? throw new Exception("No valid releases found");
+                               ?? throw new Exception("未找到有效版本");
                     }
-
                 }
                 catch (HttpRequestException ex)
                 {
@@ -89,10 +99,6 @@ namespace NameCube
                     throw new Exception("响应数据解析失败: " + ex.Message);
                 }
             }
-
-
-
-
         }
     }
     public class DownloadHelper

@@ -9,18 +9,41 @@
     Title="ShortcutKeySetting"
     d:DesignHeight="450"
     d:DesignWidth="800"
+    Loaded="Page_Loaded"
     mc:Ignorable="d">
     <Grid>
 
         <StackPanel>
             <ui:InfoBar
-            Title="提醒"
-            IsClosable="False"
-            IsOpen="True"
-            Message="快捷键功能测试阶段，未来可能不兼容当前数据" />
-            <ui:CardAction Icon="{ui:SymbolIcon Symbol=Add16}" Content="新建组合" Margin="5 5" Click="CardAction_Click"/>
+                Title="提醒"
+                IsClosable="False"
+                IsOpen="True"
+                Message="快捷键功能测试阶段，未来可能不兼容当前数据" />
+            <!--  如果以后性能问题严重，就可以使用此等待条  -->
+            <ProgressBar
+                x:Name="WaitingProcessBar"
+                Height="8"
+                IsIndeterminate="True" />
+            <StackPanel x:Name="ShortCutHost">
+                <ui:CardAction Margin="5,5">
+                    <StackPanel>
+                        <TextBlock
+                            FontSize="20"
+                            FontWeight="Black"
+                            Text="Test（Test Test）" />
+                        <TextBlock FontSize="20" Text="Test Test Test Test" />
+                    </StackPanel>
+                </ui:CardAction>
+            </StackPanel>
+
+            <ui:CardAction
+                x:Name="AddCardAction"
+                Margin="5,5"
+                Click="CardAction_Click"
+                Content="新建按键组"
+                Icon="{ui:SymbolIcon Symbol=Add16}" />
         </StackPanel>
-        <ContentPresenter x:Name="Host"/>
+        <ContentPresenter x:Name="Host" />
 
     </Grid>
 

@@ -7,10 +7,15 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Title="应用更新中"
     Width="600"
-    Height="100"
+    Height="130"
     Closing="Window_Closing"
     mc:Ignorable="d">
     <StackPanel>
-        <TextBlock FontSize="50" Text="应用更新中..." />
+        <TextBlock FontSize="20" Text="应用更新中..." Margin="5 0 0 0"/>
+        <ProgressBar Margin="5" Height="25" Maximum="5" Value="1" x:Name="processBar"/>
+        <DockPanel>
+            <TextBlock Text="等待应用关闭" Margin="10 0 0 0" x:Name="CaseText"/>
+            <TextBlock Text="(2333333333)" Margin="20 0 0 0" x:Name="HappyText"/>
+        </DockPanel>
     </StackPanel>
 </Window>

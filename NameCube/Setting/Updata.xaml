@@ -112,6 +112,25 @@
                 OnContent="开" />
 
         </ui:CardControl>
+        <ui:CardControl
+    Margin="4"
+    Padding="20,10,20,10"
+    Icon="{ui:SymbolIcon Symbol=DocumentPageTopCenter24}">
+            <ui:CardControl.Header>
+                <StackPanel>
+                    <ui:TextBlock
+                Margin="0"
+                FontTypography="BodyStrong"
+                Text="自定义用户令牌"
+                TextWrapping="WrapWithOverflow" />
+                    <ui:TextBlock
+                Appearance="Secondary"
+                Text="使用令牌后 API 请求限制从 60 次/小时提升到 5000 次/小时"
+                TextWrapping="WrapWithOverflow" />
+                </StackPanel>
+            </ui:CardControl.Header>
+            <ui:TextBox Width="200" TextChanged="tokenText_TextChanged"  x:Name="tokenText"/>
+        </ui:CardControl>
         <ui:HyperlinkButton
             Content="无法连接？"
             Icon="{ui:SymbolIcon Link24}"

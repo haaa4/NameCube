@@ -313,7 +313,6 @@ namespace NameCube
                 if (mainWindow != null)
                 {
                     mainWindow.ShowThisWindow();
-                    mainWindow.Activate();
                     mainWindow.WindowState=WindowState.Normal;
                     mainWindow.NavigationMenu.Navigate(typeof(Mode.Home));
                 }
@@ -322,7 +321,10 @@ namespace NameCube
         
         protected override void OnClosed(EventArgs e)
         {
-            _longPressTimer.Stop();
+            if (_longPressTimer != null)
+            {
+                _longPressTimer.Stop();
+            }
             base.OnClosed(e);
         }
 

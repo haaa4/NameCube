@@ -192,6 +192,10 @@ namespace NameCube
             {
                 GlobalVariables.json.ShortCutKey=new ShortCutKey();
             }
+            if(GlobalVariables.json.ShortCutKey.keysGrounp==null)
+            {
+                GlobalVariables.json.ShortCutKey.keysGrounp = new List<ShortCut>();
+            }
             //未来的开发请注意！！！！
             GlobalVariables.json.AllSettings.LowMemoryMode = false;
         }
@@ -262,6 +266,11 @@ namespace NameCube
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
         public bool LowMemoryMode { get; set; }
+        /// <summary>
+        /// 用户更新token
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+        public string token { get; set; }
 
 
     }
@@ -507,10 +516,15 @@ namespace NameCube
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
         public List<Key> keys { get; set; }=new List<Key>();
         /// <summary>
-        /// 启动方式
+        /// 启动方式(0=无,1=单人模式,2=因子模式,3=批量模式,4=数字模式,5=预备模式,6=记忆模式,7=主页)
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
         public int openWay { get; set; } = -1;
+        /// <summary>
+        /// 上一次修改时间
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+        public string LastChangeTime { get; set; } = "-1";
     }
 
     public class MemoryModeSettings
@@ -646,7 +660,7 @@ namespace NameCube
         /// <summary>
         /// 当前版本
         /// </summary>
-        public static string Version = "V1.0.0.0";
+        public static string Version = "V1.0.1.0";
         public static bool IsBeta = true;
         public static bool ret=false;
     }
