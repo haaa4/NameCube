@@ -52,11 +52,11 @@ namespace NameCube.Setting
 
             try
             {
-                if (File.Exists(System.IO.Path.Combine(GlobalVariables.configDir, "logs")))
+                if (Directory.Exists(System.IO.Path.Combine(GlobalVariables.configDir, "logs")))
                     Directory.Delete(System.IO.Path.Combine(GlobalVariables.configDir, "logs"), true);
-                if (File.Exists(System.IO.Path.Combine(GlobalVariables.configDir, "Mode_data", "MemoryFactoryMode", "Backups")))
+                if (Directory.Exists(System.IO.Path.Combine(GlobalVariables.configDir, "Mode_data", "MemoryFactoryMode", "Backups")))
                     Directory.Delete(System.IO.Path.Combine(GlobalVariables.configDir, "Mode_data", "MemoryFactoryMode", "Backups"), true);
-                if (File.Exists(System.IO.Path.Combine(GlobalVariables.configDir, "Updata")))
+                if (Directory.Exists(System.IO.Path.Combine(GlobalVariables.configDir, "Updata")))
                     Directory.Delete(System.IO.Path.Combine(GlobalVariables.configDir, "Updata"), true);
                 MessageBoxFunction.ShowMessageBoxInfo("删除成功");
             }
