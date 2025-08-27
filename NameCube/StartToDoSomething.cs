@@ -1,13 +1,16 @@
 ﻿using Masuit.Tools.Logging;
 using Microsoft.Toolkit.Uwp.Notifications;
+using NameCube.ToolBox.AutomaticProcessPages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace NameCube
 {
+    //傻逼名字
     internal class StartToDoSomething
     {
         public async static void GetUpdata()
@@ -36,6 +39,13 @@ namespace NameCube
 
             }
             
+        }
+        public static void RunAutomaticProcesses()
+        {
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                AutoToDo.StartRunAutomaticProcesses();
+            });
         }
     }
 }

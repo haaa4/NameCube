@@ -146,6 +146,7 @@ namespace NameCube
                 LogManager.Error(ex);
             }
             StartToDoSomething.GetUpdata();
+            StartToDoSomething.RunAutomaticProcesses();
             LogManager.Info("程序启动");
             MainWindow mainWindow = new MainWindow();
             if (GlobalVariables.json.AllSettings.NameCubeMode != 0)
@@ -156,21 +157,6 @@ namespace NameCube
         }
        
 
-        private async void ShowNotifyIcon()
-        {
-            await Application.Current.Dispatcher.InvokeAsync(() =>
-            {
-                var notify = Application.Current.Windows.OfType<Notify>().FirstOrDefault();
-
-                if (notify == null)
-                {
-                    // 创建新实例
-                    notify = new Notify();
-                }
-
-                notify.InitializeLocation();
-            });
-        }
 
 
     }

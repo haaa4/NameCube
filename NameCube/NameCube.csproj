@@ -198,6 +198,61 @@
       <DependentUpon>Document.xaml</DependentUpon>
     </Compile>
     <Compile Include="StartToDoSomething.cs" />
+    <Compile Include="ToolBox\AutomaticProcess.xaml.cs">
+      <DependentUpon>AutomaticProcess.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ToolBox\AutomaticProcessPages\Audio.xaml.cs">
+      <DependentUpon>Audio.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ToolBox\AutomaticProcessPages\AutomaticProcessSetting.xaml.cs">
+      <DependentUpon>AutomaticProcessSetting.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ToolBox\AutomaticProcessPages\AutoToDo.cs" />
+    <Compile Include="ToolBox\AutomaticProcessPages\Debug.xaml.cs">
+      <DependentUpon>Debug.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ToolBox\AutomaticProcessPages\DebugWindows.xaml.cs">
+      <DependentUpon>DebugWindows.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ToolBox\AutomaticProcessPages\ProcessesRunningWindow.xaml.cs">
+      <DependentUpon>ProcessesRunningWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ToolBox\AutomaticProcessPages\ProcessPages\AudioPage.xaml.cs">
+      <DependentUpon>AudioPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ToolBox\AutomaticProcessPages\ProcessPages\CmdPage.xaml.cs">
+      <DependentUpon>CmdPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ToolBox\AutomaticProcessPages\ProcessPages\ReadPage.xaml.cs">
+      <DependentUpon>ReadPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ToolBox\AutomaticProcessPages\ProcessPages\ReadyPage.xaml.cs">
+      <DependentUpon>ReadyPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ToolBox\AutomaticProcessPages\ProcessPages\StartFiles.xaml.cs">
+      <DependentUpon>StartFiles.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ToolBox\AutomaticProcessPages\ProcessPages\WaitPage.xaml.cs">
+      <DependentUpon>WaitPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ToolBox\AutomaticProcessPages\ProcessSettingPages\AudioSettingPage.xaml.cs">
+      <DependentUpon>AudioSettingPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ToolBox\AutomaticProcessPages\ProcessSettingPages\CmdSettingPage.xaml.cs">
+      <DependentUpon>CmdSettingPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ToolBox\AutomaticProcessPages\ProcessSettingPages\ReadSettingPage.xaml.cs">
+      <DependentUpon>ReadSettingPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ToolBox\AutomaticProcessPages\ProcessSettingPages\StartSettingPage.xaml.cs">
+      <DependentUpon>StartSettingPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ToolBox\AutomaticProcessPages\ProcessSettingPages\WaitTimeSettingPage.xaml.cs">
+      <DependentUpon>WaitTimeSettingPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ToolBox\AutomaticProcessPages\SchedulePage.xaml.cs">
+      <DependentUpon>SchedulePage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ToolBox\MemoryToolbox.xaml.cs">
       <DependentUpon>MemoryToolbox.xaml</DependentUpon>
     </Compile>
@@ -350,6 +405,78 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="ToolBox\AutomaticProcess.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ToolBox\AutomaticProcessPages\Audio.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ToolBox\AutomaticProcessPages\AutomaticProcessSetting.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ToolBox\AutomaticProcessPages\Debug.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ToolBox\AutomaticProcessPages\DebugWindows.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ToolBox\AutomaticProcessPages\ProcessesRunningWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ToolBox\AutomaticProcessPages\ProcessPages\AudioPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ToolBox\AutomaticProcessPages\ProcessPages\CmdPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ToolBox\AutomaticProcessPages\ProcessPages\ReadPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ToolBox\AutomaticProcessPages\ProcessPages\ReadyPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ToolBox\AutomaticProcessPages\ProcessPages\StartFiles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ToolBox\AutomaticProcessPages\ProcessPages\WaitPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ToolBox\AutomaticProcessPages\ProcessSettingPages\AudioSettingPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ToolBox\AutomaticProcessPages\ProcessSettingPages\CmdSettingPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ToolBox\AutomaticProcessPages\ProcessSettingPages\ReadSettingPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ToolBox\AutomaticProcessPages\ProcessSettingPages\StartSettingPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ToolBox\AutomaticProcessPages\ProcessSettingPages\WaitTimeSettingPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ToolBox\AutomaticProcessPages\SchedulePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ToolBox\MemoryToolbox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -491,7 +618,10 @@
     <None Include="Image\V1.0.0.0.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Image\V1.0.1.0.png" />
+    <None Include="Image\V1.0.1.0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\V1.1_Beta-2.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

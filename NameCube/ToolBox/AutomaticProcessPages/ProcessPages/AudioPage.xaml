@@ -1,0 +1,106 @@
+﻿<Page
+    x:Class="NameCube.ToolBox.AutomaticProcessPages.ProcessPages.AudioPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:NameCube.ToolBox.AutomaticProcessPages.ProcessPages"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    Title="AudioPage"
+    d:DesignHeight="350"
+    d:DesignWidth="600"
+    Loaded="Page_Loaded"
+    mc:Ignorable="d">
+
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!--  播放进度控制  -->
+        <Slider
+            x:Name="PositionSlider"
+            Grid.Row="0"
+            Maximum="100"
+            Minimum="0"
+            MouseLeave="PositionSlider_MouseLeave"
+            ValueChanged="PositionSlider_ValueChanged" />
+        <TextBlock
+            Grid.Row="1"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Center"
+            FontSize="20">
+            <Run x:Name="PositionText" />
+            <Run Text="/" />
+            <Run x:Name="TotalTimeText" />
+        </TextBlock>
+
+        <!--  倍速控制  -->
+        <StackPanel
+            Grid.Row="2"
+            HorizontalAlignment="Right"
+            Orientation="Horizontal">
+            <TextBlock
+                Margin="0,0,10,0"
+                VerticalAlignment="Center"
+                Text="速度:" />
+            <ComboBox
+                x:Name="SpeedComboBox"
+                Width="80"
+                SelectedIndex="1"
+                SelectionChanged="SpeedComboBox_SelectionChanged">
+                <ComboBoxItem Content="0.5x" />
+                <ComboBoxItem Content="1.0x" IsSelected="True" />
+                <ComboBoxItem Content="1.5x" />
+                <ComboBoxItem Content="2.0x" />
+            </ComboBox>
+        </StackPanel>
+
+        <!--  控制按钮  -->
+        <StackPanel
+            Grid.Row="1"
+            HorizontalAlignment="Left"
+            Orientation="Horizontal">
+            <ui:Button
+                x:Name="PlayButton"
+                Margin="5"
+                Click="PlayButton_Click"
+                Icon="{ui:SymbolIcon Symbol=Play24}" />
+            <ui:Button
+                x:Name="PauseButton"
+                Margin="5"
+                Click="PauseButton_Click"
+                Icon="{ui:SymbolIcon Symbol=Pause24}" />
+            <ui:Button
+                x:Name="StopButton"
+                Margin="5"
+                Click="StopButton_Click"
+                Icon="{ui:SymbolIcon Symbol=VideoPlayPause24}" />
+        </StackPanel>
+
+        <!--  媒体元素（隐藏）  -->
+        <MediaElement
+            x:Name="MediaPlayer"
+            LoadedBehavior="Manual"
+            MediaEnded="MediaPlayer_MediaEnded"
+            MediaOpened="MediaPlayer_MediaOpened"
+            Visibility="Collapsed" />
+        <TextBlock
+            Grid.Row="2"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Center">
+            <Run Text="正在播放：" />
+            <Run x:Name="AudioNameText" />
+        </TextBlock>
+        <TextBlock
+            Grid.Row="3"
+            Margin="5,0,5,0"
+            Foreground="Gray"
+            Text="{Binding ElementName=MediaPlayer, Path=Source}"
+            TextWrapping="Wrap" />
+    </Grid>
+</Page>

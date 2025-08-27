@@ -36,13 +36,7 @@ namespace NameCube.Setting
             InitializeShortCutKey();
         }
         bool IsChoosing=false;
-        //public void Initializetackpanle()
-        //{
-        //    Thread thread = new Thread(() => InitializeShortCutKey());
-        //    thread.SetApartmentState(ApartmentState.STA);
-        //    thread.IsBackground= true;
-        //    thread.Start();
-        //}
+
         private void Choosing(bool isChossing)
         {
             var mainWindow = Application.Current.MainWindow as MainWindow;
