@@ -1,0 +1,33 @@
+﻿<Page
+    x:Class="NameCube.ToolBox.AutomaticProcessPages.ProcessSettingPages.WaitTimeSettingPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:NameCube.ToolBox.AutomaticProcessPages.ProcessSettingPages"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    Title="WaitTimeSettingPage"
+    d:DesignHeight="350"
+    d:DesignWidth="410"
+    Background="#f5f1f1"
+    mc:Ignorable="d">
+
+    <Grid Margin="20">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="2*" />
+        </Grid.ColumnDefinitions>
+        <TextBlock
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Text="等待时间" />
+        <ui:NumberBox
+            x:Name="WaitTimeNumberBox"
+            Grid.Column="1"
+            Margin="5"
+            LostFocus="WaitTimeNumberBox_LostFocus"
+            Maximum="3600"
+            Minimum="1"
+            ValueChanged="WaitTimeNumberBox_ValueChanged" />
+    </Grid>
+</Page>

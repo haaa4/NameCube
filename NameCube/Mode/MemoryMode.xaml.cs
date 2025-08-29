@@ -4,12 +4,14 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Security.AccessControl;
 using System.Speech.Synthesis;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -19,15 +21,26 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
+using Windows.UI.Xaml.Controls;
+using Wpf.Ui;
 using Wpf.Ui.Controls;
+using Wpf.Ui.Extensions;
+using Wpf.Ui.Violeta.Controls;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
+using Button = Wpf.Ui.Controls.Button;
+using ContentDialog = Windows.UI.Xaml.Controls.ContentDialog;
+using ContentDialogResult = Wpf.Ui.Controls.ContentDialogResult;
 using MessageBox = System.Windows.MessageBox;
+using StackPanel = System.Windows.Controls.StackPanel;
+using TextBlock = Wpf.Ui.Controls.TextBlock;
+using TextBox = Wpf.Ui.Controls.TextBox;
 
 namespace NameCube.Mode
 {
     /// <summary>
     /// MemoryMode.xaml 的交互逻辑
     /// </summary>
-    public partial class MemoryMode : Page
+    public partial class MemoryMode : System.Windows.Controls.Page
     {
         public ObservableCollection<string> AllFiles { get; set; } = new ObservableCollection<string>();
         public ObservableCollection<string> AllNames { get; set; } = new ObservableCollection<string>();
@@ -194,7 +207,7 @@ namespace NameCube.Mode
         }
         bool Canchange;
 
-        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void ComboBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
             if(Canchange)
             {
@@ -244,45 +257,67 @@ namespace NameCube.Mode
             
         }
 
-        private void ChangeButton_Click(object sender, RoutedEventArgs e)
+        private async void ChangeButton_Click(object sender, RoutedEventArgs e)
         {
-            ContentDialog1.Visibility = Visibility.Visible;
-            InputTextBox.Text = null;
-        }
-
-        private void ContentDialog1_Closing(ContentDialog sender, ContentDialogClosingEventArgs args)
-        {
-            if (args.Result == ContentDialogResult.None) 
+            var dialog = new Wpf.Ui.Controls.ContentDialog()
             {
-                ContentDialog1.Visibility = Visibility.Collapsed;
-            }
-            else
-            {
-                if(InputTextBox.Text!=null)
+                CloseButtonText = "取消",
+                PrimaryButtonText = "确定",
+                Title="输入保存名",
+                Content=new Wpf.Ui.Controls.StackPanel
                 {
-                    try
+                    Children =
                     {
-                        Canchange = false;
-                        ChangeButton.IsEnabled = false;
-                        string path1 = Path.Combine(GlobalVariables.configDir, "Mode_data", "MemoryMode", "permanent", InputTextBox.Text + ".json");
-                        string path2 = Path.Combine(GlobalVariables.configDir, "Mode_data", "MemoryMode", "temporary", AllFiles[ComboBox.SelectedIndex]);
-                        File.Move(path2, path1);
-                        AllFiles[ComboBox.SelectedIndex] = InputTextBox.Text + ".json";
-                        ContentDialog1.Visibility = Visibility.Collapsed;
-                        Canchange = true;
-                        ComboBox.SelectedIndex = 0;
+                        new TextBox()
+                        {
+                            Foreground=Brushes.Black,
+                            PlaceholderText="请输入名单名字:",
+                            Name="InputTextBox"
+                        },
                     }
-                    catch (Exception ex) 
+
+                }
+            };
+            dialog.DialogHost=RootContentDialogPresenter;
+            ContentDialogResult contentDialogResult = await dialog.ShowAsync();
+            if (dialog.Content is Wpf.Ui.Controls.StackPanel panel)
+            {
+                var InputTextBox = panel.Children.OfType<TextBox>().FirstOrDefault();
+                if (contentDialogResult==ContentDialogResult.None)
+                {
+                    dialog.Hide();
+                }
+                else
+                {
+                    if (InputTextBox.Text != null)
                     {
-                        MessageBoxFunction.ShowMessageBoxError(ex.Message);
+                        try
+                        {
+                            Canchange = false;
+                            ChangeButton.IsEnabled = false;
+                            string path1 = Path.Combine(GlobalVariables.configDir, "Mode_data", "MemoryMode", "permanent", InputTextBox.Text + ".json");
+                            string path2 = Path.Combine(GlobalVariables.configDir, "Mode_data", "MemoryMode", "temporary", AllFiles[ComboBox.SelectedIndex]);
+                            File.Move(path2, path1);
+                            AllFiles[ComboBox.SelectedIndex] = InputTextBox.Text + ".json";
+                            dialog.Hide();
+                            Canchange = true;
+                            ComboBox.SelectedIndex = 0;
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBoxFunction.ShowMessageBoxError(ex.Message);
+                        }
                     }
                 }
             }
         }
 
+      
+
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-           
+            try
+            {
                 string path1 = Path.Combine(GlobalVariables.configDir, "Mode_data", "MemoryMode", "permanent", AllFiles[ComboBox.SelectedIndex]);
                 string path2 = Path.Combine(GlobalVariables.configDir, "Mode_data", "MemoryMode", "temporary", AllFiles[ComboBox.SelectedIndex]);
                 try
@@ -298,10 +333,15 @@ namespace NameCube.Mode
                 }
                 catch (Exception ex)
                 {
-                     MessageBoxFunction.ShowMessageBoxError(ex.Message);
+                    MessageBoxFunction.ShowMessageBoxError(ex.Message);
                 }
                 AllFiles.Remove(AllFiles[ComboBox.SelectedIndex]);
                 ComboBox.SelectedIndex = 0;
+            }
+            catch (Exception ex) 
+            {
+                MessageBoxFunction.ShowMessageBoxError(ex.Message);
+            }
 
             
 
@@ -316,8 +356,21 @@ namespace NameCube.Mode
             }
             string filename = DateTime.Now.ToString("yyyy_M_d_H_m_s ") + ".json";
             File.WriteAllText(Path.Combine(GlobalVariables.configDir, "Mode_data", "MemoryMode", "temporary", filename), JsonConvert.SerializeObject(NameList));
-            AllFiles.Insert(0, filename);
-            ComboBox.SelectedIndex = 0;
+            bool canAdd=true;
+            foreach(string getFileName in AllFiles)
+            {
+                if(getFileName==filename) canAdd=false;
+            }
+            if(canAdd)
+            {
+                AllFiles.Insert(0, filename);
+                ComboBox.SelectedIndex = 0;
+            }
+            else
+            {
+                MessageBoxFunction.ShowMessageBoxWarning("创建过于频繁");
+            }
         }
+
     }
 }

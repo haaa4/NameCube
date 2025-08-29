@@ -17,6 +17,28 @@
             Click="CardAction_Click"
             Content="打开软件配置文件文件夹"
             Icon="{ui:SymbolIcon Symbol=WindowSettings20}" />
+        <ui:CardControl
+            Margin="4"
+            Padding="20,10,20,10"
+            Icon="{ui:SymbolIcon Symbol=Save24}">
+            <ui:CardControl.Header>
+                <StackPanel>
+                    <ui:TextBlock
+                        Margin="0"
+                        FontTypography="BodyStrong"
+                        Text="储存位置"
+                        TextWrapping="WrapWithOverflow" />
+                    <ui:TextBlock
+                        Appearance="Secondary"
+                        Text="选择将配置文件放在那个文件夹"
+                        TextWrapping="WrapWithOverflow" />
+                </StackPanel>
+            </ui:CardControl.Header>
+            <ComboBox x:Name="ModeCombox" SelectionChanged="ComboBox_SelectionChanged">
+                <ComboBoxItem Content="应用目录" />
+                <ComboBoxItem Content="用户AppData文件夹" />
+            </ComboBox>
+        </ui:CardControl>
         <ui:Button
             Width="300"
             Height="60"

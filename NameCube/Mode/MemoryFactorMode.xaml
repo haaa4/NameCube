@@ -57,15 +57,6 @@
             HorizontalAlignment="Center"
             FontSize="30"
             Text="......" />
-        <!--<TextBlock
-            x:Name="MaxName"
-            FontSize="30"
-            Text="当前概率最高:" />
-        <TextBlock
-            x:Name="multiply"
-            Margin="0,32,0,0"
-            FontSize="30"
-            Text="概率UP：" />-->
         <ui:Button
             x:Name="StartButton"
             Grid.Row="1"

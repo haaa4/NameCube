@@ -25,22 +25,22 @@
             <TextBlock
                 x:Name="NowNumberText"
                 Grid.Column="2"
+                Margin="0,30,0,0"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Top"
                 FontSize="120"
                 Foreground="#30d7d7"
-                Text="XXX"
-                Margin="0 30 0 0"/>
+                Text="XXX" />
             <TextBlock
                 x:Name="FinishText"
                 Grid.Column="2"
+                Margin="0,30,0,0"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Top"
                 FontSize="120"
                 Foreground="#30d7d7"
                 Text="XX"
-                Visibility="Hidden" 
-                Margin="0 30 0 0"/>
+                Visibility="Hidden" />
             <ui:Button
                 x:Name="StartButton"
                 Grid.Row="1"

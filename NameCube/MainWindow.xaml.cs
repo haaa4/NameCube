@@ -1,14 +1,23 @@
-﻿using NameCube.Setting;
+﻿using Masuit.Tools.Logging;
+using NameCube.Setting;
+using NameCube.ToolBox.AutomaticProcessPages;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
-using Application = System.Windows.Application;
+using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Threading;
-using System.ComponentModel;
-using System;
+using Wpf.Ui.Controls;
+using Application = System.Windows.Application;
+using Timer = System.Windows.Forms.Timer;
 
 
 namespace NameCube
@@ -18,6 +27,7 @@ namespace NameCube
     /// </summary>
     public partial class MainWindow
     {
+        private Dictionary<string, Dictionary<Key, DateTime>> _shortcutKeyTimes = new Dictionary<string, Dictionary<Key, DateTime>>();
         private NotifyIcon _notifyIcon=new NotifyIcon();
         Timer Timer=new Timer();
         private const int WH_KEYBOARD_LL = 13;
@@ -44,6 +54,7 @@ namespace NameCube
         private IntPtr _hookID = IntPtr.Zero;
         private readonly object _lock = new object();
         private Dictionary<Key, DateTime> _keyPressTimes = new Dictionary<Key, DateTime>();
+        public bool isChoosing = false;
 
         public void OnShowAfterLongPress()
         {
@@ -54,6 +65,7 @@ namespace NameCube
         {
             InitializeComponent();
             InitializeKeyboardHook();
+            UpdateHotkeys();
             Application.Current.ShutdownMode = ShutdownMode.OnExplicitShutdown;
             if(GlobalVariables.json.AllSettings.NameCubeMode==1)
             {
@@ -83,13 +95,6 @@ namespace NameCube
             this.Topmost = GlobalVariables.json.AllSettings.Top;
         }
 
-        private void ShowWindow()
-        {
-
-            this.Show();
-            this.WindowState = WindowState.Normal; // 恢复窗口状态
-            this.Activate(); // 激活窗口到前台
-        }
 
         private void ExitApp()
         {
@@ -99,11 +104,14 @@ namespace NameCube
 
         private void FluentWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            e.Cancel = true;
-            this.Hide();
             if(GlobalVariables.json.AllSettings.NameCubeMode==1)
             {
                 Application.Current.Shutdown();
+            }
+            else
+            {
+                e.Cancel = true;
+                this.Hide();
             }
         }
 
@@ -157,93 +165,143 @@ namespace NameCube
 
                 lock (_lock)
                 {
-                    if (GlobalVariables.json.ShortCutKey.keys.Contains(key))
+                    // 检查所有快捷键组
+                    foreach (var shortcut in GlobalVariables.json.ShortCutKey.keysGrounp)
                     {
-                        Dispatcher.BeginInvoke((Action)(() =>
+                        if (shortcut.keys.Contains(key))
                         {
-                            HandleHotkeyPressed(key);
-                        }));
+                            Dispatcher.BeginInvoke((Action)(() =>
+                            {
+                                HandleHotkeyPressed(key, shortcut);
+                            }));
+                        }
                     }
                 }
             }
             return CallNextHookEx(_hookID, nCode, wParam, lParam);
         }
 
-        private void HandleHotkeyPressed(Key key)
+        private void HandleHotkeyPressed(Key key, ShortCut shortcut)
         {
-            // 记录按下时间
-            _keyPressTimes[key] = DateTime.Now;
+            string groupId = shortcut.LastChangeTime; // 使用最后修改时间作为唯一标识
 
-            // 检查所有快捷键是否在1秒内按下
-            CheckAllKeysPressedWithinSecond();
+            // 初始化或获取该组的按键时间记录
+            if (!_shortcutKeyTimes.ContainsKey(groupId))
+            {
+                _shortcutKeyTimes[groupId] = new Dictionary<Key, DateTime>();
+            }
+
+            // 记录当前按键时间
+            _shortcutKeyTimes[groupId][key] = DateTime.Now;
+
+            // 检查该组所有快捷键是否在1秒内按下
+            CheckShortcutGroupPressed(shortcut);
         }
 
-        private void CheckAllKeysPressedWithinSecond()
+        private void CheckShortcutGroupPressed(ShortCut shortcut)
         {
-            lock (_lock)
+            string groupId = shortcut.LastChangeTime;
+
+            if (!_shortcutKeyTimes.ContainsKey(groupId)) return;
+            if (shortcut.keys.Count == 0) return;
+
+            DateTime now = DateTime.Now;
+            DateTime oneSecondAgo = now.AddSeconds(-1);
+
+            bool allPressed = true;
+            foreach (var key in shortcut.keys)
             {
-                if (GlobalVariables.json.ShortCutKey.keys.Count == 0) return;
-
-                DateTime now = DateTime.Now;
-                DateTime oneSecondAgo = now.AddSeconds(-1);
-
-                bool allPressed = true;
-                foreach (var key in GlobalVariables.json.ShortCutKey.keys)
+                if (!_shortcutKeyTimes[groupId].TryGetValue(key, out DateTime pressTime) ||
+                    pressTime < oneSecondAgo)
                 {
-                    if (!_keyPressTimes.TryGetValue(key, out DateTime pressTime) || pressTime < oneSecondAgo)
-                    {
-                        allPressed = false;
+                    allPressed = false;
+                    break;
+                }
+            }
+
+            if (allPressed)
+            {
+                // 执行该组快捷键对应的操作
+                ExecuteShortcutAction(shortcut);
+
+                // 清除该组记录
+                _shortcutKeyTimes.Remove(groupId);
+            }
+        }
+
+        private void ExecuteShortcutAction(ShortCut shortCut)
+        {
+            
+            if (!isChoosing)
+            {
+                ShowThisWindow();
+                switch (shortCut.openWay)
+                {
+                    case 1:
+                        NavigationMenu.Navigate(typeof(Mode.OnePeopleMode));
                         break;
-                    }
-                }
-
-                if (allPressed)
-                {
-                    if (CanUseShortCutKey)
-                    {
-                        if(GlobalVariables.json.ShortCutKey.Way!=0)
+                    case 2:
+                        NavigationMenu.Navigate(typeof(Mode.MemoryFactorMode));
+                        break;
+                    case 3:
+                        NavigationMenu.Navigate(typeof(Mode.BatchMode));
+                        break;
+                    case 4:
+                        NavigationMenu.Navigate(typeof(Mode.NumberMode));
+                        break;
+                    case 5:
+                        NavigationMenu.Navigate(typeof(Mode.PrepareMode));
+                        break;
+                    case 6:
+                        NavigationMenu.Navigate(typeof(Mode.MemoryMode));
+                        break;
+                    case 7:
+                        NavigationMenu.Navigate(typeof(Mode.Home));
+                        break;
+                    default:
+                        if(shortCut.ProcessGroup==null)
                         {
-                            this.Show();
-                            this.Activate();
-                            this.WindowState = WindowState.Normal;
+                            Exception exception = new Exception("用户执行了不存在的命令" + shortCut.openWay.ToString());
+                            LogManager.Error(exception);
+                            break;
                         }
-                        if(GlobalVariables.json.ShortCutKey.Way==1)
+                        else
                         {
-                            NavigationMenu.Navigate(typeof(Mode.Home));
+                            RunProcessesGroup(shortCut.ProcessGroup);
                         }
-                        else if (GlobalVariables.json.ShortCutKey.Way == 2)
-                        {
-                            NavigationMenu.Navigate(typeof(Mode.OnePeopleMode));
-                        }
-                        else if (GlobalVariables.json.ShortCutKey.Way == 3)
-                        {
-                            NavigationMenu.Navigate(typeof(Mode.MemoryFactorMode));
-                        }
-                    }
-                    _keyPressTimes.Clear();
+                        break;
                 }
             }
-        }
 
-        public void UpdateHotkeys(List<Key> newHotkeys)
+        }
+        private static void RunProcessesGroup(ProcessGroup processGroup)
+        {
+            ProcessesRunningWindow processesRunningWindow = new ProcessesRunningWindow(processGroup);
+            if (processGroup.show)
+            {
+                processesRunningWindow.Show();
+                processesRunningWindow.Activate();
+            }
+
+        }
+    
+        public void UpdateHotkeys()
         {
             lock (_lock)
             {
-                GlobalVariables.json.ShortCutKey.keys = newHotkeys.Count > 5 ? newHotkeys.GetRange(0, 5) : new List<Key>(newHotkeys);
-                CleanupKeyPressRecords();
-            }
-        }
+                // 清理无效组的记录
+                var validGroupIds = GlobalVariables.json.ShortCutKey.keysGrounp
+                    .Select(s => s.LastChangeTime)
+                    .ToList();
 
-        private void CleanupKeyPressRecords()
-        {
-            var keysToRemove = new List<Key>();
-            foreach (var key in _keyPressTimes.Keys)
-            {
-                if (!GlobalVariables.json.ShortCutKey.keys.Contains(key)) keysToRemove.Add(key);
-            }
-            foreach (var key in keysToRemove)
-            {
-                _keyPressTimes.Remove(key);
+                var keysToRemove = _shortcutKeyTimes.Keys
+                    .Where(id => !validGroupIds.Contains(id))
+                    .ToList();
+
+                foreach (var key in keysToRemove)
+                {
+                    _shortcutKeyTimes.Remove(key);
+                }
             }
         }
 
@@ -251,6 +309,87 @@ namespace NameCube
         {
             UnhookWindowsHookEx(_hookID);
             base.OnClosed(e);
+
         }
+        private void ReleaseManagedResources()
+        {
+            _notifyIcon?.Dispose();
+            _notifyIcon = null;
+
+            Timer?.Stop();
+            Timer?.Dispose();
+            Timer = null;
+        }
+
+        private void ReleaseUnmanagedResources()
+        {
+            // 确保钩子完全释放
+            if (_hookID != IntPtr.Zero)
+            {
+                UnhookWindowsHookEx(_hookID);
+                _hookID = IntPtr.Zero;
+            }
+        }
+
+        private void UnsubscribeEvents()
+        {
+            Loaded -= (sender, args) => { NavigationMenu.Navigate(typeof(Mode.Home)); };
+            Timer=null;
+            Closing -= FluentWindow_Closing;
+        }
+
+        private void ClearCollections()
+        {
+            _keyPressTimes?.Clear();
+            _keyPressTimes = null;
+        }
+        double LastTop=-1;
+        public void ShowThisWindow()
+        {
+            if(LastTop==-1)
+            {
+                if (!IsActive && (!(this.Visibility == Visibility.Hidden || this.Visibility == Visibility.Collapsed) || this.WindowState == WindowState.Minimized))
+                {
+                    this.Activate();
+                    this.WindowState=WindowState.Normal;
+                }
+                else
+                {
+                    var dpiScale = VisualTreeHelper.GetDpi(this);
+                    var workArea = SystemParameters.WorkArea;
+                    double screenHeight = workArea.Height * dpiScale.DpiScaleY;
+                    if (!(Top<1&&Top==1&&Top>1))//这里不知道为什么，总是不能判断为NaN,就用这个数字代替了
+                    {
+                        Top = 200;
+                        LastTop = Top;
+                    }
+                    LastTop = Top;
+                    Top= screenHeight + 300;
+                    this.BeginAnimation(Window.TopProperty, null);
+                    DoubleAnimation animation1 = new DoubleAnimation
+                    {
+                        From = screenHeight + 300,
+                        To = LastTop,
+                        Duration = new Duration(TimeSpan.FromSeconds(0.6)),
+                        EasingFunction = new QuinticEase { EasingMode = EasingMode.EaseOut }
+                    };
+                    animation1.Completed += (sender, e) =>
+                    {
+                        LastTop = -1;
+                    };
+                    this.WindowState = WindowState.Normal;
+                    Top = screenHeight + 300;
+                    Left = 200;
+                    this.Show();
+                    this.Activate();
+                    this.BeginAnimation(Window.TopProperty, animation1);
+
+                }
+
+            }
+
+        }
+
+
     }
 }

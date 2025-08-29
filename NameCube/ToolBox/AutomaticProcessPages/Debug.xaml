@@ -1,0 +1,49 @@
+﻿<Page
+    x:Class="NameCube.ToolBox.AutomaticProcessPages.Debug"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:NameCube.ToolBox.AutomaticProcessPages"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    Title="Debug"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+
+    <StackPanel>
+        <ui:InfoBar
+            Title="警告"
+            IsClosable="False"
+            IsOpen="True"
+            Message="这些功能仅用于调试，谨慎使用！"
+            Severity="Warning" />
+        <Button
+            x:Name="ExitButton"
+            Click="ExitButton_Click"
+            Content="退出调试" />
+        <ComboBox x:Name="SelectedData" SelectedIndex="3">
+            <ComboBoxItem Content="ready" />
+            <ComboBoxItem Content="start" />
+            <ComboBoxItem Content="audio" />
+            <ComboBoxItem Content="read" />
+            <ComboBoxItem Content="cmd" />
+            <ComboBoxItem Content="wait" />
+            <ComboBoxItem Content="clear" />
+            <ComboBoxItem Content="shutDown" />
+        </ComboBox>
+        <ui:NumberBox
+            x:Name="NumericData"
+            Maximum="120"
+            Minimum="0"
+            PlaceholderText="Numeric Data"
+            Value="1" />
+        <ui:TextBox x:Name="Data1" PlaceholderText="Data 1" />
+        <ui:TextBox x:Name="Data2" PlaceholderText="Data 2" />
+        <CheckBox x:Name="CheckedData" Content="Checked Data" />
+        <ui:Button
+            x:Name="OkButton"
+            Click="OkButton_Click"
+            Content="OK" />
+    </StackPanel>
+</Page>

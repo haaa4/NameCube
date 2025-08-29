@@ -1,0 +1,22 @@
+﻿<Page
+    x:Class="NameCube.ToolBox.AutomaticProcessPages.ProcessPages.ClearPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:NameCube.ToolBox.AutomaticProcessPages.ProcessPages"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    Title="ClearPage"
+    d:DesignHeight="350"
+    d:DesignWidth="600"
+    Loaded="Page_Loaded"
+    mc:Ignorable="d">
+
+    <Grid>
+        <TextBlock
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            FontSize="40"
+            Text="内存清理中..." />
+    </Grid>
+</Page>

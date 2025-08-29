@@ -32,7 +32,6 @@ namespace NameCube
         private Point _dragOffset;
         private bool _isDragging;
         System.Timers.Timer Hidetimer = new System.Timers.Timer();
-        System.Timers.Timer PowerOffTimer = new System.Timers.Timer();
         System.Timers.Timer Ab = new System.Timers.Timer();
 
         [DllImport("user32.dll")]
@@ -47,6 +46,12 @@ namespace NameCube
 
         public Bird()
         {
+            if(!GlobalVariables.ret)
+            {
+                this.Hide();
+                this.Close();
+                return;
+            }
             InitializeComponent();
             InitializeBehavior();
             InitializePosition();
@@ -68,9 +73,6 @@ namespace NameCube
             _timer = new DispatcherTimer();
             _timer.Interval = TimeSpan.FromSeconds(600);
             _timer.Tick += Timer_Tick;
-            PowerOffTimer.Interval = 5000;
-            PowerOffTimer.Elapsed += PowerOffTimer_Elapsed;
-            PowerOffTimer.Start();
             Ab.Interval = 10000;
             Ab.Elapsed += Ab_Elapsed;
             Hidetimer.Elapsed+= HideTimer_Elapsed;
@@ -93,42 +95,7 @@ namespace NameCube
             }));
 
         }
-        private async Task ShowSettingsWindowAsync()
-        {
-            await Application.Current.Dispatcher.InvokeAsync(() =>
-            {
-                var settingsWindow = Application.Current.Windows.OfType<SettingsWindow>().FirstOrDefault();
-
-                if (settingsWindow == null)
-                {
-                    // 创建新实例
-                    settingsWindow = new SettingsWindow();
-                }
-
-                // 确保窗口可见并激活
-                settingsWindow.Show();
-                settingsWindow.Activate();
-                settingsWindow.WindowState = WindowState.Normal;
-            });
-        }
-        private async Task ShowToolboxWindowAsync()
-        {
-            await Application.Current.Dispatcher.InvokeAsync(() =>
-            {
-                var toolboxWindow = Application.Current.Windows.OfType<ToolBox.ToolboxWindow>().FirstOrDefault();
-
-                if (toolboxWindow == null)
-                {
-                    // 创建新实例
-                    toolboxWindow = new ToolBox.ToolboxWindow();
-                }
-
-                // 确保窗口可见并激活
-                toolboxWindow.Show();
-                toolboxWindow.Activate();
-                toolboxWindow.WindowState = WindowState.Normal;
-            });
-        }
+      
         private DispatcherTimer _timer;
         private void ExitApp()
         {
@@ -300,10 +267,13 @@ namespace NameCube
             await Application.Current.Dispatcher.InvokeAsync(() =>
             {
                 var mainWindow = Application.Current.MainWindow as MainWindow;
+                if(mainWindow==null)
+                {
+                    mainWindow = new MainWindow();
+                }
                 if (mainWindow != null)
                 {
-                    mainWindow.Show();
-                    mainWindow.Activate();
+                    mainWindow.ShowThisWindow();
                     mainWindow.WindowState=WindowState.Normal;
                     mainWindow.NavigationMenu.Navigate(typeof(Mode.Home));
                 }
@@ -312,7 +282,10 @@ namespace NameCube
         
         protected override void OnClosed(EventArgs e)
         {
-            _longPressTimer.Stop();
+            if (_longPressTimer != null)
+            {
+                _longPressTimer.Stop();
+            }
             base.OnClosed(e);
         }
 
@@ -320,24 +293,6 @@ namespace NameCube
         {
             e.Cancel = true;
             base.OnClosing(e);
-        }
-        private void PowerOffTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
-        {
-            if (DateTime.Now.ToString("H,m") ==
-                GlobalVariables.json.StartToDo.HourPowerOff.ToString() + "," + GlobalVariables.json.StartToDo.MinPowerOff.ToString() &&
-                GlobalVariables.json.StartToDo.PowerOff
-                )
-            {
-                this.Dispatcher.Invoke(new Action(() =>
-                {
-                    PowerOffWindow powerOffWindow = new PowerOffWindow();
-                    powerOffWindow.Show();
-                    powerOffWindow.Activate();
-                    powerOffWindow.WindowState=WindowState.Normal;
-                }));
-                PowerOffTimer.Stop();
-
-            }
         }
         private void HideTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {

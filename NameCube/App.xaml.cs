@@ -36,6 +36,15 @@ namespace NameCube
         {
             bool ret;
             mutex = new Mutex(true, "NameCube", out ret);
+            GlobalVariables.ret=ret;
+            if (Directory.Exists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Namecube")))
+            {
+                GlobalVariables.configDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Namecube");
+            }
+            else
+            {
+                GlobalVariables.configDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "NameCube");
+            }
             if (!ret && !File.Exists(Path.Combine(GlobalVariables.configDir, "START")))
             {
                 RepeatWarning repeat = new RepeatWarning();
@@ -78,10 +87,8 @@ namespace NameCube
                     MessageBoxFunction.ShowMessageBoxError(ex.Message);
                 }
             }
-            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-            string configDir = Path.Combine(appDataPath, "NameCube");
-            string configPath = Path.Combine(configDir, "config.json");
-            LogManager.LogDirectory = Path.Combine(configDir, "logs");
+            string configPath = Path.Combine(GlobalVariables.configDir, "config.json");
+            LogManager.LogDirectory = Path.Combine(GlobalVariables.configDir, "logs");
             if (File.Exists(Path.Combine(GlobalVariables.configDir, "START")))
             {
                 File.Delete(Path.Combine(GlobalVariables.configDir, "START"));
@@ -89,11 +96,12 @@ namespace NameCube
             try
             {
                 // 确保目录存在
-                Directory.CreateDirectory(configDir);
+                Directory.CreateDirectory(GlobalVariables.configDir);
                 InitializationAll.InitializeData();
                 if (!File.Exists(configPath))
                 {
                     LogManager.Info("找不到文件");
+                    GlobalVariables.ret = false;
                     // 初始化默认配置
                     FirstUse.FirstUseWindow firstUseWindow = new FirstUse.FirstUseWindow();
                     firstUseWindow.Show();
@@ -138,31 +146,17 @@ namespace NameCube
                 LogManager.Error(ex);
             }
             StartToDoSomething.GetUpdata();
+            StartToDoSomething.RunAutomaticProcesses();
             LogManager.Info("程序启动");
             MainWindow mainWindow = new MainWindow();
             if (GlobalVariables.json.AllSettings.NameCubeMode != 0)
             {
-                mainWindow.Show();
+                mainWindow.ShowThisWindow();
             }
            Notify notify = new Notify();
         }
        
 
-        private async void ShowNotifyIcon()
-        {
-            await Application.Current.Dispatcher.InvokeAsync(() =>
-            {
-                var notify = Application.Current.Windows.OfType<Notify>().FirstOrDefault();
-
-                if (notify == null)
-                {
-                    // 创建新实例
-                    notify = new Notify();
-                }
-
-                notify.InitializeLocation();
-            });
-        }
 
 
     }

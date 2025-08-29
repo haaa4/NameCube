@@ -17,6 +17,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Wpf.Ui.Controls;
+using Path = System.IO.Path;
 
 namespace NameCube.Setting
 {
@@ -28,8 +29,19 @@ namespace NameCube.Setting
         public Document()
         {
             InitializeComponent();
+            canChange = false;
+            string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Namecube");
+            if (GlobalVariables.configDir == path)
+            {
+                ModeCombox.SelectedIndex = 0;
+            }
+            else
+            {
+                ModeCombox.SelectedIndex = 1;
+            }
+            canChange = true;
         }
-
+        bool canChange = true;
         private void CardAction_Click(object sender, RoutedEventArgs e)
         {
             Process.Start(GlobalVariables.configDir);
@@ -40,10 +52,12 @@ namespace NameCube.Setting
 
             try
             {
-                if (File.Exists(System.IO.Path.Combine(GlobalVariables.configDir, "logs")))
+                if (Directory.Exists(System.IO.Path.Combine(GlobalVariables.configDir, "logs")))
                     Directory.Delete(System.IO.Path.Combine(GlobalVariables.configDir, "logs"), true);
-                if (File.Exists(System.IO.Path.Combine(GlobalVariables.configDir, "Mode_data", "MemoryFactoryMode", "Backups")))
+                if (Directory.Exists(System.IO.Path.Combine(GlobalVariables.configDir, "Mode_data", "MemoryFactoryMode", "Backups")))
                     Directory.Delete(System.IO.Path.Combine(GlobalVariables.configDir, "Mode_data", "MemoryFactoryMode", "Backups"), true);
+                if (Directory.Exists(System.IO.Path.Combine(GlobalVariables.configDir, "Updata")))
+                    Directory.Delete(System.IO.Path.Combine(GlobalVariables.configDir, "Updata"), true);
                 MessageBoxFunction.ShowMessageBoxInfo("删除成功");
             }
             catch (Exception ex)
@@ -121,5 +135,25 @@ namespace NameCube.Setting
 
         }
 
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (canChange)
+            {
+                if (ModeCombox.SelectedIndex == 1) 
+                {
+                    string movePath=Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "NameCube");
+                    FolderMover.MoveFolder(GlobalVariables.configDir, movePath,true);
+                    MessageBoxFunction.ShowMessageBoxInfo("移动成功");
+                    GlobalVariables.configDir = movePath;
+                }
+                else
+                {
+                    string movePath= Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Namecube");
+                    FolderMover.MoveFolder(GlobalVariables.configDir, movePath, true);
+                    MessageBoxFunction.ShowMessageBoxInfo("移动成功");
+                    GlobalVariables.configDir = movePath;
+                }
+            }
+        }
     }
 }

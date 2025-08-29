@@ -44,6 +44,7 @@ namespace NameCube.Setting
             VersionText.Text = GlobalVariables.Version;
             UpdataWayComboBox.SelectedIndex = GlobalVariables.json.AllSettings.UpdataGet;
             AutoStart.IsChecked = GlobalVariables.json.StartToDo.AutoUpdata;
+            tokenText.Text = GlobalVariables.json.AllSettings.token;
             Canchange = true;
 
             if (GlobalVariables.json.AllSettings.UpdataTime != null)
@@ -53,6 +54,10 @@ namespace NameCube.Setting
             else
             {
                 CheckText.Text = "上次检查时间:从未检查过";
+            }
+            if (GlobalVariables.IsBeta)
+            {
+                WarningInfo.IsOpen = true;
             }
         }
         bool Canchange;
@@ -158,8 +163,11 @@ namespace NameCube.Setting
             string GetVersion = "";
             try
             {
-                GetVersion = await GithubData.GetLatestReleaseVersionAsync("haaa4", "NameCube");
-                GlobalVariables.json.AllSettings.UpdataTime = DateTime.Now.ToString("s");
+                if (GlobalVariables.json.AllSettings.token == "" || GlobalVariables.json.AllSettings.token == null)
+                    GetVersion = await GithubData.GetLatestReleaseVersionAsync("haaa4", "NameCube");
+                else
+                    GetVersion = await GithubData.GetLatestReleaseVersionAsync("haaa4", "NameCube",GlobalVariables.json.AllSettings.token);
+                GlobalVariables.json.AllSettings.UpdataTime = DateTime.Now.ToString("F");
                 if(GetVersion!=GlobalVariables.Version)
                 {
                     NowProgressBar.IsIndeterminate = false;
@@ -231,6 +239,7 @@ namespace NameCube.Setting
                 string url = $"https://github.com/haaa4/NameCube/releases/download/{Getversion}/NameCube.{Getversion}.Setup.x64.zip";
                 string filename = Path.Combine(GlobalVariables.configDir, "UpdataZip.zip");
                 await DownloadFileAsync(url, filename);
+
             }
             catch(Exception ex)
             {
@@ -299,6 +308,15 @@ namespace NameCube.Setting
             if(Canchange)
             {
                 GlobalVariables.json.StartToDo.AutoUpdata = AutoStart.IsChecked.Value;
+                GlobalVariables.SaveJson();
+            }
+        }
+
+        private void tokenText_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (Canchange)
+            {
+                GlobalVariables.json.AllSettings.token=tokenText.Text;
                 GlobalVariables.SaveJson();
             }
         }

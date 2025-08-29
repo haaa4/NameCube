@@ -12,84 +12,11 @@
     mc:Ignorable="d">
 
     <StackPanel>
-        <ui:CardExpander Grid.Column="0" Icon="{ui:SymbolIcon Symbol=Power24}">
-            <ui:CardExpander.Header>
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
-                    <ui:TextBlock
-                        Grid.Row="0"
-                        Grid.Column="0"
-                        FontFamily="Microsoft YaHei UI"
-                        FontSize="16"
-                        FontTypography="Body"
-                        Text="自动关机" />
-                    <ui:TextBlock
-                        Grid.Row="1"
-                        Grid.Column="0"
-                        FontSize="12"
-                        Foreground="Gray"
-                        Text="启用自动关机" />
-                    <ui:ToggleSwitch
-                        x:Name="PowerOffSwitch"
-                        Grid.Row="0"
-                        Grid.RowSpan="2"
-                        Grid.Column="1"
-                        Margin="0,0,16,0"
-                        Click="PowerOffSwitch_Click"
-                        OffContent="关"
-                        OnContent="开" />
-                </Grid>
-            </ui:CardExpander.Header>
-            <Grid Margin="24,0.5,24,0">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="40" />
-                    <RowDefinition />
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="150" />
-                    <ColumnDefinition Width="40" />
-                    <ColumnDefinition Width="150" />
-                    <ColumnDefinition />
-                </Grid.ColumnDefinitions>
-                <ui:NumberBox
-                    x:Name="Hour"
-                    Maximum="23"
-                    Minimum="0"
-                    PlaceholderText="时"
-                    TextChanged="Hour_TextChanged"
-                    ValueChanged="Hour_ValueChanged" />
-                <TextBlock
-                    Grid.Column="1"
-                    FontSize="30"
-                    Text="  :" />
-                <ui:NumberBox
-                    x:Name="Min"
-                    Grid.Column="2"
-                    Maximum="59"
-                    Minimum="0"
-                    PlaceholderText="分"
-                    TextChanged="Min_TextChanged"
-                    ValueChanged="Min_ValueChanged" />
-                <StackPanel Grid.Row="1">
-                    <TextBlock Margin="0,8,0,0" Text="关机方式" />
-                    <ComboBox
-                        x:Name="ShutdownWay"
-                        Margin="10,0,0,0"
-                        SelectionChanged="ComboBox_SelectionChanged">
-                        <ComboBoxItem Content="立即关机" />
-                        <ComboBoxItem Content="一般关机" />
-                        <ComboBoxItem Content="强制关机" />
-                    </ComboBox>
-                </StackPanel>
-            </Grid>
-        </ui:CardExpander>
-        <ui:SnackbarPresenter x:Name="SnackbarPresenterHost" />
+        <ui:InfoBar
+            Title="信息"
+            IsClosable="False"
+            IsOpen="True"
+            Message="自动关机现已迁至自动流程，快去试试吧"
+            Severity="Informational" />
     </StackPanel>
 </Page>

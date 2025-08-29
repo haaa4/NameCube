@@ -8,8 +8,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     Title="小工具"
-    Width="1000"
-    Height="450"
+    Width="1200"
+    Height="700"
     Loaded="FluentWindow_Loaded"
     mc:Ignorable="d">
     <Grid>
@@ -42,6 +42,10 @@
                     Content="自动关机"
                     Icon="{ui:SymbolIcon Symbol=Power24}"
                     TargetPageType="{x:Type Toolbox:ShutDown}" />
+                <ui:NavigationViewItem
+                    Content="自动流程"
+                    Icon="{ui:SymbolIcon Symbol=ArrowWrap20}"
+                    TargetPageType="{x:Type Toolbox:AutomaticProcess}" />
 
             </ui:NavigationView.MenuItems>
             <ui:NavigationView.PaneHeader>
