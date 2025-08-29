@@ -24,7 +24,7 @@ namespace NameCube.ToolBox.AutomaticProcessPages.ProcessPages
             Playing,
             Paused,
         }
-
+        string musicPath = Path.Combine(GlobalVariables.configDir, "Music");
         private PlayerState _currentState = PlayerState.Stopped;
 
         public AudioPage(string url, int waitTime, bool debug = false, bool show = true)
@@ -37,7 +37,7 @@ namespace NameCube.ToolBox.AutomaticProcessPages.ProcessPages
             _mediaPlayer.MediaOpened += MediaPlayer_MediaOpened;
             _mediaPlayer.MediaEnded += MediaPlayer_MediaEnded;
 
-            InitializeMediaPlayer(url);
+            InitializeMediaPlayer(Path.Combine(musicPath,url));
             waitTimeInThisPage = waitTime;
             isDebug = debug;
             if(!show)

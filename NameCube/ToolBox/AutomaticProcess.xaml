@@ -14,15 +14,8 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="60" />
             <RowDefinition />
         </Grid.RowDefinitions>
-        <ui:InfoBar
-            Title="警告"
-            IsClosable="False"
-            IsOpen="True"
-            Message="自动流程处于实验阶段，请谨慎使用"
-            Severity="Warning" />
         <ui:NavigationView
             x:Name="NavigationMenu"
             Grid.Row="1"

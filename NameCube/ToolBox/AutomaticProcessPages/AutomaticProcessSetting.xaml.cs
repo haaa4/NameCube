@@ -411,7 +411,7 @@ namespace NameCube.ToolBox.AutomaticProcessPages
         {
             if (canChange)
             {
-                if (!(RemindTimeNumberBox.Value > 0))
+                if (!(RemindTimeNumberBox.Value >= 0))
                 {
                     RemindTimeNumberBox.Value = 5;
                 }
@@ -729,6 +729,28 @@ namespace NameCube.ToolBox.AutomaticProcessPages
             );
             if(processGroup.show)
                 processesRunningWindow.Show();
+        }
+
+        private void CanCancleCheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            if(canChange)
+            {
+                if(CanCancleCheckBox.IsChecked.Value)
+                {
+                    ShowCheckBox.IsChecked = true;
+                }
+            }
+        }
+
+        private void ShowCheckBox_Unchecked(object sender, RoutedEventArgs e)
+        {
+            if(canChange)
+            {
+                if(!ShowCheckBox.IsChecked.Value)
+                {
+                    CanCancleCheckBox.IsChecked = false;
+                }
+            }
         }
     }
 }

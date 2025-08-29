@@ -166,7 +166,7 @@
                     Grid.Column="1"
                     LostFocus="RemindTimeNumberBox_LostFocus"
                     Maximum="120"
-                    Minimum="1"
+                    Minimum="0"
                     ValueChanged="RemindTimeNumberBox_ValueChanged" />
                 <ui:TextBlock
                     Grid.Row="0"
@@ -179,7 +179,8 @@
                     x:Name="CanCancleCheckBox"
                     Grid.Row="0"
                     Grid.Column="1"
-                    VerticalAlignment="Center" />
+                    VerticalAlignment="Center" 
+                    Checked="CanCancleCheckBox_Checked"/>
                 <ui:TextBlock
                     Grid.Row="3"
                     Margin="10"
@@ -191,7 +192,8 @@
                     x:Name="ShowCheckBox"
                     Grid.Row="3"
                     Grid.Column="1"
-                    VerticalAlignment="Center" />
+                    VerticalAlignment="Center" 
+                    Unchecked="ShowCheckBox_Unchecked"/>
             </Grid>
             <Frame
                 x:Name="MainFrame"

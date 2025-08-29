@@ -14,11 +14,6 @@
     <Grid>
 
         <StackPanel>
-            <ui:InfoBar
-                Title="提醒"
-                IsClosable="False"
-                IsOpen="True"
-                Message="快捷键功能测试阶段，未来可能不兼容当前数据" />
             <!--  如果以后性能问题严重，就可以使用此等待条  -->
             <ProgressBar
                 x:Name="WaitingProcessBar"

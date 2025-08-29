@@ -53,7 +53,7 @@ namespace NameCube.ToolBox.AutomaticProcessPages.ProcessSettingPages
                     || fileInfo.Extension == ".wav"
                 )
                 {
-                    AudioFamily.Add(fileInfo.FullName);
+                    AudioFamily.Add(fileInfo.Name);
                     AudioComboBox.Items.Add(fileInfo.Name);
                 }
             }
