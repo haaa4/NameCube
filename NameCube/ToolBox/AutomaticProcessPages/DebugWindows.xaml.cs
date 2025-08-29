@@ -48,14 +48,29 @@ namespace NameCube.ToolBox.AutomaticProcessPages
             {
                 waitPage.RequestParentAction += HandleChildRequest;
             }
+            else if(page is ClearPage clearPage)
+            {
+                clearPage.RequestParentAction += HandleChildRequest;
+            }
+            else if(page is PowerOffPage powerOffPage)
+            {
+                powerOffPage.RequestParentAction += HandleChildRequest;
+            }
         }
-        public void Exit(string data=null)
+        public void Exit(string data = null)
         {
-            if(data!=null)
+            if (data != null)
             {
                 MessageBoxFunction.ShowMessageBoxInfo(data);
             }
-            this.Close();
+            if (!Dispatcher.CheckAccess())
+            {
+                Dispatcher.Invoke(() => this.Close());
+            }
+            else
+            {
+                this.Close();
+            }
         }
         private void HandleChildRequest(string data)
         {
@@ -74,7 +89,7 @@ namespace NameCube.ToolBox.AutomaticProcessPages
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             //关闭界面
-            MainFrame.Navigate(null);
+            MainFrame.Content = null;
         }
     }
 }

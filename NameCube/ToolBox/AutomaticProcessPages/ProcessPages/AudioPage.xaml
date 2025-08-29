@@ -10,6 +10,7 @@
     d:DesignHeight="350"
     d:DesignWidth="600"
     Loaded="Page_Loaded"
+    Unloaded="Page_Unloaded"
     mc:Ignorable="d">
 
     <Grid Margin="10">
@@ -83,12 +84,6 @@
         </StackPanel>
 
         <!--  媒体元素（隐藏）  -->
-        <MediaElement
-            x:Name="MediaPlayer"
-            LoadedBehavior="Manual"
-            MediaEnded="MediaPlayer_MediaEnded"
-            MediaOpened="MediaPlayer_MediaOpened"
-            Visibility="Collapsed" />
         <TextBlock
             Grid.Row="2"
             HorizontalAlignment="Left"
@@ -96,11 +91,5 @@
             <Run Text="正在播放：" />
             <Run x:Name="AudioNameText" />
         </TextBlock>
-        <TextBlock
-            Grid.Row="3"
-            Margin="5,0,5,0"
-            Foreground="Gray"
-            Text="{Binding ElementName=MediaPlayer, Path=Source}"
-            TextWrapping="Wrap" />
     </Grid>
 </Page>

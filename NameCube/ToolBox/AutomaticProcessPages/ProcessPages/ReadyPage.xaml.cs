@@ -33,7 +33,8 @@ namespace NameCube.ToolBox.AutomaticProcessPages.ProcessPages
             int time,
             string info = null,
             bool canCancle = true,
-            bool isDebug = false
+            bool isDebug = false,
+            bool show=true
         )
         {
             InitializeComponent();
@@ -51,6 +52,10 @@ namespace NameCube.ToolBox.AutomaticProcessPages.ProcessPages
                 CancleButton.Content = "不可取消";
             }
             Loaded += ReadyPage_Loaded;
+            if(!show)
+            {
+                ReadyPage_Loaded(null,null);
+            }
         }
 
         private async void ReadyPage_Loaded(object sender, RoutedEventArgs e)

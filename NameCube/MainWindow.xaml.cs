@@ -1,21 +1,22 @@
-﻿using NameCube.Setting;
+﻿using Masuit.Tools.Logging;
+using NameCube.Setting;
+using NameCube.ToolBox.AutomaticProcessPages;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
-using Application = System.Windows.Application;
-using System.Windows.Threading;
-using System.ComponentModel;
-using System;
-using Wpf.Ui.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
-using System.Diagnostics;
-using Masuit.Tools.Logging;
-using System.Threading;
-using System.Threading.Tasks;
+using System.Windows.Threading;
+using Wpf.Ui.Controls;
+using Application = System.Windows.Application;
 using Timer = System.Windows.Forms.Timer;
 
 
@@ -221,20 +222,20 @@ namespace NameCube
             if (allPressed)
             {
                 // 执行该组快捷键对应的操作
-                ExecuteShortcutAction(shortcut.openWay);
+                ExecuteShortcutAction(shortcut);
 
                 // 清除该组记录
                 _shortcutKeyTimes.Remove(groupId);
             }
         }
 
-        private void ExecuteShortcutAction(int openWay)
+        private void ExecuteShortcutAction(ShortCut shortCut)
         {
             
-            if (!isChoosing&&openWay != 0)
+            if (!isChoosing)
             {
                 ShowThisWindow();
-                switch (openWay)
+                switch (shortCut.openWay)
                 {
                     case 1:
                         NavigationMenu.Navigate(typeof(Mode.OnePeopleMode));
@@ -258,13 +259,32 @@ namespace NameCube
                         NavigationMenu.Navigate(typeof(Mode.Home));
                         break;
                     default:
-                        Exception exception = new Exception("用户执行了不存在的命令" + openWay.ToString());
-                        LogManager.Error(exception);
+                        if(shortCut.ProcessGroup==null)
+                        {
+                            Exception exception = new Exception("用户执行了不存在的命令" + shortCut.openWay.ToString());
+                            LogManager.Error(exception);
+                            break;
+                        }
+                        else
+                        {
+                            RunProcessesGroup(shortCut.ProcessGroup);
+                        }
                         break;
                 }
             }
 
         }
+        private static void RunProcessesGroup(ProcessGroup processGroup)
+        {
+            ProcessesRunningWindow processesRunningWindow = new ProcessesRunningWindow(processGroup);
+            if (processGroup.show)
+            {
+                processesRunningWindow.Show();
+                processesRunningWindow.Activate();
+            }
+
+        }
+    
         public void UpdateHotkeys()
         {
             lock (_lock)

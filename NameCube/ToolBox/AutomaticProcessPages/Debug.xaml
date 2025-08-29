@@ -29,6 +29,8 @@
             <ComboBoxItem Content="read" />
             <ComboBoxItem Content="cmd" />
             <ComboBoxItem Content="wait" />
+            <ComboBoxItem Content="clear" />
+            <ComboBoxItem Content="shutDown" />
         </ComboBox>
         <ui:NumberBox
             x:Name="NumericData"

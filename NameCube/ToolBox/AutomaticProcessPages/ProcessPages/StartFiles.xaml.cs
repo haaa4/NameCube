@@ -34,11 +34,15 @@ namespace NameCube.ToolBox.AutomaticProcessPages.ProcessPages
             RequestParentAction?.Invoke(data);
         }
 
-        public StartFiles(string path, bool isDebug = false)
+        public StartFiles(string path, bool isDebug = false, bool show = true)
         {
             InitializeComponent();
             pathToStart = path;
             debug = isDebug;
+            if(!show)
+            {
+                Page_Loaded(null,null);
+            }
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)

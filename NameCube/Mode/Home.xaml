@@ -29,7 +29,7 @@
                 FontWeight="Black"
                 Text="主页" />
         </StackPanel>
-        <Image x:Name="Recommend" Source="/Image/V1.1_Beta-2.png" />
+        <Image x:Name="Recommend" Source="/Image/V1.1_Beta-3.png" />
         <ui:Button
             x:Name="CloseRecommendButtom"
             VerticalAlignment="Top"

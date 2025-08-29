@@ -10,6 +10,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -18,6 +19,7 @@ using System.Windows.Shapes;
 using Masuit.Tools;
 using Masuit.Tools.DateTimeExt;
 using Windows.ApplicationModel.ConversationalAgent;
+using Application = System.Windows.Application;
 
 namespace NameCube.ToolBox.AutomaticProcessPages
 {
@@ -68,11 +70,11 @@ namespace NameCube.ToolBox.AutomaticProcessPages
 
         private string GetMaxName(string get)
         {
-            if (get != null&& get.Length > 10)
+            if (get != null && get.Length > 10)
             {
                 return get.Substring(0, 10) + "...";
             }
-            else if(get==null)
+            else if (get == null)
             {
                 return "";
             }
@@ -112,6 +114,17 @@ namespace NameCube.ToolBox.AutomaticProcessPages
                     return "执行命令:" + GetMaxName(processData.stringData1);
                 case ProcessState.wait:
                     return "等待" + processData.doubleData + "秒";
+                case ProcessState.clear:
+                    return "清理内存";
+                case ProcessState.shutDown:
+                    if (processData.doubleData == 0)
+                        return "立即关机";
+                    else if (processData.doubleData == 1)
+                        return "一般关机";
+                    else if (processData.doubleData == 2)
+                        return "强制关机";
+                    else
+                        return "?";
                 default:
                     return "?";
             }
@@ -178,7 +191,7 @@ namespace NameCube.ToolBox.AutomaticProcessPages
                     {
                         if (dialog.Content is Wpf.Ui.Controls.TextBox textBox)
                         {
-                            if (textBox.Text != "" && textBox.Text[0]!='*')
+                            if (textBox.Text != "" && textBox.Text[0] != '*')
                             {
                                 ProcessGroup newGroup = new ProcessGroup()
                                 {
@@ -193,7 +206,7 @@ namespace NameCube.ToolBox.AutomaticProcessPages
                             {
                                 MessageBoxFunction.ShowMessageBoxWarning("命名不符合规定");
                             }
-                                RefreshList(true);
+                            RefreshList(true);
                         }
                     }
                     else
@@ -211,6 +224,7 @@ namespace NameCube.ToolBox.AutomaticProcessPages
                     RemindTextTextBox.Text = selectedProcessGroup.remindText;
                     RemindTimeNumberBox.Value = selectedProcessGroup.remindTime;
                     CanCancleCheckBox.IsChecked = selectedProcessGroup.canCancle;
+                    ShowCheckBox.IsChecked = selectedProcessGroup.show;
                     Part3.IsEnabled = true;
                     ProcessKindComboBox.IsEnabled = false;
                     MainFrame.Content = null;
@@ -296,7 +310,8 @@ namespace NameCube.ToolBox.AutomaticProcessPages
             var confirmDialog = new Wpf.Ui.Controls.ContentDialog()
             {
                 Title = "确认删除",
-                Content = $"确定要删除流程组 '{itemToDelete}' 吗？此操作不可恢复。(时间表内的流程组不会改变）",
+                Content =
+                    $"确定要删除流程组 '{itemToDelete}' 吗？此操作不可恢复。(时间表与快捷键内的流程组不会改变）",
                 PrimaryButtonText = "删除",
                 CloseButtonText = "取消",
                 DialogHost = Host,
@@ -340,6 +355,7 @@ namespace NameCube.ToolBox.AutomaticProcessPages
                 selectedProcessGroup.remindText = RemindTextTextBox.Text;
                 selectedProcessGroup.remindTime = (int)RemindTimeNumberBox.Value;
                 selectedProcessGroup.canCancle = CanCancleCheckBox.IsChecked ?? false;
+                selectedProcessGroup.show=ShowCheckBox.IsChecked ?? true;
                 if (ProcessKindComboBox.SelectedItem != null)
                 {
                     selectedProcessData.state = IndexToProcessState(
@@ -374,8 +390,12 @@ namespace NameCube.ToolBox.AutomaticProcessPages
                     {
                         selectedProcessData.doubleData = waitPage.waitTime;
                     }
-                    selectedProcessGroup.processDatas[ProcessesListView.SelectedIndex] =
-                        selectedProcessData;
+                    else if(getPageContent is ProcessSettingPages.ShutDownSettingPage shutDownSettingPage)
+                    {
+                        selectedProcessData.doubleData = (int)shutDownSettingPage.shutDownWay;
+                    }
+                        selectedProcessGroup.processDatas[ProcessesListView.SelectedIndex] =
+                            selectedProcessData;
                     GlobalVariables.json.automaticProcess.processGroups[findGroup] =
                         selectedProcessGroup;
                 }
@@ -412,8 +432,12 @@ namespace NameCube.ToolBox.AutomaticProcessPages
                     return ProcessState.cmd;
                 case 4:
                     return ProcessState.wait;
+                case 5:
+                    return ProcessState.clear;
+                case 6:
+                    return ProcessState.shutDown;
                 default:
-                    return ProcessState.wait;
+                    throw new NotImplementedException("找不到属性");
             }
         }
 
@@ -439,9 +463,18 @@ namespace NameCube.ToolBox.AutomaticProcessPages
             if (canChange && ProcessesListView.SelectedItem != null)
             {
                 string selectedItem = ProcessesListView.SelectedItem.ToString();
-
                 if (selectedItem == "新建流程...")
                 {
+                    if(ProcessKinds.Count>1)
+                    {
+                        string lastSelectedItem = ProcessKinds[ProcessKinds.Count - 2].ToString();
+                        if (lastSelectedItem == "立即关机" || lastSelectedItem == "一般关机" || lastSelectedItem == "强制关机")
+                        {
+                            MessageBoxFunction.ShowMessageBoxWarning("自动关机流程后不能加入新流程");
+                            ProcessesListView.UnselectAll();
+                            return;
+                        }
+                    }           
                     ProcessData processData = new ProcessData()
                     {
                         state = ProcessState.wait,
@@ -475,6 +508,12 @@ namespace NameCube.ToolBox.AutomaticProcessPages
                             break;
                         case ProcessState.wait:
                             ProcessKindComboBox.SelectedIndex = 4;
+                            break;
+                        case ProcessState.clear: 
+                            ProcessKindComboBox.SelectedIndex = 5;
+                            break;
+                        case ProcessState.shutDown:
+                            ProcessKindComboBox.SelectedIndex = 6;
                             break;
                         default:
                             break;
@@ -520,6 +559,12 @@ namespace NameCube.ToolBox.AutomaticProcessPages
                 case 4:
                     page = new ProcessSettingPages.WaitTimeSettingPage(selectedProcessData);
                     break;
+                case 5:
+                    page = null;
+                    break;
+                case 6:
+                    page = new ProcessSettingPages.ShutDownSettingPage(selectedProcessData);
+                    break;
                 default:
                     page = null;
                     break;
@@ -538,6 +583,12 @@ namespace NameCube.ToolBox.AutomaticProcessPages
             )
             {
                 ProcessesListViewContextMenu.Visibility = Visibility.Collapsed;
+            }
+            else if(ProcessesListView.SelectedItem.ToString()=="立即关机"|| ProcessesListView.SelectedItem.ToString() == "一般关机"|| ProcessesListView.SelectedItem.ToString() == "强制关机")
+            {
+                ProcessesListViewContextMenu.Visibility = Visibility.Visible;
+                UpMove.IsEnabled = false;
+                DownMove.IsEnabled = false;
             }
             else
             {
@@ -574,7 +625,7 @@ namespace NameCube.ToolBox.AutomaticProcessPages
             var confirmDialog = new Wpf.Ui.Controls.ContentDialog()
             {
                 Title = "确认删除",
-                Content = $"确定要删除流程 '{itemToDelete}' 吗？此操作不可恢复。",
+                Content = $"确定要删除流程 '{itemToDelete}' 吗？此操作不可恢复。（时间表与快捷键内的流程需要保存后才会变化）",
                 PrimaryButtonText = "删除",
                 CloseButtonText = "取消",
                 DialogHost = Host,
@@ -676,7 +727,8 @@ namespace NameCube.ToolBox.AutomaticProcessPages
             ProcessesRunningWindow processesRunningWindow = new ProcessesRunningWindow(
                 processGroup
             );
-            processesRunningWindow.Show();
+            if(processGroup.show)
+                processesRunningWindow.Show();
         }
     }
 }

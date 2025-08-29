@@ -128,9 +128,6 @@
     <Compile Include="Notify.xaml.cs">
       <DependentUpon>Notify.xaml</DependentUpon>
     </Compile>
-    <Compile Include="PowerOffWindow.xaml.cs">
-      <DependentUpon>PowerOffWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="RepeatWarning.xaml.cs">
       <DependentUpon>RepeatWarning.xaml</DependentUpon>
     </Compile>
@@ -220,8 +217,14 @@
     <Compile Include="ToolBox\AutomaticProcessPages\ProcessPages\AudioPage.xaml.cs">
       <DependentUpon>AudioPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ToolBox\AutomaticProcessPages\ProcessPages\ClearPage.xaml.cs">
+      <DependentUpon>ClearPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ToolBox\AutomaticProcessPages\ProcessPages\CmdPage.xaml.cs">
       <DependentUpon>CmdPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ToolBox\AutomaticProcessPages\ProcessPages\PowerOffPage.xaml.cs">
+      <DependentUpon>PowerOffPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="ToolBox\AutomaticProcessPages\ProcessPages\ReadPage.xaml.cs">
       <DependentUpon>ReadPage.xaml</DependentUpon>
@@ -243,6 +246,9 @@
     </Compile>
     <Compile Include="ToolBox\AutomaticProcessPages\ProcessSettingPages\ReadSettingPage.xaml.cs">
       <DependentUpon>ReadSettingPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ToolBox\AutomaticProcessPages\ProcessSettingPages\ShutDownSettingPage.xaml.cs">
+      <DependentUpon>ShutDownSettingPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="ToolBox\AutomaticProcessPages\ProcessSettingPages\StartSettingPage.xaml.cs">
       <DependentUpon>StartSettingPage.xaml</DependentUpon>
@@ -298,10 +304,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Notify.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="PowerOffWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -433,7 +435,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="ToolBox\AutomaticProcessPages\ProcessPages\ClearPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ToolBox\AutomaticProcessPages\ProcessPages\CmdPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ToolBox\AutomaticProcessPages\ProcessPages\PowerOffPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -462,6 +472,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ToolBox\AutomaticProcessPages\ProcessSettingPages\ReadSettingPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ToolBox\AutomaticProcessPages\ProcessSettingPages\ShutDownSettingPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -621,7 +635,10 @@
     <None Include="Image\V1.0.1.0.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Image\V1.1_Beta-2.png" />
+    <None Include="Image\V1.1_Beta-2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\V1.1_Beta-3.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

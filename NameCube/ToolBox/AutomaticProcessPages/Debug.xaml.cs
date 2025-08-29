@@ -56,6 +56,12 @@ namespace NameCube.ToolBox.AutomaticProcessPages
                 case 5:
                     targetPage = new ProcessPages.WaitPage((int)NumericData.Value, true);
                     break;
+                case 6:
+                    targetPage = new ProcessPages.ClearPage(true);
+                    break;
+                case 7:
+                    targetPage = new ProcessPages.PowerOffPage((int)NumericData.Value, true); 
+                    break;
                 default:
                     targetPage = null;
                     break;

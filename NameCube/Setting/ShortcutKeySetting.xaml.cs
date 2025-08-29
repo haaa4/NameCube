@@ -1,5 +1,4 @@
-﻿using Masuit.Tools;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -15,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Masuit.Tools;
 using Windows.UI.Text;
 using Windows.UI.Xaml.Controls;
 using Wpf.Ui.Controls;
@@ -35,13 +35,15 @@ namespace NameCube.Setting
             InitializeComponent();
             InitializeShortCutKey();
         }
-        bool IsChoosing=false;
+
+        bool IsChoosing = false;
 
         private void Choosing(bool isChossing)
         {
             var mainWindow = Application.Current.MainWindow as MainWindow;
             mainWindow.isChoosing = isChossing;
         }
+
         public void InitializeShortCutKey()
         {
             if (GlobalVariables.json.ShortCutKey.keysGrounp.Count <= 0)
@@ -86,7 +88,22 @@ namespace NameCube.Setting
                     Right = 5,
                     Bottom = 5,
                 };
-
+                string Text;
+                if (GlobalVariables.json.ShortCutKey.keysGrounp[i].ProcessGroup == null)
+                {
+                    if (GlobalVariables.json.ShortCutKey.keysGrounp[i].openWay <= 7 && GlobalVariables.json.ShortCutKey.keysGrounp[i].openWay>=0)
+                    {
+                        Text = items[GlobalVariables.json.ShortCutKey.keysGrounp[i].openWay];
+                    }
+                    else
+                    {
+                        Text = "???";
+                    }
+                }
+                else
+                {
+                    Text = GlobalVariables.json.ShortCutKey.keysGrounp[i].ProcessGroup.name;
+                }
                 CardAction action = new CardAction()
                 {
                     Uid = i.ToString(),
@@ -96,26 +113,33 @@ namespace NameCube.Setting
                         {
                             new TextBlock()
                             {
-                                Text=items[GlobalVariables.json.ShortCutKey.keysGrounp[i].openWay]+"("+GlobalVariables.json.ShortCutKey.keysGrounp[i].LastChangeTime+")",
-                                FontSize=20,
-                                FontWeight=FontWeights.Black,
+                                Text =
+                                    Text
+                                    + "("
+                                    + GlobalVariables.json.ShortCutKey.keysGrounp[i].LastChangeTime
+                                    + ")",
+                                FontSize = 20,
+                                FontWeight = FontWeights.Black,
                             },
-                            new TextBlock()
-                            {
-                                Text=shortCut,
-                                FontSize=20,
-                            }
-                        }
-
+                            new TextBlock() { Text = shortCut, FontSize = 20 },
+                        },
                     },
                     Margin = thickness,
                 };
                 action.Click += async (sender, e) =>
                 {
                     ShortCut newShortCut = await ChangeData(action.Uid.ToInt32(0));
-                    if (newShortCut != null&&newShortCut.LastChangeTime!="Delete")
+                    if(newShortCut!=null&&newShortCut.ProcessGroup==null&&newShortCut.openWay==-2)
                     {
-                        GlobalVariables.json.ShortCutKey.keysGrounp[action.Uid.ToInt32(0)] = newShortCut;
+                        GlobalVariables.json.ShortCutKey.keysGrounp[action.Uid.ToInt32(0)].keys = newShortCut.keys;
+                        GlobalVariables.json.ShortCutKey.keysGrounp[action.Uid.ToInt32(0)].LastChangeTime = newShortCut.LastChangeTime;
+                        GlobalVariables.SaveJson();
+                        InitializeShortCutKey();
+                    }
+                    else if (newShortCut != null && newShortCut.LastChangeTime != "Delete")
+                    {
+                        GlobalVariables.json.ShortCutKey.keysGrounp[action.Uid.ToInt32(0)] =
+                            newShortCut;
                         GlobalVariables.SaveJson();
                         InitializeShortCutKey();
                     }
@@ -138,10 +162,21 @@ namespace NameCube.Setting
             });
         }
 
-        private void Page_Loaded(object sender, RoutedEventArgs e)
-        {
+        private void Page_Loaded(object sender, RoutedEventArgs e) { }
 
+        private int HaveTheSame(ProcessGroup processGroup)
+        {
+            for (int i = 0; i < GlobalVariables.json.automaticProcess.processGroups.Count; i++)
+            {
+                if (processGroup.uid == GlobalVariables.json.automaticProcess.processGroups[i].uid)
+                {
+                    return i;
+                }
+            }
+
+            return -1;
         }
+
         private async Task<ShortCut> ChangeData(int uid)
         {
             ShortCut shortCut = GlobalVariables.json.ShortCutKey.keysGrounp[uid];
@@ -156,8 +191,12 @@ namespace NameCube.Setting
             {
                 if (dialog.Content is Wpf.Ui.Controls.StackPanel panel)
                 {
-                    var KeyChooseButton = panel.Children.OfType<Wpf.Ui.Controls.Button>().FirstOrDefault();
-                    var KeyText = panel.Children.OfType<Wpf.Ui.Controls.TextBlock>().FirstOrDefault();
+                    var KeyChooseButton = panel
+                        .Children.OfType<Wpf.Ui.Controls.Button>()
+                        .FirstOrDefault();
+                    var KeyText = panel
+                        .Children.OfType<Wpf.Ui.Controls.TextBlock>()
+                        .FirstOrDefault();
                     if (IsChoosing)
                     {
                         KeyChooseButton.Content = "编辑";
@@ -177,13 +216,14 @@ namespace NameCube.Setting
                         Choosing(true);
                     }
                 }
-
             };
             button.KeyDown += (seder, args) =>
             {
                 if (dialog.Content is Wpf.Ui.Controls.StackPanel panel)
                 {
-                    var KeyText = panel.Children.OfType<Wpf.Ui.Controls.TextBlock>().FirstOrDefault();
+                    var KeyText = panel
+                        .Children.OfType<Wpf.Ui.Controls.TextBlock>()
+                        .FirstOrDefault();
                     if (IsChoosing && keys.Count <= 4)
                     {
                         Key key = args.Key;
@@ -203,7 +243,6 @@ namespace NameCube.Setting
                         KeyText.Text.Remove(KeyText.Text.Length - 1);
                     }
                 }
-
             };
             string keyText = "";
             foreach (Key key3 in shortCut.keys)
@@ -211,6 +250,38 @@ namespace NameCube.Setting
                 keyText = keyText + key3.ToString() + " ";
             }
             keys = GlobalVariables.json.ShortCutKey.keysGrounp[uid].keys;
+            List<string> itemsource = new List<string>()
+            {
+                "无",
+                "单人模式",
+                "因子模式",
+                "批量模式",
+                "数字模式",
+                "预备模式",
+                "记忆模式",
+            };
+            int selected;
+            for (int i = 0; i < GlobalVariables.json.automaticProcess.processGroups.Count; i++)
+            {
+                itemsource.Add(GlobalVariables.json.automaticProcess.processGroups[i].name);
+            }
+            if (shortCut.ProcessGroup == null)
+            {
+                selected = shortCut.openWay;
+            }
+            else
+            {
+                if (HaveTheSame(shortCut.ProcessGroup) != -1)
+                {
+                    selected = HaveTheSame(shortCut.ProcessGroup) + 7;
+                }
+                else
+                {
+                    itemsource.Add("*" + shortCut.ProcessGroup.name + "(已删除)");
+                    selected = itemsource.Count - 1;
+                }
+            }
+
             dialog = new Wpf.Ui.Controls.ContentDialog()
             {
                 CloseButtonText = "取消",
@@ -227,22 +298,9 @@ namespace NameCube.Setting
                         {
                             Name = "KeyText",
                             FontSize = 20,
-                            Text=keyText,
+                            Text = keyText,
                         },
-                        new ComboBox()
-                        {
-                            ItemsSource = new List<string>()
-                            {
-                                "无",
-                                "单人模式",
-                                "因子模式",
-                                "批量模式",
-                                "数字模式",
-                                "预备模式",
-                                "记忆模式",
-                            },
-                            SelectedIndex = shortCut.openWay,
-                        },
+                        new ComboBox() { ItemsSource = itemsource, SelectedIndex = selected },
                     },
                 },
                 DialogHost = Host,
@@ -258,12 +316,11 @@ namespace NameCube.Setting
             {
                 ShortCut throwShortCut = new ShortCut()
                 {
-                    LastChangeTime = "Delete"
+                    LastChangeTime = "Delete",
                     //提醒需要删除
                 };
                 return throwShortCut;
             }
-
             else
             {
                 if (dialog.Content is Wpf.Ui.Controls.StackPanel panel)
@@ -274,26 +331,45 @@ namespace NameCube.Setting
                         MessageBoxFunction.ShowMessageBoxWarning("快捷键为空");
                         return null;
                     }
-                    else if (HaveSameKeys(GlobalVariables.json.ShortCutKey.keysGrounp, keys)>1)
+                    else if (HaveSameKeys(GlobalVariables.json.ShortCutKey.keysGrounp, keys) > 1)
                     {
                         MessageBoxFunction.ShowMessageBoxWarning("快捷键不得重复");
                         return null;
                     }
                     else
                     {
-                        ShortCut throwShortCut = new ShortCut()
+                        ShortCut throwShortCut;
+                        if (combox.SelectedIndex <= 6)
                         {
-                            keys = keys,
-                            openWay = combox.SelectedIndex,
-                            LastChangeTime = DateTime.Now.ToString("F"),
-                        };
+                            throwShortCut = new ShortCut()
+                            {
+                                keys = keys,
+                                openWay = combox.SelectedIndex,
+                                LastChangeTime = DateTime.Now.ToString("F"),
+                            };
+                        }
+                        else if (combox.SelectedItem.ToString()[0] != '*')
+                        {
+                            throwShortCut = new ShortCut()
+                            {
+                                keys = keys,
+                                ProcessGroup = GlobalVariables.json.automaticProcess.processGroups[
+                                    combox.SelectedIndex - 7
+                                ],
+                                LastChangeTime = DateTime.Now.ToString("F"),
+                            };
+                        }
+                        else
+                        {
+                            //这里把“已删除”的保存做完
+                            throwShortCut = new ShortCut() { keys = keys, LastChangeTime = DateTime.Now.ToString("F"),openWay=-2};
+
+                        }
                         return throwShortCut;
                     }
-
                 }
                 return null;
             }
-
         }
 
         private async void CardAction_Click(object sender, RoutedEventArgs e)
@@ -309,8 +385,12 @@ namespace NameCube.Setting
             {
                 if (dialog.Content is Wpf.Ui.Controls.StackPanel panel)
                 {
-                    var KeyChooseButton = panel.Children.OfType<Wpf.Ui.Controls.Button>().FirstOrDefault();
-                    var KeyText = panel.Children.OfType<Wpf.Ui.Controls.TextBlock>().FirstOrDefault();
+                    var KeyChooseButton = panel
+                        .Children.OfType<Wpf.Ui.Controls.Button>()
+                        .FirstOrDefault();
+                    var KeyText = panel
+                        .Children.OfType<Wpf.Ui.Controls.TextBlock>()
+                        .FirstOrDefault();
                     if (IsChoosing)
                     {
                         KeyChooseButton.Content = "编辑";
@@ -330,13 +410,14 @@ namespace NameCube.Setting
                         Choosing(true);
                     }
                 }
-
             };
             button.KeyDown += (seder, args) =>
             {
                 if (dialog.Content is Wpf.Ui.Controls.StackPanel panel)
                 {
-                    var KeyText = panel.Children.OfType<Wpf.Ui.Controls.TextBlock>().FirstOrDefault();
+                    var KeyText = panel
+                        .Children.OfType<Wpf.Ui.Controls.TextBlock>()
+                        .FirstOrDefault();
                     if (IsChoosing && keys.Count <= 4)
                     {
                         Key key = args.Key;
@@ -357,8 +438,21 @@ namespace NameCube.Setting
                         GlobalVariables.SaveJson();
                     }
                 }
-
             };
+            List<string> itemsSource = new List<string>()
+            {
+                "无",
+                "单人模式",
+                "因子模式",
+                "批量模式",
+                "数字模式",
+                "预备模式",
+                "记忆模式",
+            };
+            for(int i=0;i<GlobalVariables.json.automaticProcess.processGroups.Count;i++)
+            {
+                itemsSource.Add(GlobalVariables.json.automaticProcess.processGroups[i].name);
+            }
 
             dialog = new Wpf.Ui.Controls.ContentDialog()
             {
@@ -370,23 +464,10 @@ namespace NameCube.Setting
                     Children =
                     {
                         button,
-                        new Wpf.Ui.Controls.TextBlock()
-                        {
-                            Name = "KeyText",
-                            FontSize = 20,
-                        },
+                        new Wpf.Ui.Controls.TextBlock() { Name = "KeyText", FontSize = 20 },
                         new ComboBox()
                         {
-                            ItemsSource = new List<string>()
-                            {
-                                "无",
-                                "单人模式",
-                                "因子模式",
-                                "批量模式",
-                                "数字模式",
-                                "预备模式",
-                                "记忆模式",
-                            },
+                            ItemsSource =itemsSource,
                             SelectedIndex = 0,
                         },
                     },
@@ -408,38 +489,49 @@ namespace NameCube.Setting
                     {
                         MessageBoxFunction.ShowMessageBoxWarning("快捷键为空");
                     }
-                    else if (HaveSameKeys(GlobalVariables.json.ShortCutKey.keysGrounp, keys)>0)
+                    else if (HaveSameKeys(GlobalVariables.json.ShortCutKey.keysGrounp, keys) > 0)
                     {
                         MessageBoxFunction.ShowMessageBoxWarning("快捷键不得重复");
                     }
                     else
                     {
-                        ShortCut shortCut = new ShortCut()
+                        ShortCut shortCut;
+                        if(combox.SelectedIndex<=6)
                         {
-                            keys = keys,
-                            openWay = combox.SelectedIndex,
-                            LastChangeTime = DateTime.Now.ToString("F"),
-                        };
-                        GlobalVariables.json.ShortCutKey.keysGrounp.Add(shortCut);
+                            shortCut = new ShortCut()
+                            {
+                                keys = keys,
+                                openWay = combox.SelectedIndex,
+                                LastChangeTime = DateTime.Now.ToString("F"),
+                            };
+                        }
+                        else
+                        {
+                            shortCut = new ShortCut()
+                            {
+                                keys = keys,
+                                ProcessGroup = GlobalVariables.json.automaticProcess.processGroups[combox.SelectedIndex - 7],
+                                LastChangeTime = DateTime.Now.ToString("F"),
+                            };
+                        }
+                            GlobalVariables.json.ShortCutKey.keysGrounp.Add(shortCut);
                         GlobalVariables.SaveJson();
                         InitializeShortCutKey();
                     }
-                    
-
                 }
             }
         }
 
-        private bool IsTheSameKey (List<Key> keys1, List<Key> keys2)
+        private bool IsTheSameKey(List<Key> keys1, List<Key> keys2)
         {
             if (keys1.Count == keys2.Count)
             {
                 bool SameAs = true;
-                foreach (Key key in keys1) 
+                foreach (Key key in keys1)
                 {
                     if (!keys2.Contains(key))
                     {
-                        SameAs= false;
+                        SameAs = false;
                         break;
                     }
                 }
@@ -450,10 +542,11 @@ namespace NameCube.Setting
                 return false;
             }
         }
-        private int HaveSameKeys(List<ShortCut> shortCuts, List<Key> keys) 
+
+        private int HaveSameKeys(List<ShortCut> shortCuts, List<Key> keys)
         {
             int haveSame = 0;
-            foreach (ShortCut shortCut in shortCuts) 
+            foreach (ShortCut shortCut in shortCuts)
             {
                 if (IsTheSameKey(keys, shortCut.keys))
                 {
@@ -462,6 +555,6 @@ namespace NameCube.Setting
                 }
             }
             return haveSame;
-        } 
+        }
     }
 }

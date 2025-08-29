@@ -16,12 +16,11 @@ using System.Windows.Shapes;
 namespace NameCube.ToolBox.AutomaticProcessPages.ProcessPages
 {
     /// <summary>
-    /// WaitPage.xaml 的交互逻辑
+    /// ClearPage.xaml 的交互逻辑
     /// </summary>
-    public partial class WaitPage : Page
+    public partial class ClearPage : Page
     {
-        private int _time = 0;
-        private bool _debug = false;
+        private bool debug;
         public event Action<string> RequestParentAction;
         public event Action<int> EndThePageAction;
         private void CallEndThePage(int ret = 0)
@@ -32,33 +31,42 @@ namespace NameCube.ToolBox.AutomaticProcessPages.ProcessPages
         {
             RequestParentAction?.Invoke(data);
         }
-        public WaitPage(int time,bool debug=false,bool show=true)
+        public ClearPage(bool isDubug = false,bool show=true)
         {
             InitializeComponent();
-            _time = time;
-            _debug = debug;
+            debug= isDubug;
             if(!show)
             {
-                Page_Loaded(null,null);
+                Page_Loaded(null, null);
             }
         }
 
         private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            timeText.Text = _time.ToString();
-            while(_time>0)
+            await Task.Delay(1000);
+            try
             {
-                await Task.Delay(1000);
-                _time--;
-                timeText.Text=_time.ToString();
+                Masuit.Tools.Win32.Windows.ClearMemory();
+                if(debug)
+                {
+                    CallParentMethodDebug("清理完成");
+                }
+                else
+                {
+                    CallEndThePage();
+                }
             }
-            if(_debug)
+            catch(Exception ex)
             {
-                CallParentMethodDebug("等待结束");
-            }
-            else
-            {
-                CallEndThePage();
+                MessageBoxFunction.ShowMessageBoxError(ex.Message, true, ex);
+                if(debug)
+                {
+                    CallParentMethodDebug(ex.Message);
+                }
+                else
+                {
+                    CallEndThePage();
+                }
             }
         }
     }

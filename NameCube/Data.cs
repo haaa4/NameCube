@@ -64,7 +64,6 @@ namespace NameCube
                 {
                     Ball = false,
                     AlwaysCleanMemory = false,
-                    ShutDownWay = 0,
                     AutoUpdata = true,
                 },
                 BirdSettings = new BirdSettings
@@ -352,29 +351,8 @@ namespace NameCube
         public bool AlwaysCleanMemory { get; set; } = false;
 
         /// <summary>
-        /// 自动关机小时
+        /// 自动请求升级
         /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
-        public int HourPowerOff { get; set; } = 20;
-
-        /// <summary>
-        /// 自动关机分钟
-        /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
-        public int MinPowerOff { get; set; } = 35;
-
-        /// <summary>
-        /// 是否启用自动关机
-        /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
-        public bool PowerOff { get; set; } = false;
-
-        /// <summary>
-        /// 关机方式（0：立即关机 1：一般关机 2：强制关机）
-        /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
-        public int ShutDownWay { get; set; } = 0;
-
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
         public bool AutoUpdata { get; set; } = true;
     }
@@ -593,6 +571,11 @@ namespace NameCube
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
         public int openWay { get; set; } = -1;
+        /// <summary>
+        /// 触发的自动流程(为null时则以openway为准)
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+        public ProcessGroup ProcessGroup { get; set; } = null;
 
         /// <summary>
         /// 上一次修改时间
@@ -679,19 +662,27 @@ namespace NameCube
         /// <summary>
         /// 准备时提醒信息
         /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
         public string remindText;
         /// <summary>
         /// 准备时提醒时间（秒）
         /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
         public int remindTime = 5;
         /// <summary>
         /// 可否取消流程
         /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
         public bool canCancle = true;
         /// <summary>
         /// 每个流程组的唯一标识符
         /// </summary>
         public int uid;
+        /// <summary>
+        /// 是否显示窗口
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+        public bool show = true;
     }
 
     /// <summary>
@@ -710,7 +701,7 @@ namespace NameCube
         public string stringData1;
 
         /// <summary>
-        /// 第二个字符串数据
+        /// 第二个字符串数据（未来备用）
         /// </summary>
         public string stringData2;
 
@@ -732,6 +723,8 @@ namespace NameCube
         read,
         cmd,
         wait,
+        clear,
+        shutDown,
     }
 
     public class Json
@@ -852,7 +845,7 @@ namespace NameCube
         /// 当前版本
         /// </summary>
         //Bro为什么这样写！！？
-        public static string Version = "V1.1_Beta-2";
+        public static string Version = "V1.1_Beta-3";
         public static bool IsBeta = true;
         public static bool ret = false;
     }

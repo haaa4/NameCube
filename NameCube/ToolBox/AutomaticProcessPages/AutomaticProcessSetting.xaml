@@ -106,7 +106,7 @@
             <TextBlock Margin="10" Text="流程设置" />
             <Grid
                 x:Name="Part3"
-                Margin="10,60,10,20"
+                Margin="10,40,10,20"
                 IsEnabled="False">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1*" />
@@ -117,9 +117,10 @@
                     <RowDefinition />
                     <RowDefinition />
                     <RowDefinition />
+                    <RowDefinition />
                 </Grid.RowDefinitions>
                 <TextBlock
-                    Grid.Row="3"
+                    Grid.Row="4"
                     Margin="10"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
@@ -127,7 +128,7 @@
                     Text="流程类型（当前）" />
                 <ComboBox
                     x:Name="ProcessKindComboBox"
-                    Grid.Row="3"
+                    Grid.Row="4"
                     Grid.Column="1"
                     SelectionChanged="ProcessKindComboBox_SelectionChanged">
                     <ComboBoxItem Content="运行程序" />
@@ -135,6 +136,8 @@
                     <ComboBoxItem Content="展示文字" />
                     <ComboBoxItem Content="运行指令" />
                     <ComboBoxItem Content="等待时间" />
+                    <ComboBoxItem Content="清理内存" />
+                    <ComboBoxItem Content="自动关机" />
                 </ComboBox>
                 <TextBlock
                     Grid.Row="1"
@@ -175,6 +178,18 @@
                 <CheckBox
                     x:Name="CanCancleCheckBox"
                     Grid.Row="0"
+                    Grid.Column="1"
+                    VerticalAlignment="Center" />
+                <ui:TextBlock
+                    Grid.Row="3"
+                    Margin="10"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    FontSize="14"
+                    Text="显示窗口" />
+                <CheckBox
+                    x:Name="ShowCheckBox"
+                    Grid.Row="3"
                     Grid.Column="1"
                     VerticalAlignment="Center" />
             </Grid>

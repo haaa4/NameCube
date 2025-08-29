@@ -39,7 +39,7 @@ namespace NameCube.ToolBox.AutomaticProcessPages.ProcessPages
         {
             RequestParentAction?.Invoke(data);
         }
-        public ReadPage(string text,int time,bool read,bool debug=false)
+        public ReadPage(string text,int time,bool read,bool debug=false,bool show=true)
         {
             InitializeComponent();
             Loaded += MainWindow_Loaded;
@@ -47,6 +47,10 @@ namespace NameCube.ToolBox.AutomaticProcessPages.ProcessPages
             _time = time;
             _read = read;
             _debug = debug;
+            if(!show)
+            {
+                MainWindow_Loaded(null, null);
+            }
         }
         private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {

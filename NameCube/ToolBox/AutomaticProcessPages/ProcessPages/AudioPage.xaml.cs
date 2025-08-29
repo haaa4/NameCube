@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Threading;
+using System.Windows.Interop; // 添加这个命名空间
 
 namespace NameCube.ToolBox.AutomaticProcessPages.ProcessPages
 {
@@ -15,6 +16,7 @@ namespace NameCube.ToolBox.AutomaticProcessPages.ProcessPages
         private int waitTimeInThisPage = 0;
         public event Action<string> RequestParentAction;
         private bool isDebug = false;
+        private MediaPlayer _mediaPlayer; // 使用 MediaPlayer 替代 MediaElement
 
         private enum PlayerState
         {
@@ -25,22 +27,51 @@ namespace NameCube.ToolBox.AutomaticProcessPages.ProcessPages
 
         private PlayerState _currentState = PlayerState.Stopped;
 
-        public AudioPage(string url, int waitTime, bool debug=false)
+        public AudioPage(string url, int waitTime, bool debug = false, bool show = true)
         {
             InitializeComponent();
             SpeedComboBox.SelectionChanged += SpeedComboBox_SelectionChanged;
 
+            // 初始化 MediaPlayer 而不是使用 MediaElement
+            _mediaPlayer = new MediaPlayer();
+            _mediaPlayer.MediaOpened += MediaPlayer_MediaOpened;
+            _mediaPlayer.MediaEnded += MediaPlayer_MediaEnded;
+
             InitializeMediaPlayer(url);
             waitTimeInThisPage = waitTime;
             isDebug = debug;
+            if(!show)
+            {
+                Page_Loaded(null,null);
+            }
         }
+
+        // 添加 Dispose 方法释放资源
+        public void Dispose()
+        {
+            if (_mediaPlayer != null)
+            {
+                _mediaPlayer.Stop();
+                _mediaPlayer.Close();
+                _mediaPlayer = null;
+            }
+
+            if (_progressTimer != null)
+            {
+                _progressTimer.Stop();
+                _progressTimer = null;
+            }
+        }
+
         public event Action<int> EndThePageAction;
         private void CallEndThePage(int ret = 0)
         {
+            this.Dispose();
             EndThePageAction?.Invoke(ret);
         }
         private void CallParentMethodDebug(string data)
         {
+            this.Dispose();
             RequestParentAction?.Invoke(data);
         }
 
@@ -50,14 +81,17 @@ namespace NameCube.ToolBox.AutomaticProcessPages.ProcessPages
         {
             try
             {
-                MediaPlayer.Source = new Uri(url, UriKind.Absolute);
+                // 使用 MediaPlayer 打开媒体文件
+                _mediaPlayer.Open(new Uri(url, UriKind.Absolute));
                 FileInfo fileInfo = new FileInfo(url);
                 AudioNameText.Text = fileInfo.Name;
 
                 _progressTimer = new DispatcherTimer();
                 _progressTimer.Interval = TimeSpan.FromMilliseconds(100);
                 _progressTimer.Tick += UpdateProgress;
-                MediaPlayer.Play();
+
+                // 播放媒体
+                _mediaPlayer.Play();
                 _progressTimer.Start();
                 _currentState = PlayerState.Playing;
             }
@@ -72,23 +106,21 @@ namespace NameCube.ToolBox.AutomaticProcessPages.ProcessPages
                 {
                     CallEndThePage();
                 }
-
             }
         }
 
-        private void MediaPlayer_MediaOpened(object sender, RoutedEventArgs e)
+        private void MediaPlayer_MediaOpened(object sender, EventArgs e)
         {
-            if (MediaPlayer.NaturalDuration.HasTimeSpan)
+            if (_mediaPlayer.NaturalDuration.HasTimeSpan)
             {
-                PositionSlider.Maximum = MediaPlayer.NaturalDuration.TimeSpan.TotalSeconds;
+                PositionSlider.Maximum = _mediaPlayer.NaturalDuration.TimeSpan.TotalSeconds;
             }
             PositionText.Text = FormatTime(TimeSpan.Zero);
 
-            MediaPlayer.SpeedRatio = 1.0;
-            if (MediaPlayer.NaturalDuration.HasTimeSpan)
+            _mediaPlayer.SpeedRatio = 1.0;
+            if (_mediaPlayer.NaturalDuration.HasTimeSpan)
             {
-                _totalDuration = MediaPlayer.NaturalDuration.TimeSpan;
-
+                _totalDuration = _mediaPlayer.NaturalDuration.TimeSpan;
                 TotalTimeText.Text = FormatTime(_totalDuration);
             }
             else
@@ -101,12 +133,12 @@ namespace NameCube.ToolBox.AutomaticProcessPages.ProcessPages
         {
             if (
                 !_isUserDragging
-                && MediaPlayer.NaturalDuration.HasTimeSpan
+                && _mediaPlayer.NaturalDuration.HasTimeSpan
                 && _currentState != PlayerState.Stopped
             )
             {
-                PositionSlider.Value = MediaPlayer.Position.TotalSeconds;
-                PositionText.Text = FormatTime(MediaPlayer.Position);
+                PositionSlider.Value = _mediaPlayer.Position.TotalSeconds;
+                PositionText.Text = FormatTime(_mediaPlayer.Position);
             }
         }
 
@@ -120,7 +152,7 @@ namespace NameCube.ToolBox.AutomaticProcessPages.ProcessPages
             RoutedPropertyChangedEventArgs<double> e
         )
         {
-            if (!MediaPlayer.NaturalDuration.HasTimeSpan)
+            if (!_mediaPlayer.NaturalDuration.HasTimeSpan)
                 return;
 
             var slider = sender as Slider;
@@ -132,35 +164,35 @@ namespace NameCube.ToolBox.AutomaticProcessPages.ProcessPages
                 _isUserDragging = true;
                 PositionText.Text = FormatTime(TimeSpan.FromSeconds(e.NewValue));
 
-                MediaPlayer.Position = TimeSpan.FromSeconds(e.NewValue);
+                _mediaPlayer.Position = TimeSpan.FromSeconds(e.NewValue);
 
                 if (_currentState == PlayerState.Playing)
                 {
-                    MediaPlayer.Play();
+                    _mediaPlayer.Play();
                 }
 
-                PositionText.Text = FormatTime(MediaPlayer.Position);
+                PositionText.Text = FormatTime(_mediaPlayer.Position);
             }
         }
 
         private void SpeedComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (MediaPlayer == null)
+            if (_mediaPlayer == null)
                 return;
 
             switch (SpeedComboBox.SelectedIndex)
             {
                 case 0:
-                    MediaPlayer.SpeedRatio = 0.5;
+                    _mediaPlayer.SpeedRatio = 0.5;
                     break;
                 case 1:
-                    MediaPlayer.SpeedRatio = 1.0;
+                    _mediaPlayer.SpeedRatio = 1.0;
                     break;
                 case 2:
-                    MediaPlayer.SpeedRatio = 1.5;
+                    _mediaPlayer.SpeedRatio = 1.5;
                     break;
                 case 3:
-                    MediaPlayer.SpeedRatio = 2.0;
+                    _mediaPlayer.SpeedRatio = 2.0;
                     break;
             }
         }
@@ -169,7 +201,7 @@ namespace NameCube.ToolBox.AutomaticProcessPages.ProcessPages
         {
             if (_currentState == PlayerState.Paused || _currentState == PlayerState.Stopped)
             {
-                MediaPlayer.Play();
+                _mediaPlayer.Play();
                 _progressTimer.Start();
                 _currentState = PlayerState.Playing;
             }
@@ -179,7 +211,7 @@ namespace NameCube.ToolBox.AutomaticProcessPages.ProcessPages
         {
             if (_currentState == PlayerState.Playing)
             {
-                MediaPlayer.Pause();
+                _mediaPlayer.Pause();
                 _progressTimer.Stop();
                 _currentState = PlayerState.Paused;
             }
@@ -187,18 +219,18 @@ namespace NameCube.ToolBox.AutomaticProcessPages.ProcessPages
 
         private void StopButton_Click(object sender, RoutedEventArgs e)
         {
-            MediaPlayer.Stop();
+            _mediaPlayer.Stop();
             _progressTimer.Stop();
-            MediaPlayer.Position = TimeSpan.Zero;
+            _mediaPlayer.Position = TimeSpan.Zero;
             PositionSlider.Value = 0;
             PositionText.Text = FormatTime(TimeSpan.Zero);
             _currentState = PlayerState.Stopped;
         }
 
-        private void MediaPlayer_MediaEnded(object sender, RoutedEventArgs e)
+        private void MediaPlayer_MediaEnded(object sender, EventArgs e)
         {
             _progressTimer.Stop();
-            MediaPlayer.Position = TimeSpan.Zero;
+            _mediaPlayer.Position = TimeSpan.Zero;
             PositionSlider.Value = 0;
             PositionText.Text = FormatTime(TimeSpan.Zero);
             _currentState = PlayerState.Stopped;
@@ -221,7 +253,7 @@ namespace NameCube.ToolBox.AutomaticProcessPages.ProcessPages
                     {
                         Dispatcher.Invoke(() =>
                         {
-                            MediaPlayer.Play();
+                            _mediaPlayer.Play();
                             _progressTimer.Start();
                             _currentState = PlayerState.Playing;
                         });
@@ -248,6 +280,11 @@ namespace NameCube.ToolBox.AutomaticProcessPages.ProcessPages
         private void PositionSlider_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
         {
             _isUserDragging = false;
+        }
+
+        private void Page_Unloaded(object sender, RoutedEventArgs e)
+        {
+            this.Dispose();
         }
     }
 }

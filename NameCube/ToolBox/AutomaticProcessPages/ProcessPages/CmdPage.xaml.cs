@@ -34,12 +34,16 @@ namespace NameCube.ToolBox.AutomaticProcessPages.ProcessPages
         {
             RequestParentAction?.Invoke(data);
         }
-        public CmdPage(string cmd,bool visibility,bool debug = false)
+        public CmdPage(string cmd,bool visibility,bool debug = false,bool show=true)
         {
             InitializeComponent();
             _cmd = cmd;
             _visibility = visibility;
             _debug = debug;
+            if(!show)
+            {
+                Page_Loaded(null,null);
+            }
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
