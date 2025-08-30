@@ -1,5 +1,3 @@
-> [!caution]
-> 目前代码属于早期阶段，代码质量差，内存占用问题较为严重。非必要不推荐查看代码或使用本软件
 <div align="center">
 
 # 点鸣魔方 
@@ -24,16 +22,18 @@
 - [x] 数字模式
 - [x] 预备模式
 - [x] 记忆模式
-- 如果需要了解更多，可点击这个==>[NameCube Wiki](https://github.com/haaa4/NameCube/wiki/%E6%A8%A1%E5%BC%8F)
+- 如果需要了解更多信息，可点击这个（虽然还没写完）==>[NameCube Wiki](https://github.com/haaa4/NameCube/wiki/%E6%A8%A1%E5%BC%8F)
 ## 小工具
 - 小工具提供了一些对平时使用有用的功能（也许🤔）
-![image](https://github.com/user-attachments/assets/5d30d1a7-7827-4450-8f65-c749ccb0bc7e)
+![image](https://github.com/user-attachments/assets/a552c844-cfea-4de4-a81f-721b0a6230bc)
 - [x] 自定义朗读
 - [x] 内存
-- [x] 自动关机
+- [x] 自动关机（**已合并**）
+- [x] 更好的快捷键
+- [x] 自动流程
 ## 未来可能发布的功能
-- [ ] 更好的快捷键
-- [ ] 指令集
+- [ ] 自定义背景
+- [ ] 自定义悬浮球
 - [ ] 条件模式
 ## 制作人员
 - [哈阿斯(haaa4)](https://github.com/haaa4)
@@ -59,4 +59,3 @@
 - 本软件不定时更新
 - 作者还是**初中生**，请不要施压
 - 作者写该程序只为锻炼自己，不为别的
-- 目前软件存在**性能问题，内存占用较高（超过100MB）**
