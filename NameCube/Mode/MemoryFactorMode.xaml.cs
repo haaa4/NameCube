@@ -70,36 +70,11 @@ namespace NameCube.Mode
         {
             InitializeComponent();
             DataContext = this;
-            if (!GlobalVariables.json.AllSettings.SystemSpeech)
-            {
-                _speechSynthesizer.SelectVoiceByHints(VoiceGender.Female, VoiceAge.Adult); // 选择女声
-                _speechSynthesizer.Rate = GlobalVariables.json.AllSettings.Speed; // 语速 (-10 ~ 10)
-                _speechSynthesizer.Volume = GlobalVariables.json.AllSettings.Volume;
-            }
-            timer.Elapsed += Timer_Elapsed;
-            SpeechButton.IsChecked = GlobalVariables.json.MemoryFactorModeSettings.Speech;
-            SpeechButton.IsEnabled = !GlobalVariables.json.MemoryFactorModeSettings.Locked;
-            ResetButton.IsEnabled = !GlobalVariables.json.MemoryFactorModeSettings.Locked;
-            string FilePath = System.IO.Path.Combine(GlobalVariables.configDir, "Mode_data", "MemoryFactoryMode");
-            Directory.CreateDirectory(FilePath);
-            if (GlobalVariables.json.MemoryFactorModeSettings.Speed == 0)
-            {
-                GlobalVariables.json.MemoryFactorModeSettings.Speed = 20;
-            }
-            StartLoad();
-            NowNumberText.Foreground = GlobalVariables.json.AllSettings.color;
-            FinishNumberText.Foreground=GlobalVariables.json.AllSettings.color;
-            NowNumberText.FontFamily = GlobalVariables.json.AllSettings.Font;
-            FinishNumberText.FontFamily = GlobalVariables.json.AllSettings.Font;
-            if (GlobalVariables.json.MemoryFactorModeSettings.LastName!=null)
-            {
-                NowNumberText.Text = GlobalVariables.json.MemoryFactorModeSettings.LastName;
-            }
+
         }
-        private async void StartLoad()
+        private void StartLoad()
         {
-            await Task.Run(() =>
-            {
+
                 string FilePath = System.IO.Path.Combine(GlobalVariables.configDir, "Mode_data", "MemoryFactoryMode");
                 if (!File.Exists(Path.Combine(FilePath, "Memory.json")))
                 {
@@ -110,8 +85,7 @@ namespace NameCube.Mode
                             StartButton.IsEnabled = false;
                             ResetButton.IsEnabled = false;
                         }));
-                        MessageBoxFunction.ShowMessageBoxWarning("我们，拒 绝 签 字\n翻译：学生名单少于两位，无法初始化");
-                        return Task.CompletedTask;
+                        SnackBarFunction.ShowSnackBarInMainWindow("我们，拒 绝 签 字\n翻译：学生名单少于两位，无法初始化", Wpf.Ui.Controls.ControlAppearance.Caution);
                     }
 
                     // 通过 Add 方法填充现有集合
@@ -190,9 +164,8 @@ namespace NameCube.Mode
                     }
                 });
                 
-                return Task.CompletedTask;
 
-            });
+
 
         }
         private void Timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
@@ -398,7 +371,7 @@ namespace NameCube.Mode
                     GlobalVariables.json.MemoryFactorModeSettings.MaxTimes = 1;
                     StartButton.IsEnabled = false;
                     ResetButton.IsEnabled = false;
-                    MessageBoxFunction.ShowMessageBoxInfo("重置成功，请重新打开界面");
+                    SnackBarFunction.ShowSnackBarInMainWindow("重置成功，请重新打开界面",Wpf.Ui.Controls.ControlAppearance.Primary);
                 }
                 catch (Exception ex)
                 {
@@ -407,7 +380,33 @@ namespace NameCube.Mode
                 }
         }
 
-
-
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (!GlobalVariables.json.AllSettings.SystemSpeech)
+            {
+                _speechSynthesizer.SelectVoiceByHints(VoiceGender.Female, VoiceAge.Adult); // 选择女声
+                _speechSynthesizer.Rate = GlobalVariables.json.AllSettings.Speed; // 语速 (-10 ~ 10)
+                _speechSynthesizer.Volume = GlobalVariables.json.AllSettings.Volume;
+            }
+            timer.Elapsed += Timer_Elapsed;
+            SpeechButton.IsChecked = GlobalVariables.json.MemoryFactorModeSettings.Speech;
+            SpeechButton.IsEnabled = !GlobalVariables.json.MemoryFactorModeSettings.Locked;
+            ResetButton.IsEnabled = !GlobalVariables.json.MemoryFactorModeSettings.Locked;
+            string FilePath = System.IO.Path.Combine(GlobalVariables.configDir, "Mode_data", "MemoryFactoryMode");
+            Directory.CreateDirectory(FilePath);
+            if (GlobalVariables.json.MemoryFactorModeSettings.Speed == 0)
+            {
+                GlobalVariables.json.MemoryFactorModeSettings.Speed = 20;
+            }
+            StartLoad();
+            NowNumberText.Foreground = GlobalVariables.json.AllSettings.color;
+            FinishNumberText.Foreground = GlobalVariables.json.AllSettings.color;
+            NowNumberText.FontFamily = GlobalVariables.json.AllSettings.Font;
+            FinishNumberText.FontFamily = GlobalVariables.json.AllSettings.Font;
+            if (GlobalVariables.json.MemoryFactorModeSettings.LastName != null)
+            {
+                NowNumberText.Text = GlobalVariables.json.MemoryFactorModeSettings.LastName;
+            }
+        }
     }
 }

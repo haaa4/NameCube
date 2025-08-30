@@ -12,6 +12,15 @@
     Height="700"
     Loaded="FluentWindow_Loaded"
     mc:Ignorable="d">
+    <ui:FluentWindow.Resources>
+        <Storyboard x:Key="ShowStoryBoard">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="border" Storyboard.TargetProperty="(UIElement.Opacity)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="1" />
+                <EasingDoubleKeyFrame KeyTime="00:00:00.6000000" Value="1" />
+                <EasingDoubleKeyFrame KeyTime="00:00:01" Value="0" />
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+    </ui:FluentWindow.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="50" />
@@ -61,5 +70,35 @@
                 </ui:Button>
             </ui:NavigationView.PaneHeader>
         </ui:NavigationView>
+        <Border
+            x:Name="border"
+            Grid.RowSpan="2"
+            Background="White"
+            BorderBrush="White"
+            BorderThickness="1"
+            Visibility="Visible" d:IsHidden="True">
+            <Canvas>
+                <Image
+                    Canvas.Left="362.756"
+                    Canvas.Top="243.373"
+                    Width="189"
+                    Height="192"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    Source="/icon.png"
+                    Stretch="Fill" />
+                <TextBlock
+                    Canvas.Left="556.756"
+                    Canvas.Top="290.373"
+                    Width="420"
+                    Height="145"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    FontFamily="Segoe UI Black"
+                    FontSize="72"
+                    TextWrapping="Wrap"><Run Language="zh-cn" Text="小工具" /></TextBlock>
+            </Canvas>
+        </Border>
+        <ui:SnackbarPresenter x:Name="SnackbarPresenterHost" Grid.Row="1" />
     </Grid>
 </ui:FluentWindow>

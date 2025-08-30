@@ -86,7 +86,7 @@ namespace NameCube.Setting
                 }
                 catch (Exception ex)
                 {
-                    MessageBoxFunction.ShowMessageBoxWarning(ex.Message);
+                    SnackBarFunction.ShowSnackBarInSettingWindow(ex.Message,Wpf.Ui.Controls.ControlAppearance.Caution);
                     ColorTextBox.Text = null;
                 }
 

@@ -9,6 +9,7 @@
     Title="OnePeopleMode"
     d:DesignHeight="450"
     d:DesignWidth="800"
+    Loaded="Page_Loaded"
     Unloaded="Page_Unloaded"
     mc:Ignorable="d">
 

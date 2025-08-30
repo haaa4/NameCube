@@ -125,7 +125,6 @@
                         TextWrapping="WrapWithOverflow" />
                     <ui:TextBlock
                         Appearance="Secondary"
-                        Text="使用令牌后 API 请求限制从 60 次/小时提升到 5000 次/小时"
                         TextWrapping="WrapWithOverflow" />
                 </StackPanel>
             </ui:CardControl.Header>

@@ -7,68 +7,386 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:mode="clr-namespace:NameCube.Mode"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    xmlns:vio="http://schemas.lepo.co/wpfui/2022/xaml/violeta"
     Title="点鸣魔方"
     Width="1000"
     Height="450"
     Closing="FluentWindow_Closing"
     Icon="pack://application:,,,/icon.ico"
+    Loaded="FluentWindow_Loaded"
     mc:Ignorable="d">
+    <ui:FluentWindow.Resources>
+        <Storyboard x:Key="StartStoryBoard">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="animatedImage" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CircleEase EasingMode="EaseIn" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:02" Value="336.932">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CircleEase EasingMode="EaseIn" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:03" Value="336.932">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CircleEase EasingMode="EaseIn" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="animatedImage" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleY)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="1">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CircleEase EasingMode="EaseIn" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:02" Value="1.01">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CircleEase EasingMode="EaseIn" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:03" Value="1.01" />
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="animatedImage" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[2].(RotateTransform.Angle)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <BackEase EasingMode="EaseOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:02" Value="360">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <BackEase EasingMode="EaseOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:03" Value="360" />
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="animatedImage" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)">
+                <EasingDoubleKeyFrame KeyTime="00:00:03" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CircleEase EasingMode="EaseIn" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:03.9000000" Value="-159.096">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CircleEase EasingMode="EaseIn" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="border1" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)">
+                <EasingDoubleKeyFrame KeyTime="00:00:01.4000000" Value="-5.638" />
+                <EasingDoubleKeyFrame KeyTime="00:00:02.6000000" Value="-6.25" />
+                <EasingDoubleKeyFrame KeyTime="00:00:03" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CircleEase EasingMode="EaseIn" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:04" Value="-238.644">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CircleEase EasingMode="EaseIn" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:04.6000000" Value="-336.371" />
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="textBlock" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)">
+                <EasingDoubleKeyFrame KeyTime="00:00:03" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CircleEase EasingMode="EaseIn" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:04" Value="159.096">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CircleEase EasingMode="EaseIn" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="border1" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)">
+                <EasingDoubleKeyFrame KeyTime="00:00:01.4000000" Value="-3.06" />
+                <EasingDoubleKeyFrame KeyTime="00:00:02.6000000" Value="-5.682" />
+                <EasingDoubleKeyFrame KeyTime="00:00:03" Value="0" />
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="textBlock1" Storyboard.TargetProperty="(UIElement.Opacity)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0" />
+                <EasingDoubleKeyFrame KeyTime="00:00:04.6000000" Value="0" />
+                <EasingDoubleKeyFrame KeyTime="00:00:05.2000000" Value="0.45" />
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="border" Storyboard.TargetProperty="(UIElement.Opacity)">
+                <EasingDoubleKeyFrame KeyTime="00:00:07" Value="1" />
+                <EasingDoubleKeyFrame KeyTime="00:00:08" Value="0" />
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="LoadStoryBoard">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="border3" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="-15.307">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <QuadraticEase EasingMode="EaseIn" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:01" Value="459.21">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <QuadraticEase EasingMode="EaseIn" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:01.5000000" Value="459.21" />
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="border3" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="-3.062">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <QuadraticEase EasingMode="EaseIn" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:01" Value="-3.062" />
+                <EasingDoubleKeyFrame KeyTime="00:00:01.5000000" Value="-3.062" />
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="border2" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <QuinticEase EasingMode="EaseIn" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:01" Value="459.21">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <QuinticEase EasingMode="EaseIn" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:01.5000000" Value="459.21" />
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="border2" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="-4.593">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <QuinticEase EasingMode="EaseIn" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:01" Value="-4.593" />
+                <EasingDoubleKeyFrame KeyTime="00:00:01.5000000" Value="-4.593" />
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="LoadedStoryBoard">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="border3" Storyboard.TargetProperty="(Canvas.Left)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0" />
+                <EasingDoubleKeyFrame KeyTime="00:00:00.5000000" Value="0" />
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="border2" Storyboard.TargetProperty="(Canvas.Left)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0" />
+                <EasingDoubleKeyFrame KeyTime="00:00:00.5000000" Value="0" />
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="border2" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="459.21">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <PowerEase EasingMode="EaseIn" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.5000000" Value="459.21">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <PowerEase EasingMode="EaseIn" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:01.7000000" Value="903.113">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <PowerEase EasingMode="EaseIn" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="border3" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="459.21">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <QuinticEase EasingMode="EaseIn" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.5000000" Value="459.21">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <QuinticEase EasingMode="EaseIn" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:01.7000000" Value="903.113">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <QuinticEase EasingMode="EaseIn" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+    </ui:FluentWindow.Resources>
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="50" />
-            <RowDefinition Height="1*" />
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1*" />
-            <ColumnDefinition Width="1*" />
-        </Grid.ColumnDefinitions>
-        <ui:TitleBar
-            Title="点鸣魔方"
-            Grid.Row="0"
-            Grid.ColumnSpan="2"
-            Icon="{ui:ImageIcon 'pack://application:,,,/icon.png'}" />
-        <ui:NavigationView
-            x:Name="NavigationMenu"
-            Grid.Row="1"
-            Grid.Column="1"
-            MinHeight="300"
-            Margin="0"
-            IsBackButtonVisible="Auto"
-            IsPaneToggleVisible="True"
-            PaneDisplayMode="Bottom" />
-        <Rectangle
-            x:Name="rec"
-            Grid.Row="1"
-            Grid.Column="1"
-            Height="30"
-            VerticalAlignment="Bottom"
-            Fill="White" />
-        <StackPanel Grid.Row="1">
-            <TextBlock
-                x:Name="TitleGet"
-                Margin="20,0,0,0"
-                FontSize="40"
-                FontWeight="Black"
-                Text="欢迎！" />
-            <TextBlock
-                x:Name="Text"
-                Margin="10,0,0,0"
-                FontSize="20"
-                Text="欢迎来到点鸣魔方，在使用软件前，我们需要进行一些设置"
-                TextWrapping="Wrap" />
-            <ui:Button
-                Margin="10,30,0,0"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Bottom"
-                Appearance="Primary"
-                Click="Button_Click"
-                Content="  继续  " />
-            <ui:Button
-                Margin="10,5,0,0"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Bottom"
-                Click="Button_Click_1"
-                Content="从已有的配置文件开始" />
-        </StackPanel>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50" />
+                <RowDefinition Height="1*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*" />
+            </Grid.ColumnDefinitions>
+            <ui:TitleBar
+                Title="点鸣魔方"
+                Grid.Row="0"
+                Grid.ColumnSpan="2"
+                Icon="{ui:ImageIcon pack://application:\,\,\,/icon.png}" />
+            <Frame
+                x:Name="NavigationMenu"
+                Grid.Row="1"
+                Grid.Column="1"
+                MinHeight="300"
+                Margin="0" />
+            <StackPanel Grid.Row="1">
+                <TextBlock
+                    x:Name="TitleGet"
+                    Margin="20,0,0,0"
+                    FontSize="40"
+                    FontWeight="Black"
+                    Text="欢迎！" />
+                <TextBlock
+                    x:Name="Text"
+                    Margin="10,0,0,0"
+                    FontSize="20"
+                    Text="欢迎来到点鸣魔方，在使用软件前，我们需要进行一些设置"
+                    TextWrapping="Wrap" />
+                <ui:Button
+                    Margin="10,30,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Bottom"
+                    Appearance="Primary"
+                    Click="Button_Click"
+                    Content="  继续  " />
+                <ui:Button
+                    Margin="10,5,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Bottom"
+                    Click="Button_Click_1"
+                    Content="从已有的配置文件开始" />
+            </StackPanel>
+        </Grid>
+        <Border
+            x:Name="border"
+            d:IsHidden="True"
+            Background="{DynamicResource {x:Static SystemColors.HighlightTextBrushKey}}"
+            BorderBrush="Black"
+            BorderThickness="1">
+            <Canvas Margin="0,0,-2,-2">
+                <ui:TextBlock
+                    x:Name="textBlock1"
+                    Canvas.Left="230.818"
+                    Canvas.Top="179.693"
+                    Width="596"
+                    Height="172"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    FontSize="108"
+                    Foreground="Gray"
+                    Opacity="0.42"
+                    TextWrapping="Wrap">
+                    <Run Language="zh-cn" Text="WELCOME" />
+                </ui:TextBlock>
+
+                <ui:TextBlock
+                    x:Name="textBlock"
+                    Canvas.Left="270.136"
+                    Canvas.Top="197.302"
+                    Width="315"
+                    Height="124"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    FontFamily="Segoe UI Variable Display Semibold"
+                    FontSize="72"
+                    RenderTransformOrigin="0.5,0.5"
+                    TextWrapping="Wrap">
+                    <ui:TextBlock.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform />
+                            <SkewTransform />
+                            <RotateTransform />
+                            <TranslateTransform />
+                        </TransformGroup>
+                    </ui:TextBlock.RenderTransform>
+                    <Run Text="点鸣魔方" />
+                </ui:TextBlock>
+                <ui:Border
+                    x:Name="border1"
+                    Canvas.Left="256.819"
+                    Canvas.Top="182.907"
+                    Width="305"
+                    Height="106"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    Background="{Binding Background, ElementName=border}"
+                    BorderThickness="1"
+                    RenderTransformOrigin="0.5,0.5">
+                    <ui:Border.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform />
+                            <SkewTransform />
+                            <RotateTransform />
+                            <TranslateTransform />
+                        </TransformGroup>
+                    </ui:Border.RenderTransform>
+                </ui:Border>
+                <vio:AnimatedImage
+                    x:Name="animatedImage"
+                    Canvas.Left="407.955"
+                    Canvas.Top="-171.405"
+                    Width="174"
+                    Height="155"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    RenderTransformOrigin="0.5,0.5"
+                    Source="/icon.png">
+                    <vio:AnimatedImage.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform />
+                            <SkewTransform />
+                            <RotateTransform />
+                            <TranslateTransform />
+                        </TransformGroup>
+                    </vio:AnimatedImage.RenderTransform>
+                </vio:AnimatedImage>
+
+            </Canvas>
+        </Border>
+        <Border
+            x:Name="LoadBoard"
+            BorderThickness="1"
+            Visibility="Collapsed">
+            <Canvas>
+                <ui:Border
+                    x:Name="border3"
+                    Canvas.Left="3.062"
+                    Canvas.Top="-460.746"
+                    Width="1020"
+                    Height="463"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Background="#FF00D6FF"
+                    BorderThickness="1"
+                    RenderTransformOrigin="0.5,0.5">
+                    <ui:Border.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform />
+                            <SkewTransform />
+                            <RotateTransform />
+                            <TranslateTransform />
+                        </TransformGroup>
+                    </ui:Border.RenderTransform>
+                </ui:Border>
+                <ui:Border
+                    x:Name="border2"
+                    Canvas.Left="3.062"
+                    Canvas.Top="-460.746"
+                    Width="1020"
+                    Height="463"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Background="#FF009CFF"
+                    BorderThickness="1"
+                    RenderTransformOrigin="0.5,0.5">
+                    <ui:Border.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform />
+                            <SkewTransform />
+                            <RotateTransform />
+                            <TranslateTransform />
+                        </TransformGroup>
+                    </ui:Border.RenderTransform>
+                </ui:Border>
+            </Canvas>
+        </Border>
     </Grid>
+
 </ui:FluentWindow>

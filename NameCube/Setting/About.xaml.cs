@@ -60,10 +60,10 @@ namespace NameCube.Setting
                             case "autoIsGod114514":
                                 GlobalVariables.json.automaticProcess.debug = true;
                                 GlobalVariables.SaveJson();
-                                MessageBoxFunction.ShowMessageBoxInfo("自动流程Debug模式已开启");
+                                SnackBarFunction.ShowSnackBarInSettingWindow("自动流程Debug模式已开启",ControlAppearance.Success);
                                 break;
                             default:
-                                MessageBoxFunction.ShowMessageBoxWarning("密码错误");
+                                SnackBarFunction.ShowSnackBarInSettingWindow("密码错误", Wpf.Ui.Controls.ControlAppearance.Caution);
                                 break;
                         }
 

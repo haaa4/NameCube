@@ -109,7 +109,7 @@ namespace NameCube.Setting
                 string path = Path.Combine(UpdataFile, "Updata");
                 File.WriteAllText(Path.Combine(path, "Path.txt"), Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
                 File.Copy(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "NameCubeUpdata.exe"), Path.Combine(path, "NameCubeUpdata.exe"));
-                MessageBoxFunction.ShowMessageBoxInfo("更新程序即将启动，请勿关闭程序,否则可能会导致文件损坏！");
+                SnackBarFunction.ShowSnackBarInSettingWindow("更新程序即将启动，请勿关闭程序,否则可能会导致文件损坏！",Wpf.Ui.Controls.ControlAppearance.Caution);
                 new ToastContentBuilder()
                             .AddArgument("action", "viewConversation")
                             .AddArgument("conversationId", 9813)

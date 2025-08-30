@@ -58,7 +58,7 @@ namespace NameCube.Setting
                     Directory.Delete(System.IO.Path.Combine(GlobalVariables.configDir, "Mode_data", "MemoryFactoryMode", "Backups"), true);
                 if (Directory.Exists(System.IO.Path.Combine(GlobalVariables.configDir, "Updata")))
                     Directory.Delete(System.IO.Path.Combine(GlobalVariables.configDir, "Updata"), true);
-                MessageBoxFunction.ShowMessageBoxInfo("删除成功");
+                SnackBarFunction.ShowSnackBarInSettingWindow("删除成功",ControlAppearance.Success);
             }
             catch (Exception ex)
             {
@@ -73,7 +73,7 @@ namespace NameCube.Setting
             try
             {
                 Directory.Delete(GlobalVariables.configDir, true);
-                MessageBoxFunction.ShowMessageBoxInfo("删除成功，请自行启动软件");
+                SnackBarFunction.ShowSnackBarInSettingWindow("删除成功，请自行启动软件", ControlAppearance.Success);
                 System.Windows.Application.Current.Shutdown();
             }
             catch (Exception ex)
@@ -97,7 +97,7 @@ namespace NameCube.Setting
                     {
                         var SevenZipCompressor=new SevenZipCompressor(null);
                         SevenZipCompressor.Zip(new List<string>() { GlobalVariables.configDir }, saveFileDialog.FileName);
-                        MessageBoxFunction.ShowMessageBoxInfo("保存成功");
+                        SnackBarFunction.ShowSnackBarInSettingWindow("保存成功", ControlAppearance.Success);
                     }
                     catch (Exception ex)
                     {
@@ -122,7 +122,7 @@ namespace NameCube.Setting
                     Directory.CreateDirectory(GlobalVariables.configDir);
                     var SevenZipCompressor = new SevenZipCompressor(null);
                     SevenZipCompressor.Decompress(openFileDialog.FileName, GlobalVariables.configDir);
-                    MessageBoxFunction.ShowMessageBoxInfo("覆盖成功，请自行启动软件");
+                    SnackBarFunction.ShowSnackBarInSettingWindow("覆盖成功，请自行启动软件", ControlAppearance.Primary);
                     System.Windows.Application.Current.Shutdown();
                 }
                 catch (Exception ex)
@@ -143,14 +143,14 @@ namespace NameCube.Setting
                 {
                     string movePath=Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "NameCube");
                     FolderMover.MoveFolder(GlobalVariables.configDir, movePath,true);
-                    MessageBoxFunction.ShowMessageBoxInfo("移动成功");
+                    SnackBarFunction.ShowSnackBarInSettingWindow("移动成功", ControlAppearance.Success);
                     GlobalVariables.configDir = movePath;
                 }
                 else
                 {
                     string movePath= Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Namecube");
                     FolderMover.MoveFolder(GlobalVariables.configDir, movePath, true);
-                    MessageBoxFunction.ShowMessageBoxInfo("移动成功");
+                    SnackBarFunction.ShowSnackBarInSettingWindow("移动成功", ControlAppearance.Success);
                     GlobalVariables.configDir = movePath;
                 }
             }

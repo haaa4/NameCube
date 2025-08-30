@@ -10,6 +10,7 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -18,6 +19,7 @@ using System.Windows.Threading;
 using Wpf.Ui.Controls;
 using Application = System.Windows.Application;
 using Timer = System.Windows.Forms.Timer;
+using NameCube.Mode;
 
 
 namespace NameCube
@@ -311,41 +313,11 @@ namespace NameCube
             base.OnClosed(e);
 
         }
-        private void ReleaseManagedResources()
-        {
-            _notifyIcon?.Dispose();
-            _notifyIcon = null;
 
-            Timer?.Stop();
-            Timer?.Dispose();
-            Timer = null;
-        }
-
-        private void ReleaseUnmanagedResources()
-        {
-            // 确保钩子完全释放
-            if (_hookID != IntPtr.Zero)
-            {
-                UnhookWindowsHookEx(_hookID);
-                _hookID = IntPtr.Zero;
-            }
-        }
-
-        private void UnsubscribeEvents()
-        {
-            Loaded -= (sender, args) => { NavigationMenu.Navigate(typeof(Mode.Home)); };
-            Timer=null;
-            Closing -= FluentWindow_Closing;
-        }
-
-        private void ClearCollections()
-        {
-            _keyPressTimes?.Clear();
-            _keyPressTimes = null;
-        }
         double LastTop=-1;
         public void ShowThisWindow()
         {
+            //2025/8/29 回忆以前痛苦的动画制作经历
             if(LastTop==-1)
             {
                 if (!IsActive && (!(this.Visibility == Visibility.Hidden || this.Visibility == Visibility.Collapsed) || this.WindowState == WindowState.Minimized))
@@ -355,6 +327,7 @@ namespace NameCube
                 }
                 else
                 {
+
                     var dpiScale = VisualTreeHelper.GetDpi(this);
                     var workArea = SystemParameters.WorkArea;
                     double screenHeight = workArea.Height * dpiScale.DpiScaleY;
@@ -373,6 +346,13 @@ namespace NameCube
                         Duration = new Duration(TimeSpan.FromSeconds(0.6)),
                         EasingFunction = new QuinticEase { EasingMode = EasingMode.EaseOut }
                     };
+                    var showStoryBoard = FindResource("ShowStoryBoard") as Storyboard;
+                    border2.Visibility= Visibility.Visible;
+                    showStoryBoard.Completed += (s, e) =>
+                    {
+                        border2.Visibility = Visibility.Collapsed;
+                    };
+                   
                     animation1.Completed += (sender, e) =>
                     {
                         LastTop = -1;
@@ -383,13 +363,88 @@ namespace NameCube
                     this.Show();
                     this.Activate();
                     this.BeginAnimation(Window.TopProperty, animation1);
+                    showStoryBoard.Begin();
 
                 }
 
             }
 
         }
+        private void CleanupEventHandlers(Storyboard storyboard)
+        {
+            if (storyboard != null)
+            {
+                storyboard.Stop();
+                storyboard.Remove();
+            }
+        }
 
+        // 修改 LoadPage 方法，确保正确处理事件
+        public void LoadPage(Page page)
+        {
+            var loadPageStoryBoard = FindResource("LoadPageStoryBoard") as Storyboard;
+            var loadedPageStoryBoard = FindResource("LoadedPageStoryBoard") as Storyboard;
 
+            // 清理之前的事件处理程序
+            CleanupEventHandlers(loadPageStoryBoard);
+            CleanupEventHandlers(loadedPageStoryBoard);
+
+            border.Visibility = Visibility.Visible;
+
+            EventHandler loadCompletedHandler = null;
+            EventHandler loadedCompletedHandler = null;
+
+            loadCompletedHandler = (s, e) =>
+            {
+                loadPageStoryBoard.Completed -= loadCompletedHandler;
+                NavigationMenu.Navigate(page.GetType());
+
+                loadedCompletedHandler = (s1, e1) =>
+                {
+                    loadedPageStoryBoard.Completed -= loadedCompletedHandler;
+                    border.Visibility = Visibility.Collapsed;
+                };
+
+                loadedPageStoryBoard.Completed += loadedCompletedHandler;
+                loadedPageStoryBoard.Begin();
+            };
+
+            loadPageStoryBoard.Completed += loadCompletedHandler;
+            loadPageStoryBoard.Begin();
+        }
+        private void NavigationViewItem_Click(object sender, RoutedEventArgs e)
+        {
+            LoadPage(new Home());
+        }
+
+        private void NavigationViewItem_Click_1(object sender, RoutedEventArgs e)
+        {
+            LoadPage(new OnePeopleMode());
+        }
+
+        private void NavigationViewItem_Click_2(object sender, RoutedEventArgs e)
+        {
+            LoadPage(new MemoryFactorMode());
+        }
+
+        private void NavigationViewItem_Click_3(object sender, RoutedEventArgs e)
+        {
+            LoadPage(new BatchMode());
+        }
+
+        private void NavigationViewItem_Click_4(object sender, RoutedEventArgs e)
+        {
+            LoadPage(new NumberMode());
+        }
+
+        private void NavigationViewItem_Click_5(object sender, RoutedEventArgs e)
+        {
+            LoadPage(new PrepareMode());
+        }
+
+        private void NavigationViewItem_Click_6(object sender, RoutedEventArgs e)
+        {
+            LoadPage(new MemoryMode());
+        }
     }
 }

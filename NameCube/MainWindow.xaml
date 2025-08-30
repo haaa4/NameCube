@@ -16,15 +16,74 @@
     Closing="FluentWindow_Closing"
     WindowStyle="None"
     mc:Ignorable="d">
+    <ui:FluentWindow.Resources>
+        <Storyboard x:Key="ShowStoryBoard">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="border2" Storyboard.TargetProperty="(UIElement.Opacity)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="1"/>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.6000000" Value="1" />
+                <EasingDoubleKeyFrame KeyTime="00:00:01" Value="0" />
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="LoadPageStoryBoard">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="border" Storyboard.TargetProperty="(UIElement.Opacity)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0" />
+                <EasingDoubleKeyFrame KeyTime="00:00:00.5000000" Value="1" />
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="image" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[2].(RotateTransform.Angle)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="47.004">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <BackEase EasingMode="EaseOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.5000000" Value="0.511">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <BackEase EasingMode="EaseOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="image" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <BackEase EasingMode="EaseOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.5000000" Value="193.025">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <BackEase EasingMode="EaseOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="image" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <BackEase EasingMode="EaseOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.5000000" Value="56.299">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <BackEase EasingMode="EaseOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="LoadedPageStoryBoard">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="border" Storyboard.TargetProperty="(UIElement.Opacity)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="1" />
+                <EasingDoubleKeyFrame KeyTime="00:00:00.5000000" Value="1" />
+                <EasingDoubleKeyFrame KeyTime="00:00:01" Value="0" />
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+    </ui:FluentWindow.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="50" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
+
         <ui:TitleBar
             Title="点鸣魔方"
             Grid.Row="0"
-            Icon="{ui:ImageIcon 'icon.png'}" />
+            Icon="{ui:ImageIcon icon.png}" />
         <ui:NavigationView
             x:Name="NavigationMenu"
             Grid.Row="1"
@@ -35,33 +94,33 @@
             PaneDisplayMode="Left">
             <ui:NavigationView.MenuItems>
                 <ui:NavigationViewItem
+                    Click="NavigationViewItem_Click"
                     Content="主页"
-                    Icon="{ui:SymbolIcon Symbol=Home24}"
-                    TargetPageType="{x:Type mode:Home}" />
+                    Icon="{ui:SymbolIcon Symbol=Home24}" />
                 <ui:NavigationViewItem
+                    Click="NavigationViewItem_Click_1"
                     Content="单人模式"
-                    Icon="{ui:SymbolIcon Symbol=Accessibility16}"
-                    TargetPageType="{x:Type mode:OnePeopleMode}" />
+                    Icon="{ui:SymbolIcon Symbol=Accessibility16}" />
                 <ui:NavigationViewItem
+                    Click="NavigationViewItem_Click_2"
                     Content="因子模式"
-                    Icon="{ui:SymbolIcon Symbol=PeopleSettings24}"
-                    TargetPageType="{x:Type mode:MemoryFactorMode}" />
+                    Icon="{ui:SymbolIcon Symbol=PeopleSettings24}" />
                 <ui:NavigationViewItem
+                    Click="NavigationViewItem_Click_3"
                     Content="批量模式"
-                    Icon="{ui:SymbolIcon Symbol=PeopleCommunity24}"
-                    TargetPageType="{x:Type mode:BatchMode}" />
+                    Icon="{ui:SymbolIcon Symbol=PeopleCommunity24}" />
                 <ui:NavigationViewItem
+                    Click="NavigationViewItem_Click_4"
                     Content="数字模式"
-                    Icon="{ui:SymbolIcon Symbol=NumberSymbol24}"
-                    TargetPageType="{x:Type mode:NumberMode}" />
+                    Icon="{ui:SymbolIcon Symbol=NumberSymbol24}" />
                 <ui:NavigationViewItem
+                    Click="NavigationViewItem_Click_5"
                     Content="预备模式"
-                    Icon="{ui:SymbolIcon Symbol=Run24}"
-                    TargetPageType="{x:Type mode:PrepareMode}" />
+                    Icon="{ui:SymbolIcon Symbol=Run24}" />
                 <ui:NavigationViewItem
+                    Click="NavigationViewItem_Click_6"
                     Content="记忆模式"
-                    Icon="{ui:SymbolIcon Symbol=BrainCircuit24}"
-                    TargetPageType="{x:Type mode:MemoryMode}" />
+                    Icon="{ui:SymbolIcon Symbol=BrainCircuit24}" />
 
             </ui:NavigationView.MenuItems>
             <ui:NavigationView.PaneFooter>
@@ -82,5 +141,61 @@
                 </StackPanel>
             </ui:NavigationView.PaneFooter>
         </ui:NavigationView>
+        <Border
+            x:Name="border"
+            Grid.Row="1"
+            Margin="321,0,0,0"
+            d:IsHidden="True"
+            Background="White"
+            BorderThickness="1"
+            Visibility="Collapsed">
+            <Image
+                x:Name="image"
+                Margin="211,116,650,267"
+                RenderTransformOrigin="0.5,0.5"
+                Source="/icon.png"
+                Stretch="Fill">
+                <Image.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform />
+                        <SkewTransform />
+                        <RotateTransform Angle="47.004" />
+                        <TranslateTransform />
+                    </TransformGroup>
+                </Image.RenderTransform>
+            </Image>
+        </Border>
+        <Border
+            x:Name="border2"
+            Grid.RowSpan="2"
+            d:IsHidden="True"
+            Background="White"
+            BorderBrush="White"
+            BorderThickness="1"
+            Visibility="Visible">
+            <Canvas>
+                <Image
+                    Canvas.Left="414.756"
+                    Canvas.Top="243.373"
+                    Width="189"
+                    Height="192"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    RenderTransformOrigin="1.081,0.477"
+                    Source="/icon.png"
+                    Stretch="Fill" />
+                <TextBlock
+                    Canvas.Left="608.756"
+                    Canvas.Top="290.373"
+                    Width="420"
+                    Height="145"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    FontFamily="Segoe UI Black"
+                    FontSize="72"
+                    TextWrapping="Wrap"><Run Language="zh-cn" Text="点鸣魔方" /></TextBlock>
+            </Canvas>
+        </Border>
+        <ui:SnackbarPresenter x:Name="SnackbarPresenterHost" Grid.Row="1"/>
     </Grid>
 </ui:FluentWindow>

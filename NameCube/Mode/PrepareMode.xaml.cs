@@ -26,68 +26,7 @@ namespace NameCube.Mode
         public PrepareMode()
         {
             InitializeComponent();
-            CanChange = false;
-            SpeakCheck.IsChecked = GlobalVariables.json.PrepareModeSetting.Speak;
-            CanChange = true;
-            timer.Elapsed += Timer_Elapsed;
-            if (GlobalVariables.json.PrepareModeSetting.Speed == 0)
-            {
-                GlobalVariables.json.PrepareModeSetting.Speed = 20;
-            }
-            if (!GlobalVariables.json.AllSettings.SystemSpeech)
-            {
-                _speechSynthesizer.SelectVoiceByHints(VoiceGender.Female, VoiceAge.Adult);
-                _speechSynthesizer.Volume = GlobalVariables.json.AllSettings.Volume;
-                _speechSynthesizer.Rate = GlobalVariables.json.AllSettings.Speed;
-            }
-            if (GlobalVariables.json.PrepareModeSetting.Locked)
-            {
-                SpeakCheck.IsEnabled = false;
-            }
-            if (GlobalVariables.json.PrepareModeSetting.Name == null || GlobalVariables.json.PrepareModeSetting.Name.Count == 0)
-            {
-                GlobalVariables.json.PrepareModeSetting.Name = new List<string>();
-                Random random = new Random();
-                for (int i = 1; i <= 5; i++)
-                {
-                    GlobalVariables.json.PrepareModeSetting.Name.Add(GlobalVariables.json.AllSettings.Name[random.StrictNext(GlobalVariables.json.AllSettings.Name.Count)]);
-                    GlobalVariables.SaveJson();
-                }
-
-            }
-            if (GlobalVariables.json.PrepareModeSetting.LastName!=null)
-            {
-                NowNumberText.Text = GlobalVariables.json.PrepareModeSetting.LastName;
-            }
-            Ready1.Text = GlobalVariables.json.PrepareModeSetting.Name[0];
-            Ready2.Text = GlobalVariables.json.PrepareModeSetting.Name[1];
-            Ready3.Text = GlobalVariables.json.PrepareModeSetting.Name[2];
-            Ready4.Text = GlobalVariables.json.PrepareModeSetting.Name[3];
-            Ready5.Text = GlobalVariables.json.PrepareModeSetting.Name[4];
-            NowNumberText.Foreground = GlobalVariables.json.AllSettings.color;
-            FinishText.Foreground = GlobalVariables.json.AllSettings.color;
-            Ready1.Foreground = GlobalVariables.json.AllSettings.color;
-            Ready2.Foreground = GlobalVariables.json.AllSettings.color;
-            Ready3.Foreground = GlobalVariables.json.AllSettings.color;
-            Ready4.Foreground = GlobalVariables.json.AllSettings.color;
-            Ready5.Foreground = GlobalVariables.json.AllSettings.color;
-            FinishReady1.Foreground = GlobalVariables.json.AllSettings.color;
-            FinishReady2.Foreground = GlobalVariables.json.AllSettings.color;
-            FinishReady3.Foreground = GlobalVariables.json.AllSettings.color;
-            FinishReady4.Foreground = GlobalVariables.json.AllSettings.color;
-            FinishReady5.Foreground = GlobalVariables.json.AllSettings.color;
-            NowNumberText.FontFamily = GlobalVariables.json.AllSettings.Font;
-            FinishText.FontFamily = GlobalVariables.json.AllSettings.Font;
-            Ready1.FontFamily=GlobalVariables.json.AllSettings.Font;
-            Ready2.FontFamily=GlobalVariables.json.AllSettings.Font;
-            Ready3.FontFamily=GlobalVariables.json.AllSettings.Font;
-            Ready4.FontFamily=GlobalVariables.json.AllSettings.Font;
-            Ready5.FontFamily = GlobalVariables.json.AllSettings.Font;
-            FinishReady1.FontFamily=GlobalVariables.json.AllSettings.Font;
-            FinishReady2.FontFamily=GlobalVariables.json.AllSettings.Font;
-            FinishReady3.FontFamily=GlobalVariables.json.AllSettings.Font;
-            FinishReady4.FontFamily=GlobalVariables.json.AllSettings.Font;
-            FinishReady5.FontFamily = GlobalVariables.json.AllSettings.Font;
+            
         }
         bool CanChange;
         public System.Timers.Timer timer = new System.Timers.Timer();
@@ -191,6 +130,72 @@ namespace NameCube.Mode
                 }
                 StartButton.IsEnabled = true;
             }
+        }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            CanChange = false;
+            SpeakCheck.IsChecked = GlobalVariables.json.PrepareModeSetting.Speak;
+            CanChange = true;
+            timer.Elapsed += Timer_Elapsed;
+            if (GlobalVariables.json.PrepareModeSetting.Speed == 0)
+            {
+                GlobalVariables.json.PrepareModeSetting.Speed = 20;
+            }
+            if (!GlobalVariables.json.AllSettings.SystemSpeech)
+            {
+                _speechSynthesizer.SelectVoiceByHints(VoiceGender.Female, VoiceAge.Adult);
+                _speechSynthesizer.Volume = GlobalVariables.json.AllSettings.Volume;
+                _speechSynthesizer.Rate = GlobalVariables.json.AllSettings.Speed;
+            }
+            if (GlobalVariables.json.PrepareModeSetting.Locked)
+            {
+                SpeakCheck.IsEnabled = false;
+            }
+            if (GlobalVariables.json.PrepareModeSetting.Name == null || GlobalVariables.json.PrepareModeSetting.Name.Count == 0)
+            {
+                GlobalVariables.json.PrepareModeSetting.Name = new List<string>();
+                Random random = new Random();
+                for (int i = 1; i <= 5; i++)
+                {
+                    GlobalVariables.json.PrepareModeSetting.Name.Add(GlobalVariables.json.AllSettings.Name[random.StrictNext(GlobalVariables.json.AllSettings.Name.Count)]);
+                    GlobalVariables.SaveJson();
+                }
+
+            }
+            if (GlobalVariables.json.PrepareModeSetting.LastName != null)
+            {
+                NowNumberText.Text = GlobalVariables.json.PrepareModeSetting.LastName;
+            }
+            Ready1.Text = GlobalVariables.json.PrepareModeSetting.Name[0];
+            Ready2.Text = GlobalVariables.json.PrepareModeSetting.Name[1];
+            Ready3.Text = GlobalVariables.json.PrepareModeSetting.Name[2];
+            Ready4.Text = GlobalVariables.json.PrepareModeSetting.Name[3];
+            Ready5.Text = GlobalVariables.json.PrepareModeSetting.Name[4];
+            NowNumberText.Foreground = GlobalVariables.json.AllSettings.color;
+            FinishText.Foreground = GlobalVariables.json.AllSettings.color;
+            Ready1.Foreground = GlobalVariables.json.AllSettings.color;
+            Ready2.Foreground = GlobalVariables.json.AllSettings.color;
+            Ready3.Foreground = GlobalVariables.json.AllSettings.color;
+            Ready4.Foreground = GlobalVariables.json.AllSettings.color;
+            Ready5.Foreground = GlobalVariables.json.AllSettings.color;
+            FinishReady1.Foreground = GlobalVariables.json.AllSettings.color;
+            FinishReady2.Foreground = GlobalVariables.json.AllSettings.color;
+            FinishReady3.Foreground = GlobalVariables.json.AllSettings.color;
+            FinishReady4.Foreground = GlobalVariables.json.AllSettings.color;
+            FinishReady5.Foreground = GlobalVariables.json.AllSettings.color;
+            NowNumberText.FontFamily = GlobalVariables.json.AllSettings.Font;
+            FinishText.FontFamily = GlobalVariables.json.AllSettings.Font;
+            Ready1.FontFamily = GlobalVariables.json.AllSettings.Font;
+            Ready2.FontFamily = GlobalVariables.json.AllSettings.Font;
+            Ready3.FontFamily = GlobalVariables.json.AllSettings.Font;
+            Ready4.FontFamily = GlobalVariables.json.AllSettings.Font;
+            Ready5.FontFamily = GlobalVariables.json.AllSettings.Font;
+            FinishReady1.FontFamily = GlobalVariables.json.AllSettings.Font;
+            FinishReady2.FontFamily = GlobalVariables.json.AllSettings.Font;
+            FinishReady3.FontFamily = GlobalVariables.json.AllSettings.Font;
+            FinishReady4.FontFamily = GlobalVariables.json.AllSettings.Font;
+            FinishReady5.FontFamily = GlobalVariables.json.AllSettings.Font;
         }
     }
 }

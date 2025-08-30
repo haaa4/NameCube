@@ -32,32 +32,7 @@ namespace NameCube.Mode
         {
             InitializeComponent();
             DataContext = this;
-            SpeechCheck.IsChecked = GlobalVariables.json.OnePeopleModeSettings.Speech;
-            WaitCheck.IsChecked = GlobalVariables.json.OnePeopleModeSettings.Wait;
-            SpeechCheck.IsEnabled = !GlobalVariables.json.OnePeopleModeSettings.Locked;
-            WaitCheck.IsEnabled = !GlobalVariables.json.OnePeopleModeSettings.Locked;
-            timer = new System.Timers.Timer(GlobalVariables.json.OnePeopleModeSettings.Speed);
             
-            timer.AutoReset = true;
-            timer.Elapsed += Timer_Elapsed;
-            if (GlobalVariables.json.OnePeopleModeSettings.Speed == 0)
-            {
-                GlobalVariables.json.OnePeopleModeSettings.Speed = 20;
-            }
-            if (!GlobalVariables.json.AllSettings.SystemSpeech)
-            {
-                _speechSynthesizer.SelectVoiceByHints(VoiceGender.Female, VoiceAge.Adult); // 选择女声
-                _speechSynthesizer.Rate = GlobalVariables.json.AllSettings.Speed; // 语速 (-10 ~ 10)
-                _speechSynthesizer.Volume = GlobalVariables.json.AllSettings.Volume;
-            }
-            NowNumberText.Foreground = GlobalVariables.json.AllSettings.color;
-            FinishText.Foreground = GlobalVariables.json.AllSettings.color;
-            NowNumberText.FontFamily = GlobalVariables.json.AllSettings.Font;
-            FinishText.FontFamily = GlobalVariables.json.AllSettings.Font;
-            if (GlobalVariables.json.OnePeopleModeSettings.LastName != null)
-            {
-                NowNumberText.Text = GlobalVariables.json.OnePeopleModeSettings.LastName;
-            }
         }
 
 
@@ -120,13 +95,13 @@ namespace NameCube.Mode
             _speechSynthesizer.SpeakAsyncCancelAll();
             if (GlobalVariables.json.AllSettings.Name.Count == 0)
             {
-                MessageBoxFunction.ShowMessageBoxWarning("I live alone.But I don't fell lonely\n翻译：学生名单为空！");
+                SnackBarFunction.ShowSnackBarInMainWindow("学生名单为空！", Wpf.Ui.Controls.ControlAppearance.Caution);
                 StartButton.IsEnabled = true;
                 return;
             }
             if (GlobalVariables.json.AllSettings.Name.Count == 1)
             {
-                MessageBoxFunction.ShowMessageBoxWarning("如果你要恶搞某人，建议前往小工具\n翻译：学生名单只有一位！");
+                SnackBarFunction.ShowSnackBarInMainWindow("如果你要恶搞某人，建议前往小工具\n翻译：学生名单只有一位！", Wpf.Ui.Controls.ControlAppearance.Caution);
                 StartButton.IsEnabled = true;
                 return;
             }
@@ -184,6 +159,36 @@ namespace NameCube.Mode
         {
             GlobalVariables.json.OnePeopleModeSettings.Wait = (bool)WaitCheck.IsChecked;
             GlobalVariables.SaveJson();
+        }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            SpeechCheck.IsChecked = GlobalVariables.json.OnePeopleModeSettings.Speech;
+            WaitCheck.IsChecked = GlobalVariables.json.OnePeopleModeSettings.Wait;
+            SpeechCheck.IsEnabled = !GlobalVariables.json.OnePeopleModeSettings.Locked;
+            WaitCheck.IsEnabled = !GlobalVariables.json.OnePeopleModeSettings.Locked;
+            timer = new System.Timers.Timer(GlobalVariables.json.OnePeopleModeSettings.Speed);
+
+            timer.AutoReset = true;
+            timer.Elapsed += Timer_Elapsed;
+            if (GlobalVariables.json.OnePeopleModeSettings.Speed == 0)
+            {
+                GlobalVariables.json.OnePeopleModeSettings.Speed = 20;
+            }
+            if (!GlobalVariables.json.AllSettings.SystemSpeech)
+            {
+                _speechSynthesizer.SelectVoiceByHints(VoiceGender.Female, VoiceAge.Adult); // 选择女声
+                _speechSynthesizer.Rate = GlobalVariables.json.AllSettings.Speed; // 语速 (-10 ~ 10)
+                _speechSynthesizer.Volume = GlobalVariables.json.AllSettings.Volume;
+            }
+            NowNumberText.Foreground = GlobalVariables.json.AllSettings.color;
+            FinishText.Foreground = GlobalVariables.json.AllSettings.color;
+            NowNumberText.FontFamily = GlobalVariables.json.AllSettings.Font;
+            FinishText.FontFamily = GlobalVariables.json.AllSettings.Font;
+            if (GlobalVariables.json.OnePeopleModeSettings.LastName != null)
+            {
+                NowNumberText.Text = GlobalVariables.json.OnePeopleModeSettings.LastName;
+            }
         }
     }
 }

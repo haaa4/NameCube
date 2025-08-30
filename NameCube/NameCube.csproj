@@ -194,6 +194,7 @@
     <Compile Include="Setting\Document.xaml.cs">
       <DependentUpon>Document.xaml</DependentUpon>
     </Compile>
+    <Compile Include="SnackBarFunction.cs" />
     <Compile Include="StartToDoSomething.cs" />
     <Compile Include="ToolBox\AutomaticProcess.xaml.cs">
       <DependentUpon>AutomaticProcess.xaml</DependentUpon>
@@ -641,7 +642,10 @@
     <None Include="Image\V1.1_Beta-3.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Image\V1.1.png" />
+    <None Include="Image\V1.1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\V1.2_Beta-1.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

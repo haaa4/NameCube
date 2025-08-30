@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows.Media.Animation;
 using Wpf.Ui;
 
 namespace NameCube.Setting
@@ -29,6 +30,19 @@ namespace NameCube.Setting
         private void Button_Click(object sender, System.Windows.RoutedEventArgs e)
         {
             AppFunction.Restart();
+        }
+
+        private void FluentWindow_Loaded(object sender, System.Windows.RoutedEventArgs e)
+        {
+            var showStoryBoard = FindResource("ShowStoryBoard") as Storyboard;
+            showStoryBoard.Stop();
+            showStoryBoard.Remove();
+            border.Visibility = System.Windows.Visibility.Visible;
+            showStoryBoard.Completed += (s, en) =>
+            {
+                border.Visibility = System.Windows.Visibility.Collapsed;
+            };
+            showStoryBoard.Begin();
         }
     }
 }

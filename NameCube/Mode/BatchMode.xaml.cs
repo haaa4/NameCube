@@ -22,32 +22,7 @@ namespace NameCube.Mode
         {
             InitializeComponent();
             DataContext = this;
-            Numberbox.Value = GlobalVariables.json.BatchModeSettings.Number;
-            NameSwitch.IsChecked = GlobalVariables.json.BatchModeSettings.NumberMode;
-            Numberbox.IsEnabled = GlobalVariables.json.BatchModeSettings.NumberMode;
-            Indexbox.Value = GlobalVariables.json.BatchModeSettings.Index;
-            ReCheckBox.IsChecked = GlobalVariables.json.BatchModeSettings.Repetition;
-            if(!GlobalVariables.json.BatchModeSettings.NumberMode)
-            {
-                IndexText.Visibility = Visibility.Collapsed;
-                Numberbox.Visibility = Visibility.Collapsed;
-            }
-            if (GlobalVariables.json.BatchModeSettings.Locked) 
-            {
-                NameSwitch.IsEnabled = false;
-                Numberbox.IsEnabled = false;
-                Indexbox.IsEnabled = false;
-                ReCheckBox.IsEnabled = false;
-            }
-            if (GlobalVariables.json.BatchModeSettings.LastName!=null&&GlobalVariables.json.BatchModeSettings.LastName.Count!=0)
-            {
-                foreach (string name in GlobalVariables.json.BatchModeSettings.LastName)
-                {
-                    AllName allNames = new AllName();
-                    allNames.Name = name;
-                    AllNames.Add(allNames);
-                }
-            }
+
         }
 
         private void NameSwitch_Click(object sender, RoutedEventArgs e)
@@ -89,7 +64,7 @@ namespace NameCube.Mode
             AllNames.Clear();
             if (GlobalVariables.json.AllSettings.Name.Count <= 2)
             {
-                MessageBoxFunction.ShowMessageBoxWarning("学生名单怎么空空的？\n翻译：学生人数少于3人");
+                SnackBarFunction.ShowSnackBarInMainWindow("学生名单怎么空空的？\n翻译：学生人数少于3人",Wpf.Ui.Controls.ControlAppearance.Caution);
                 return;
             }
             if (GlobalVariables.json.BatchModeSettings.NumberMode)
@@ -97,7 +72,7 @@ namespace NameCube.Mode
                 if (GlobalVariables.json.BatchModeSettings.Index > GlobalVariables.json.BatchModeSettings.Number && !GlobalVariables.json
                     .BatchModeSettings.Repetition)
                 {
-                    MessageBoxFunction.ShowMessageBoxWarning("无 中 生 有\n翻译：抽取数量大于实际可抽取数量");
+                    SnackBarFunction.ShowSnackBarInMainWindow("无 中 生 有\n翻译：抽取数量大于实际可抽取数量", Wpf.Ui.Controls.ControlAppearance.Caution);
                     StartButton.IsEnabled = true;
                     Numberbox.IsEnabled = true;
                     NameSwitch.IsEnabled = true;
@@ -115,7 +90,7 @@ namespace NameCube.Mode
                 if (GlobalVariables.json.BatchModeSettings.Index > GlobalVariables.json.AllSettings.Name.Count && !GlobalVariables.json
                     .BatchModeSettings.Repetition)
                 {
-                    MessageBoxFunction.ShowMessageBoxWarning("无 中 生 有\n翻译：抽取数量大于实际可抽取数量");
+                    SnackBarFunction.ShowSnackBarInMainWindow("无 中 生 有\n翻译：抽取数量大于实际可抽取数量", Wpf.Ui.Controls.ControlAppearance.Caution);
                     StartButton.IsEnabled = true;
                     Numberbox.IsEnabled = true;
                     NameSwitch.IsEnabled = true;
@@ -203,6 +178,36 @@ namespace NameCube.Mode
             }
             GlobalVariables.json.BatchModeSettings.Index = (int)Indexbox.Value;
             GlobalVariables.SaveJson();
+        }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            Numberbox.Value = GlobalVariables.json.BatchModeSettings.Number;
+            NameSwitch.IsChecked = GlobalVariables.json.BatchModeSettings.NumberMode;
+            Numberbox.IsEnabled = GlobalVariables.json.BatchModeSettings.NumberMode;
+            Indexbox.Value = GlobalVariables.json.BatchModeSettings.Index;
+            ReCheckBox.IsChecked = GlobalVariables.json.BatchModeSettings.Repetition;
+            if (!GlobalVariables.json.BatchModeSettings.NumberMode)
+            {
+                IndexText.Visibility = Visibility.Collapsed;
+                Numberbox.Visibility = Visibility.Collapsed;
+            }
+            if (GlobalVariables.json.BatchModeSettings.Locked)
+            {
+                NameSwitch.IsEnabled = false;
+                Numberbox.IsEnabled = false;
+                Indexbox.IsEnabled = false;
+                ReCheckBox.IsEnabled = false;
+            }
+            if (GlobalVariables.json.BatchModeSettings.LastName != null && GlobalVariables.json.BatchModeSettings.LastName.Count != 0)
+            {
+                foreach (string name in GlobalVariables.json.BatchModeSettings.LastName)
+                {
+                    AllName allNames = new AllName();
+                    allNames.Name = name;
+                    AllNames.Add(allNames);
+                }
+            }
         }
     }
 }

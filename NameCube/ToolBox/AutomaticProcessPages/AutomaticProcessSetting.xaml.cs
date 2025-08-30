@@ -204,7 +204,7 @@ namespace NameCube.ToolBox.AutomaticProcessPages
                             }
                             else
                             {
-                                MessageBoxFunction.ShowMessageBoxWarning("命名不符合规定");
+                                SnackBarFunction.ShowSnackBarInToolBoxWindow("命名不符合规定", Wpf.Ui.Controls.ControlAppearance.Caution);
                             }
                             RefreshList(true);
                         }
@@ -470,7 +470,7 @@ namespace NameCube.ToolBox.AutomaticProcessPages
                         string lastSelectedItem = ProcessKinds[ProcessKinds.Count - 2].ToString();
                         if (lastSelectedItem == "立即关机" || lastSelectedItem == "一般关机" || lastSelectedItem == "强制关机")
                         {
-                            MessageBoxFunction.ShowMessageBoxWarning("自动关机流程后不能加入新流程");
+                            SnackBarFunction.ShowSnackBarInToolBoxWindow("自动关机流程后不能加入新流程",Wpf.Ui.Controls.ControlAppearance.Caution);
                             ProcessesListView.UnselectAll();
                             return;
                         }

@@ -171,7 +171,7 @@ namespace NameCube.Setting
                 shortcut.IconLocation = $"{appPath},0";
                 shortcut.Description = "抽学号，点名器";
                 shortcut.Save();
-                MessageBoxFunction.ShowMessageBoxInfo("创建成功");
+                SnackBarFunction.ShowSnackBarInSettingWindow("创建成功",Wpf.Ui.Controls.ControlAppearance.Success);
                 return true;
             }
             catch (COMException comEx)
