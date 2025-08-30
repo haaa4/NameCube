@@ -19,7 +19,7 @@
     <ui:FluentWindow.Resources>
         <Storyboard x:Key="ShowStoryBoard">
             <DoubleAnimationUsingKeyFrames Storyboard.TargetName="border2" Storyboard.TargetProperty="(UIElement.Opacity)">
-                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="1"/>
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="1" />
                 <EasingDoubleKeyFrame KeyTime="00:00:00.6000000" Value="1" />
                 <EasingDoubleKeyFrame KeyTime="00:00:01" Value="0" />
             </DoubleAnimationUsingKeyFrames>
@@ -196,6 +196,6 @@
                     TextWrapping="Wrap"><Run Language="zh-cn" Text="点鸣魔方" /></TextBlock>
             </Canvas>
         </Border>
-        <ui:SnackbarPresenter x:Name="SnackbarPresenterHost" Grid.Row="1"/>
+        <ui:SnackbarPresenter x:Name="SnackbarPresenterHost" Grid.Row="1" />
     </Grid>
 </ui:FluentWindow>

@@ -9,11 +9,12 @@
     xmlns:sys="clr-namespace:System;assembly=mscorlib"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     xmlns:vio="http://schemas.lepo.co/wpfui/2022/xaml/violeta"
+    x:Name="page"
     Title="MemoryFactorMode"
+    Width="1018"
     d:DesignHeight="550"
-    d:DesignWidth="800"
-    mc:Ignorable="d"
-    Loaded="Page_Loaded">
+    Loaded="Page_Loaded"
+    mc:Ignorable="d">
     <Page.Resources>
         <CollectionViewSource x:Key="DescendingView" Source="{Binding thisModeJson}">
             <CollectionViewSource.SortDescriptions>
@@ -24,7 +25,211 @@
             </CollectionViewSource.LiveSortingProperties>
             <CollectionViewSource.IsLiveSortingRequested>True</CollectionViewSource.IsLiveSortingRequested>
         </CollectionViewSource>
-
+        <Storyboard x:Key="JumpStoryBoard" RepeatBehavior="Forever">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="NowNumberText" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <BackEase EasingMode="EaseOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.2000000" Value="-21.406">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <BackEase EasingMode="EaseOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.4000000" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <BackEase EasingMode="EaseOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="Changeblue">
+            <ColorAnimationUsingKeyFrames Storyboard.TargetName="border" Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)">
+                <EasingColorKeyFrame KeyTime="00:00:00" Value="#FFF9F9F9" />
+                <EasingColorKeyFrame KeyTime="00:00:00.5000000" Value="#FF00C3F5" />
+                <EasingColorKeyFrame KeyTime="00:00:01" Value="White" />
+            </ColorAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="Changegreen">
+            <ColorAnimationUsingKeyFrames Storyboard.TargetName="border" Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)">
+                <EasingColorKeyFrame KeyTime="00:00:00" Value="#FFF9F9F9" />
+                <EasingColorKeyFrame KeyTime="00:00:00.5000000" Value="#FF2BFF00" />
+                <EasingColorKeyFrame KeyTime="00:00:01" Value="White" />
+            </ColorAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="ChangeYellow">
+            <ColorAnimationUsingKeyFrames Storyboard.TargetName="border" Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)">
+                <EasingColorKeyFrame KeyTime="00:00:00" Value="#FFF9F9F9" />
+                <EasingColorKeyFrame KeyTime="00:00:00.5000000" Value="#FFFFF500" />
+                <EasingColorKeyFrame KeyTime="00:00:01" Value="White" />
+            </ColorAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="ChangeRed">
+            <ColorAnimationUsingKeyFrames Storyboard.TargetName="border" Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)">
+                <EasingColorKeyFrame KeyTime="00:00:00" Value="#FFFFFFFF" />
+                <EasingColorKeyFrame KeyTime="00:00:00.5000000" Value="#FFFF0000" />
+                <EasingColorKeyFrame KeyTime="00:00:01" Value="#FFFBFBFB" />
+            </ColorAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="TwoChangeOrange">
+            <ColorAnimationUsingKeyFrames Storyboard.TargetName="border1" Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)">
+                <EasingColorKeyFrame KeyTime="00:00:00" Value="White" />
+                <EasingColorKeyFrame KeyTime="00:00:00.5000000" Value="#FFFFDE00" />
+                <EasingColorKeyFrame KeyTime="00:00:01" Value="White" />
+            </ColorAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="TwoChangeRed">
+            <ColorAnimationUsingKeyFrames Storyboard.TargetName="border1" Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)">
+                <EasingColorKeyFrame KeyTime="00:00:00" Value="White" />
+                <EasingColorKeyFrame KeyTime="00:00:00.5000000" Value="Red" />
+                <EasingColorKeyFrame KeyTime="00:00:01" Value="White" />
+            </ColorAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="No1Red">
+            <ColorAnimationUsingKeyFrames Storyboard.TargetName="No1Name" Storyboard.TargetProperty="(TextBlock.Background).(SolidColorBrush.Color)">
+                <EasingColorKeyFrame KeyTime="00:00:00" Value="#00FF0000" />
+                <EasingColorKeyFrame KeyTime="00:00:00.5000000" Value="Red" />
+                <EasingColorKeyFrame KeyTime="00:00:01" Value="#00FF0000" />
+            </ColorAnimationUsingKeyFrames>
+            <ColorAnimationUsingKeyFrames Storyboard.TargetName="No1Factor" Storyboard.TargetProperty="(TextBlock.Background).(SolidColorBrush.Color)">
+                <EasingColorKeyFrame KeyTime="00:00:00" Value="#00FF0000" />
+                <EasingColorKeyFrame KeyTime="00:00:00.5000000" Value="Red" />
+                <EasingColorKeyFrame KeyTime="00:00:01" Value="#00FF0000" />
+            </ColorAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="No2Red">
+            <ColorAnimationUsingKeyFrames Storyboard.TargetName="No2Factor" Storyboard.TargetProperty="(TextBlock.Background).(SolidColorBrush.Color)">
+                <EasingColorKeyFrame KeyTime="00:00:00" Value="#00FF0000" />
+                <EasingColorKeyFrame KeyTime="00:00:00.5000000" Value="Red" />
+                <EasingColorKeyFrame KeyTime="00:00:01" Value="#00FF0000" />
+            </ColorAnimationUsingKeyFrames>
+            <ColorAnimationUsingKeyFrames Storyboard.TargetName="No2Name" Storyboard.TargetProperty="(TextBlock.Background).(SolidColorBrush.Color)">
+                <EasingColorKeyFrame KeyTime="00:00:00" Value="#00FF0000" />
+                <EasingColorKeyFrame KeyTime="00:00:00.5000000" Value="Red" />
+                <EasingColorKeyFrame KeyTime="00:00:01" Value="#00FF0000" />
+            </ColorAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="No3Red">
+            <ColorAnimationUsingKeyFrames Storyboard.TargetName="No3Factor" Storyboard.TargetProperty="(TextBlock.Background).(SolidColorBrush.Color)">
+                <EasingColorKeyFrame KeyTime="00:00:00" Value="#00FF0000" />
+                <EasingColorKeyFrame KeyTime="00:00:00.5000000" Value="Red" />
+                <EasingColorKeyFrame KeyTime="00:00:01" Value="#00FF0000" />
+            </ColorAnimationUsingKeyFrames>
+            <ColorAnimationUsingKeyFrames Storyboard.TargetName="No3Name" Storyboard.TargetProperty="(TextBlock.Background).(SolidColorBrush.Color)">
+                <EasingColorKeyFrame KeyTime="00:00:00" Value="#00FF0000" />
+                <EasingColorKeyFrame KeyTime="00:00:00.5000000" Value="Red" />
+                <EasingColorKeyFrame KeyTime="00:00:01" Value="#00FF0000" />
+            </ColorAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="No4Red">
+            <ColorAnimationUsingKeyFrames Storyboard.TargetName="No4Name" Storyboard.TargetProperty="(TextBlock.Background).(SolidColorBrush.Color)">
+                <EasingColorKeyFrame KeyTime="00:00:00" Value="#00FF0000" />
+                <EasingColorKeyFrame KeyTime="00:00:00.5000000" Value="Red" />
+                <EasingColorKeyFrame KeyTime="00:00:01" Value="#00FF0000" />
+            </ColorAnimationUsingKeyFrames>
+            <ColorAnimationUsingKeyFrames Storyboard.TargetName="No4Factor" Storyboard.TargetProperty="(TextBlock.Background).(SolidColorBrush.Color)">
+                <EasingColorKeyFrame KeyTime="00:00:00" Value="#00FF0000" />
+                <EasingColorKeyFrame KeyTime="00:00:00.5000000" Value="Red" />
+                <EasingColorKeyFrame KeyTime="00:00:01" Value="#00FF0000" />
+            </ColorAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="No5Red">
+            <ColorAnimationUsingKeyFrames Storyboard.TargetName="No5Factor" Storyboard.TargetProperty="(TextBlock.Background).(SolidColorBrush.Color)">
+                <EasingColorKeyFrame KeyTime="00:00:00" Value="#00FF0000" />
+                <EasingColorKeyFrame KeyTime="00:00:00.5000000" Value="Red" />
+                <EasingColorKeyFrame KeyTime="00:00:01" Value="#00FF0000" />
+            </ColorAnimationUsingKeyFrames>
+            <ColorAnimationUsingKeyFrames Storyboard.TargetName="No5Name" Storyboard.TargetProperty="(TextBlock.Background).(SolidColorBrush.Color)">
+                <EasingColorKeyFrame KeyTime="00:00:00" Value="#00FF0000" />
+                <EasingColorKeyFrame KeyTime="00:00:00.5000000" Value="Red" />
+                <EasingColorKeyFrame KeyTime="00:00:01" Value="#00FF0000" />
+            </ColorAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="No6Red">
+            <ColorAnimationUsingKeyFrames Storyboard.TargetName="No6Factor" Storyboard.TargetProperty="(TextBlock.Background).(SolidColorBrush.Color)">
+                <EasingColorKeyFrame KeyTime="00:00:00" Value="#00FF0000" />
+                <EasingColorKeyFrame KeyTime="00:00:00.5000000" Value="Red" />
+                <EasingColorKeyFrame KeyTime="00:00:01" Value="#00FF0000" />
+            </ColorAnimationUsingKeyFrames>
+            <ColorAnimationUsingKeyFrames Storyboard.TargetName="No6Name" Storyboard.TargetProperty="(TextBlock.Background).(SolidColorBrush.Color)">
+                <EasingColorKeyFrame KeyTime="00:00:00" Value="#00FF0000" />
+                <EasingColorKeyFrame KeyTime="00:00:00.5000000" Value="Red" />
+                <EasingColorKeyFrame KeyTime="00:00:01" Value="#00FF0000" />
+            </ColorAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="No1Blue">
+            <ColorAnimationUsingKeyFrames Storyboard.TargetName="No1Factor" Storyboard.TargetProperty="(TextBlock.Background).(SolidColorBrush.Color)">
+                <EasingColorKeyFrame KeyTime="00:00:00" Value="#0000B3FF" />
+                <EasingColorKeyFrame KeyTime="00:00:00.5000000" Value="#FF00B3FF" />
+                <EasingColorKeyFrame KeyTime="00:00:01" Value="#0000B3FF" />
+            </ColorAnimationUsingKeyFrames>
+            <ColorAnimationUsingKeyFrames Storyboard.TargetName="No1Name" Storyboard.TargetProperty="(TextBlock.Background).(SolidColorBrush.Color)">
+                <EasingColorKeyFrame KeyTime="00:00:00" Value="#0000B3FF" />
+                <EasingColorKeyFrame KeyTime="00:00:00.5000000" Value="#FF00B3FF" />
+                <EasingColorKeyFrame KeyTime="00:00:01" Value="#0000B3FF" />
+            </ColorAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="No2Blue">
+            <ColorAnimationUsingKeyFrames Storyboard.TargetName="No2Name" Storyboard.TargetProperty="(TextBlock.Background).(SolidColorBrush.Color)">
+                <EasingColorKeyFrame KeyTime="00:00:00" Value="#0000B3FF" />
+                <EasingColorKeyFrame KeyTime="00:00:00.5000000" Value="#FF00B3FF" />
+                <EasingColorKeyFrame KeyTime="00:00:01" Value="#0000B3FF" />
+            </ColorAnimationUsingKeyFrames>
+            <ColorAnimationUsingKeyFrames Storyboard.TargetName="No2Factor" Storyboard.TargetProperty="(TextBlock.Background).(SolidColorBrush.Color)">
+                <EasingColorKeyFrame KeyTime="00:00:00" Value="#0000B3FF" />
+                <EasingColorKeyFrame KeyTime="00:00:00.5000000" Value="#FF00B3FF" />
+                <EasingColorKeyFrame KeyTime="00:00:01" Value="#0000B3FF" />
+            </ColorAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="No3Blue">
+            <ColorAnimationUsingKeyFrames Storyboard.TargetName="No3Name" Storyboard.TargetProperty="(TextBlock.Background).(SolidColorBrush.Color)">
+                <EasingColorKeyFrame KeyTime="00:00:00" Value="#0000B3FF" />
+                <EasingColorKeyFrame KeyTime="00:00:00.5000000" Value="#FF00B3FF" />
+                <EasingColorKeyFrame KeyTime="00:00:01" Value="#0000B3FF" />
+            </ColorAnimationUsingKeyFrames>
+            <ColorAnimationUsingKeyFrames Storyboard.TargetName="No3Factor" Storyboard.TargetProperty="(TextBlock.Background).(SolidColorBrush.Color)">
+                <EasingColorKeyFrame KeyTime="00:00:00" Value="#0000B3FF" />
+                <EasingColorKeyFrame KeyTime="00:00:00.5000000" Value="#FF00B3FF" />
+                <EasingColorKeyFrame KeyTime="00:00:01" Value="#0000B3FF" />
+            </ColorAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="No4Blue">
+            <ColorAnimationUsingKeyFrames Storyboard.TargetName="No4Name" Storyboard.TargetProperty="(TextBlock.Background).(SolidColorBrush.Color)">
+                <EasingColorKeyFrame KeyTime="00:00:00" Value="#0000B3FF" />
+                <EasingColorKeyFrame KeyTime="00:00:00.5000000" Value="#FF00B3FF" />
+                <EasingColorKeyFrame KeyTime="00:00:01" Value="#0000B3FF" />
+            </ColorAnimationUsingKeyFrames>
+            <ColorAnimationUsingKeyFrames Storyboard.TargetName="No4Factor" Storyboard.TargetProperty="(TextBlock.Background).(SolidColorBrush.Color)">
+                <EasingColorKeyFrame KeyTime="00:00:00" Value="#0000B3FF" />
+                <EasingColorKeyFrame KeyTime="00:00:00.5000000" Value="#FF00B3FF" />
+                <EasingColorKeyFrame KeyTime="00:00:01" Value="#0000B3FF" />
+            </ColorAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="No5Blue">
+            <ColorAnimationUsingKeyFrames Storyboard.TargetName="No5Name" Storyboard.TargetProperty="(TextBlock.Background).(SolidColorBrush.Color)">
+                <EasingColorKeyFrame KeyTime="00:00:00" Value="#0000B3FF" />
+                <EasingColorKeyFrame KeyTime="00:00:00.5000000" Value="#FF00B3FF" />
+                <EasingColorKeyFrame KeyTime="00:00:01" Value="#0000B3FF" />
+            </ColorAnimationUsingKeyFrames>
+            <ColorAnimationUsingKeyFrames Storyboard.TargetName="No5Factor" Storyboard.TargetProperty="(TextBlock.Background).(SolidColorBrush.Color)">
+                <EasingColorKeyFrame KeyTime="00:00:00" Value="#0000B3FF" />
+                <EasingColorKeyFrame KeyTime="00:00:00.5000000" Value="#FF00B3FF" />
+                <EasingColorKeyFrame KeyTime="00:00:01" Value="#0000B3FF" />
+            </ColorAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="No6Blue">
+            <ColorAnimationUsingKeyFrames Storyboard.TargetName="No6Name" Storyboard.TargetProperty="(TextBlock.Background).(SolidColorBrush.Color)">
+                <EasingColorKeyFrame KeyTime="00:00:00" Value="#0000B3FF" />
+                <EasingColorKeyFrame KeyTime="00:00:00.5000000" Value="#FF00B3FF" />
+                <EasingColorKeyFrame KeyTime="00:00:01" Value="#0000B3FF" />
+            </ColorAnimationUsingKeyFrames>
+            <ColorAnimationUsingKeyFrames Storyboard.TargetName="No6Factor" Storyboard.TargetProperty="(TextBlock.Background).(SolidColorBrush.Color)">
+                <EasingColorKeyFrame KeyTime="00:00:00" Value="#0000B3FF" />
+                <EasingColorKeyFrame KeyTime="00:00:00.5000000" Value="#FF00B3FF" />
+                <EasingColorKeyFrame KeyTime="00:00:01" Value="#0000B3FF" />
+            </ColorAnimationUsingKeyFrames>
+        </Storyboard>
     </Page.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -43,7 +248,16 @@
             VerticalAlignment="Center"
             FontSize="150"
             Foreground="#30d7d7"
-            Text="XXX" />
+            Text="XXX">
+            <TextBlock.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform />
+                    <SkewTransform />
+                    <RotateTransform />
+                    <TranslateTransform />
+                </TransformGroup>
+            </TextBlock.RenderTransform>
+        </TextBlock>
         <TextBlock
             x:Name="FinishNumberText"
             HorizontalAlignment="Center"
@@ -70,34 +284,91 @@
             FontFamily="Segoe UI"
             FontSize="72"
             FontWeight="Black" />
-        <ui:DataGrid
-            Grid.RowSpan="2"
-            Grid.Column="1"
-            AutoGenerateColumns="False"
-            IsReadOnly="True"
-            IsSynchronizedWithCurrentItem="False"
-            ItemsSource="{Binding Source={StaticResource DescendingView}}">
-            <ui:DataGrid.Columns>
-                <DataGridTextColumn
-                    Binding="{Binding Name}"
-                    FontSize="25"
-                    Header="姓名" />
-                <DataGridTextColumn
-                    Binding="{Binding Factor}"
-                    FontSize="25"
-                    Header="因子" />
-            </ui:DataGrid.Columns>
-        </ui:DataGrid>
         <StackPanel
             Grid.Row="2"
             Grid.Column="1"
-            Grid.ColumnSpan="2">
+            Grid.ColumnSpan="2" />
+        <Canvas
+            x:Name="canvas"
+            Grid.RowSpan="3"
+            Grid.Column="1"
+            Grid.ColumnSpan="2"
+            Margin="0,0,10,0">
+            <ui:Border
+                x:Name="border"
+                Canvas.Left="248.333"
+                Canvas.Top="150.001"
+                Width="113"
+                Height="171"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                Background="White"
+                BorderBrush="Black"
+                BorderThickness="1" />
+            <ui:Border
+                x:Name="border1"
+                Canvas.Left="248.333"
+                Canvas.Top="364.72"
+                Width="147"
+                Height="171"
+                Background="White"
+                BorderBrush="Black"
+                BorderThickness="1">
+                <ui:StackPanel>
+                    <ui:TextBlock
+                        Width="145"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        FontSize="24"
+                        TextWrapping="Wrap">
+                        <Run Language="zh-cn" Text="   双倍情况" />
+                    </ui:TextBlock>
+                </ui:StackPanel>
+            </ui:Border>
+            <TextBlock
+                x:Name="MaxIndexRealProbability"
+                Canvas.Left="243.5"
+                Canvas.Top="46.54"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                FontSize="20"
+                Text="XXX" />
 
+
+            <TextBlock
+                x:Name="MinimumText"
+                Canvas.Left="285.483"
+                Canvas.Top="287"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                FontSize="20"
+                Text="XXX"
+                Visibility="Visible" />
+            <TextBlock
+                x:Name="UpName"
+                Canvas.Left="248.333"
+                Canvas.Top="395.376"
+                Width="146"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                FontSize="30"
+                Text="XXX"
+                TextAlignment="Center" />
+            <TextBlock
+                x:Name="UpFactor"
+                Canvas.Left="248.333"
+                Canvas.Top="438.476"
+                Width="147"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                FontSize="30"
+                Text="XXX"
+                TextAlignment="Center" />
             <ui:Button
                 x:Name="ResetButton"
-                Grid.Row="1"
-                Grid.Column="1"
-                Margin="0,0,0,0"
+                Canvas.Left="17.162"
+                Canvas.Top="426.386"
+                HorizontalAlignment="Center"
                 VerticalAlignment="Top"
                 Content="重置概率因子"
                 FontSize="36"
@@ -113,101 +384,284 @@
             </ui:Button>
             <CheckBox
                 x:Name="SpeechButton"
+                Canvas.Left="11.162"
+                Canvas.Top="457.526"
+                VerticalAlignment="Top"
                 Click="CheckBox_Click"
                 Content="启用朗读" />
-        </StackPanel>
-        <StackPanel Grid.RowSpan="3" Grid.Column="2">
-            <TextBlock
-                HorizontalAlignment="Center"
-                FontSize="30"
-                Text="当前概率最高" />
-            <TextBlock
-                x:Name="MaxIndexName"
-                HorizontalAlignment="Center"
-                FontSize="30"
-                Text="XXX" />
-            <TextBlock
-                x:Name="MaxIndexText"
-                HorizontalAlignment="Center"
-                FontSize="30"
-                Text="XXX" />
-            <TextBlock
-                HorizontalAlignment="Center"
-                FontSize="20"
-                Text="真实概率" />
-            <TextBlock
-                x:Name="MaxIndexRealProbability"
-                HorizontalAlignment="Center"
-                FontSize="20"
-                Text="XXX" />
-            <TextBlock
-                x:Name="Mininum"
-                HorizontalAlignment="Center"
-                FontSize="20"
-                Text="距离进入保底阶段"
-                Visibility="Visible" />
-
-            <TextBlock
-                x:Name="MinimumText"
-                HorizontalAlignment="Center"
-                FontSize="20"
-                Text="XXX"
-                Visibility="Visible" />
-
-            <TextBlock
-                x:Name="MininumState"
-                Margin="5,0,5,0"
-                HorizontalAlignment="Center"
-                FontSize="20"
-                FontStyle="Italic"
-                Text="当前进入保底阶段，每抽一次概率增加25%"
-                TextWrapping="Wrap"
-                Visibility="Collapsed" />
-            <Rectangle Height="3" Fill="Black" />
-            <TextBlock
-                Margin="0,10,0,0"
-                HorizontalAlignment="Center"
-                FontSize="30"
-                Text="概率UP" />
-            <TextBlock
-                x:Name="UpName"
-                HorizontalAlignment="Center"
-                FontSize="30"
-                Text="XXX" />
-            <TextBlock
-                x:Name="UpFactor"
-                HorizontalAlignment="Center"
-                FontSize="30"
-                Text="XXX" />
-            <TextBlock
-                HorizontalAlignment="Center"
-                FontSize="20"
-                Text="真实概率" />
             <TextBlock
                 x:Name="UpRealProbability"
-                HorizontalAlignment="Center"
+                Canvas.Left="262.85"
+                Canvas.Top="476.576"
+                Width="122"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
                 FontSize="20"
-                Text="XXX" />
-            <Rectangle Height="3" Fill="Black" />
-            <TextBlock
-                Margin="0,10,0,0"
-                HorizontalAlignment="Center"
-                FontSize="25"
-                Text="总概率因子数量" />
+                Text="XXX"
+                TextAlignment="Center" />
             <TextBlock
                 x:Name="Count"
-                HorizontalAlignment="Center"
+                Canvas.Left="85.662"
+                Canvas.Top="389.636"
+                Width="158"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
                 FontSize="25"
-                Text="" />
-            <Rectangle Height="3" Fill="Black" />
-            <TextBlock
-                Margin="5,10,5,0"
+                Text="XXX" />
+            <ui:TextBlock
+                Canvas.Left="25.662"
+                Canvas.Top="31.75"
                 HorizontalAlignment="Center"
-                FontSize="20"
-                FontStyle="Italic"
-                Text="真实概率=概率因子数量÷总概率因子数量"
+                VerticalAlignment="Top"
+                FontSize="36"
+                TextWrapping="Wrap">
+                <Run Language="zh-cn" Text="1" />
+            </ui:TextBlock>
+            <ui:TextBlock
+                Canvas.Left="25.662"
+                Canvas.Top="82.47"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                FontSize="36"
+                TextWrapping="Wrap">
+                <Run Language="zh-cn" Text="2" />
+            </ui:TextBlock>
+            <ui:TextBlock
+                Canvas.Left="25.662"
+                Canvas.Top="135.252"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                FontSize="36"
+                TextWrapping="Wrap">
+                <Run Language="zh-cn" Text="3" />
+            </ui:TextBlock>
+            <ui:TextBlock
+                Canvas.Left="25.662"
+                Canvas.Top="183.81"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                FontSize="36"
+                TextWrapping="Wrap">
+                <Run Language="zh-cn" Text="4" />
+            </ui:TextBlock>
+            <ui:TextBlock
+                Canvas.Left="25.662"
+                Canvas.Top="233.38"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Top"
+                FontSize="36"
+                TextWrapping="Wrap">
+                <Run Language="zh-cn" Text="5" />
+            </ui:TextBlock>
+            <ui:TextBlock
+                Canvas.Left="25.662"
+                Canvas.Top="280.916"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Top"
+                FontSize="36"
+                TextWrapping="Wrap">
+                <Run Language="zh-cn" Text="6" />
+            </ui:TextBlock>
+            <ui:TextBlock
+                x:Name="No2Name"
+                Canvas.Left="65.17"
+                Canvas.Top="82"
+                Background="#00FF0000"
+                FontSize="36"
+                TextWrapping="Wrap">
+                <Run Language="zh-cn" Text="XXX" />
+            </ui:TextBlock>
+            <ui:TextBlock
+                x:Name="No1Name"
+                Canvas.Left="65.17"
+                Canvas.Top="32"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                AutomationProperties.Name="No1Name"
+                Background="#00FF0000"
+                FontSize="36"
+                Foreground="Black"
+                TextWrapping="Wrap">
+                <Run Language="zh-cn" Text="哈哈哈" />
+            </ui:TextBlock>
+            <ui:TextBlock
+                x:Name="No3Name"
+                Canvas.Left="65.17"
+                Canvas.Top="132"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Background="#00FF0000"
+                FontSize="36"
+                TextWrapping="Wrap">
+                <Run Language="zh-cn" Text="XXX" />
+            </ui:TextBlock>
+            <ui:TextBlock
+                x:Name="No5Name"
+                Canvas.Left="65.17"
+                Canvas.Top="232"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Background="#00FF0000"
+                FontSize="36"
+                TextWrapping="Wrap">
+                <Run Language="zh-cn" Text="XXX" />
+            </ui:TextBlock>
+            <ui:TextBlock
+                x:Name="No4Name"
+                Canvas.Left="65.17"
+                Canvas.Top="182"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Background="#00FF0000"
+                FontSize="36"
+                TextWrapping="Wrap">
+                <Run Language="zh-cn" Text="XXX" />
+            </ui:TextBlock>
+            <ui:TextBlock
+                x:Name="No6Name"
+                Canvas.Left="65.17"
+                Canvas.Top="282"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Top"
+                Background="#00FF0000"
+                FontSize="36"
+                TextWrapping="Wrap">
+                <Run Language="zh-cn" Text="XXX" />
+            </ui:TextBlock>
+            <ui:TextBlock
+                x:Name="No1Factor"
+                Canvas.Left="178"
+                Canvas.Top="44"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                Background="#00FF0000"
+                FontSize="24"
+                Text="XXX"
                 TextWrapping="Wrap" />
-        </StackPanel>
+            <ui:TextBlock
+                x:Name="No2Factor"
+                Canvas.Left="178"
+                Canvas.Top="94"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Background="#00FF0000"
+                FontSize="24"
+                RenderTransformOrigin="1.419,0.482"
+                Text="XXX"
+                TextWrapping="Wrap" />
+            <ui:TextBlock
+                x:Name="No4Factor"
+                Canvas.Left="178"
+                Canvas.Top="194"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                Background="#00FF0000"
+                FontSize="24"
+                Text="XXX"
+                TextWrapping="Wrap" />
+            <ui:TextBlock
+                x:Name="No3Factor"
+                Canvas.Left="178"
+                Canvas.Top="144"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                Background="#00FF0000"
+                FontSize="24"
+                Text="XXX"
+                TextWrapping="Wrap" />
+            <ui:TextBlock
+                x:Name="No6Factor"
+                Canvas.Left="178"
+                Canvas.Top="294"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                Background="#00FF0000"
+                FontSize="24"
+                Text="XXX"
+                TextWrapping="Wrap" />
+            <ui:TextBlock
+                x:Name="No5Factor"
+                Canvas.Left="178"
+                Canvas.Top="244"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Background="#00FF0000"
+                FontSize="24"
+                Text="XXX"
+                TextWrapping="Wrap" />
+            <ui:Button
+                Canvas.Left="25.662"
+                Canvas.Top="331.636"
+                Width="218"
+                Height="53"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Top"
+                Panel.ZIndex="1000"
+                Background="White"
+                Content="查看更多...">
+                <ui:FlyoutService.Flyout>
+                    <ui:Flyout Placement="Bottom">
+                        <StackPanel>
+                            <ui:DataGrid
+                                Grid.RowSpan="2"
+                                Grid.Column="1"
+                                MaxHeight="500"
+                                d:IsHidden="True"
+                                AutoGenerateColumns="False"
+                                IsReadOnly="True"
+                                IsSynchronizedWithCurrentItem="False"
+                                ItemsSource="{Binding Source={StaticResource DescendingView}}">
+                                <ui:DataGrid.Columns>
+                                    <DataGridTextColumn
+                                        Binding="{Binding Name}"
+                                        FontSize="25"
+                                        Header="姓名" />
+                                    <DataGridTextColumn
+                                        Binding="{Binding Factor}"
+                                        FontSize="25"
+                                        Header="因子" />
+                                </ui:DataGrid.Columns>
+                            </ui:DataGrid>
+                        </StackPanel>
+                    </ui:Flyout>
+                </ui:FlyoutService.Flyout>
+            </ui:Button>
+            <ui:TextBlock
+                Canvas.Left="256.414"
+                Canvas.Top="156.576"
+                Width="108"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                FontSize="24"
+                TextWrapping="Wrap">
+                <Run Language="zh-cn" Text="保底状态" />
+            </ui:TextBlock>
+            <ui:TextBlock
+                x:Name="NowMaxTimesState"
+                Canvas.Left="259"
+                Canvas.Top="211"
+                Width="91"
+                Height="50"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Top"
+                FontSize="22"
+                TextWrapping="Wrap">
+                <Run Language="zh-cn" Text="等待保底" />
+            </ui:TextBlock>
+            <TextBlock
+                Canvas.Left="25.662"
+                Canvas.Top="7.376"
+                FontSize="24"
+                TextWrapping="Wrap"><Run Language="zh-cn" Text="概率" /><Run Text="排行榜" /></TextBlock>
+            <TextBlock
+                Canvas.Left="25.662"
+                Canvas.Top="395.376"
+                Width="60"
+                Height="26"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                TextWrapping="Wrap"><Run Language="zh-cn" Text="因子数量" /><LineBreak /><Run Language="zh-cn" /></TextBlock>
+        </Canvas>
 
     </Grid>
 </Page>

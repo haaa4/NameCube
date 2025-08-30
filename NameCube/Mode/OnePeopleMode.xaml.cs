@@ -6,6 +6,7 @@ using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 
 namespace NameCube.Mode
 {
@@ -105,12 +106,14 @@ namespace NameCube.Mode
                 StartButton.IsEnabled = true;
                 return;
             }
+            var jumpStoryBoard = FindResource("JumpStoryBoard") as Storyboard;
             if (StartButton.Content.ToString() == "开始")
             {
                 FinishText.Visibility = Visibility.Hidden;
                 NowNumberText.Visibility = Visibility.Visible;
                 StartButton.Content = "结束";
                 timer.Interval = GlobalVariables.json.OnePeopleModeSettings.Speed;
+                jumpStoryBoard.Begin();
                 timer.Start();
                 IsReadyToStop = false;
                 StartButton.IsEnabled = true;
@@ -120,6 +123,8 @@ namespace NameCube.Mode
                 if (!GlobalVariables.json.OnePeopleModeSettings.Wait)
                 {
                     StartButton.Content = "暂停中";
+                    jumpStoryBoard.Stop();
+                    jumpStoryBoard.Remove();
                     IsReadyToStop = true;
                     StartButton.IsEnabled = false;
                 }
@@ -127,6 +132,8 @@ namespace NameCube.Mode
                 {
                     string Text = NowNumberText.Text;
                     GlobalVariables.json.OnePeopleModeSettings.LastName = Text;
+                    jumpStoryBoard.Stop();
+                    jumpStoryBoard.Remove();
                     timer.Stop();
                     StartButton.Content = "开始";
                     if (GlobalVariables.json.OnePeopleModeSettings.Speech)

@@ -645,7 +645,10 @@
     <None Include="Image\V1.1.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Image\V1.2_Beta-1.png" />
+    <None Include="Image\V1.2_Beta-1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\V1.2_Beta-2.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,0 +1,16 @@
+D:\C#\NameCube-git\输出\Release\NameCubeUpdata.exe.config
+D:\C#\NameCube-git\输出\Release\NameCubeUpdata.exe
+D:\C#\NameCube-git\输出\Release\NameCubeUpdata.pdb
+D:\C#\NameCube-git\NameCube\NameCubeUpdata\obj\Release\NameCubeUpdata.csproj.AssemblyReference.cache
+D:\C#\NameCube-git\NameCube\NameCubeUpdata\obj\Release\NameCubeUpdata.exe.config
+D:\C#\NameCube-git\NameCube\NameCubeUpdata\obj\Release\MainWindow.g.cs
+D:\C#\NameCube-git\NameCube\NameCubeUpdata\obj\Release\App.g.cs
+D:\C#\NameCube-git\NameCube\NameCubeUpdata\obj\Release\NameCubeUpdata_MarkupCompile.cache
+D:\C#\NameCube-git\NameCube\NameCubeUpdata\obj\Release\NameCubeUpdata_MarkupCompile.lref
+D:\C#\NameCube-git\NameCube\NameCubeUpdata\obj\Release\MainWindow.baml
+D:\C#\NameCube-git\NameCube\NameCubeUpdata\obj\Release\NameCubeUpdata.g.resources
+D:\C#\NameCube-git\NameCube\NameCubeUpdata\obj\Release\NameCubeUpdata.Properties.Resources.resources
+D:\C#\NameCube-git\NameCube\NameCubeUpdata\obj\Release\NameCubeUpdata.csproj.GenerateResource.cache
+D:\C#\NameCube-git\NameCube\NameCubeUpdata\obj\Release\NameCubeUpdata.csproj.CoreCompileInputs.cache
+D:\C#\NameCube-git\NameCube\NameCubeUpdata\obj\Release\NameCubeUpdata.exe
+D:\C#\NameCube-git\NameCube\NameCubeUpdata\obj\Release\NameCubeUpdata.pdb

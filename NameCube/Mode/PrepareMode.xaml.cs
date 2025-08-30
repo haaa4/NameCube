@@ -11,6 +11,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
@@ -65,6 +66,7 @@ namespace NameCube.Mode
         {
             _speechSynthesizer.SpeakAsyncCancelAll();
             StartButton.IsEnabled = false;
+            var jumpStoryBoard = FindResource("JumpStoryBoard") as Storyboard;
             if (StartButton.Content.ToString() == "开始")
             {
                 timer.Interval = GlobalVariables.json.PrepareModeSetting.Speed;
@@ -91,12 +93,15 @@ namespace NameCube.Mode
                 Ready4.Visibility = Visibility.Visible;
                 Ready5.Visibility = Visibility.Visible;
                 StartButton.Content = "结束";
+                jumpStoryBoard.Begin();
                 timer.Start();
                 StartButton.IsEnabled = true;
             }
             else
             {
                 StartButton.Content = "开始";
+                jumpStoryBoard.Stop();
+                jumpStoryBoard.Remove();
                 timer.Stop();
                 string get = NowNumberText.Text,
                     get1 = Ready1.Text,
