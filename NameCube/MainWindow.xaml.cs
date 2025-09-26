@@ -384,7 +384,7 @@ namespace NameCube
         {
             var loadPageStoryBoard = FindResource("LoadPageStoryBoard") as Storyboard;
             var loadedPageStoryBoard = FindResource("LoadedPageStoryBoard") as Storyboard;
-
+            NavigationMenu.ReplaceContent(null);
             // 清理之前的事件处理程序
             CleanupEventHandlers(loadPageStoryBoard);
             CleanupEventHandlers(loadedPageStoryBoard);

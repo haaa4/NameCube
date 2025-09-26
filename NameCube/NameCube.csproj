@@ -28,7 +28,7 @@
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>1</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <ApplicationVersion>1.1.3.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
@@ -71,7 +71,7 @@
     <GenerateManifests>true</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <SignManifests>true</SignManifests>
+    <SignManifests>false</SignManifests>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -556,9 +556,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Big.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="BallPicture.png" />
   </ItemGroup>
   <ItemGroup>
@@ -648,7 +645,10 @@
     <None Include="Image\V1.2_Beta-1.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Image\V1.2_Beta-2.png" />
+    <None Include="Image\V1.2_Beta-2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\V1.2_Beta-3.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

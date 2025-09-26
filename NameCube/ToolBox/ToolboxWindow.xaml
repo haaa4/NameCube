@@ -96,7 +96,7 @@
                     VerticalAlignment="Center"
                     FontFamily="Segoe UI Black"
                     FontSize="72"
-                    TextWrapping="Wrap"><Run Language="zh-cn" Text="小工具" /></TextBlock>
+                    TextWrapping="Wrap" Foreground="#FF212121"><Run Language="zh-cn" Text="小工具" /></TextBlock>
             </Canvas>
         </Border>
         <ui:SnackbarPresenter x:Name="SnackbarPresenterHost" Grid.Row="1" />

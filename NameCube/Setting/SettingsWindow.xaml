@@ -101,8 +101,8 @@
             Background="White"
             BorderBrush="White"
             BorderThickness="1"
-            Visibility="Visible" d:IsHidden="True">
-            <Canvas>
+            Visibility="Visible">
+            <Canvas d:IsHidden="True">
                 <Image
                     Canvas.Left="211.531"
                     Canvas.Top="118.844"
@@ -121,7 +121,7 @@
                     VerticalAlignment="Top"
                     FontFamily="Segoe UI Black"
                     FontSize="72"
-                    TextWrapping="Wrap"><Run Language="zh-cn" Text="应用设置" /></TextBlock>
+                    TextWrapping="Wrap" Foreground="#FF1D1D1D"><Run Language="zh-cn" Text="应用设置" /></TextBlock>
             </Canvas>
         </Border>
     </Grid>

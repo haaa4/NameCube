@@ -737,7 +737,7 @@ namespace NameCube.Mode
                     addedTextBlocks.Add(newFactor);
                     Canvas.SetLeft(newName, 65.17);
                     Canvas.SetTop(newName, 325.96);
-                    Canvas.SetLeft(newFactor, 178);
+                    Canvas.SetLeft(newFactor, 211.41);
                     Canvas.SetTop(newFactor, 337.96);
                     CreateDoubleAnimation(
                         storyboard,

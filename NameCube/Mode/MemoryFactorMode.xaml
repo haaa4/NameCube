@@ -296,9 +296,9 @@
             Margin="0,0,10,0">
             <ui:Border
                 x:Name="border"
-                Canvas.Left="248.333"
-                Canvas.Top="150.001"
-                Width="113"
+                Canvas.Left="262.85"
+                Canvas.Top="150.5"
+                Width="140"
                 Height="171"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"
@@ -307,48 +307,50 @@
                 BorderThickness="1" />
             <ui:Border
                 x:Name="border1"
-                Canvas.Left="248.333"
-                Canvas.Top="364.72"
-                Width="147"
+                Canvas.Left="262.85"
+                Canvas.Top="320.011"
+                Width="140"
                 Height="171"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
                 Background="White"
                 BorderBrush="Black"
                 BorderThickness="1">
-                <ui:StackPanel>
+                <ui:StackPanel Margin="0,0,0,133">
                     <ui:TextBlock
-                        Width="145"
+                        Width="130"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
                         FontSize="24"
                         TextWrapping="Wrap">
-                        <Run Language="zh-cn" Text="   双倍情况" />
+                        <Run Text="  双倍情况"/>
                     </ui:TextBlock>
                 </ui:StackPanel>
             </ui:Border>
             <TextBlock
                 x:Name="MaxIndexRealProbability"
-                Canvas.Left="243.5"
-                Canvas.Top="46.54"
+                Canvas.Left="265.8"
+                Canvas.Top="46.73"
                 HorizontalAlignment="Left"
-                VerticalAlignment="Top"
+                VerticalAlignment="Center"
                 FontSize="20"
                 Text="XXX" />
 
 
             <TextBlock
                 x:Name="MinimumText"
-                Canvas.Left="285.483"
-                Canvas.Top="287"
+                Canvas.Left="311.08"
+                Canvas.Top="274.38"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"
-                FontSize="20"
+                FontSize="24"
                 Text="XXX"
                 Visibility="Visible" />
             <TextBlock
                 x:Name="UpName"
-                Canvas.Left="248.333"
-                Canvas.Top="395.376"
-                Width="146"
+                Canvas.Left="262.85"
+                Canvas.Top="346.536"
+                Width="140"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"
                 FontSize="30"
@@ -356,9 +358,9 @@
                 TextAlignment="Center" />
             <TextBlock
                 x:Name="UpFactor"
-                Canvas.Left="248.333"
-                Canvas.Top="438.476"
-                Width="147"
+                Canvas.Left="265.8"
+                Canvas.Top="380.056"
+                Width="137"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"
                 FontSize="30"
@@ -392,8 +394,8 @@
             <TextBlock
                 x:Name="UpRealProbability"
                 Canvas.Left="262.85"
-                Canvas.Top="476.576"
-                Width="122"
+                Canvas.Top="418.156"
+                Width="140"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"
                 FontSize="20"
@@ -414,7 +416,7 @@
                 HorizontalAlignment="Center"
                 VerticalAlignment="Top"
                 FontSize="36"
-                TextWrapping="Wrap">
+                TextWrapping="Wrap" Foreground="Red">
                 <Run Language="zh-cn" Text="1" />
             </ui:TextBlock>
             <ui:TextBlock
@@ -423,7 +425,7 @@
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
                 FontSize="36"
-                TextWrapping="Wrap">
+                TextWrapping="Wrap" Foreground="#FFFFBB00">
                 <Run Language="zh-cn" Text="2" />
             </ui:TextBlock>
             <ui:TextBlock
@@ -432,7 +434,7 @@
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
                 FontSize="36"
-                TextWrapping="Wrap">
+                TextWrapping="Wrap" Foreground="#FFADB700">
                 <Run Language="zh-cn" Text="3" />
             </ui:TextBlock>
             <ui:TextBlock
@@ -481,9 +483,7 @@
                 Background="#00FF0000"
                 FontSize="36"
                 Foreground="Black"
-                TextWrapping="Wrap">
-                <Run Language="zh-cn" Text="哈哈哈" />
-            </ui:TextBlock>
+                TextWrapping="Wrap" Text="哈哈哈哈"/>
             <ui:TextBlock
                 x:Name="No3Name"
                 Canvas.Left="65.17"
@@ -530,7 +530,7 @@
             </ui:TextBlock>
             <ui:TextBlock
                 x:Name="No1Factor"
-                Canvas.Left="178"
+                Canvas.Left="211.41"
                 Canvas.Top="44"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"
@@ -540,10 +540,10 @@
                 TextWrapping="Wrap" />
             <ui:TextBlock
                 x:Name="No2Factor"
-                Canvas.Left="178"
+                Canvas.Left="211.41"
                 Canvas.Top="94"
                 HorizontalAlignment="Left"
-                VerticalAlignment="Top"
+                VerticalAlignment="Center"
                 Background="#00FF0000"
                 FontSize="24"
                 RenderTransformOrigin="1.419,0.482"
@@ -551,7 +551,7 @@
                 TextWrapping="Wrap" />
             <ui:TextBlock
                 x:Name="No4Factor"
-                Canvas.Left="178"
+                Canvas.Left="211.41"
                 Canvas.Top="194"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"
@@ -561,7 +561,7 @@
                 TextWrapping="Wrap" />
             <ui:TextBlock
                 x:Name="No3Factor"
-                Canvas.Left="178"
+                Canvas.Left="211.41"
                 Canvas.Top="144"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"
@@ -571,7 +571,7 @@
                 TextWrapping="Wrap" />
             <ui:TextBlock
                 x:Name="No6Factor"
-                Canvas.Left="178"
+                Canvas.Left="211.41"
                 Canvas.Top="294"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"
@@ -581,10 +581,10 @@
                 TextWrapping="Wrap" />
             <ui:TextBlock
                 x:Name="No5Factor"
-                Canvas.Left="178"
+                Canvas.Left="211.41"
                 Canvas.Top="244"
                 HorizontalAlignment="Left"
-                VerticalAlignment="Top"
+                VerticalAlignment="Center"
                 Background="#00FF0000"
                 FontSize="24"
                 Text="XXX"
@@ -592,10 +592,8 @@
             <ui:Button
                 Canvas.Left="25.662"
                 Canvas.Top="331.636"
-                Width="218"
+                Width="235"
                 Height="53"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Top"
                 Panel.ZIndex="1000"
                 Background="White"
                 Content="查看更多...">
@@ -627,8 +625,8 @@
                 </ui:FlyoutService.Flyout>
             </ui:Button>
             <ui:TextBlock
-                Canvas.Left="256.414"
-                Canvas.Top="156.576"
+                Canvas.Left="285.15"
+                Canvas.Top="158.112"
                 Width="108"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"
@@ -638,12 +636,12 @@
             </ui:TextBlock>
             <ui:TextBlock
                 x:Name="NowMaxTimesState"
-                Canvas.Left="259"
-                Canvas.Top="211"
+                Canvas.Left="288.8"
+                Canvas.Top="202.137"
                 Width="91"
                 Height="50"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Top"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
                 FontSize="22"
                 TextWrapping="Wrap">
                 <Run Language="zh-cn" Text="等待保底" />

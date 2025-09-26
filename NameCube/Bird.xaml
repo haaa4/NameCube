@@ -8,6 +8,7 @@
     Width="70"
     Height="70"
     AllowsTransparency="True"
+    ShowInTaskbar="False"
     Background="Transparent"
     Closed="Window_Closed"
     ResizeMode="NoResize"

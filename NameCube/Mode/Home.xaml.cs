@@ -26,20 +26,7 @@ namespace NameCube.Mode
         public Home()
         {
             InitializeComponent();
-            if(GlobalVariables.json.AllSettings.Recommend==GlobalVariables.Version||GlobalVariables.json.AllSettings.Recommend=="None")
-            {
-                Recommend.Visibility = Visibility.Collapsed;
-                CloseRecommendButtom.Visibility = Visibility.Collapsed;
-                imageNameCube.Visibility = Visibility.Collapsed;
-            }
-            else
-            {
-                var circleStoryBoard = FindResource("CircleStoryBoard") as Storyboard;
-                if (circleStoryBoard != null)
-                {
-                    circleStoryBoard.Begin();
-                }
-            }
+
                 
         }
 
@@ -87,6 +74,24 @@ namespace NameCube.Mode
             Recommend.Visibility = Visibility.Collapsed;
             CloseRecommendButtom.Visibility = Visibility.Collapsed;
             imageNameCube.Visibility = Visibility.Collapsed;
+        }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (GlobalVariables.json.AllSettings.Recommend == GlobalVariables.Version || GlobalVariables.json.AllSettings.Recommend == "None")
+            {
+                Recommend.Visibility = Visibility.Collapsed;
+                CloseRecommendButtom.Visibility = Visibility.Collapsed;
+                imageNameCube.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                var circleStoryBoard = FindResource("CircleStoryBoard") as Storyboard;
+                if (circleStoryBoard != null)
+                {
+                    circleStoryBoard.Begin();
+                }
+            }
         }
     }
 }
