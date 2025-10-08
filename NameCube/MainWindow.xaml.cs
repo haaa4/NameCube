@@ -1,6 +1,8 @@
 ﻿using Masuit.Tools.Logging;
+using NameCube.Mode;
 using NameCube.Setting;
 using NameCube.ToolBox.AutomaticProcessPages;
+using NAudio.CoreAudioApi;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -19,7 +21,6 @@ using System.Windows.Threading;
 using Wpf.Ui.Controls;
 using Application = System.Windows.Application;
 using Timer = System.Windows.Forms.Timer;
-using NameCube.Mode;
 
 
 namespace NameCube
@@ -51,7 +52,8 @@ namespace NameCube
         private static extern IntPtr GetModuleHandle(string lpModuleName);
 
         private delegate IntPtr LowLevelKeyboardProc(int nCode, IntPtr wParam, IntPtr lParam);
-
+        private MMDeviceEnumerator deviceEnumerator;
+        private MMDevice defaultDevice;
         private LowLevelKeyboardProc _proc;
         private IntPtr _hookID = IntPtr.Zero;
         private readonly object _lock = new object();
@@ -62,7 +64,44 @@ namespace NameCube
         {
             NavigationMenu.Navigate(typeof(Mode.Home));
         }
+        /// <summary>
+        /// 获取当前音量百分比
+        /// </summary>
+        /// <returns></returns>
+        public float GetCurrentVolume()
+        {
+            return defaultDevice.AudioEndpointVolume.MasterVolumeLevelScalar * 100;
+        }
 
+        /// <summary>
+        /// 获取是否静音
+        /// </summary>
+        /// <returns></returns>
+        public bool IsMuted()
+        {
+            return defaultDevice.AudioEndpointVolume.Mute;
+        }
+
+        /// <summary>
+        /// 监听音量变化事件
+        /// </summary>
+        public void StartMonitoring()
+        {
+            defaultDevice.AudioEndpointVolume.OnVolumeNotification += (data) =>
+            {
+                Dispatcher.Invoke(() =>
+                {
+                    if (IsMuted())
+                    {
+                        VolumeInfoBar.Visibility = Visibility.Visible;
+                    }
+                    else
+                    {
+                        VolumeInfoBar.Visibility = Visibility.Collapsed;
+                    }
+                });
+            };
+        }
         public MainWindow()
         {
             InitializeComponent();
@@ -359,7 +398,6 @@ namespace NameCube
                     };
                     this.WindowState = WindowState.Normal;
                     Top = screenHeight + 300;
-                    Left = 200;
                     this.Show();
                     this.Activate();
                     this.BeginAnimation(Window.TopProperty, animation1);
@@ -445,6 +483,32 @@ namespace NameCube
         private void NavigationViewItem_Click_6(object sender, RoutedEventArgs e)
         {
             LoadPage(new MemoryMode());
+        }
+
+        private void fluentWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            deviceEnumerator = new MMDeviceEnumerator();
+            defaultDevice = deviceEnumerator.GetDefaultAudioEndpoint(DataFlow.Render, Role.Multimedia);
+            if (IsMuted())
+            {
+                VolumeInfoBar.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                VolumeInfoBar.Visibility = Visibility.Collapsed;
+            }
+            StartMonitoring();
+        }
+        private void AdjustLayoutForDpi(double scaleFactor)
+        {
+            // 根据缩放因子调整边距、字体大小等
+            this.Width = this.Width * scaleFactor;
+            this.Height = this.Height * scaleFactor;
+        }
+
+        private void fluentWindow_DpiChanged(object sender, System.Windows.DpiChangedEventArgs e)
+        {
+            AdjustLayoutForDpi(e.NewDpi.DpiScaleX);
         }
     }
 }

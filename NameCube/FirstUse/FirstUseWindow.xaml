@@ -126,7 +126,7 @@
                         <QuadraticEase EasingMode="EaseIn" />
                     </EasingDoubleKeyFrame.EasingFunction>
                 </EasingDoubleKeyFrame>
-                <EasingDoubleKeyFrame KeyTime="00:00:01.5000000" Value="459.21" />
+                <EasingDoubleKeyFrame KeyTime="00:00:01.1000000" Value="459.21" />
             </DoubleAnimationUsingKeyFrames>
             <DoubleAnimationUsingKeyFrames Storyboard.TargetName="border3" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)">
                 <EasingDoubleKeyFrame KeyTime="00:00:00" Value="-3.062">
@@ -135,7 +135,7 @@
                     </EasingDoubleKeyFrame.EasingFunction>
                 </EasingDoubleKeyFrame>
                 <EasingDoubleKeyFrame KeyTime="00:00:01" Value="-3.062" />
-                <EasingDoubleKeyFrame KeyTime="00:00:01.5000000" Value="-3.062" />
+                <EasingDoubleKeyFrame KeyTime="00:00:01.1000000" Value="-3.062" />
             </DoubleAnimationUsingKeyFrames>
             <DoubleAnimationUsingKeyFrames Storyboard.TargetName="border2" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)">
                 <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0">
@@ -148,7 +148,7 @@
                         <QuinticEase EasingMode="EaseIn" />
                     </EasingDoubleKeyFrame.EasingFunction>
                 </EasingDoubleKeyFrame>
-                <EasingDoubleKeyFrame KeyTime="00:00:01.5000000" Value="459.21" />
+                <EasingDoubleKeyFrame KeyTime="00:00:01.1000000" Value="459.21" />
             </DoubleAnimationUsingKeyFrames>
             <DoubleAnimationUsingKeyFrames Storyboard.TargetName="border2" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)">
                 <EasingDoubleKeyFrame KeyTime="00:00:00" Value="-4.593">
@@ -157,17 +157,17 @@
                     </EasingDoubleKeyFrame.EasingFunction>
                 </EasingDoubleKeyFrame>
                 <EasingDoubleKeyFrame KeyTime="00:00:01" Value="-4.593" />
-                <EasingDoubleKeyFrame KeyTime="00:00:01.5000000" Value="-4.593" />
+                <EasingDoubleKeyFrame KeyTime="00:00:01.1000000" Value="-4.593" />
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
         <Storyboard x:Key="LoadedStoryBoard">
             <DoubleAnimationUsingKeyFrames Storyboard.TargetName="border3" Storyboard.TargetProperty="(Canvas.Left)">
                 <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0" />
-                <EasingDoubleKeyFrame KeyTime="00:00:00.5000000" Value="0" />
+                <EasingDoubleKeyFrame KeyTime="00:00:00.1000000" Value="0" />
             </DoubleAnimationUsingKeyFrames>
             <DoubleAnimationUsingKeyFrames Storyboard.TargetName="border2" Storyboard.TargetProperty="(Canvas.Left)">
                 <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0" />
-                <EasingDoubleKeyFrame KeyTime="00:00:00.5000000" Value="0" />
+                <EasingDoubleKeyFrame KeyTime="00:00:00.1000000" Value="0" />
             </DoubleAnimationUsingKeyFrames>
             <DoubleAnimationUsingKeyFrames Storyboard.TargetName="border2" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)">
                 <EasingDoubleKeyFrame KeyTime="00:00:00" Value="459.21">
@@ -175,12 +175,12 @@
                         <PowerEase EasingMode="EaseIn" />
                     </EasingDoubleKeyFrame.EasingFunction>
                 </EasingDoubleKeyFrame>
-                <EasingDoubleKeyFrame KeyTime="00:00:00.5000000" Value="459.21">
+                <EasingDoubleKeyFrame KeyTime="00:00:00.1000000" Value="459.21">
                     <EasingDoubleKeyFrame.EasingFunction>
                         <PowerEase EasingMode="EaseIn" />
                     </EasingDoubleKeyFrame.EasingFunction>
                 </EasingDoubleKeyFrame>
-                <EasingDoubleKeyFrame KeyTime="00:00:01.7000000" Value="903.113">
+                <EasingDoubleKeyFrame KeyTime="00:00:01.3000000" Value="903.113">
                     <EasingDoubleKeyFrame.EasingFunction>
                         <PowerEase EasingMode="EaseIn" />
                     </EasingDoubleKeyFrame.EasingFunction>
@@ -192,12 +192,12 @@
                         <QuinticEase EasingMode="EaseIn" />
                     </EasingDoubleKeyFrame.EasingFunction>
                 </EasingDoubleKeyFrame>
-                <EasingDoubleKeyFrame KeyTime="00:00:00.5000000" Value="459.21">
+                <EasingDoubleKeyFrame KeyTime="00:00:00.1000000" Value="459.21">
                     <EasingDoubleKeyFrame.EasingFunction>
                         <QuinticEase EasingMode="EaseIn" />
                     </EasingDoubleKeyFrame.EasingFunction>
                 </EasingDoubleKeyFrame>
-                <EasingDoubleKeyFrame KeyTime="00:00:01.7000000" Value="903.113">
+                <EasingDoubleKeyFrame KeyTime="00:00:01.3000000" Value="903.113">
                     <EasingDoubleKeyFrame.EasingFunction>
                         <QuinticEase EasingMode="EaseIn" />
                     </EasingDoubleKeyFrame.EasingFunction>

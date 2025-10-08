@@ -302,6 +302,12 @@ namespace NameCube
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
         public string token { get; set; }
+
+        /// <summary>
+        /// Debug模式
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+        public bool debug { get; set; }
     }
 
     public class onePeopleModeSettings
@@ -391,6 +397,10 @@ namespace NameCube
         /// 上一次抽取的姓名
         /// </summary>
         public string LastName { get; set; }
+        /// <summary>
+        /// debug模式
+        /// </summary>
+        public bool debug = false;
     }
 
     public class BatchModeSettings
@@ -571,6 +581,7 @@ namespace NameCube
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
         public int openWay { get; set; } = -1;
+
         /// <summary>
         /// 触发的自动流程(为null时则以openway为准)
         /// </summary>
@@ -639,11 +650,13 @@ namespace NameCube
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
         public List<ProcessGroup> processGroups { get; set; } =
             new List<ProcessGroup> { new ProcessGroup() };
+
         /// <summary>
         /// 自动运行流程组的时间表
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
-        public Dictionary<int,List<ProcessGroup>> processesSchedule { get; set; } = new Dictionary<int,List<ProcessGroup>>();
+        public Dictionary<int, List<ProcessGroup>> processesSchedule { get; set; } =
+            new Dictionary<int, List<ProcessGroup>>();
     }
 
     public class ProcessGroup
@@ -659,25 +672,30 @@ namespace NameCube
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
         public string name { get; set; } = "默认流程";
+
         /// <summary>
         /// 准备时提醒信息
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
         public string remindText;
+
         /// <summary>
         /// 准备时提醒时间（秒）
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
         public int remindTime = 5;
+
         /// <summary>
         /// 可否取消流程
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
         public bool canCancle = true;
+
         /// <summary>
         /// 每个流程组的唯一标识符
         /// </summary>
         public int uid;
+
         /// <summary>
         /// 是否显示窗口
         /// </summary>
@@ -845,7 +863,7 @@ namespace NameCube
         /// 当前版本
         /// </summary>
         //Bro为什么这样写！！？
-        public static string Version = "V1.2_Beta-3";
+        public static string Version = "V1.2_Beta-4";
         public static bool IsBeta = true;
         public static bool ret = false;
     }

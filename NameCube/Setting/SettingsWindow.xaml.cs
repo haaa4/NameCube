@@ -25,6 +25,7 @@ namespace NameCube.Setting
         private void NavigationMenu_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
             NavigationMenu.Navigate(typeof(Setting.Appearance));
+            DebugItem.Visibility = GlobalVariables.json.AllSettings.debug ? System.Windows.Visibility.Visible : System.Windows.Visibility.Collapsed;   
         }
 
         private void Button_Click(object sender, System.Windows.RoutedEventArgs e)

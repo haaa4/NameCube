@@ -30,7 +30,7 @@
                     </StackPanel>
                 </Expander.Header>
                 <StackPanel>
-                    <TextBlock Text="版本:V1.2_Beta-3" />
+                    <TextBlock Text="版本:V1.2_Beta-4" />
                     <TextBlock Text="作者:哈阿斯" />
                     <TextBlock Text="依赖库- WPF UI" />
                     <TextBlock Text="默认名单所有名字均为Ai生成，如侵请联系作者，立刻删除" />

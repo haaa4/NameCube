@@ -73,7 +73,6 @@ namespace NameCube.Mode
             SnackBarFunction.ShowSnackBarInMainWindow("本版本内，推荐将不再显示。如果想要永久关闭，请到应用设置->其他",Wpf.Ui.Controls.ControlAppearance.Info);
             Recommend.Visibility = Visibility.Collapsed;
             CloseRecommendButtom.Visibility = Visibility.Collapsed;
-            imageNameCube.Visibility = Visibility.Collapsed;
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
@@ -82,15 +81,6 @@ namespace NameCube.Mode
             {
                 Recommend.Visibility = Visibility.Collapsed;
                 CloseRecommendButtom.Visibility = Visibility.Collapsed;
-                imageNameCube.Visibility = Visibility.Collapsed;
-            }
-            else
-            {
-                var circleStoryBoard = FindResource("CircleStoryBoard") as Storyboard;
-                if (circleStoryBoard != null)
-                {
-                    circleStoryBoard.Begin();
-                }
             }
         }
     }

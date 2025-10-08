@@ -73,10 +73,11 @@
         <Border
             x:Name="border"
             Grid.RowSpan="2"
+            d:IsHidden="True"
             Background="White"
             BorderBrush="White"
             BorderThickness="1"
-            Visibility="Visible" d:IsHidden="True">
+            Visibility="Visible">
             <Canvas>
                 <Image
                     Canvas.Left="362.756"
@@ -96,7 +97,8 @@
                     VerticalAlignment="Center"
                     FontFamily="Segoe UI Black"
                     FontSize="72"
-                    TextWrapping="Wrap" Foreground="#FF212121"><Run Language="zh-cn" Text="小工具" /></TextBlock>
+                    Foreground="#FF212121"
+                    TextWrapping="Wrap"><Run Language="zh-cn" Text="小工具" /></TextBlock>
             </Canvas>
         </Border>
         <ui:SnackbarPresenter x:Name="SnackbarPresenterHost" Grid.Row="1" />

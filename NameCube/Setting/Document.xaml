@@ -12,6 +12,12 @@
     mc:Ignorable="d">
 
     <StackPanel>
+        <ui:InfoBar
+            Title="警告"
+            IsClosable="False"
+            IsOpen="True"
+            Message="对于手动修改配置文件导致的应用异常，不在修复范围内！"
+            Severity="Warning" />
         <ui:CardAction
             Margin="5,0"
             Click="CardAction_Click"

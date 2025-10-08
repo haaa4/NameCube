@@ -11,15 +11,6 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
-    <Page.Resources>
-        <Storyboard x:Key="CircleStoryBoard" RepeatBehavior="Forever">
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="imageNameCube" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[2].(RotateTransform.Angle)">
-                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0" />
-                <EasingDoubleKeyFrame KeyTime="00:00:02" Value="-360" />
-            </DoubleAnimationUsingKeyFrames>
-        </Storyboard>
-    </Page.Resources>
-
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="1*" />
@@ -38,7 +29,7 @@
                 FontWeight="Black"
                 Text="主页" />
         </StackPanel>
-        <Image x:Name="Recommend" Source="/Image/V1.2_Beta-3.png" />
+        <Image x:Name="Recommend" Source="/Image/V1.2_Beta-4.png" />
         <ui:Button
             x:Name="CloseRecommendButtom"
             VerticalAlignment="Top"
@@ -166,27 +157,6 @@
                 </StackPanel>
             </ui:CardAction>
         </Grid>
-        <Canvas>
-            <Image
-                x:Name="imageNameCube"
-                Canvas.Left="691.764"
-                Canvas.Top="102.07"
-                Width="140"
-                Height="145"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"
-                RenderTransformOrigin="0.287,0.386"
-                Source="/icon.png"
-                Stretch="Fill">
-                <Image.RenderTransform>
-                    <TransformGroup>
-                        <ScaleTransform />
-                        <SkewTransform />
-                        <RotateTransform />
-                        <TranslateTransform />
-                    </TransformGroup>
-                </Image.RenderTransform>
-            </Image>
-        </Canvas>
+        <Canvas/>
     </Grid>
 </Page>

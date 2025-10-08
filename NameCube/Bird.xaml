@@ -8,10 +8,10 @@
     Width="70"
     Height="70"
     AllowsTransparency="True"
-    ShowInTaskbar="False"
     Background="Transparent"
     Closed="Window_Closed"
     ResizeMode="NoResize"
+    ShowInTaskbar="False"
     WindowStyle="None">
     <Window.Resources>
         <ContextMenu x:Key="TrayContextMenu">

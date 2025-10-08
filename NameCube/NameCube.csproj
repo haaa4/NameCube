@@ -27,8 +27,8 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>1</ApplicationRevision>
-    <ApplicationVersion>1.1.3.%2a</ApplicationVersion>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.1.4.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
@@ -128,7 +128,14 @@
     <Compile Include="Notify.xaml.cs">
       <DependentUpon>Notify.xaml</DependentUpon>
     </Compile>
-    <Compile Include="RepeatWarning.xaml.cs">
+    <Compile Include="Setting\DebugPage.xaml.cs">
+      <DependentUpon>DebugPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WarningWindows\ErrorWindow.xaml.cs">
+      <DependentUpon>ErrorWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WarningWindows\GlobalExceptionHandler.cs" />
+    <Compile Include="WarningWindows\RepeatWarning.xaml.cs">
       <DependentUpon>RepeatWarning.xaml</DependentUpon>
     </Compile>
     <Compile Include="Setting\About.xaml.cs">
@@ -308,7 +315,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="RepeatWarning.xaml">
+    <Page Include="Setting\DebugPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WarningWindows\ErrorWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WarningWindows\RepeatWarning.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -593,6 +608,9 @@
     <PackageReference Include="Microsoft.Windows.SDK.Contracts">
       <Version>10.0.26100.3916</Version>
     </PackageReference>
+    <PackageReference Include="NAudio">
+      <Version>2.2.1</Version>
+    </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>13.0.3</Version>
     </PackageReference>
@@ -648,7 +666,13 @@
     <None Include="Image\V1.2_Beta-2.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Image\V1.2_Beta-3.png" />
+    <None Include="Image\V1.2_Beta-3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Video\RepeatWarningVideo.mp4" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\V1.2_Beta-4.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

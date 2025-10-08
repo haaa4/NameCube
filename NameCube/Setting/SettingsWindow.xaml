@@ -9,8 +9,8 @@
     Title="应用设置"
     Width="1000"
     Height="450"
-    mc:Ignorable="d"
-    Loaded="FluentWindow_Loaded">
+    Loaded="FluentWindow_Loaded"
+    mc:Ignorable="d">
     <ui:FluentWindow.Resources>
         <Storyboard x:Key="ShowStoryBoard">
             <DoubleAnimationUsingKeyFrames Storyboard.TargetName="border" Storyboard.TargetProperty="(UIElement.Opacity)">
@@ -80,6 +80,12 @@
                     Content="关于"
                     Icon="{ui:SymbolIcon Symbol=Info24}"
                     TargetPageType="{x:Type local:About}" />
+                <ui:NavigationViewItem
+                    x:Name="DebugItem"
+                    Content="调试"
+                    Icon="{ui:SymbolIcon Symbol=Bug24}"
+                    TargetPageType="{x:Type local:DebugPage}"
+                    Visibility="Collapsed" />
             </ui:NavigationView.MenuItems>
             <ui:NavigationView.PaneHeader>
                 <ui:Button Icon="{ui:SymbolIcon Symbol=ArrowClockwise24}">
@@ -121,7 +127,8 @@
                     VerticalAlignment="Top"
                     FontFamily="Segoe UI Black"
                     FontSize="72"
-                    TextWrapping="Wrap" Foreground="#FF1D1D1D"><Run Language="zh-cn" Text="应用设置" /></TextBlock>
+                    Foreground="#FF1D1D1D"
+                    TextWrapping="Wrap"><Run Language="zh-cn" Text="应用设置" /></TextBlock>
             </Canvas>
         </Border>
     </Grid>
