@@ -863,7 +863,7 @@ namespace NameCube
         /// 当前版本
         /// </summary>
         //Bro为什么这样写！！？
-        public static string Version = "V1.2_Beta-4";
+        public static string Version = "V1.2_Beta-4.1";
         public static bool IsBeta = true;
         public static bool ret = false;
     }

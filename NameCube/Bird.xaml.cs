@@ -36,12 +36,58 @@ namespace NameCube
 
         [DllImport("user32.dll")]
         private static extern bool GetCursorPos(out POINT lpPoint);
+        [DllImport("user32.dll")]
+        private static extern uint GetDpiForWindow(IntPtr hwnd);
+
+        [DllImport("user32.dll")]
+        private static extern IntPtr GetDesktopWindow();
+
+        [DllImport("user32.dll")]
+        private static extern IntPtr GetWindowDpiAwarenessContext(IntPtr hwnd);
+
+        [DllImport("user32.dll")]
+        private static extern int GetDpiForSystem();
+        [DllImport("user32.dll")]
+        private static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
+
+        [DllImport("user32.dll")]
+        private static extern int GetWindowLong(IntPtr hWnd, int nIndex);
+
+        private const int GWL_EXSTYLE = -20;
+        private const int WS_EX_TOOLWINDOW = 0x00000080;
+
 
         [StructLayout(LayoutKind.Sequential)]
         public struct POINT
         {
             public int X;
             public int Y;
+        }
+        private void HideFromTaskView()
+        {
+            var helper = new System.Windows.Interop.WindowInteropHelper(this);
+            var handle = helper.Handle;
+            int extendedStyle = GetWindowLong(handle, GWL_EXSTYLE);
+            SetWindowLong(handle, GWL_EXSTYLE, extendedStyle | WS_EX_TOOLWINDOW);
+        }
+
+        private double GetDpiScaleFactor()
+        {
+            try
+            {
+                var hwnd = new System.Windows.Interop.WindowInteropHelper(this).Handle;
+                if (hwnd != IntPtr.Zero)
+                {
+                    uint dpi = GetDpiForWindow(hwnd);
+                    return dpi / 96.0;
+                }
+            }
+            catch
+            {
+                // 如果API调用失败，使用系统DPI
+                return SystemParameters.PrimaryScreenHeight / 1080.0;
+            }
+            return 1.0;
         }
 
         public Bird()
@@ -54,6 +100,7 @@ namespace NameCube
             }
             InitializeComponent();
             InitializeBehavior();
+            HideFromTaskView();
             InitializePosition();
             //InitializeTrayIcon();
             Initialize();
@@ -82,6 +129,11 @@ namespace NameCube
             {
                 _timer.Start();
             }
+        }
+        protected override void OnSourceInitialized(EventArgs e)
+        {
+            base.OnSourceInitialized(e);
+            HideFromTaskView();
         }
 
         private void Ab_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
@@ -171,7 +223,9 @@ namespace NameCube
         private void OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             // 开始拖动
+            var dpiScale = GetDpiScaleFactor();
             _dragOffset = e.GetPosition(this);
+            _dragOffset = new Point(_dragOffset.X * dpiScale, _dragOffset.Y * dpiScale);
             _isDragging = true;
             CaptureMouse();
 
@@ -198,9 +252,13 @@ namespace NameCube
         private void OnMouseMove(object sender, System.Windows.Input.MouseEventArgs e)
         {
             if (!_isDragging) return;
-            var mousePos = PointToScreen(e.GetPosition(this));
-            Left = mousePos.X - _dragOffset.X;
-            Top = mousePos.Y - _dragOffset.Y;
+
+            var dpiScale = GetDpiScaleFactor();
+            var mousePos = e.GetPosition(this);
+            var screenPoint = PointToScreen(mousePos);
+
+            Left = (screenPoint.X / dpiScale) - _dragOffset.X;
+            Top = (screenPoint.Y / dpiScale) - _dragOffset.Y;
         }
 
 

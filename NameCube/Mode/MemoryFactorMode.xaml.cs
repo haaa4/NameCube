@@ -102,6 +102,7 @@ namespace NameCube.Mode
                         "我们，拒 绝 签 字\n翻译：学生名单少于10位，无法初始化",
                         Wpf.Ui.Controls.ControlAppearance.Caution
                     );
+                    return;
                 }
 
                 // 通过 Add 方法填充现有集合
@@ -128,7 +129,7 @@ namespace NameCube.Mode
                     }
                 });
             }
-            int max = 0,
+            int max = -1,
                 MaxIndex = -1;
             for (int i = 0; i < thisModeJson.Count; i++)
             {
