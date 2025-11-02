@@ -1,9 +1,4 @@
-﻿using Masuit.Tools.Logging;
-using NameCube.Mode;
-using NameCube.Setting;
-using NameCube.ToolBox.AutomaticProcessPages;
-using NAudio.CoreAudioApi;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -18,10 +13,14 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
+using Masuit.Tools.Logging;
+using NameCube.Mode;
+using NameCube.Setting;
+using NameCube.ToolBox.AutomaticProcessPages;
+using NAudio.CoreAudioApi;
 using Wpf.Ui.Controls;
 using Application = System.Windows.Application;
 using Timer = System.Windows.Forms.Timer;
-
 
 namespace NameCube
 {
@@ -30,23 +29,34 @@ namespace NameCube
     /// </summary>
     public partial class MainWindow
     {
-        private Dictionary<string, Dictionary<Key, DateTime>> _shortcutKeyTimes = new Dictionary<string, Dictionary<Key, DateTime>>();
-        private NotifyIcon _notifyIcon=new NotifyIcon();
-        Timer Timer=new Timer();
+        private Dictionary<string, Dictionary<Key, DateTime>> _shortcutKeyTimes =
+            new Dictionary<string, Dictionary<Key, DateTime>>();
+        private NotifyIcon _notifyIcon = new NotifyIcon();
+        Timer Timer = new Timer();
         private const int WH_KEYBOARD_LL = 13;
         private const int WM_KEYDOWN = 0x0100;
         private const int WM_SYSKEYDOWN = 0x0104;
         public bool CanUseShortCutKey = true;
 
         [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-        private static extern IntPtr SetWindowsHookEx(int idHook, LowLevelKeyboardProc lpfn, IntPtr hMod, uint dwThreadId);
+        private static extern IntPtr SetWindowsHookEx(
+            int idHook,
+            LowLevelKeyboardProc lpfn,
+            IntPtr hMod,
+            uint dwThreadId
+        );
 
         [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
         private static extern bool UnhookWindowsHookEx(IntPtr hhk);
 
         [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-        private static extern IntPtr CallNextHookEx(IntPtr hhk, int nCode, IntPtr wParam, IntPtr lParam);
+        private static extern IntPtr CallNextHookEx(
+            IntPtr hhk,
+            int nCode,
+            IntPtr wParam,
+            IntPtr lParam
+        );
 
         [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         private static extern IntPtr GetModuleHandle(string lpModuleName);
@@ -64,6 +74,7 @@ namespace NameCube
         {
             NavigationMenu.Navigate(typeof(Mode.Home));
         }
+
         /// <summary>
         /// 获取当前音量百分比
         /// </summary>
@@ -102,13 +113,14 @@ namespace NameCube
                 });
             };
         }
+
         public MainWindow()
         {
             InitializeComponent();
             InitializeKeyboardHook();
             UpdateHotkeys();
             Application.Current.ShutdownMode = ShutdownMode.OnExplicitShutdown;
-            if(GlobalVariables.json.AllSettings.NameCubeMode==1)
+            if (GlobalVariables.json.AllSettings.NameCubeMode == 1)
             {
                 ToolBoxCardAction.Visibility = Visibility.Hidden;
             }
@@ -119,16 +131,15 @@ namespace NameCube
             if (GlobalVariables.json.AllSettings.Dark)
             {
                 Wpf.Ui.Appearance.ApplicationThemeManager.Apply(
-                Wpf.Ui.Appearance.ApplicationTheme.Dark, // Theme type
-                 Wpf.Ui.Controls.WindowBackdropType.Auto,  // Background type
-                 true                                      // Whether to change accents automatically
-               );
+                    Wpf.Ui.Appearance.ApplicationTheme.Dark, // Theme type
+                    Wpf.Ui.Controls.WindowBackdropType.Auto, // Background type
+                    true // Whether to change accents automatically
+                );
             }
             Loaded += (sender, args) =>
-            {               // 导航到第一个菜单项
+            { // 导航到第一个菜单项
                 NavigationMenu.Navigate(typeof(Mode.Home));
             };
-
         }
 
         private void Timer_Tick(object sender, System.EventArgs e)
@@ -136,16 +147,9 @@ namespace NameCube
             this.Topmost = GlobalVariables.json.AllSettings.Top;
         }
 
-
-        private void ExitApp()
-        {
-            _notifyIcon.Dispose(); // 清理托盘图标
-            Application.Current.Shutdown(); // 手动关闭应用
-        }
-
         private void FluentWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            if(GlobalVariables.json.AllSettings.NameCubeMode==1)
+            if (GlobalVariables.json.AllSettings.NameCubeMode == 1)
             {
                 Application.Current.Shutdown();
             }
@@ -158,7 +162,9 @@ namespace NameCube
 
         private void CardAction_Click(object sender, RoutedEventArgs e)
         {
-            var settingsWindow = Application.Current.Windows.OfType<SettingsWindow>().FirstOrDefault();
+            var settingsWindow = Application
+                .Current.Windows.OfType<SettingsWindow>()
+                .FirstOrDefault();
 
             if (settingsWindow == null)
             {
@@ -174,7 +180,9 @@ namespace NameCube
 
         private void CardAction_Click_1(object sender, RoutedEventArgs e)
         {
-            var toolboxWindow = Application.Current.Windows.OfType<ToolBox.ToolboxWindow>().FirstOrDefault();
+            var toolboxWindow = Application
+                .Current.Windows.OfType<ToolBox.ToolboxWindow>()
+                .FirstOrDefault();
 
             if (toolboxWindow == null)
             {
@@ -187,13 +195,19 @@ namespace NameCube
             toolboxWindow.Activate();
             toolboxWindow.WindowState = WindowState.Normal;
         }
+
         public void InitializeKeyboardHook()
         {
             _proc = HookCallback;
             using (var curProcess = System.Diagnostics.Process.GetCurrentProcess())
             using (var curModule = curProcess.MainModule)
             {
-                _hookID = SetWindowsHookEx(WH_KEYBOARD_LL, _proc, GetModuleHandle(curModule.ModuleName), 0);
+                _hookID = SetWindowsHookEx(
+                    WH_KEYBOARD_LL,
+                    _proc,
+                    GetModuleHandle(curModule.ModuleName),
+                    0
+                );
             }
         }
 
@@ -211,10 +225,14 @@ namespace NameCube
                     {
                         if (shortcut.keys.Contains(key))
                         {
-                            Dispatcher.BeginInvoke((Action)(() =>
-                            {
-                                HandleHotkeyPressed(key, shortcut);
-                            }));
+                            Dispatcher.BeginInvoke(
+                                (Action)(
+                                    () =>
+                                    {
+                                        HandleHotkeyPressed(key, shortcut);
+                                    }
+                                )
+                            );
                         }
                     }
                 }
@@ -243,8 +261,10 @@ namespace NameCube
         {
             string groupId = shortcut.LastChangeTime;
 
-            if (!_shortcutKeyTimes.ContainsKey(groupId)) return;
-            if (shortcut.keys.Count == 0) return;
+            if (!_shortcutKeyTimes.ContainsKey(groupId))
+                return;
+            if (shortcut.keys.Count == 0)
+                return;
 
             DateTime now = DateTime.Now;
             DateTime oneSecondAgo = now.AddSeconds(-1);
@@ -252,8 +272,10 @@ namespace NameCube
             bool allPressed = true;
             foreach (var key in shortcut.keys)
             {
-                if (!_shortcutKeyTimes[groupId].TryGetValue(key, out DateTime pressTime) ||
-                    pressTime < oneSecondAgo)
+                if (
+                    !_shortcutKeyTimes[groupId].TryGetValue(key, out DateTime pressTime)
+                    || pressTime < oneSecondAgo
+                )
                 {
                     allPressed = false;
                     break;
@@ -272,7 +294,6 @@ namespace NameCube
 
         private void ExecuteShortcutAction(ShortCut shortCut)
         {
-            
             if (!isChoosing)
             {
                 ShowThisWindow();
@@ -300,9 +321,11 @@ namespace NameCube
                         NavigationMenu.Navigate(typeof(Mode.Home));
                         break;
                     default:
-                        if(shortCut.ProcessGroup==null)
+                        if (shortCut.ProcessGroup == null)
                         {
-                            Exception exception = new Exception("用户执行了不存在的命令" + shortCut.openWay.ToString());
+                            Exception exception = new Exception(
+                                "用户执行了不存在的命令" + shortCut.openWay.ToString()
+                            );
                             LogManager.Error(exception);
                             break;
                         }
@@ -313,30 +336,31 @@ namespace NameCube
                         break;
                 }
             }
-
         }
+
         private static void RunProcessesGroup(ProcessGroup processGroup)
         {
-            ProcessesRunningWindow processesRunningWindow = new ProcessesRunningWindow(processGroup);
+            ProcessesRunningWindow processesRunningWindow = new ProcessesRunningWindow(
+                processGroup
+            );
             if (processGroup.show)
             {
                 processesRunningWindow.Show();
                 processesRunningWindow.Activate();
             }
-
         }
-    
+
         public void UpdateHotkeys()
         {
             lock (_lock)
             {
                 // 清理无效组的记录
-                var validGroupIds = GlobalVariables.json.ShortCutKey.keysGrounp
-                    .Select(s => s.LastChangeTime)
+                var validGroupIds = GlobalVariables
+                    .json.ShortCutKey.keysGrounp.Select(s => s.LastChangeTime)
                     .ToList();
 
-                var keysToRemove = _shortcutKeyTimes.Keys
-                    .Where(id => !validGroupIds.Contains(id))
+                var keysToRemove = _shortcutKeyTimes
+                    .Keys.Where(id => !validGroupIds.Contains(id))
                     .ToList();
 
                 foreach (var key in keysToRemove)
@@ -350,48 +374,58 @@ namespace NameCube
         {
             UnhookWindowsHookEx(_hookID);
             base.OnClosed(e);
-
         }
 
-        double LastTop=-1;
+        double LastTop = -1;
+
         public void ShowThisWindow()
         {
             //2025/8/29 回忆以前痛苦的动画制作经历
-            if(LastTop==-1)
+            if (LastTop == -1)
             {
-                if (!IsActive && (!(this.Visibility == Visibility.Hidden || this.Visibility == Visibility.Collapsed) || this.WindowState == WindowState.Minimized))
+                if (
+                    !IsActive
+                    && (
+                        !(
+                            this.Visibility == Visibility.Hidden
+                            || this.Visibility == Visibility.Collapsed
+                        )
+                        || this.WindowState == WindowState.Minimized
+                    )
+                )
                 {
                     this.Activate();
-                    this.WindowState=WindowState.Normal;
+                    this.WindowState = WindowState.Normal;
                 }
                 else
                 {
-
                     var dpiScale = VisualTreeHelper.GetDpi(this);
                     var workArea = SystemParameters.WorkArea;
                     double screenHeight = workArea.Height * dpiScale.DpiScaleY;
-                    if (!(Top<1&&Top==1&&Top>1))//这里不知道为什么，总是不能判断为NaN,就用这个数字代替了
+                    double screenWidth = workArea.Width * dpiScale.DpiScaleX;
+                    if (!(Top < 1 && Top == 1 && Top > 1)) //这里不知道为什么，总是不能判断为NaN,就用这个数字代替了
                     {
-                        Top = 200;
+                        Top = (screenHeight - this.Height)/ 2 * dpiScale.DpiScaleY;
+                        Left=(screenWidth - this.Width)/ 2 * dpiScale.DpiScaleX;
                         LastTop = Top;
                     }
                     LastTop = Top;
-                    Top= screenHeight + 300;
+                    Top = screenHeight + 300;
                     this.BeginAnimation(Window.TopProperty, null);
                     DoubleAnimation animation1 = new DoubleAnimation
                     {
                         From = screenHeight + 300,
                         To = LastTop,
                         Duration = new Duration(TimeSpan.FromSeconds(0.6)),
-                        EasingFunction = new QuinticEase { EasingMode = EasingMode.EaseOut }
+                        EasingFunction = new QuinticEase { EasingMode = EasingMode.EaseOut },
                     };
                     var showStoryBoard = FindResource("ShowStoryBoard") as Storyboard;
-                    border2.Visibility= Visibility.Visible;
+                    border2.Visibility = Visibility.Visible;
                     showStoryBoard.Completed += (s, e) =>
                     {
                         border2.Visibility = Visibility.Collapsed;
                     };
-                   
+
                     animation1.Completed += (sender, e) =>
                     {
                         LastTop = -1;
@@ -402,12 +436,10 @@ namespace NameCube
                     this.Activate();
                     this.BeginAnimation(Window.TopProperty, animation1);
                     showStoryBoard.Begin();
-
                 }
-
             }
-
         }
+
         private void CleanupEventHandlers(Storyboard storyboard)
         {
             if (storyboard != null)
@@ -416,16 +448,13 @@ namespace NameCube
                 storyboard.Remove();
             }
         }
-
-        // 修改 LoadPage 方法，确保正确处理事件
+        Storyboard loadPageStoryBoard;
+        Storyboard loadedPageStoryBoard;
         public void LoadPage(Page page)
         {
-            var loadPageStoryBoard = FindResource("LoadPageStoryBoard") as Storyboard;
-            var loadedPageStoryBoard = FindResource("LoadedPageStoryBoard") as Storyboard;
+            NavigationMenu.IsEnabled = false;
             NavigationMenu.ReplaceContent(null);
             // 清理之前的事件处理程序
-            CleanupEventHandlers(loadPageStoryBoard);
-            CleanupEventHandlers(loadedPageStoryBoard);
 
             border.Visibility = Visibility.Visible;
 
@@ -441,6 +470,7 @@ namespace NameCube
                 {
                     loadedPageStoryBoard.Completed -= loadedCompletedHandler;
                     border.Visibility = Visibility.Collapsed;
+                    NavigationMenu.IsEnabled = true;
                 };
 
                 loadedPageStoryBoard.Completed += loadedCompletedHandler;
@@ -449,7 +479,16 @@ namespace NameCube
 
             loadPageStoryBoard.Completed += loadCompletedHandler;
             loadPageStoryBoard.Begin();
+            if (GlobalVariables.json.OldMemoryFactorModeSettings.IsEnable ?? false)
+            {
+                OldMemoryFactorItem.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                OldMemoryFactorItem.Visibility = Visibility.Collapsed;
+            }
         }
+
         private void NavigationViewItem_Click(object sender, RoutedEventArgs e)
         {
             LoadPage(new Home());
@@ -488,7 +527,10 @@ namespace NameCube
         private void fluentWindow_Loaded(object sender, RoutedEventArgs e)
         {
             deviceEnumerator = new MMDeviceEnumerator();
-            defaultDevice = deviceEnumerator.GetDefaultAudioEndpoint(DataFlow.Render, Role.Multimedia);
+            defaultDevice = deviceEnumerator.GetDefaultAudioEndpoint(
+                DataFlow.Render,
+                Role.Multimedia
+            );
             if (IsMuted())
             {
                 VolumeInfoBar.Visibility = Visibility.Visible;
@@ -498,7 +540,10 @@ namespace NameCube
                 VolumeInfoBar.Visibility = Visibility.Collapsed;
             }
             StartMonitoring();
+            loadPageStoryBoard = FindResource("LoadPageStoryBoard") as Storyboard;
+            loadedPageStoryBoard = FindResource("LoadedPageStoryBoard") as Storyboard;
         }
+
         private void AdjustLayoutForDpi(double scaleFactor)
         {
             // 根据缩放因子调整边距、字体大小等
@@ -509,6 +554,11 @@ namespace NameCube
         private void fluentWindow_DpiChanged(object sender, System.Windows.DpiChangedEventArgs e)
         {
             AdjustLayoutForDpi(e.NewDpi.DpiScaleX);
+        }
+
+        private void NavigationViewItem_Click_7(object sender, RoutedEventArgs e)
+        {
+            LoadPage(new OldMemoryFactorMode());
         }
     }
 }

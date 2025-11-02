@@ -22,20 +22,30 @@ namespace NameCube.ToolBox.AutomaticProcessPages
     /// </summary>
     public partial class ProcessesRunningWindow : FluentWindow
     {
-        int allProcessesCount,index=-1;
+        int allProcessesCount, index = -1;
         bool show;
         ProcessGroup getProcessGroup;
         public ProcessesRunningWindow(ProcessGroup processGroup)
         {
             InitializeComponent();
             show = processGroup.show;
-            if(!show)
+            if (!show)
             {
-                this.Hide();
+                this.Show();
+                this.Topmost = false;
+                this.WindowState = WindowState.Minimized;
+            }
+            else
+            {
+
+                this.Show();
+                this.Activate();
+                this.Topmost = true;
+
             }
             Title = processGroup.name;
             MainTitle.Title = processGroup.name;
-            MainTitle.ShowClose=processGroup.canCancle;
+            MainTitle.ShowClose = processGroup.canCancle;
             allProcessesCount = processGroup.processDatas.Count;
             getProcessGroup = processGroup;
             LoadPage();
@@ -44,15 +54,15 @@ namespace NameCube.ToolBox.AutomaticProcessPages
         public void LoadPage()
         {
 
-            if(index==-1)
+            if (index == -1)
             {
                 ProcessPages.ReadyPage page = new ProcessPages.ReadyPage(getProcessGroup.name, getProcessGroup.remindTime, getProcessGroup.remindText, getProcessGroup.canCancle, false, show);
                 page.EndThePageAction += CallNextPage;
                 MainFrame.Navigate(page);
-                
+
                 index++;
             }
-            else if(index < allProcessesCount)
+            else if (index < allProcessesCount)
             {
                 switch (getProcessGroup.processDatas[index].state)
                 {
@@ -82,7 +92,7 @@ namespace NameCube.ToolBox.AutomaticProcessPages
                         MainFrame.Navigate(page5);
                         break;
                     case ProcessState.clear:
-                        ProcessPages.ClearPage page6=new ProcessPages.ClearPage(false, show);
+                        ProcessPages.ClearPage page6 = new ProcessPages.ClearPage(false, show);
                         page6.EndThePageAction += CallNextPage;
                         MainFrame.Navigate(page6);
                         break;
@@ -96,7 +106,7 @@ namespace NameCube.ToolBox.AutomaticProcessPages
                         this.Close();
                         break;
                 }
-                
+
                 index++;
             }
             else
@@ -107,11 +117,11 @@ namespace NameCube.ToolBox.AutomaticProcessPages
 
         private void CallNextPage(int get)
         {
-            if(get==0)
+            if (get == 0)
             {
                 LoadPage();
             }
-            else if(get==1)
+            else if (get == 1)
             {
                 this.Close();
             }

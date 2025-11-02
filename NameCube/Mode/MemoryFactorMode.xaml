@@ -222,16 +222,7 @@
                 <EasingDoubleKeyFrame KeyTime="00:00:01.7000000" Value="0" />
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
-        <Storyboard x:Key="FlickerFloorRec">
-            <DoubleAnimationUsingKeyFrames
-                RepeatBehavior="Forever"
-                Storyboard.TargetName="canvas1"
-                Storyboard.TargetProperty="(UIElement.Opacity)">
-                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0" />
-                <EasingDoubleKeyFrame KeyTime="00:00:00.8000000" Value="0.5" />
-                <EasingDoubleKeyFrame KeyTime="00:00:01.6000000" Value="0" />
-            </DoubleAnimationUsingKeyFrames>
-        </Storyboard>
+        <Storyboard x:Key="FlickerFloorRec"/>
         <Storyboard x:Key="ExchangeStoryBoard" RepeatBehavior="Forever">
             <DoubleAnimationUsingKeyFrames Storyboard.TargetName="ExchangeLeftFactor" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)">
                 <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0">
@@ -346,17 +337,17 @@
                 Visibility="Hidden" />
             <TextBlock
                 x:Name="LastFactorText"
-                Canvas.Top="112"
+                Canvas.Top="10"
                 Width="608"
                 HorizontalAlignment="Left"
-                VerticalAlignment="Center"
+                VerticalAlignment="Top"
                 Panel.ZIndex="-8"
-                FontSize="128"
+                FontSize="72"
                 Foreground="Gray"
                 Opacity="0.22"
                 Text="......"
                 TextAlignment="Center"
-                TextDecorations="Underline" />
+                TextDecorations="Underline" Canvas.Left="13" />
             <ui:Button
                 x:Name="StartButton"
                 Grid.Row="1"
@@ -391,9 +382,27 @@
                     HorizontalAlignment="Center"
                     VerticalAlignment="Top"
                     Background="White"
-                    BorderBrush="Black"
-                    BorderThickness="1">
+                    BorderThickness="3,3,3,3" CornerRadius="10,10,10,10">
+                    <ui:Border.BorderBrush>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="Black"/>
+                            <GradientStop Color="White" Offset="1"/>
+                        </LinearGradientBrush>
+                    </ui:Border.BorderBrush>
                     <Canvas Margin="-6,0,0,0">
+                        <Canvas x:Name="NotGuaranteed" Height="456" Width="134">
+                            <ProgressBar x:Name="GuaranteedProgressBar" Height="88" Canvas.Left="28.262" Canvas.Top="440.736" Width="359" HorizontalAlignment="Left" VerticalAlignment="Center" Maximum="10">
+                                <ProgressBar.RenderTransform>
+                                    <TransformGroup>
+                                        <ScaleTransform/>
+                                        <SkewTransform AngleY="0"/>
+                                        <RotateTransform Angle="270"/>
+                                        <TranslateTransform X="0"/>
+                                    </TransformGroup>
+                                </ProgressBar.RenderTransform>
+                            </ProgressBar>
+                            <ui:TextBlock x:Name="RemainingGuaranteedAttempts" Canvas.Left="58.358" TextWrapping="Wrap" Canvas.Top="376.436" Foreground="White" FontSize="48" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Bold" TextAlignment="Center" Text="X"/>
+                        </Canvas>
                         <ui:TextBlock
                             Canvas.Left="20"
                             Canvas.Top="10"
@@ -417,483 +426,9 @@
                             TextWrapping="Wrap">
                             <Run Language="zh-cn" Text="等待保底" />
                         </ui:TextBlock>
-                        <Rectangle
-                            x:Name="FloorRec13"
-                            Canvas.Left="22"
-                            Canvas.Top="80.48"
-                            Width="100"
-                            Height="25"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Center"
-                            d:IsHidden="True"
-                            d:IsLocked="True"
-                            Stroke="Black">
-                            <Rectangle.Fill>
-                                <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
-                                    <GradientStop Offset="1" Color="Red" />
-                                    <GradientStop Color="White" />
-                                    <GradientStop Color="#FFE40000" />
-                                    <GradientStop Offset="0.515" Color="#FFFB7777" />
-                                </LinearGradientBrush>
-                            </Rectangle.Fill>
-                        </Rectangle>
-                        <Rectangle
-                            x:Name="FloorRec12"
-                            Canvas.Left="22"
-                            Canvas.Top="105.48"
-                            Width="100"
-                            Height="25"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Center"
-                            d:IsHidden="True"
-                            Stroke="Black">
-                            <Rectangle.Fill>
-                                <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
-                                    <GradientStop Offset="1" Color="#FFFFD200" />
-                                    <GradientStop Color="White" />
-                                    <GradientStop Color="#FFFFD200" />
-                                    <GradientStop Offset="0.515" Color="#FFFFE775" />
-                                </LinearGradientBrush>
-                            </Rectangle.Fill>
-                        </Rectangle>
-                        <Rectangle
-                            x:Name="FloorRec11"
-                            Canvas.Left="22"
-                            Canvas.Top="130.48"
-                            Width="100"
-                            Height="25"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Center"
-                            d:IsHidden="True"
-                            Stroke="Black">
-                            <Rectangle.Fill>
-                                <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
-                                    <GradientStop Offset="1" Color="#FFFFD200" />
-                                    <GradientStop Color="White" />
-                                    <GradientStop Color="#FFFFD200" />
-                                    <GradientStop Offset="0.515" Color="#FFFFE775" />
-                                </LinearGradientBrush>
-                            </Rectangle.Fill>
-                        </Rectangle>
-                        <Rectangle
-                            x:Name="FloorRec10"
-                            Canvas.Left="22"
-                            Canvas.Top="155.48"
-                            Width="100"
-                            Height="25"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Center"
-                            d:IsHidden="True"
-                            Stroke="Black">
-                            <Rectangle.Fill>
-                                <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
-                                    <GradientStop Offset="1" Color="#FFFFD200" />
-                                    <GradientStop Color="White" />
-                                    <GradientStop Color="#FFFFD200" />
-                                    <GradientStop Offset="0.515" Color="#FFFFE775" />
-                                </LinearGradientBrush>
-                            </Rectangle.Fill>
-                        </Rectangle>
-                        <Rectangle
-                            x:Name="FloorRec9"
-                            Canvas.Left="22"
-                            Canvas.Top="180.48"
-                            Width="100"
-                            Height="25"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Center"
-                            Stroke="Black">
-                            <Rectangle.Fill>
-                                <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
-                                    <GradientStop Offset="1" Color="#FF42FF00" />
-                                    <GradientStop Color="White" />
-                                    <GradientStop Color="#FF42FF00" />
-                                    <GradientStop Offset="0.515" Color="#FF98FD74" />
-                                </LinearGradientBrush>
-                            </Rectangle.Fill>
-                        </Rectangle>
-                        <Rectangle
-                            x:Name="FloorRec8"
-                            Canvas.Left="22"
-                            Canvas.Top="205.48"
-                            Width="100"
-                            Height="25"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Center"
-                            Stroke="Black">
-                            <Rectangle.Fill>
-                                <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
-                                    <GradientStop Offset="1" Color="#FF42FF00" />
-                                    <GradientStop Color="White" />
-                                    <GradientStop Color="#FF42FF00" />
-                                    <GradientStop Offset="0.515" Color="#FF98FD74" />
-                                </LinearGradientBrush>
-                            </Rectangle.Fill>
-                        </Rectangle>
-                        <Rectangle
-                            x:Name="FloorRec7"
-                            Canvas.Left="22"
-                            Canvas.Top="230.48"
-                            Width="100"
-                            Height="25"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Center"
-                            Stroke="Black">
-                            <Rectangle.Fill>
-                                <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
-                                    <GradientStop Offset="1" Color="#FF42FF00" />
-                                    <GradientStop Color="White" />
-                                    <GradientStop Color="#FF42FF00" />
-                                    <GradientStop Offset="0.515" Color="#FF98FD74" />
-                                </LinearGradientBrush>
-                            </Rectangle.Fill>
-                        </Rectangle>
-                        <Rectangle
-                            x:Name="FloorRec6"
-                            Canvas.Left="22"
-                            Canvas.Top="255.48"
-                            Width="100"
-                            Height="25"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Center"
-                            Stroke="Black">
-                            <Rectangle.Fill>
-                                <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
-                                    <GradientStop Offset="1" Color="#FF42FF00" />
-                                    <GradientStop Color="White" />
-                                    <GradientStop Color="#FF42FF00" />
-                                    <GradientStop Offset="0.515" Color="#FF98FD74" />
-                                </LinearGradientBrush>
-                            </Rectangle.Fill>
-                        </Rectangle>
-                        <Rectangle
-                            x:Name="FloorRec5"
-                            Canvas.Left="22"
-                            Canvas.Top="280.48"
-                            Width="100"
-                            Height="25"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Center"
-                            Stroke="Black">
-                            <Rectangle.Fill>
-                                <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
-                                    <GradientStop Offset="1" Color="#FF42FF00" />
-                                    <GradientStop Color="White" />
-                                    <GradientStop Color="#FF42FF00" />
-                                    <GradientStop Offset="0.515" Color="#FF98FD74" />
-                                </LinearGradientBrush>
-                            </Rectangle.Fill>
-                        </Rectangle>
-                        <Rectangle
-                            x:Name="FloorRec4"
-                            Canvas.Left="22"
-                            Canvas.Top="305.48"
-                            Width="100"
-                            Height="25"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Center"
-                            Stroke="Black">
-                            <Rectangle.Fill>
-                                <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
-                                    <GradientStop Offset="1" Color="#FF42FF00" />
-                                    <GradientStop Color="White" />
-                                    <GradientStop Color="#FF42FF00" />
-                                    <GradientStop Offset="0.515" Color="#FF98FD74" />
-                                </LinearGradientBrush>
-                            </Rectangle.Fill>
-                        </Rectangle>
-                        <Rectangle
-                            x:Name="FloorRec3"
-                            Canvas.Left="22"
-                            Canvas.Top="330.48"
-                            Width="100"
-                            Height="25"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Center"
-                            Stroke="Black">
-                            <Rectangle.Fill>
-                                <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
-                                    <GradientStop Offset="1" Color="#FF42FF00" />
-                                    <GradientStop Color="White" />
-                                    <GradientStop Color="#FF42FF00" />
-                                    <GradientStop Offset="0.515" Color="#FF98FD74" />
-                                </LinearGradientBrush>
-                            </Rectangle.Fill>
-                        </Rectangle>
-                        <Rectangle
-                            x:Name="FloorRec2"
-                            Canvas.Left="22"
-                            Canvas.Top="355.48"
-                            Width="100"
-                            Height="25"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Center"
-                            Stroke="Black">
-                            <Rectangle.Fill>
-                                <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
-                                    <GradientStop Offset="1" Color="#FF42FF00" />
-                                    <GradientStop Color="White" />
-                                    <GradientStop Color="#FF42FF00" />
-                                    <GradientStop Offset="0.515" Color="#FF98FD74" />
-                                </LinearGradientBrush>
-                            </Rectangle.Fill>
-                        </Rectangle>
-                        <Rectangle
-                            x:Name="FloorRec1"
-                            Canvas.Left="22"
-                            Canvas.Top="380.48"
-                            Width="100"
-                            Height="25"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Center"
-                            Stroke="Black">
-                            <Rectangle.Fill>
-                                <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
-                                    <GradientStop Offset="1" Color="#FF42FF00" />
-                                    <GradientStop Color="White" />
-                                    <GradientStop Color="#FF42FF00" />
-                                    <GradientStop Offset="0.515" Color="#FF98FD74" />
-                                </LinearGradientBrush>
-                            </Rectangle.Fill>
-                        </Rectangle>
-                        <Canvas
-                            x:Name="canvas1"
-                            Width="134"
-                            Height="436">
-                            <Rectangle
-                                x:Name="FloorRec13复制__C_"
-                                Canvas.Left="22"
-                                Canvas.Top="80.48"
-                                Width="100"
-                                Height="25"
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
-                                Stroke="Black">
-                                <Rectangle.Fill>
-                                    <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
-                                        <GradientStop Offset="1" Color="Red" />
-                                        <GradientStop Color="White" />
-                                        <GradientStop Color="#FFE40000" />
-                                        <GradientStop Offset="0.515" Color="#FFFB7777" />
-                                    </LinearGradientBrush>
-                                </Rectangle.Fill>
-                            </Rectangle>
-                            <Rectangle
-                                x:Name="FloorRec12复制__C_"
-                                Canvas.Left="22"
-                                Canvas.Top="105.48"
-                                Width="100"
-                                Height="25"
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
-                                Stroke="Black">
-                                <Rectangle.Fill>
-                                    <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
-                                        <GradientStop Offset="1" Color="#FFFFD200" />
-                                        <GradientStop Color="White" />
-                                        <GradientStop Color="#FFFFD200" />
-                                        <GradientStop Offset="0.515" Color="#FFFFE775" />
-                                    </LinearGradientBrush>
-                                </Rectangle.Fill>
-                            </Rectangle>
-                            <Rectangle
-                                x:Name="FloorRec11复制__C_"
-                                Canvas.Left="22"
-                                Canvas.Top="130.48"
-                                Width="100"
-                                Height="25"
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
-                                Stroke="Black">
-                                <Rectangle.Fill>
-                                    <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
-                                        <GradientStop Offset="1" Color="#FFFFD200" />
-                                        <GradientStop Color="White" />
-                                        <GradientStop Color="#FFFFD200" />
-                                        <GradientStop Offset="0.515" Color="#FFFFE775" />
-                                    </LinearGradientBrush>
-                                </Rectangle.Fill>
-                            </Rectangle>
-                            <Rectangle
-                                x:Name="FloorRec10复制__C_"
-                                Canvas.Left="22"
-                                Canvas.Top="155.48"
-                                Width="100"
-                                Height="25"
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
-                                Stroke="Black">
-                                <Rectangle.Fill>
-                                    <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
-                                        <GradientStop Offset="1" Color="#FFFFD200" />
-                                        <GradientStop Color="White" />
-                                        <GradientStop Color="#FFFFD200" />
-                                        <GradientStop Offset="0.515" Color="#FFFFE775" />
-                                    </LinearGradientBrush>
-                                </Rectangle.Fill>
-                            </Rectangle>
-                            <Rectangle
-                                x:Name="FloorRec9复制__C_"
-                                Canvas.Left="22"
-                                Canvas.Top="180.48"
-                                Width="100"
-                                Height="25"
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
-                                Stroke="Black">
-                                <Rectangle.Fill>
-                                    <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
-                                        <GradientStop Offset="1" Color="#FF42FF00" />
-                                        <GradientStop Color="White" />
-                                        <GradientStop Color="#FF42FF00" />
-                                        <GradientStop Offset="0.515" Color="#FF98FD74" />
-                                    </LinearGradientBrush>
-                                </Rectangle.Fill>
-                            </Rectangle>
-                            <Rectangle
-                                x:Name="FloorRec8复制__C_"
-                                Canvas.Left="22"
-                                Canvas.Top="205.48"
-                                Width="100"
-                                Height="25"
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
-                                Stroke="Black">
-                                <Rectangle.Fill>
-                                    <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
-                                        <GradientStop Offset="1" Color="#FF42FF00" />
-                                        <GradientStop Color="White" />
-                                        <GradientStop Color="#FF42FF00" />
-                                        <GradientStop Offset="0.515" Color="#FF98FD74" />
-                                    </LinearGradientBrush>
-                                </Rectangle.Fill>
-                            </Rectangle>
-                            <Rectangle
-                                x:Name="FloorRec7复制__C_"
-                                Canvas.Left="22"
-                                Canvas.Top="230.48"
-                                Width="100"
-                                Height="25"
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
-                                Stroke="Black">
-                                <Rectangle.Fill>
-                                    <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
-                                        <GradientStop Offset="1" Color="#FF42FF00" />
-                                        <GradientStop Color="White" />
-                                        <GradientStop Color="#FF42FF00" />
-                                        <GradientStop Offset="0.515" Color="#FF98FD74" />
-                                    </LinearGradientBrush>
-                                </Rectangle.Fill>
-                            </Rectangle>
-                            <Rectangle
-                                x:Name="FloorRec6复制__C_"
-                                Canvas.Left="22"
-                                Canvas.Top="255.48"
-                                Width="100"
-                                Height="25"
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
-                                Stroke="Black">
-                                <Rectangle.Fill>
-                                    <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
-                                        <GradientStop Offset="1" Color="#FF42FF00" />
-                                        <GradientStop Color="White" />
-                                        <GradientStop Color="#FF42FF00" />
-                                        <GradientStop Offset="0.515" Color="#FF98FD74" />
-                                    </LinearGradientBrush>
-                                </Rectangle.Fill>
-                            </Rectangle>
-                            <Rectangle
-                                x:Name="FloorRec5复制__C_"
-                                Canvas.Left="22"
-                                Canvas.Top="280.48"
-                                Width="100"
-                                Height="25"
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
-                                Stroke="Black">
-                                <Rectangle.Fill>
-                                    <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
-                                        <GradientStop Offset="1" Color="#FF42FF00" />
-                                        <GradientStop Color="White" />
-                                        <GradientStop Color="#FF42FF00" />
-                                        <GradientStop Offset="0.515" Color="#FF98FD74" />
-                                    </LinearGradientBrush>
-                                </Rectangle.Fill>
-                            </Rectangle>
-                            <Rectangle
-                                x:Name="FloorRec4复制__C_"
-                                Canvas.Left="22"
-                                Canvas.Top="305.48"
-                                Width="100"
-                                Height="25"
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
-                                Stroke="Black">
-                                <Rectangle.Fill>
-                                    <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
-                                        <GradientStop Offset="1" Color="#FF42FF00" />
-                                        <GradientStop Color="White" />
-                                        <GradientStop Color="#FF42FF00" />
-                                        <GradientStop Offset="0.515" Color="#FF98FD74" />
-                                    </LinearGradientBrush>
-                                </Rectangle.Fill>
-                            </Rectangle>
-                            <Rectangle
-                                x:Name="FloorRec3复制__C_"
-                                Canvas.Left="22"
-                                Canvas.Top="330.48"
-                                Width="100"
-                                Height="25"
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
-                                Stroke="Black">
-                                <Rectangle.Fill>
-                                    <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
-                                        <GradientStop Offset="1" Color="#FF42FF00" />
-                                        <GradientStop Color="White" />
-                                        <GradientStop Color="#FF42FF00" />
-                                        <GradientStop Offset="0.515" Color="#FF98FD74" />
-                                    </LinearGradientBrush>
-                                </Rectangle.Fill>
-                            </Rectangle>
-                            <Rectangle
-                                x:Name="FloorRec2复制__C_"
-                                Canvas.Left="22"
-                                Canvas.Top="355.48"
-                                Width="100"
-                                Height="25"
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
-                                Stroke="Black">
-                                <Rectangle.Fill>
-                                    <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
-                                        <GradientStop Offset="1" Color="#FF42FF00" />
-                                        <GradientStop Color="White" />
-                                        <GradientStop Color="#FF42FF00" />
-                                        <GradientStop Offset="0.515" Color="#FF98FD74" />
-                                    </LinearGradientBrush>
-                                </Rectangle.Fill>
-                            </Rectangle>
-                            <Rectangle
-                                x:Name="FloorRec1复制__C_"
-                                Canvas.Left="22"
-                                Canvas.Top="380.48"
-                                Width="100"
-                                Height="25"
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
-                                Stroke="Black">
-                                <Rectangle.Fill>
-                                    <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
-                                        <GradientStop Offset="1" Color="#FF42FF00" />
-                                        <GradientStop Color="White" />
-                                        <GradientStop Color="#FF42FF00" />
-                                        <GradientStop Offset="0.515" Color="#FF98FD74" />
-                                    </LinearGradientBrush>
-                                </Rectangle.Fill>
-                            </Rectangle>
+                        <Canvas x:Name="Guaranteed" Height="456" Width="134">
+                            <ui:ProgressRing Canvas.Left="13.44" Canvas.Top="204.566" HorizontalAlignment="Left" VerticalAlignment="Center" Height="121" Width="121" IsIndeterminate="True"/>
+                            <ui:TextBlock Canvas.Left="10" TextWrapping="Wrap" Canvas.Top="242.206" Foreground="#FF00EDFF" FontSize="36" FontWeight="Bold" TextAlignment="Center" HorizontalAlignment="Left" VerticalAlignment="Center" Text="{Binding Text, ElementName=MaxIndexRealProbability}" Width="137"/>
                         </Canvas>
                     </Canvas>
                 </ui:Border>
@@ -906,22 +441,30 @@
                     HorizontalAlignment="Center"
                     VerticalAlignment="Top"
                     Background="White"
-                    BorderBrush="Black"
-                    BorderThickness="1">
+                    BorderThickness="3,3,3,3" CornerRadius="10,10,10,10">
+                    <ui:Border.BorderBrush>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="Black" Offset="0"/>
+                            <GradientStop Color="White" Offset="1"/>
+                            <GradientStop Color="White" Offset="1"/>
+                        </LinearGradientBrush>
+                    </ui:Border.BorderBrush>
                     <Canvas>
                         <Canvas Width="814" Height="125">
+                            <Canvas x:Name="DeterminedByFatePart" Height="125" Width="814" Visibility="Collapsed">
+                                <TextBlock Canvas.Left="152" TextWrapping="Wrap" Canvas.Top="32.02" Height="74" Width="510" FontSize="48" HorizontalAlignment="Center" VerticalAlignment="Top" FontWeight="Bold"><Run Language="zh-cn" Text="下一次必抽取前六名！"/></TextBlock>
+                            </Canvas>
                             <Canvas
                                 x:Name="SkipPart"
                                 Width="814"
-                                Height="125"
-                                Visibility="Collapsed">
+                                Height="125" Visibility="Collapsed">
                                 <TextBlock
                                     Canvas.Left="100.791"
                                     Canvas.Top="42.717"
                                     Width="81"
                                     Height="52"
                                     HorizontalAlignment="Left"
-                                    VerticalAlignment="Center"
+                                    VerticalAlignment="Top"
                                     FontSize="36"
                                     TextWrapping="Wrap"><Run Language="zh-cn" Text="跳过" /><LineBreak /><Run Language="zh-cn" /></TextBlock>
                                 <TextBlock
@@ -960,6 +503,20 @@
                                     Text="孙爱川"
                                     TextAlignment="Center"
                                     TextWrapping="Wrap" />
+                                <TextBlock
+                                    Canvas.Left="186.791"
+                                    Canvas.Top="88.437"
+                                    Width="129"
+                                    Height="52"
+                                    FontSize="24"
+                                    TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Center" Text="将继承分数"/>
+                                <TextBlock x:Name="AfterSkipNowFactor"
+                                    Canvas.Left="315.791"
+                                    Canvas.Top="88.437"
+                                    Width="116"
+                                    Height="52"
+                                    FontSize="26"
+                                    TextWrapping="Wrap" Text="114" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Bold"/>
                             </Canvas>
                             <Canvas
                                 x:Name="DoubleMorePart"
@@ -1381,7 +938,7 @@
                     Background="#00FF0000"
                     FontSize="36"
                     Foreground="Black"
-                    Text="哈哈哈哈"
+                    Text="XXX"
                     TextWrapping="Wrap" />
                 <ui:TextBlock
                     x:Name="No3Name"
@@ -1564,8 +1121,6 @@
                                 </ui:Button>
                                 <CheckBox
                                     x:Name="SpeechButton"
-                                    Canvas.Left="11.162"
-                                    Canvas.Top="457.526"
                                     VerticalAlignment="Top"
                                     Click="CheckBox_Click"
                                     Content="启用朗读" />
@@ -1577,6 +1132,13 @@
                                     x:Name="GetTraning"
                                     Click="GetTraning_Click"
                                     Content="get training" />
+                                <CheckBox
+                                    x:Name="DebugCheck"
+                                    Canvas.Left="11.162"
+                                    Canvas.Top="457.526"
+                                    VerticalAlignment="Top"
+                                    Content="only debug" 
+                                    IsChecked="False"/>
                             </StackPanel>
                         </ui:Flyout>
                     </ui:FlyoutService.Flyout>

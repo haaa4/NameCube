@@ -93,6 +93,12 @@ namespace NameCube
                     Locked = false,
                     Speed = 20,
                 },
+                OldMemoryFactorModeSettings = new OldMemoryFactorModeSettings
+                {
+                    Speech = true,
+                    Locked = false,
+                    Speed = 20,
+                },
                 BatchModeSettings = new BatchModeSettings
                 {
                     NumberMode = false,
@@ -151,6 +157,10 @@ namespace NameCube
             {
                 GlobalVariables.json.MemoryFactorModeSettings = new memoryFactorModeSettings();
             }
+            if (GlobalVariables.json.OldMemoryFactorModeSettings == null)
+            {
+                GlobalVariables.json.OldMemoryFactorModeSettings = new OldMemoryFactorModeSettings();
+            }
             if (GlobalVariables.json.BatchModeSettings == null)
             {
                 GlobalVariables.json.BatchModeSettings = new BatchModeSettings();
@@ -187,6 +197,10 @@ namespace NameCube
             if (GlobalVariables.json.MemoryFactorModeSettings.Speed == 0)
             {
                 GlobalVariables.json.MemoryFactorModeSettings.Speed = 20;
+            }
+            if (GlobalVariables.json.OldMemoryFactorModeSettings.Speed == 0)
+            {
+                GlobalVariables.json.OldMemoryFactorModeSettings.Speed = 20;
             }
             if (GlobalVariables.json.NumberModeSettings.Speed == 0)
             {
@@ -302,6 +316,11 @@ namespace NameCube
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
         public string token { get; set; }
+        /// <summary>
+        /// 新版本号
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+        public string newVersion { get; set; }
 
         /// <summary>
         /// Debug模式
@@ -384,6 +403,44 @@ namespace NameCube
         public int Speed { get; set; } = 20;
 
         /// <summary>
+        /// 上一次抽取的姓名
+        /// </summary>
+        public string LastName { get; set; }
+        /// <summary>
+        /// debug模式
+        /// </summary>
+        public bool debug = false;
+        /// <summary>
+        /// 每一种事件的发生概率
+        /// </summary>
+        public List<int> probabilityOfHappening = new List<int> { 4, 2, 3, 4, 2, 2, 3, 1, 1 };
+    }
+    public class OldMemoryFactorModeSettings
+    {
+        /// <summary>
+        /// 是否启用旧因子模式
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+        public bool? IsEnable { set; get; } = false;
+        /// <summary>
+        /// 启用朗读
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+        public bool? Speech { set; get; } = true;
+
+        /// <summary>
+        /// 是否允许修改
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+        public bool? Locked { get; set; } = false;
+
+        /// <summary>
+        /// 主界面字体跳动速度
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+        public int? Speed { get; set; } = 20;
+
+        /// <summary>
         /// 保底人姓名
         /// </summary>
         public string MaxName { get; set; }
@@ -397,10 +454,6 @@ namespace NameCube
         /// 上一次抽取的姓名
         /// </summary>
         public string LastName { get; set; }
-        /// <summary>
-        /// debug模式
-        /// </summary>
-        public bool debug = false;
     }
 
     public class BatchModeSettings
@@ -460,7 +513,11 @@ namespace NameCube
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
         public int AdsorbValue { get; set; } = 60;
-
+        /// <summary>
+        /// 长按误判阈值
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+        public int LongPressMisjudgment { get; set; } = 30;
         /// <summary>
         /// 无反应后自动吸附
         /// </summary>
@@ -773,12 +830,17 @@ namespace NameCube
         public startToDo StartToDo { get; set; } = new startToDo();
 
         /// <summary>
-        /// 记忆因子模式设置
+        /// 因子模式设置
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
         public memoryFactorModeSettings MemoryFactorModeSettings { get; set; } =
             new memoryFactorModeSettings();
-
+        /// <summary>
+        /// 旧因子模式设置
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+        public OldMemoryFactorModeSettings OldMemoryFactorModeSettings { get; set; } =
+            new OldMemoryFactorModeSettings();
         /// <summary>
         /// 批量模式设置
         /// </summary>
@@ -863,7 +925,7 @@ namespace NameCube
         /// 当前版本
         /// </summary>
         //Bro为什么这样写！！？
-        public static string Version = "V1.2_Beta-4.1";
+        public static string Version = "V1.2_Beta-5";
         public static bool IsBeta = true;
         public static bool ret = false;
     }

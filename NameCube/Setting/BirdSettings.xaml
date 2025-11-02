@@ -250,7 +250,29 @@
                     Minimum="10"
                     ValueChanged="BallWidthHeight_ValueChanged" />
             </ui:CardControl>
-
+            <ui:CardControl
+    Margin="4"
+    Padding="20,10,20,10"
+    Icon="{ui:SymbolIcon Symbol=ArrowMove24}">
+                <ui:CardControl.Header>
+                    <StackPanel>
+                        <ui:TextBlock
+                Margin="0"
+                FontTypography="BodyStrong"
+                Text="长按防误判阈值"
+                TextWrapping="WrapWithOverflow" />
+                        <ui:TextBlock
+                Appearance="Secondary"
+                Text="防止移动悬浮球导致的误判为长按"
+                TextWrapping="WrapWithOverflow" />
+                    </StackPanel>
+                </ui:CardControl.Header>
+                <Slider
+        x:Name="LongPressMisjudgment"
+        Maximum="300"
+        Minimum="0"
+        ValueChanged="LongPressMisjudgment_ValueChanged" />
+            </ui:CardControl>
 
 
         </StackPanel>

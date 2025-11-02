@@ -101,7 +101,8 @@
                     IsClosable="False"
                     IsOpen="True"
                     Message="电脑已静音，朗读人可能没有声音"
-                    Severity="Informational" />
+                    Severity="Informational"
+                    Visibility="Collapsed" />
             </ui:NavigationView.Header>
             <ui:NavigationView.MenuItems>
                 <ui:NavigationViewItem
@@ -125,6 +126,12 @@
                             Value="新" />
                     </ui:NavigationViewItem.InfoBadge>
                 </ui:NavigationViewItem>
+                <ui:NavigationViewItem
+                    Click="NavigationViewItem_Click_7"
+                    Content="旧因子模式"
+                    Icon="{ui:SymbolIcon Symbol=PeopleSettings24}"
+                    Visibility="Collapsed"
+                    x:Name="OldMemoryFactorItem"/>
                 <ui:NavigationViewItem
                     Click="NavigationViewItem_Click_3"
                     Content="批量模式"
@@ -166,34 +173,41 @@
             Grid.Row="1"
             Margin="321,0,0,0"
             Background="White"
-            BorderThickness="1"
-            Visibility="Collapsed">
-            <Image
+            BorderThickness="1" Grid.IsSharedSizeScope="True" Visibility="Collapsed">
+            <Viewbox Margin="0,0,0,-1">
+                <Canvas Height="699" Width="1039" RenderTransformOrigin="0.5,0.5">
+                    <Canvas.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform ScaleX="1"/>
+                            <SkewTransform/>
+                            <RotateTransform/>
+                            <TranslateTransform/>
+                        </TransformGroup>
+                    </Canvas.RenderTransform>
+                    <Image
                 x:Name="image"
-                Width="215"
-                Height="215"
-                Margin="211,116,650,267"
                 RenderTransformOrigin="0.5,0.5"
                 Source="/icon.png"
-                Stretch="Fill">
-                <Image.RenderTransform>
-                    <TransformGroup>
-                        <ScaleTransform />
-                        <SkewTransform />
-                        <RotateTransform Angle="47.004" />
-                        <TranslateTransform />
-                    </TransformGroup>
-                </Image.RenderTransform>
-            </Image>
+                Stretch="Fill" MinWidth="250" MinHeight="250" Height="250" Canvas.Left="210.188" Canvas.Top="172.75" Width="250">
+                        <Image.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform />
+                                <SkewTransform />
+                                <RotateTransform Angle="47.004" />
+                                <TranslateTransform />
+                            </TransformGroup>
+                        </Image.RenderTransform>
+                    </Image>
+                </Canvas>
+            </Viewbox>
         </Border>
         <Border
             x:Name="border2"
             Grid.RowSpan="2"
-            d:IsHidden="True"
             Background="White"
             BorderBrush="White"
             BorderThickness="1"
-            Visibility="Visible">
+            Visibility="Visible" d:IsHidden="True">
             <Canvas>
                 <Image
                     Canvas.Left="414.756"

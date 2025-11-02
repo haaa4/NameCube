@@ -63,21 +63,46 @@ namespace NameCube.Mode
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
             }
         }
-
+        public class otherJson
+        {
+            public string MaxName { get; set; }
+            public int MaxTimes { get; set; }
+            public bool DeterminedByFate { get; set; } = false;
+        }
+        public class MemoryFactorModeSettingsJson
+        {
+            public otherJson otherSettings { get; set; } = new otherJson();
+            public ObservableCollection<ThisModeJson> thisModeJson { get; set; } =
+            new ObservableCollection<ThisModeJson>();
+        }
         /// <summary>
-        /// 本模式的局部设置
+        /// 本模式的局部设置（旧）
         /// </summary>
         public ObservableCollection<ThisModeJson> thisModeJson { get; set; } =
             new ObservableCollection<ThisModeJson>();
+        public MemoryFactorModeSettingsJson memoryFactorModeSettingsJson= new MemoryFactorModeSettingsJson();
         public System.Timers.Timer timer = new System.Timers.Timer();
         public SpeechSynthesizer _speechSynthesizer = new SpeechSynthesizer();
         public bool IsCanStop = false;
         public List<string> Trainings { get; set; } = new List<string>();
+        public List<int> incident=new List<int>();
 
         public MemoryFactorMode()
         {
             InitializeComponent();
             DataContext = this;
+            if(GlobalVariables.json.MemoryFactorModeSettings.probabilityOfHappening==null||GlobalVariables.json.MemoryFactorModeSettings.probabilityOfHappening.Count<10)
+            {
+                GlobalVariables.json.MemoryFactorModeSettings.probabilityOfHappening = new List<int> { 4, 2, 3, 4, 2, 2, 3, 1, 1 ,2};
+            }
+            //填充事件列表
+            for(int i=0;i<=9;i++)
+            {
+                for(int ii=1;ii<= GlobalVariables.json.MemoryFactorModeSettings.probabilityOfHappening[i];ii++)
+                {
+                    incident.Add(i);
+                }
+            }
         }
 
         private void StartLoad()
@@ -117,13 +142,29 @@ namespace NameCube.Mode
             {
                 // 反序列化后合并到现有集合
                 string jsonString = File.ReadAllText(Path.Combine(FilePath, "Memory.json"));
-                var loadedData = JsonConvert.DeserializeObject<ObservableCollection<ThisModeJson>>(
-                    jsonString
-                );
+                try
+                {
+                    memoryFactorModeSettingsJson = JsonConvert.DeserializeObject<MemoryFactorModeSettingsJson>(jsonString);
+                }
+                catch
+                {
+                    try
+                    {
+                        //针对旧版本的兼容处理
+                            memoryFactorModeSettingsJson.thisModeJson = JsonConvert.DeserializeObject<ObservableCollection<ThisModeJson>>(jsonString);
+                            memoryFactorModeSettingsJson.otherSettings = new otherJson();
+                        
+                    }
+                    catch(Exception ex)
+                    {
+                        MessageBoxFunction.ShowMessageBoxError("配置文件损坏，无法加载，请删除后重试。\n错误信息："+ex.Message);
+                    }
+                }
+
                 this.Dispatcher.Invoke(() =>
                 {
                     thisModeJson.Clear();
-                    foreach (var item in loadedData)
+                    foreach (var item in memoryFactorModeSettingsJson.thisModeJson)
                     {
                         thisModeJson.Add(item);
                     }
@@ -143,15 +184,15 @@ namespace NameCube.Mode
                     MaxIndex = i;
                 }
             }
-            if (MaxIndex != -1 && GlobalVariables.json.MemoryFactorModeSettings.MaxName == null)
+            if (MaxIndex != -1 && memoryFactorModeSettingsJson.otherSettings.MaxName == null)
             {
-                GlobalVariables.json.MemoryFactorModeSettings.MaxName = thisModeJson[MaxIndex].Name;
-                GlobalVariables.json.MemoryFactorModeSettings.MaxTimes = 1;
+                memoryFactorModeSettingsJson.otherSettings.MaxName = thisModeJson[MaxIndex].Name;
+                memoryFactorModeSettingsJson.otherSettings.MaxTimes = 1;
             }
             this.Dispatcher.Invoke(() =>
             {
                 Count.Text = Trainings.Count.ToString();
-                if (GlobalVariables.json.MemoryFactorModeSettings.MaxTimes < 10)
+                if (memoryFactorModeSettingsJson.otherSettings.MaxTimes < 10)
                 {
                     MaxIndexRealProbability.Text =
                         (
@@ -163,12 +204,12 @@ namespace NameCube.Mode
                     NowMaxTimesState.Text = "等待保底";
                 }
                 else if (
-                    GlobalVariables.json.MemoryFactorModeSettings.MaxTimes >= 10
-                    && GlobalVariables.json.MemoryFactorModeSettings.MaxTimes <= 12
+                    memoryFactorModeSettingsJson.otherSettings.MaxTimes >= 10
+                    && memoryFactorModeSettingsJson.otherSettings.MaxTimes <= 12
                 )
                 {
                     MaxIndexRealProbability.Text =
-                        ((GlobalVariables.json.MemoryFactorModeSettings.MaxTimes - 9) * 25) + "%";
+                        ((memoryFactorModeSettingsJson.otherSettings.MaxTimes - 9) * 25) + "%";
                     NowMaxTimesState.Text = "保底中";
                 }
                 else
@@ -176,7 +217,7 @@ namespace NameCube.Mode
                     MaxIndexRealProbability.Text = "100%";
                     NowMaxTimesState.Text = "保底中";
                 }
-                ShowFloorRec(GlobalVariables.json.MemoryFactorModeSettings.MaxTimes);
+                ShowFloor(memoryFactorModeSettingsJson.otherSettings.MaxTimes);
             });
         }
 
@@ -201,28 +242,32 @@ namespace NameCube.Mode
 
         public void SaveThisJson()
         {
-            LogManager.Info("保存基因因子设置");
-
-            string configPath = Path.Combine(
-                GlobalVariables.configDir,
-                "Mode_data",
-                "MemoryFactoryMode",
-                "Memory.json"
-            );
-
-            try
+            if(!DebugCheck.IsChecked.Value)
             {
-                // 确保目录存在
-                Directory.CreateDirectory(GlobalVariables.configDir);
+                LogManager.Info("保存基因因子设置");
 
-                string jsonString = JsonConvert.SerializeObject(thisModeJson);
-                File.WriteAllText(configPath, jsonString);
+                string configPath = Path.Combine(
+                    GlobalVariables.configDir,
+                    "Mode_data",
+                    "MemoryFactoryMode",
+                    "Memory.json"
+                );
+
+                try
+                {
+                    // 确保目录存在
+                    Directory.CreateDirectory(GlobalVariables.configDir);
+                    memoryFactorModeSettingsJson.thisModeJson= thisModeJson;
+                    string jsonString = JsonConvert.SerializeObject(memoryFactorModeSettingsJson);
+                    File.WriteAllText(configPath, jsonString);
+                }
+                catch (Exception ex)
+                {
+                    // 记录错误或提示用户
+                    MessageBoxFunction.ShowMessageBoxError($"保存配置失败: {ex.Message}");
+                }
             }
-            catch (Exception ex)
-            {
-                // 记录错误或提示用户
-                MessageBoxFunction.ShowMessageBoxError($"保存配置失败: {ex.Message}");
-            }
+
         }
 
         private async void StartButton_Click(object sender, RoutedEventArgs e)
@@ -260,25 +305,53 @@ namespace NameCube.Mode
                 jumpStoryBoard.Remove();
                 Random random = new Random();
                 IsCanStop = true;
-                bool mininum = false;
+                string SpecialOutcome = null;
                 string NowNumberTextValue = NowNumberText.Text;
-                if (GlobalVariables.json.MemoryFactorModeSettings.MaxTimes >= 10)
+                if (memoryFactorModeSettingsJson.otherSettings.MaxTimes >= 10)
                 {
                     int get = random.StrictNext(100);
-                    if (get <= (GlobalVariables.json.MemoryFactorModeSettings.MaxTimes - 9) * 25)
+                    if (get <= (memoryFactorModeSettingsJson.otherSettings.MaxTimes - 9) * 25)
                     {
-                        NowNumberTextValue = GlobalVariables.json.MemoryFactorModeSettings.MaxName;
-                        mininum = true;
+                        NowNumberTextValue = memoryFactorModeSettingsJson.otherSettings.MaxName;
+                        SpecialOutcome="保底";
                     }
                 }
-                FinishNumberText.Text = NowNumberTextValue;
+                else if(memoryFactorModeSettingsJson.otherSettings.DeterminedByFate)
+                {
+                    int get=random.StrictNext(7);
+                    if(get==0)
+                    {
+                        NowNumberTextValue=No1Name.Text;
+                    }
+                    else if(get==1)
+                    {
+                        NowNumberTextValue = No2Name.Text;
+                    }
+                    else if(get==2)
+                    {
+                        NowNumberTextValue= No3Name.Text;
+                    }
+                    else if(get==3)
+                    {
+                        NowNumberTextValue= No4Name.Text;
+                    }
+                    else if(get==4)
+                    {
+                        NowNumberTextValue= No5Name.Text;
+                    }
+                    else if(get==5)
+                    {
+                        NowNumberTextValue= No6Name.Text;
+                    }
+                    SpecialOutcome="命定";
+                    memoryFactorModeSettingsJson.otherSettings.DeterminedByFate = false;
+                }
+                    FinishNumberText.Text = NowNumberTextValue;
                 NowNumberText.Visibility = Visibility.Hidden;
                 FinishNumberText.Visibility = Visibility.Visible;
-                int delete = 0,
+                int
                     GetRandom,
-                    max = 0,
-                    MaxIndex = -1,
-                    lastfactor = 0;
+                    lastfactor=-1;
                 for (int i = 0; i < thisModeJson.Count; i++)
                 {
                     GetRandom = random.StrictNext(4);
@@ -289,14 +362,8 @@ namespace NameCube.Mode
                     }
                     if (thisModeJson[i].Name == NowNumberTextValue)
                     {
-                        delete = i;
-                        lastfactor = thisModeJson[delete].Factor;
-                        thisModeJson[delete].Factor = 0;
-                    }
-                    else if (thisModeJson[i].Factor > max)
-                    {
-                        max = thisModeJson[i].Factor;
-                        MaxIndex = i;
+                        lastfactor = thisModeJson[i].Factor;
+                        thisModeJson[i].Factor = 0;
                     }
                 }
 
@@ -335,8 +402,9 @@ namespace NameCube.Mode
                 GetFactorFromOtherPart.Visibility = Visibility.Collapsed;
                 FloorAddPart.Visibility = Visibility.Collapsed;
                 SkipPart.Visibility= Visibility.Collapsed;
-                int incident=random.StrictNext(23);
-                if(incident<=4)
+                DeterminedByFatePart.Visibility= Visibility.Collapsed;
+                int getIncident = incident[random.StrictNext(incident.Count)];
+                if(getIncident==0)
                 {
                     //二倍事件
                     int getRandomIndex=random.StrictNext(thisModeJson.Count);
@@ -351,7 +419,7 @@ namespace NameCube.Mode
                     incidentName.Text="二倍事件";
                     DoubleMorePart.Visibility = Visibility.Visible;
                 }
-                else if (incident>=5&&incident<=6)
+                else if (getIncident == 1)
                 {
                     //三倍事件
                     int getRandomIndex = random.StrictNext(thisModeJson.Count);
@@ -366,7 +434,7 @@ namespace NameCube.Mode
                     incidentName.Text = "三倍事件";
                     DoubleMorePart.Visibility = Visibility.Visible;
                 }
-                else if (incident >= 7 && incident <= 9)
+                else if (getIncident == 2)
                 {
                     //减半事件
                     int getRandomIndex = random.StrictNext(thisModeJson.Count);
@@ -381,7 +449,7 @@ namespace NameCube.Mode
                     incidentName.Text = "减半事件";
                     DoubleMorePart.Visibility = Visibility.Visible;
                 }
-                else if(incident>=10&&incident<=13)
+                else if(getIncident == 3)
                 {
                     //交换事件
                     int getRandomIndex1 = random.StrictNext(thisModeJson.Count);
@@ -401,7 +469,7 @@ namespace NameCube.Mode
                     incidentName.Text = "交换事件";
                     ExchangePart.Visibility = Visibility.Visible;
                 }
-                else if(incident>=14&&incident<=15)
+                else if(getIncident == 4)
                 {
                     //复制事件
                     int getRandomIndex1 = random.StrictNext(thisModeJson.Count),
@@ -417,7 +485,7 @@ namespace NameCube.Mode
                     incidentName.Text = "复制事件";
                     DoubleMorePart.Visibility = Visibility.Visible;
                 }
-                else if(incident>=16&&incident<=17)
+                else if(getIncident == 5)
                 {
                     //窃取事件
                     int getRandomIndex1 = random.StrictNext(thisModeJson.Count),
@@ -437,16 +505,26 @@ namespace NameCube.Mode
                     incidentName.Text = "窃取事件";
                     GetFactorFromOtherPart.Visibility = Visibility.Visible;
                 }
-                else if(incident>=18&&incident<=20)
+                else if(getIncident == 6)
                 {
                     //保底事件，于后面完成
                 }
-                else if(incident==21)
+                else if(getIncident==7)
                 {
                     //跳过事件
-                    int getRandomIndex= random.StrictNext(thisModeJson.Count);
+                    int getRandomIndex= random.StrictNext(thisModeJson.Count),findName;
                     string newName= thisModeJson[getRandomIndex].Name,
                         lastName= NowNumberTextValue;
+                    for(findName=0;findName< thisModeJson.Count;findName++)
+                    {
+                        if(thisModeJson[findName].Name==NowNumberTextValue)
+                        {
+                            break;
+                        }
+                    }
+                    thisModeJson[findName].Factor = thisModeJson[getRandomIndex].Factor;
+                    thisModeJson[getRandomIndex].Factor = 0;
+                    AfterSkipNowFactor.Text= thisModeJson[findName].Factor.ToString();
                     await Task.Delay(2000);
                     NowNumberTextValue= newName;
                     NowNumberText.Text= NowNumberTextValue;
@@ -457,10 +535,27 @@ namespace NameCube.Mode
                     SkipPart.Visibility= Visibility.Visible;
                     incidentName.Text = "跳过事件";
                 }
-                else if(incident==22)
+                else if(getIncident==8)
                 {
                     //平静事件
+                    await Task.Delay(2000);
                     incidentName.Text = "平静无事";
+                }
+                else if(getIncident==9)
+                {
+                    DeterminedByFatePart.Visibility= Visibility.Visible;
+                    memoryFactorModeSettingsJson.otherSettings.DeterminedByFate = true;
+                    incidentName.Text = "命定事件";
+                }
+                    int Max = -1,
+                        MaxIndex = -1;
+                foreach(var item in thisModeJson)
+                {
+                    if (item.Factor > Max)
+                    {
+                        Max = item.Factor;
+                        MaxIndex = thisModeJson.IndexOf(item);
+                    }
                 }
                 if (GlobalVariables.json.MemoryFactorModeSettings.Speech)
                 {
@@ -478,11 +573,11 @@ namespace NameCube.Mode
                 }
                 if (
                     thisModeJson[MaxIndex].Name
-                    == GlobalVariables.json.MemoryFactorModeSettings.MaxName
+                    == memoryFactorModeSettingsJson.otherSettings.MaxName
                 )
                 {
-                    GlobalVariables.json.MemoryFactorModeSettings.MaxTimes++;
-                    if (GlobalVariables.json.MemoryFactorModeSettings.MaxTimes < 10)
+                    memoryFactorModeSettingsJson.otherSettings.MaxTimes++;
+                    if (memoryFactorModeSettingsJson.otherSettings.MaxTimes < 10)
                     {
 
                         MaxIndexRealProbability.Text =
@@ -495,12 +590,12 @@ namespace NameCube.Mode
                         NowMaxTimesState.Text = "等待保底";
                     }
                     else if (
-                        GlobalVariables.json.MemoryFactorModeSettings.MaxTimes >= 10
-                        && GlobalVariables.json.MemoryFactorModeSettings.MaxTimes <= 12
+                        memoryFactorModeSettingsJson.otherSettings.MaxTimes >= 10
+                        && memoryFactorModeSettingsJson.otherSettings.MaxTimes <= 12
                     )
                     {
                         MaxIndexRealProbability.Text =
-                            ((GlobalVariables.json.MemoryFactorModeSettings.MaxTimes - 9) * 25)
+                            ((memoryFactorModeSettingsJson.otherSettings.MaxTimes - 9) * 25)
                             + "%";
                         ShowStoryBoard("ChangeYellow");
                         NowMaxTimesState.Text = "保底中";
@@ -514,10 +609,10 @@ namespace NameCube.Mode
                 }
                 else
                 {
-                    GlobalVariables.json.MemoryFactorModeSettings.MaxName = thisModeJson[
+                    memoryFactorModeSettingsJson.otherSettings.MaxName = thisModeJson[
                         MaxIndex
                     ].Name;
-                    GlobalVariables.json.MemoryFactorModeSettings.MaxTimes = 1;
+                    memoryFactorModeSettingsJson.otherSettings.MaxTimes = 1;
                     MaxIndexRealProbability.Text =
                         (
                             Math.Round(
@@ -529,25 +624,25 @@ namespace NameCube.Mode
                     ShowStoryBoard("Changegreen");
                     NowMaxTimesState.Text = "等待保底";
                 }
-                if (mininum)
+                if (SpecialOutcome!=null)
                 {
-                    LastFactorText.Text = "保底";
+                    LastFactorText.Text = SpecialOutcome;
                 }
                 else
                 {
                     LastFactorText.Text = lastfactor.ToString();
                 }
                 //此处完成部分事件
-                if (incident >= 18 && incident <= 20)
+                if (getIncident == 6)
                 {
                     //保底事件
                     int getRandomAdd=random.StrictNext(3)+1;
-                    GlobalVariables.json.MemoryFactorModeSettings.MaxTimes+=getRandomAdd;
+                    memoryFactorModeSettingsJson.otherSettings.MaxTimes+=getRandomAdd;
                     FloorAdd.Text= getRandomAdd.ToString();
                     incidentName.Text = "保底事件";
                     FloorAddPart.Visibility = Visibility.Visible;
                     //重复上述对maxtimes进行的变化
-                    if (GlobalVariables.json.MemoryFactorModeSettings.MaxTimes < 10)
+                    if (memoryFactorModeSettingsJson.otherSettings.MaxTimes < 10)
                     {
 
                         MaxIndexRealProbability.Text =
@@ -560,12 +655,12 @@ namespace NameCube.Mode
                         NowMaxTimesState.Text = "等待保底";
                     }
                     else if (
-                        GlobalVariables.json.MemoryFactorModeSettings.MaxTimes >= 10
-                        && GlobalVariables.json.MemoryFactorModeSettings.MaxTimes <= 12
+                        memoryFactorModeSettingsJson.otherSettings.MaxTimes >= 10
+                        && memoryFactorModeSettingsJson.otherSettings.MaxTimes <= 12
                     )
                     {
                         MaxIndexRealProbability.Text =
-                            ((GlobalVariables.json.MemoryFactorModeSettings.MaxTimes - 9) * 25)
+                            ((memoryFactorModeSettingsJson.otherSettings.MaxTimes - 9) * 25)
                             + "%";
                         ShowStoryBoard("ChangeYellow");
                         NowMaxTimesState.Text = "保底中";
@@ -578,10 +673,17 @@ namespace NameCube.Mode
                     }
                 }
                 SaveThisJson();
-                GlobalVariables.SaveJson();
-                ShowFloorRec(GlobalVariables.json.MemoryFactorModeSettings.MaxTimes);
+                if (!DebugCheck.IsChecked.Value)
+                {
+                    GlobalVariables.SaveJson();
+                }
+                ShowFloor(memoryFactorModeSettingsJson.otherSettings.MaxTimes);
                 IsCanStop = false;
-                GlobalVariables.json.MemoryFactorModeSettings.LastName = FinishNumberText.Text;
+                if (!DebugCheck.IsChecked.Value)
+                {
+                    GlobalVariables.json.MemoryFactorModeSettings.LastName = FinishNumberText.Text;
+                }
+
                 NowNumberText.Text = NowNumberTextValue;
                 Count.Text = Trainings.Count.ToString();
                 ChangeTheName(lastThisModeJsons);
@@ -628,8 +730,8 @@ namespace NameCube.Mode
                         "Memory.json"
                     )
                 );
-                GlobalVariables.json.MemoryFactorModeSettings.MaxName = null;
-                GlobalVariables.json.MemoryFactorModeSettings.MaxTimes = 1;
+                memoryFactorModeSettingsJson.otherSettings.MaxName = null;
+                memoryFactorModeSettingsJson.otherSettings.MaxTimes = 1;
                 StartButton.IsEnabled = false;
                 ResetButton.IsEnabled = false;
                 SnackBarFunction.ShowSnackBarInMainWindow(
@@ -650,6 +752,7 @@ namespace NameCube.Mode
             {
                 QuitDebug.Visibility= Visibility.Collapsed;
                 GetTraning.Visibility= Visibility.Collapsed;
+                DebugCheck.Visibility= Visibility.Collapsed;
             }
             if (!GlobalVariables.json.AllSettings.SystemSpeech)
             {
@@ -1078,72 +1181,19 @@ namespace NameCube.Mode
             }
             return -1;
         }
-        private void ShowFloorRec(int index)
+        private void ShowFloor(int index)
         {
-            FloorRec1.Visibility = Visibility.Hidden;
-            FloorRec2.Visibility = Visibility.Hidden;
-            FloorRec3.Visibility = Visibility.Hidden;
-            FloorRec4.Visibility = Visibility.Hidden;
-            FloorRec5.Visibility = Visibility.Hidden;
-            FloorRec6.Visibility = Visibility.Hidden;
-            FloorRec7.Visibility = Visibility.Hidden;
-            FloorRec8.Visibility = Visibility.Hidden;
-            FloorRec9.Visibility = Visibility.Hidden;
-            FloorRec10.Visibility = Visibility.Hidden;
-            FloorRec11.Visibility = Visibility.Hidden;
-            FloorRec12.Visibility = Visibility.Hidden;
-            FloorRec13.Visibility = Visibility.Hidden;
-            if (index >= 1)
+            if(index<=9)
             {
-                FloorRec1.Visibility = Visibility.Visible;
+                GuaranteedProgressBar.Value = index;
+                RemainingGuaranteedAttempts.Text= (10 - index).ToString();
+                NotGuaranteed.Visibility= Visibility.Visible;
+                Guaranteed.Visibility= Visibility.Collapsed;
             }
-            if (index >= 2)
+            else
             {
-                FloorRec2.Visibility = Visibility.Visible;
-            }
-            if (index >= 3)
-            {
-                FloorRec3.Visibility = Visibility.Visible;
-            }
-            if (index >= 4)
-            {
-                FloorRec4.Visibility = Visibility.Visible;
-            }
-            if (index >= 5)
-            {
-                FloorRec5.Visibility = Visibility.Visible;
-            }
-            if (index >= 6)
-            {
-                FloorRec6.Visibility = Visibility.Visible;
-            }
-            if (index >= 7)
-            {
-                FloorRec7.Visibility = Visibility.Visible;
-            }
-            if (index >= 8)
-            {
-                FloorRec8.Visibility = Visibility.Visible;
-            }
-            if (index >= 9)
-            {
-                FloorRec9.Visibility = Visibility.Visible;
-            }
-            if (index >= 10)
-            {
-                FloorRec10.Visibility = Visibility.Visible;
-            }
-            if (index >= 11)
-            {
-                FloorRec11.Visibility = Visibility.Visible;
-            }
-            if (index >= 12)
-            {
-                FloorRec12.Visibility = Visibility.Visible;
-            }
-            if (index >= 13)
-            {
-                FloorRec13.Visibility = Visibility.Visible;
+                Guaranteed.Visibility = Visibility.Visible;
+                NotGuaranteed.Visibility = Visibility.Collapsed;
             }
         }
         private void SetFactor(string name, int newFactor)
@@ -1158,9 +1208,13 @@ namespace NameCube.Mode
         private void QuitDebug_Click(object sender, RoutedEventArgs e)
         {
             GlobalVariables.json.MemoryFactorModeSettings.debug = false;
-            GlobalVariables.SaveJson();
+            if (!DebugCheck.IsChecked.Value)
+            {
+                GlobalVariables.SaveJson();
+            }
             QuitDebug.Visibility = Visibility.Collapsed;
             GetTraning.Visibility = Visibility.Collapsed;
+            DebugCheck.Visibility = Visibility.Collapsed;
         }
 
         private void GetTraning_Click(object sender, RoutedEventArgs e)

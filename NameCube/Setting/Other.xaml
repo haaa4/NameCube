@@ -77,7 +77,7 @@
                         TextWrapping="WrapWithOverflow" />
                     <ui:TextBlock
                         Appearance="Secondary"
-                        Text="推荐不会显示商业信息，主要是关于新版本的内容"
+                        Text="推荐不会在主页显示推荐信息，主要是关于新版本的内容"
                         TextWrapping="WrapWithOverflow" />
                 </StackPanel>
             </ui:CardControl.Header>

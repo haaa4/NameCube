@@ -170,6 +170,7 @@ namespace NameCube.Setting
             StartLocationWay.SelectedIndex = GlobalVariables.json.BirdSettings.StartLocationWay;
             BallWidth.Value = GlobalVariables.json.BirdSettings.Width;
             BallHeight.Value = GlobalVariables.json.BirdSettings.Height;
+            LongPressMisjudgment.Value = GlobalVariables.json.BirdSettings.LongPressMisjudgment;
         }
         private void ChangeBird()
         {
@@ -220,6 +221,15 @@ namespace NameCube.Setting
 
                 // 确保窗口可见并激活
                 Bird.ShowReRectangle();
+            }
+        }
+
+        private void LongPressMisjudgment_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (CanChange)
+            {
+                GlobalVariables.json.BirdSettings.LongPressMisjudgment = (int)LongPressMisjudgment.Value;
+                GlobalVariables.SaveJson();
             }
         }
     }

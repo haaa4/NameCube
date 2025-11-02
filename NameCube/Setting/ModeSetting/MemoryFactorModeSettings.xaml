@@ -3,6 +3,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:glo="clr-namespace:NameCube"
     xmlns:local="clr-namespace:NameCube.Setting"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
@@ -10,7 +11,6 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
-
     <StackPanel>
         <ui:CardControl
             Margin="4"
@@ -63,5 +63,109 @@
                 ValueChanged="Speed_ValueChanged"
                 Value="100" />
         </ui:CardControl>
+        <ui:CardExpander
+            Margin="4"
+            Padding="20,10,20,10"
+            Icon="{ui:SymbolIcon Symbol=AddSubtractCircle24}">
+            <ui:CardExpander.Header>
+                <StackPanel>
+                    <ui:TextBlock
+                        Margin="0"
+                        FontTypography="BodyStrong"
+                        Text="事件概率"
+                        TextWrapping="WrapWithOverflow" />
+                    <ui:TextBlock
+                        Appearance="Secondary"
+                        Text="调整各类事件的概率"
+                        TextWrapping="WrapWithOverflow" />
+                </StackPanel>
+            </ui:CardExpander.Header>
+            <StackPanel>
+                <ui:TextBlock Margin="10,10,0,0" Text="双倍事件：" />
+                <ui:NumberBox
+                    x:Name="Random1"
+                    Width="300"
+                    Maximum="100"
+                    Minimum="0"
+                    PreviewTextInput="NumberBox_PreviewTextInput"
+                    ValueChanged="Random_ValueChanged" />
+                <ui:TextBlock Margin="10,10,0,0" Text="三倍事件：" />
+                <ui:NumberBox
+                    x:Name="Random2"
+                    Width="300"
+                    Maximum="100"
+                    Minimum="0"
+                    PreviewTextInput="NumberBox_PreviewTextInput"
+                    ValueChanged="Random_ValueChanged" />
+                <ui:TextBlock Margin="10,10,0,0" Text="减半事件：" />
+                <ui:NumberBox
+                    x:Name="Random3"
+                    Width="300"
+                    Maximum="100"
+                    Minimum="0"
+                    PreviewTextInput="NumberBox_PreviewTextInput"
+                    ValueChanged="Random_ValueChanged" />
+                <ui:TextBlock Margin="10,10,0,0" Text="交换事件：" />
+                <ui:NumberBox
+                    x:Name="Random4"
+                    Width="300"
+                    Maximum="100"
+                    Minimum="0"
+                    PreviewTextInput="NumberBox_PreviewTextInput"
+                    ValueChanged="Random_ValueChanged" />
+                <ui:TextBlock Margin="10,10,0,0" Text="复制事件：" />
+                <ui:NumberBox
+                    x:Name="Random5"
+                    Width="300"
+                    Maximum="100"
+                    Minimum="0"
+                    PreviewTextInput="NumberBox_PreviewTextInput"
+                    ValueChanged="Random_ValueChanged" />
+                <ui:TextBlock Margin="10,10,0,0" Text="窃取事件：" />
+                <ui:NumberBox
+                    x:Name="Random6"
+                    Width="300"
+                    Maximum="100"
+                    Minimum="0"
+                    PreviewTextInput="NumberBox_PreviewTextInput"
+                    ValueChanged="Random_ValueChanged" />
+                <ui:TextBlock Margin="10,10,0,0" Text="保底事件：" />
+                <ui:NumberBox
+                    x:Name="Random7"
+                    Width="300"
+                    Maximum="100"
+                    Minimum="0"
+                    PreviewTextInput="NumberBox_PreviewTextInput"
+                    ValueChanged="Random_ValueChanged" />
+                <ui:TextBlock Margin="10,10,0,0" Text="跳过事件：" />
+                <ui:NumberBox
+                    x:Name="Random8"
+                    Width="300"
+                    Maximum="100"
+                    Minimum="0"
+                    PreviewTextInput="NumberBox_PreviewTextInput"
+                    ValueChanged="Random_ValueChanged" />
+                <ui:TextBlock Margin="10,10,0,0" Text="平静无事：" />
+                <ui:NumberBox
+                    x:Name="Random9"
+                    Width="300"
+                    Maximum="100"
+                    Minimum="0"
+                    PreviewTextInput="NumberBox_PreviewTextInput"
+                    ValueChanged="Random_ValueChanged" />
+                <ui:TextBlock Margin="10,10,0,0" Text="命定事件：" />
+                <ui:NumberBox
+    x:Name="Random10"
+    Width="300"
+    Maximum="100"
+    Minimum="0"
+    PreviewTextInput="NumberBox_PreviewTextInput"
+    ValueChanged="Random_ValueChanged" />
+                <ui:Button
+                    Click="Button_Click"
+                    Content="还原默认状态"
+                    Icon="{ui:SymbolIcon Symbol=ArrowClockwise24}" />
+            </StackPanel>
+        </ui:CardExpander>
     </StackPanel>
 </Page>

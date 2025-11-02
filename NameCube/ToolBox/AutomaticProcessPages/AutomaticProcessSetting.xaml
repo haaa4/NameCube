@@ -124,7 +124,7 @@
                     Margin="10"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
-                    FontSize="12"
+                    FontSize="14"
                     Text="流程类型（当前）" />
                 <ComboBox
                     x:Name="ProcessKindComboBox"
@@ -151,7 +151,7 @@
                     Margin="10"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
-                    FontSize="12"
+                    FontSize="14"
                     Text="提醒信息（可选）" />
                 <ui:TextBox
                     x:Name="RemindTextTextBox"
@@ -179,21 +179,19 @@
                     x:Name="CanCancleCheckBox"
                     Grid.Row="0"
                     Grid.Column="1"
-                    VerticalAlignment="Center" 
-                    Checked="CanCancleCheckBox_Checked"/>
+                    VerticalAlignment="Center" />
                 <ui:TextBlock
                     Grid.Row="3"
                     Margin="10"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
                     FontSize="14"
-                    Text="显示窗口" />
+                    Text="默认前台窗口" />
                 <CheckBox
                     x:Name="ShowCheckBox"
                     Grid.Row="3"
                     Grid.Column="1"
-                    VerticalAlignment="Center" 
-                    Unchecked="ShowCheckBox_Unchecked"/>
+                    VerticalAlignment="Center" />
             </Grid>
             <Frame
                 x:Name="MainFrame"

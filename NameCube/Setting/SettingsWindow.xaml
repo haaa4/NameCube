@@ -7,8 +7,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     Title="应用设置"
-    Width="1000"
-    Height="450"
+    Width="1200"
+    Height="650"
     Loaded="FluentWindow_Loaded"
     mc:Ignorable="d">
     <ui:FluentWindow.Resources>
@@ -107,11 +107,11 @@
             Background="White"
             BorderBrush="White"
             BorderThickness="1"
-            Visibility="Visible">
-            <Canvas d:IsHidden="True">
+            Visibility="Visible" d:IsHidden="True">
+            <Canvas>
                 <Image
-                    Canvas.Left="211.531"
-                    Canvas.Top="118.844"
+                    Canvas.Left="335.393"
+                    Canvas.Top="221.947"
                     Width="189"
                     Height="192"
                     HorizontalAlignment="Left"
@@ -119,8 +119,8 @@
                     Source="/icon.png"
                     Stretch="Fill" />
                 <TextBlock
-                    Canvas.Left="426.29"
-                    Canvas.Top="165.844"
+                    Canvas.Left="529.393"
+                    Canvas.Top="268.947"
                     Width="420"
                     Height="145"
                     HorizontalAlignment="Left"

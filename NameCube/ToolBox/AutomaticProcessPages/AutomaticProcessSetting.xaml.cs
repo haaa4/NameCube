@@ -727,30 +727,7 @@ namespace NameCube.ToolBox.AutomaticProcessPages
             ProcessesRunningWindow processesRunningWindow = new ProcessesRunningWindow(
                 processGroup
             );
-            if(processGroup.show)
-                processesRunningWindow.Show();
         }
 
-        private void CanCancleCheckBox_Checked(object sender, RoutedEventArgs e)
-        {
-            if(canChange)
-            {
-                if(CanCancleCheckBox.IsChecked.Value)
-                {
-                    ShowCheckBox.IsChecked = true;
-                }
-            }
-        }
-
-        private void ShowCheckBox_Unchecked(object sender, RoutedEventArgs e)
-        {
-            if(canChange)
-            {
-                if(!ShowCheckBox.IsChecked.Value)
-                {
-                    CanCancleCheckBox.IsChecked = false;
-                }
-            }
-        }
     }
 }
