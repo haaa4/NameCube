@@ -208,33 +208,24 @@
             BorderBrush="White"
             BorderThickness="1"
             Visibility="Visible" d:IsHidden="True">
-            <Canvas>
+            <ui:StackPanel>
                 <Image
-                    Canvas.Left="414.756"
-                    Canvas.Top="243.373"
                     Width="189"
                     Height="192"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Center"
                     RenderTransformOrigin="1.081,0.477"
                     Source="/icon.png"
-                    Stretch="Fill" />
+                    Stretch="Fill" Margin="434,228,775,0" />
                 <TextBlock
-                    Canvas.Left="608.756"
-                    Canvas.Top="290.373"
                     Width="420"
                     Height="145"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Center"
                     FontFamily="Segoe UI Black"
                     FontSize="72"
                     Foreground="#FF171717"
-                    TextWrapping="Wrap"><Run Language="zh-cn" Text="点鸣魔方" /></TextBlock>
-            </Canvas>
+                    TextWrapping="Wrap" Margin="623,-145,355,0"><Run Language="zh-cn" Text="点鸣魔方" /></TextBlock>
+            </ui:StackPanel>
         </Border>
         <ui:SnackbarPresenter
             x:Name="SnackbarPresenterHost"
-            Grid.Row="1"
-            d:IsHidden="True" />
+            Grid.Row="1" d:IsHidden="True" />
     </Grid>
 </ui:FluentWindow>

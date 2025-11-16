@@ -327,6 +327,17 @@ namespace NameCube
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
         public bool debug { get; set; }
+
+        /// <summary>
+        /// 禁用主界面显示动画
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+        public bool DisableTheDisplayAnimationOfTheMainWindow { get; set; }
+        /// <summary>
+        /// 默认最大化窗口
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+        public bool DefaultToMaximumSize { get; set; }
     }
 
     public class onePeopleModeSettings
@@ -925,8 +936,8 @@ namespace NameCube
         /// 当前版本
         /// </summary>
         //Bro为什么这样写！！？
-        public static string Version = "V1.2_Beta-5";
-        public static bool IsBeta = true;
+        public static string Version = "V1.2";
+        public static bool IsBeta = false;
         public static bool ret = false;
     }
 

@@ -190,7 +190,8 @@ namespace NameCube.Setting
                 }
                 else
                 {
-                    
+                    GlobalVariables.json.AllSettings.newVersion= null;
+                    GlobalVariables.SaveJson();
                     CaseText.Text = "已是最新版本";
                     CheckText.Text = "上次检查时间:" + GlobalVariables.json.AllSettings.UpdataTime;
                 }

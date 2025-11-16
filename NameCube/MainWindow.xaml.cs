@@ -395,7 +395,15 @@ namespace NameCube
                 )
                 {
                     this.Activate();
-                    this.WindowState = WindowState.Normal;
+                    if (GlobalVariables.json.AllSettings.DefaultToMaximumSize)
+                    {
+                        this.WindowState = WindowState.Maximized;
+                    }
+                    else
+                    {
+                        this.WindowState = WindowState.Normal;
+                    }
+
                 }
                 else
                 {
@@ -403,39 +411,57 @@ namespace NameCube
                     var workArea = SystemParameters.WorkArea;
                     double screenHeight = workArea.Height * dpiScale.DpiScaleY;
                     double screenWidth = workArea.Width * dpiScale.DpiScaleX;
-                    if (!(Top < 1 && Top == 1 && Top > 1)) //这里不知道为什么，总是不能判断为NaN,就用这个数字代替了
+                    var showStoryBoard = FindResource("ShowStoryBoard") as Storyboard;
+                    if (!(Top < 1 && Top == 1 && Top > 1)) //这里不知道为什么，总是不能判断为NaN,就用这个方式代替了
                     {
                         Top = (screenHeight - this.Height)/ 2 * dpiScale.DpiScaleY;
                         Left=(screenWidth - this.Width)/ 2 * dpiScale.DpiScaleX;
                         LastTop = Top;
                     }
-                    LastTop = Top;
-                    Top = screenHeight + 300;
-                    this.BeginAnimation(Window.TopProperty, null);
-                    DoubleAnimation animation1 = new DoubleAnimation
+                    if(GlobalVariables.json.AllSettings.DisableTheDisplayAnimationOfTheMainWindow)
                     {
-                        From = screenHeight + 300,
-                        To = LastTop,
-                        Duration = new Duration(TimeSpan.FromSeconds(0.6)),
-                        EasingFunction = new QuinticEase { EasingMode = EasingMode.EaseOut },
-                    };
-                    var showStoryBoard = FindResource("ShowStoryBoard") as Storyboard;
-                    border2.Visibility = Visibility.Visible;
+                        
+                        this.Show();
+                        this.Activate();
+                        if (GlobalVariables.json.AllSettings.DefaultToMaximumSize)
+                        {
+                            this.WindowState = WindowState.Maximized;
+                        }
+                        LastTop = -1;
+                    }
+                    else
+                    {
+                        LastTop = Top;
+                        Top = screenHeight + 300;
+                        this.BeginAnimation(Window.TopProperty, null);
+                        DoubleAnimation animation1 = new DoubleAnimation
+                        {
+                            From = screenHeight + 300,
+                            To = LastTop,
+                            Duration = new Duration(TimeSpan.FromSeconds(0.6)),
+                            EasingFunction = new QuinticEase { EasingMode = EasingMode.EaseOut },
+                        };
+                       
+                        border2.Visibility = Visibility.Visible;
+
+                        animation1.Completed += (sender, e) =>
+                        {
+                            LastTop = -1;
+                        };
+                        this.WindowState = WindowState.Normal;
+                        Top = screenHeight + 300;
+                        this.Show();
+                        this.Activate();
+                        this.BeginAnimation(Window.TopProperty, animation1);
+
+                    }
                     showStoryBoard.Completed += (s, e) =>
                     {
                         border2.Visibility = Visibility.Collapsed;
                     };
 
-                    animation1.Completed += (sender, e) =>
-                    {
-                        LastTop = -1;
-                    };
-                    this.WindowState = WindowState.Normal;
-                    Top = screenHeight + 300;
-                    this.Show();
-                    this.Activate();
-                    this.BeginAnimation(Window.TopProperty, animation1);
                     showStoryBoard.Begin();
+
                 }
             }
         }

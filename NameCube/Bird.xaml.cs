@@ -348,7 +348,6 @@ namespace NameCube
                 if (mainWindow != null)
                 {
                     mainWindow.ShowThisWindow();
-                    mainWindow.WindowState=WindowState.Normal;
                     mainWindow.NavigationMenu.Navigate(typeof(Mode.Home));
                 }
             });

@@ -27,11 +27,11 @@
         <Storyboard x:Key="LongPressAnimation">
             <DoubleAnimationUsingKeyFrames Storyboard.TargetName="progressRing" Storyboard.TargetProperty="(ui:ProgressRing.Progress)">
                 <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0"/>
-                <EasingDoubleKeyFrame KeyTime="00:00:02" Value="100"/>
+                <EasingDoubleKeyFrame KeyTime="00:00:01" Value="100"/>
             </DoubleAnimationUsingKeyFrames>
             <DoubleAnimationUsingKeyFrames Storyboard.TargetName="progressRing" Storyboard.TargetProperty="(UIElement.Opacity)">
                 <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0"/>
-                <EasingDoubleKeyFrame KeyTime="00:00:02" Value="1"/>
+                <EasingDoubleKeyFrame KeyTime="00:00:01" Value="1"/>
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
         <Storyboard x:Key="EndTheLongPressAnimation">

@@ -25,6 +25,16 @@ namespace NameCube.Setting
             StartCheck.IsChecked = IsStartupApplication("NameCube");
             TopCheck.IsChecked = GlobalVariables.json.AllSettings.Top;
             ModeCombox.SelectedIndex = GlobalVariables.json.AllSettings.NameCubeMode;
+            DisabledAnimationCheck.IsChecked=GlobalVariables.json.AllSettings.DisableTheDisplayAnimationOfTheMainWindow;
+            MaxSizeCheck.IsChecked=GlobalVariables.json.AllSettings.DefaultToMaximumSize;
+            if (MaxSizeCheck.IsChecked.Value)
+            {
+                DisabledAnimationCardContorl.IsEnabled = false;
+            }
+            else
+            {
+                DisabledAnimationCardContorl.IsEnabled = true;
+            }
             //LowMemoryCheck.IsChecked=GlobalVariables.json.AllSettings.LowMemoryMode;
             if (GlobalVariables.json.AllSettings.Recommend=="None")
             {
@@ -205,6 +215,34 @@ namespace NameCube.Setting
                     GlobalVariables.json.AllSettings.Recommend = null;
                 }
                 GlobalVariables.SaveJson();
+            }
+        }
+
+        private void DisabledAnimationCheck_Click(object sender, RoutedEventArgs e)
+        {
+            if(CanChange)
+            {
+                GlobalVariables.json.AllSettings.DisableTheDisplayAnimationOfTheMainWindow = DisabledAnimationCheck.IsChecked.Value;
+                GlobalVariables.SaveJson();
+            }
+        }
+
+        private void MaxSizeCheck_Click(object sender, RoutedEventArgs e)
+        {
+            if(CanChange)
+            {
+                GlobalVariables.json.AllSettings.DefaultToMaximumSize = MaxSizeCheck.IsChecked.Value;
+                GlobalVariables.SaveJson();
+                if(MaxSizeCheck.IsChecked.Value)
+                {
+                    DisabledAnimationCardContorl.IsEnabled = false;
+                    DisabledAnimationCheck.IsChecked = true;
+                    DisabledAnimationCheck_Click(null, null);
+                }
+                else
+                {
+                    DisabledAnimationCardContorl.IsEnabled = true;
+                }
             }
         }
 

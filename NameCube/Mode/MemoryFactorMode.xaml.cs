@@ -316,7 +316,7 @@ namespace NameCube.Mode
                         SpecialOutcome="保底";
                     }
                 }
-                else if(memoryFactorModeSettingsJson.otherSettings.DeterminedByFate)
+                if(memoryFactorModeSettingsJson.otherSettings.DeterminedByFate&&SpecialOutcome==null)
                 {
                     int get=random.StrictNext(7);
                     if(get==0)
@@ -354,7 +354,7 @@ namespace NameCube.Mode
                     lastfactor=-1;
                 for (int i = 0; i < thisModeJson.Count; i++)
                 {
-                    GetRandom = random.StrictNext(4);
+                    GetRandom = random.StrictNext(6);
                     thisModeJson[i].Factor += GetRandom;
                     for (int j = 1; j <= GetRandom; j++)
                     {
