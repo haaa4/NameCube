@@ -12,6 +12,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
@@ -31,35 +32,7 @@ namespace NameCube.Mode
         public NumberMode()
         {
             InitializeComponent();
-            CanChange = false;
-            SpeakCheck.IsChecked = GlobalVariables.json.NumberModeSettings.Speak;
-            NumberBox.Value = GlobalVariables.json.NumberModeSettings.Num;
-            CanChange = true;
-            timer.Elapsed += Timer_Elapsed;
-            if(GlobalVariables.json.NumberModeSettings.Speed==0)
-            {
-                GlobalVariables.json.NumberModeSettings.Speed = 20;
-            }
-            if (!GlobalVariables.json.AllSettings.SystemSpeech)
-            {
-                _speechSynthesizer.SelectVoiceByHints(VoiceGender.Female, VoiceAge.Adult);
-                _speechSynthesizer.Volume = GlobalVariables.json.AllSettings.Volume;
-                _speechSynthesizer.Rate = GlobalVariables.json.AllSettings.Speed;
-            }
-            if (GlobalVariables.json.NumberModeSettings.Locked) 
-            {
-                SpeakCheck.IsEnabled = false;
-                NumberBox.IsEnabled = false;
-                Button1.IsEnabled = false;
-            }
-            if (GlobalVariables.json.NumberModeSettings.LastName!=null)
-            {
-                NowNumberText.Text = GlobalVariables.json.NumberModeSettings.LastName;
-            }
-            NowNumberText.Foreground = GlobalVariables.json.AllSettings.color;
-            FinishText.Foreground = GlobalVariables.json.AllSettings.color;
-            NowNumberText.FontFamily = GlobalVariables.json.AllSettings.Font;
-            FinishText.FontFamily = GlobalVariables.json.AllSettings.Font;
+           
         }
 
         private void Timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
@@ -127,18 +100,22 @@ namespace NameCube.Mode
         {
             _speechSynthesizer.SpeakAsyncCancelAll();
             StartButton.IsEnabled = false;
-            if(StartButton.Content.ToString()=="开始")
+            var jumpStoryBoard = FindResource("JumpStoryBoard") as Storyboard;
+            if (StartButton.Content.ToString()=="开始")
             {
                 timer.Interval = GlobalVariables.json.NumberModeSettings.Speed;
                 FinishText.Visibility = Visibility.Hidden;
                 NowNumberText.Visibility = Visibility.Visible;
                 StartButton.Content = "结束";
+                jumpStoryBoard.Begin();
                 timer.Start();
                 StartButton.IsEnabled=true;
             }
             else
             {
                 StartButton.Content = "开始";
+                jumpStoryBoard.Stop();
+                jumpStoryBoard.Remove();
                 timer.Stop();
                 string get = NowNumberText.Text;
                 FinishText.Text= get;
@@ -151,6 +128,39 @@ namespace NameCube.Mode
                 GlobalVariables.json.NumberModeSettings.LastName = get;
                 StartButton.IsEnabled = true;
             }
+        }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            CanChange = false;
+            SpeakCheck.IsChecked = GlobalVariables.json.NumberModeSettings.Speak;
+            NumberBox.Value = GlobalVariables.json.NumberModeSettings.Num;
+            CanChange = true;
+            timer.Elapsed += Timer_Elapsed;
+            if (GlobalVariables.json.NumberModeSettings.Speed == 0)
+            {
+                GlobalVariables.json.NumberModeSettings.Speed = 20;
+            }
+            if (!GlobalVariables.json.AllSettings.SystemSpeech)
+            {
+                _speechSynthesizer.SelectVoiceByHints(VoiceGender.Female, VoiceAge.Adult);
+                _speechSynthesizer.Volume = GlobalVariables.json.AllSettings.Volume;
+                _speechSynthesizer.Rate = GlobalVariables.json.AllSettings.Speed;
+            }
+            if (GlobalVariables.json.NumberModeSettings.Locked)
+            {
+                SpeakCheck.IsEnabled = false;
+                NumberBox.IsEnabled = false;
+                Button1.IsEnabled = false;
+            }
+            if (GlobalVariables.json.NumberModeSettings.LastName != null)
+            {
+                NowNumberText.Text = GlobalVariables.json.NumberModeSettings.LastName;
+            }
+            NowNumberText.Foreground = GlobalVariables.json.AllSettings.color;
+            FinishText.Foreground = GlobalVariables.json.AllSettings.color;
+            NowNumberText.FontFamily = GlobalVariables.json.AllSettings.Font;
+            FinishText.FontFamily = GlobalVariables.json.AllSettings.Font;
         }
     }
 }

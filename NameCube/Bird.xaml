@@ -1,9 +1,9 @@
 ﻿<Window
-    x:Class="NameCube.Bird"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:tray="http://schemas.lepo.co/wpfui/2022/xaml/tray"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    x:Class="NameCube.Bird"
     Title="悬浮球"
     Width="70"
     Height="70"
@@ -11,6 +11,7 @@
     Background="Transparent"
     Closed="Window_Closed"
     ResizeMode="NoResize"
+    ShowInTaskbar="False"
     WindowStyle="None">
     <Window.Resources>
         <ContextMenu x:Key="TrayContextMenu">
@@ -23,6 +24,26 @@
                 Header="退出"
                 Icon="{ui:SymbolIcon Symbol=ArrowExit20}" />
         </ContextMenu>
+        <Storyboard x:Key="LongPressAnimation">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="progressRing" Storyboard.TargetProperty="(ui:ProgressRing.Progress)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0"/>
+                <EasingDoubleKeyFrame KeyTime="00:00:01" Value="100"/>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="progressRing" Storyboard.TargetProperty="(UIElement.Opacity)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0"/>
+                <EasingDoubleKeyFrame KeyTime="00:00:01" Value="1"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="EndTheLongPressAnimation">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="progressRing" Storyboard.TargetProperty="(UIElement.Opacity)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="1"/>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.5000000" Value="0"/>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="progressRing" Storyboard.TargetProperty="(ui:ProgressRing.Progress)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="100"/>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.5000000" Value="0"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
     </Window.Resources>
     <Grid>
         <Image
@@ -32,7 +53,10 @@
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
             RenderOptions.BitmapScalingMode="HighQuality"
-            Source="BallPicture.png" />
+            Source="BallPicture.png" >
+        </Image>
+        <ui:ProgressRing x:Name="progressRing" HorizontalAlignment="Center"
+VerticalAlignment="Center" Foreground="#FF4F504E" Progress="0" Height="50" Width="50" Opacity="0"/>
         <Rectangle
             x:Name="rec1"
             Width="3"

@@ -13,10 +13,14 @@ using System.Windows.Documents;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Wpf.Ui.Controls;
+using Wpf.Ui.Violeta.Controls;
+using NameCube.Setting;
+using NameCube.FirstUse;
 using Application = System.Windows.Application;
 
 namespace NameCube.FirstUse
@@ -37,39 +41,29 @@ namespace NameCube.FirstUse
             now++;
             if (now == 1)
             {
-                NavigationMenu.Navigate(typeof(FirstUse.NameCubeMode));
-                TitleGet.Text = "选择启动模式";
-                Text.Text = "在合适的场景使用合适的模式，可以更好地发挥作用";
+                LoadPage("选择启动模式", "在合适的场景使用合适的模式，可以更好地发挥作用", new NameCubeMode());
             }
             else if (now == 2)
             {
-                NavigationMenu.Navigate(typeof(Setting.Archives));
-                TitleGet.Text = "设置名单";
-                Text.Text = "名单是一切点名的开始，如果没有合适名单，就试试默认名单吧";
+                LoadPage("设置名单", "名单是一切点名的开始，如果没有合适名单，就试试默认名单吧", new Archives());
             }
             else if (now == 3)
             {
                 if (GlobalVariables.json.AllSettings.NameCubeMode == 0)
                 {
-                    NavigationMenu.Navigate(typeof(FirstUse.BirdSettings));
-                    TitleGet.Text = "悬浮球设置";
-                    Text.Text = "悬浮球是一个很好的东西，可以更快地启动主窗口";
+                    LoadPage("悬浮球设置", "悬浮球是一个很好的东西，可以更快地启动主窗口", new BirdSettings());
                 }
                 else
                 {
+                    LoadPage("完成！", "所有基本设置均已完成，更多设置请在应用设置里查看", new About());
                     GlobalVariables.SaveJson();
-                    NavigationMenu.Navigate(typeof(Setting.About));
-                    TitleGet    .Text = "完成！";
-                    Text.Text = "所有基本设置均已完成，更多设置请在应用设置里查看";
                 }
             }
             else if (now == 4)
             {
                 if (GlobalVariables.json.AllSettings.NameCubeMode == 0)
                 {
-                    NavigationMenu.Navigate(typeof(FirstUse.Other));
-                    TitleGet.Text = "其他......";
-                    Text.Text = "这里还有一些其他设置，也许有些用";
+                    LoadPage("其他......", "这里还有一些其他设置，也许有些用", new Other());
                 }
                 else
                 {
@@ -78,10 +72,8 @@ namespace NameCube.FirstUse
             }
             else if (now == 5)
             {
+                LoadPage("完成！", "所有基本设置均已完成，更多设置请在应用设置里查看", new About());
                 GlobalVariables.SaveJson();
-                NavigationMenu.Navigate(typeof(Setting.About));
-                TitleGet.Text = "完成！";
-                Text.Text ="所有基本设置均已完成，更多设置请在应用设置里查看";
             }
             else if(now ==6)
             {
@@ -118,6 +110,48 @@ namespace NameCube.FirstUse
             }
 
 
+        }
+
+        private void FluentWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            var ssb = FindResource("StartStoryBoard") as Storyboard;
+            if (ssb != null)
+            {
+                ssb.Completed += FirstUseWindow_Completed;
+                ssb.Begin();
+            }
+        }
+
+        private void FirstUseWindow_Completed(object sender, EventArgs e)
+        {
+            border.Visibility= Visibility.Collapsed;
+        }
+        private void LoadPage(string title, string text, Page page)
+        {
+            var loadStoryBoard = FindResource("LoadStoryBoard") as Storyboard;
+            LoadBoard.Visibility = Visibility.Visible;
+            if (loadStoryBoard != null)
+            {
+                // 使用 lambda 创建一个符合 EventHandler 签名的方法
+                loadStoryBoard.Completed += (s, e) => LoadingPage(title, text, page);
+                loadStoryBoard.Begin();
+            }
+        }
+        private void LoadingPage(string title, string text, Page page)
+        {
+            NavigationMenu.Navigate(page);
+            TitleGet.Text = title;
+            Text.Text = text;
+            var loadedStoryBoard = FindResource("LoadedStoryBoard") as Storyboard;
+            if(loadedStoryBoard!= null)
+            {
+                loadedStoryBoard.Completed += (s,e)=>LoadedPage();
+                loadedStoryBoard.Begin();
+            }
+        }
+        private void LoadedPage()
+        {
+            LoadBoard.Visibility = Visibility.Collapsed;
         }
     }
     }

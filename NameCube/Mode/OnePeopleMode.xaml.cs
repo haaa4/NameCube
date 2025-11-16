@@ -6,6 +6,7 @@ using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 
 namespace NameCube.Mode
 {
@@ -32,32 +33,7 @@ namespace NameCube.Mode
         {
             InitializeComponent();
             DataContext = this;
-            SpeechCheck.IsChecked = GlobalVariables.json.OnePeopleModeSettings.Speech;
-            WaitCheck.IsChecked = GlobalVariables.json.OnePeopleModeSettings.Wait;
-            SpeechCheck.IsEnabled = !GlobalVariables.json.OnePeopleModeSettings.Locked;
-            WaitCheck.IsEnabled = !GlobalVariables.json.OnePeopleModeSettings.Locked;
-            timer = new System.Timers.Timer(GlobalVariables.json.OnePeopleModeSettings.Speed);
             
-            timer.AutoReset = true;
-            timer.Elapsed += Timer_Elapsed;
-            if (GlobalVariables.json.OnePeopleModeSettings.Speed == 0)
-            {
-                GlobalVariables.json.OnePeopleModeSettings.Speed = 20;
-            }
-            if (!GlobalVariables.json.AllSettings.SystemSpeech)
-            {
-                _speechSynthesizer.SelectVoiceByHints(VoiceGender.Female, VoiceAge.Adult); // 选择女声
-                _speechSynthesizer.Rate = GlobalVariables.json.AllSettings.Speed; // 语速 (-10 ~ 10)
-                _speechSynthesizer.Volume = GlobalVariables.json.AllSettings.Volume;
-            }
-            NowNumberText.Foreground = GlobalVariables.json.AllSettings.color;
-            FinishText.Foreground = GlobalVariables.json.AllSettings.color;
-            NowNumberText.FontFamily = GlobalVariables.json.AllSettings.Font;
-            FinishText.FontFamily = GlobalVariables.json.AllSettings.Font;
-            if (GlobalVariables.json.OnePeopleModeSettings.LastName != null)
-            {
-                NowNumberText.Text = GlobalVariables.json.OnePeopleModeSettings.LastName;
-            }
         }
 
 
@@ -120,22 +96,24 @@ namespace NameCube.Mode
             _speechSynthesizer.SpeakAsyncCancelAll();
             if (GlobalVariables.json.AllSettings.Name.Count == 0)
             {
-                MessageBoxFunction.ShowMessageBoxWarning("I live alone.But I don't fell lonely\n翻译：学生名单为空！");
+                SnackBarFunction.ShowSnackBarInMainWindow("学生名单为空！", Wpf.Ui.Controls.ControlAppearance.Caution);
                 StartButton.IsEnabled = true;
                 return;
             }
             if (GlobalVariables.json.AllSettings.Name.Count == 1)
             {
-                MessageBoxFunction.ShowMessageBoxWarning("如果你要恶搞某人，建议前往小工具\n翻译：学生名单只有一位！");
+                SnackBarFunction.ShowSnackBarInMainWindow("如果你要恶搞某人，建议前往小工具\n翻译：学生名单只有一位！", Wpf.Ui.Controls.ControlAppearance.Caution);
                 StartButton.IsEnabled = true;
                 return;
             }
+            var jumpStoryBoard = FindResource("JumpStoryBoard") as Storyboard;
             if (StartButton.Content.ToString() == "开始")
             {
                 FinishText.Visibility = Visibility.Hidden;
                 NowNumberText.Visibility = Visibility.Visible;
                 StartButton.Content = "结束";
                 timer.Interval = GlobalVariables.json.OnePeopleModeSettings.Speed;
+                jumpStoryBoard.Begin();
                 timer.Start();
                 IsReadyToStop = false;
                 StartButton.IsEnabled = true;
@@ -145,6 +123,8 @@ namespace NameCube.Mode
                 if (!GlobalVariables.json.OnePeopleModeSettings.Wait)
                 {
                     StartButton.Content = "暂停中";
+                    jumpStoryBoard.Stop();
+                    jumpStoryBoard.Remove();
                     IsReadyToStop = true;
                     StartButton.IsEnabled = false;
                 }
@@ -152,6 +132,8 @@ namespace NameCube.Mode
                 {
                     string Text = NowNumberText.Text;
                     GlobalVariables.json.OnePeopleModeSettings.LastName = Text;
+                    jumpStoryBoard.Stop();
+                    jumpStoryBoard.Remove();
                     timer.Stop();
                     StartButton.Content = "开始";
                     if (GlobalVariables.json.OnePeopleModeSettings.Speech)
@@ -184,6 +166,36 @@ namespace NameCube.Mode
         {
             GlobalVariables.json.OnePeopleModeSettings.Wait = (bool)WaitCheck.IsChecked;
             GlobalVariables.SaveJson();
+        }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            SpeechCheck.IsChecked = GlobalVariables.json.OnePeopleModeSettings.Speech;
+            WaitCheck.IsChecked = GlobalVariables.json.OnePeopleModeSettings.Wait;
+            SpeechCheck.IsEnabled = !GlobalVariables.json.OnePeopleModeSettings.Locked;
+            WaitCheck.IsEnabled = !GlobalVariables.json.OnePeopleModeSettings.Locked;
+            timer = new System.Timers.Timer(GlobalVariables.json.OnePeopleModeSettings.Speed);
+
+            timer.AutoReset = true;
+            timer.Elapsed += Timer_Elapsed;
+            if (GlobalVariables.json.OnePeopleModeSettings.Speed == 0)
+            {
+                GlobalVariables.json.OnePeopleModeSettings.Speed = 20;
+            }
+            if (!GlobalVariables.json.AllSettings.SystemSpeech)
+            {
+                _speechSynthesizer.SelectVoiceByHints(VoiceGender.Female, VoiceAge.Adult); // 选择女声
+                _speechSynthesizer.Rate = GlobalVariables.json.AllSettings.Speed; // 语速 (-10 ~ 10)
+                _speechSynthesizer.Volume = GlobalVariables.json.AllSettings.Volume;
+            }
+            NowNumberText.Foreground = GlobalVariables.json.AllSettings.color;
+            FinishText.Foreground = GlobalVariables.json.AllSettings.color;
+            NowNumberText.FontFamily = GlobalVariables.json.AllSettings.Font;
+            FinishText.FontFamily = GlobalVariables.json.AllSettings.Font;
+            if (GlobalVariables.json.OnePeopleModeSettings.LastName != null)
+            {
+                NowNumberText.Text = GlobalVariables.json.OnePeopleModeSettings.LastName;
+            }
         }
     }
 }

@@ -63,6 +63,60 @@
                 IsEnabled="True"
                 OffContent="关"
                 OnContent="开" />
+
+        </ui:CardControl>
+        <ui:CardControl
+    x:Name="DisabledAnimationCardContorl"
+    Margin="4"
+    Padding="20,10,20,10"
+    Icon="{ui:SymbolIcon Symbol=FastAcceleration24}">
+            <ui:CardControl.Header>
+                <StackPanel>
+                    <ui:TextBlock
+                Margin="0"
+                FontTypography="BodyStrong"
+                Text="禁用窗口动画"
+                TextWrapping="WrapWithOverflow" />
+                    <ui:TextBlock
+                Appearance="Secondary"
+                Text="禁用主界面窗口显示时的平移动画"
+                TextWrapping="WrapWithOverflow" />
+                </StackPanel>
+            </ui:CardControl.Header>
+            <ui:ToggleSwitch
+        x:Name="DisabledAnimationCheck"
+        HorizontalContentAlignment="Left"
+        Click="DisabledAnimationCheck_Click"
+        IsEnabled="True"
+        OffContent="关"
+        OnContent="开" />
+
+        </ui:CardControl>
+        <ui:CardControl
+Margin="4"
+Padding="20,10,20,10"
+Icon="{ui:SymbolIcon Symbol=ArrowMaximize24}">
+            <ui:CardControl.Header>
+                <StackPanel>
+                    <ui:TextBlock
+            Margin="0"
+            FontTypography="BodyStrong"
+            Text="主窗口默认最大化"
+            TextWrapping="WrapWithOverflow" />
+                    <ui:TextBlock
+            Appearance="Secondary"
+            Text="主界面打开时默认最大化，可以解决一些奇怪的显示问题"
+            TextWrapping="WrapWithOverflow" />
+                </StackPanel>
+            </ui:CardControl.Header>
+            <ui:ToggleSwitch
+    x:Name="MaxSizeCheck"
+    HorizontalContentAlignment="Left"
+    Click="MaxSizeCheck_Click"
+    IsEnabled="True"
+    OffContent="关"
+    OnContent="开" />
+
         </ui:CardControl>
         <ui:CardControl
             Margin="4"
@@ -77,7 +131,7 @@
                         TextWrapping="WrapWithOverflow" />
                     <ui:TextBlock
                         Appearance="Secondary"
-                        Text="推荐不会显示商业信息，主要是关于新版本的内容"
+                        Text="推荐不会在主页显示推荐信息，主要是关于新版本的内容"
                         TextWrapping="WrapWithOverflow" />
                 </StackPanel>
             </ui:CardControl.Header>

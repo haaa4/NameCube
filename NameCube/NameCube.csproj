@@ -27,8 +27,8 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>1</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.1.4.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
@@ -45,7 +45,7 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>x64</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
+    <DebugType>none</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>..\..\输出\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
@@ -68,10 +68,13 @@
     <ManifestKeyFile>NameCube_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <GenerateManifests>true</GenerateManifests>
+    <GenerateManifests>false</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <SignManifests>true</SignManifests>
+    <SignManifests>false</SignManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <TargetZone>LocalIntranet</TargetZone>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -122,13 +125,26 @@
     <Compile Include="Mode\NumberMode.xaml.cs">
       <DependentUpon>NumberMode.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Mode\OldMemoryFactorMode.xaml.cs">
+      <DependentUpon>OldMemoryFactorMode.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Mode\PrepareMode.xaml.cs">
       <DependentUpon>PrepareMode.xaml</DependentUpon>
     </Compile>
     <Compile Include="Notify.xaml.cs">
       <DependentUpon>Notify.xaml</DependentUpon>
     </Compile>
-    <Compile Include="RepeatWarning.xaml.cs">
+    <Compile Include="Setting\DebugPage.xaml.cs">
+      <DependentUpon>DebugPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Setting\ModeSetting\OldMemoryFactorModeSetting.xaml.cs">
+      <DependentUpon>OldMemoryFactorModeSetting.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WarningWindows\ErrorWindow.xaml.cs">
+      <DependentUpon>ErrorWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WarningWindows\GlobalExceptionHandler.cs" />
+    <Compile Include="WarningWindows\RepeatWarning.xaml.cs">
       <DependentUpon>RepeatWarning.xaml</DependentUpon>
     </Compile>
     <Compile Include="Setting\About.xaml.cs">
@@ -194,6 +210,7 @@
     <Compile Include="Setting\Document.xaml.cs">
       <DependentUpon>Document.xaml</DependentUpon>
     </Compile>
+    <Compile Include="SnackBarFunction.cs" />
     <Compile Include="StartToDoSomething.cs" />
     <Compile Include="ToolBox\AutomaticProcess.xaml.cs">
       <DependentUpon>AutomaticProcess.xaml</DependentUpon>
@@ -299,6 +316,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Mode\OldMemoryFactorMode.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Mode\PrepareMode.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -307,7 +328,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="RepeatWarning.xaml">
+    <Page Include="Setting\DebugPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Setting\ModeSetting\OldMemoryFactorModeSetting.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WarningWindows\ErrorWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WarningWindows\RepeatWarning.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -555,9 +588,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Big.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="BallPicture.png" />
   </ItemGroup>
   <ItemGroup>
@@ -594,6 +624,9 @@
     </PackageReference>
     <PackageReference Include="Microsoft.Windows.SDK.Contracts">
       <Version>10.0.26100.3916</Version>
+    </PackageReference>
+    <PackageReference Include="NAudio">
+      <Version>2.2.1</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>13.0.3</Version>
@@ -641,7 +674,28 @@
     <None Include="Image\V1.1_Beta-3.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Image\V1.1.png" />
+    <None Include="Image\V1.1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Image\V1.2_Beta-1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Image\V1.2_Beta-2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Image\V1.2_Beta-3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Video\RepeatWarningVideo.mp4" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Image\V1.2_Beta-4.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Image\V1.2_Beta-5.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\V1.2.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

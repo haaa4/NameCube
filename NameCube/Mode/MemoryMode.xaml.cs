@@ -19,6 +19,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using Windows.UI.Xaml.Controls;
@@ -52,72 +53,7 @@ namespace NameCube.Mode
         {
             InitializeComponent();
             DataContext = this;
-            Directory.CreateDirectory(Path.Combine(GlobalVariables.configDir ,"Mode_data" , "MemoryMode" , "permanent"));
-            Directory.CreateDirectory(Path.Combine(GlobalVariables.configDir , "Mode_data" , "MemoryMode" , "temporary"));
-            string filename = DateTime.Now.ToString("yyyy_M_d_H_m_s ") + ".json";
-            if (GlobalVariables.json.MemoryModeSettings.AutoAddFile)
-            {
-                foreach (string name in GlobalVariables.json.AllSettings.Name)
-                {
-                    AllNames.Add(name);
-                }
-                File.WriteAllText(Path.Combine(GlobalVariables.configDir, "Mode_data", "MemoryMode", "temporary", filename), JsonConvert.SerializeObject(AllNames));
-                AllFiles.Add(filename);
-            }          
-            string[] fileNames1 = Directory.GetFiles(Path.Combine(GlobalVariables.configDir, "Mode_data", "MemoryMode", "permanent"));
-            string[] fileNames2 = Directory.GetFiles(Path.Combine(GlobalVariables.configDir, "Mode_data", "MemoryMode", "temporary"));
-            foreach (string file in fileNames1)
-            {
-                FileInfo fileInfo = new FileInfo(file);
-                AllFiles.Add(fileInfo.Name);
-            }
-            foreach (string file2 in fileNames2)
-            {
-                FileInfo fileInfo = new FileInfo(file2);
-                if (fileInfo.Name != filename)
-                {
-                    
-                    AllFiles.Add(fileInfo.Name);
-                }
-
-            }
-            AllNames = new ObservableCollection<string>();
-            CanChange = false;
-            SpeakCheck.IsChecked = GlobalVariables.json.MemoryModeSettings.Speak;
-            CanChange = true;
-            Canchange = true;
-            timer.Elapsed += Timer_Elapsed;
-            if (GlobalVariables.json.MemoryModeSettings.Speed == 0)
-            {
-                GlobalVariables.json.MemoryModeSettings.Speed = 20;
-            }
-            if (!GlobalVariables.json.AllSettings.SystemSpeech)
-            {
-                _speechSynthesizer.SelectVoiceByHints(VoiceGender.Female, VoiceAge.Adult);
-                _speechSynthesizer.Volume = GlobalVariables.json.AllSettings.Volume;
-                _speechSynthesizer.Rate = GlobalVariables.json.AllSettings.Speed;
-            }
-            if (GlobalVariables.json.MemoryModeSettings.Locked)
-            {
-                SpeakCheck.IsEnabled = false;
-                ChangeButton.IsEnabled=false;
-                DelButton.IsEnabled=false;
-            }
-            ComboBox.SelectedIndex= 0;
-            if(AllFiles.Count==0)
-            {
-                StartButton.IsEnabled = false;
-                ChangeButton.IsEnabled = false;
-                DelButton.IsEnabled = false;
-            }
-            NowNumberText.Foreground = GlobalVariables.json.AllSettings.color;
-            FinishText.Foreground = GlobalVariables.json.AllSettings.color;
-            NowNumberText.FontFamily = GlobalVariables.json.AllSettings.Font;
-            FinishText.FontFamily = GlobalVariables.json.AllSettings.Font;
-            if (GlobalVariables.json.MemoryModeSettings.LastName!=null)
-            {
-                NowNumberText.Text = GlobalVariables.json.MemoryModeSettings.LastName;
-            }
+            
         }
 
 
@@ -150,14 +86,31 @@ namespace NameCube.Mode
         {
             _speechSynthesizer.SpeakAsyncCancelAll();
             StartButton.IsEnabled = false;
+            var jumpStoryBoard = FindResource("JumpStoryBoard") as Storyboard;
             if (StartButton.Content.ToString() == "开始")
             {
+                if (AllNames.Count == 0)
+                {
+                    SnackBarFunction.ShowSnackBarInMainWindow("名单已完成，将删除", ControlAppearance.Primary);
+                    if (AllFiles.Count <= 1)
+                    {
+                        foreach (string name in GlobalVariables.json.AllSettings.Name)
+                        {
+                            AllNames.Add(name);
+                        }
+                        string filename = DateTime.Now.GetTotalMilliseconds().ToString() + ".json";
+                        File.WriteAllText(Path.Combine(GlobalVariables.configDir, "Mode_data", "MemoryMode", "temporary", filename), JsonConvert.SerializeObject(AllNames));
+                    }
+                    Button_Click(sender, e);
+                    return;
+                }
                 timer.Interval = GlobalVariables.json.MemoryModeSettings.Speed;
                 FinishText.Visibility = Visibility.Hidden;
                 NowNumberText.Visibility = Visibility.Visible;
                 ChangeButton.IsEnabled = false;
                 DelButton.IsEnabled = false;
                 StartButton.Content = "结束";
+                jumpStoryBoard.Begin();
                 timer.Start();
                 StartButton.IsEnabled = true;
                 now = 0;
@@ -165,6 +118,8 @@ namespace NameCube.Mode
             else
             {
                 StartButton.Content = "开始";
+                jumpStoryBoard.Stop();
+                jumpStoryBoard.Remove();
                 timer.Stop();
                 string get = NowNumberText.Text;
                 FinishText.Text = get;
@@ -188,7 +143,7 @@ namespace NameCube.Mode
                 }
                 if(AllNames.Count==0)
                 {
-                    MessageBoxFunction.ShowMessageBoxInfo("名单已完成，将删除");
+                    SnackBarFunction.ShowSnackBarInMainWindow("名单已完成，将删除",ControlAppearance.Primary);
                     if(AllFiles.Count<=1)
                     {
                         foreach (string name in GlobalVariables.json.AllSettings.Name)
@@ -368,9 +323,78 @@ namespace NameCube.Mode
             }
             else
             {
-                MessageBoxFunction.ShowMessageBoxWarning("创建过于频繁");
+                SnackBarFunction.ShowSnackBarInMainWindow("创建过于频繁",ControlAppearance.Caution);
             }
         }
 
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            Directory.CreateDirectory(Path.Combine(GlobalVariables.configDir, "Mode_data", "MemoryMode", "permanent"));
+            Directory.CreateDirectory(Path.Combine(GlobalVariables.configDir, "Mode_data", "MemoryMode", "temporary"));
+            string filename = DateTime.Now.ToString("yyyy_M_d_H_m_s ") + ".json";
+            if (GlobalVariables.json.MemoryModeSettings.AutoAddFile)
+            {
+                foreach (string name in GlobalVariables.json.AllSettings.Name)
+                {
+                    AllNames.Add(name);
+                }
+                File.WriteAllText(Path.Combine(GlobalVariables.configDir, "Mode_data", "MemoryMode", "temporary", filename), JsonConvert.SerializeObject(AllNames));
+                AllFiles.Add(filename);
+            }
+            string[] fileNames1 = Directory.GetFiles(Path.Combine(GlobalVariables.configDir, "Mode_data", "MemoryMode", "permanent"));
+            string[] fileNames2 = Directory.GetFiles(Path.Combine(GlobalVariables.configDir, "Mode_data", "MemoryMode", "temporary"));
+            foreach (string file in fileNames1)
+            {
+                FileInfo fileInfo = new FileInfo(file);
+                AllFiles.Add(fileInfo.Name);
+            }
+            foreach (string file2 in fileNames2)
+            {
+                FileInfo fileInfo = new FileInfo(file2);
+                if (fileInfo.Name != filename)
+                {
+
+                    AllFiles.Add(fileInfo.Name);
+                }
+
+            }
+            AllNames.Clear();
+            CanChange = false;
+            SpeakCheck.IsChecked = GlobalVariables.json.MemoryModeSettings.Speak;
+            CanChange = true;
+            Canchange = true;
+            timer.Elapsed += Timer_Elapsed;
+            if (GlobalVariables.json.MemoryModeSettings.Speed == 0)
+            {
+                GlobalVariables.json.MemoryModeSettings.Speed = 20;
+            }
+            if (!GlobalVariables.json.AllSettings.SystemSpeech)
+            {
+                _speechSynthesizer.SelectVoiceByHints(VoiceGender.Female, VoiceAge.Adult);
+                _speechSynthesizer.Volume = GlobalVariables.json.AllSettings.Volume;
+                _speechSynthesizer.Rate = GlobalVariables.json.AllSettings.Speed;
+            }
+            if (GlobalVariables.json.MemoryModeSettings.Locked)
+            {
+                SpeakCheck.IsEnabled = false;
+                ChangeButton.IsEnabled = false;
+                DelButton.IsEnabled = false;
+            }
+            ComboBox.SelectedIndex = 0;
+            if (AllFiles.Count == 0)
+            {
+                StartButton.IsEnabled = false;
+                ChangeButton.IsEnabled = false;
+                DelButton.IsEnabled = false;
+            }
+            NowNumberText.Foreground = GlobalVariables.json.AllSettings.color;
+            FinishText.Foreground = GlobalVariables.json.AllSettings.color;
+            NowNumberText.FontFamily = GlobalVariables.json.AllSettings.Font;
+            FinishText.FontFamily = GlobalVariables.json.AllSettings.Font;
+            if (GlobalVariables.json.MemoryModeSettings.LastName != null)
+            {
+                NowNumberText.Text = GlobalVariables.json.MemoryModeSettings.LastName;
+            }
+        }
     }
 }

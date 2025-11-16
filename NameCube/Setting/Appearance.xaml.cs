@@ -40,6 +40,7 @@ namespace NameCube.Setting
                 GlobalVariables.SaveJson();
                 if (DarkLight.IsChecked.Value)
                 {
+                    MessageBoxFunction.ShowMessageBoxWarning("当前黑暗模式存在较大问题，请勿使用");
                     Wpf.Ui.Appearance.ApplicationThemeManager.Apply(
                         Wpf.Ui.Appearance.ApplicationTheme.Dark, // Theme type
                          Wpf.Ui.Controls.WindowBackdropType.Auto,  // Background type
@@ -86,7 +87,7 @@ namespace NameCube.Setting
                 }
                 catch (Exception ex)
                 {
-                    MessageBoxFunction.ShowMessageBoxWarning(ex.Message);
+                    SnackBarFunction.ShowSnackBarInSettingWindow(ex.Message,Wpf.Ui.Controls.ControlAppearance.Caution);
                     ColorTextBox.Text = null;
                 }
 

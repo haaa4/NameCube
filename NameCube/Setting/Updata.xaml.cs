@@ -59,6 +59,11 @@ namespace NameCube.Setting
             {
                 WarningInfo.IsOpen = true;
             }
+            if(GlobalVariables.json.AllSettings.newVersion!=null)
+            {
+                CaseText.Text = "检测到新的版本：" + GlobalVariables.json.AllSettings.newVersion;
+                UpkButton.IsEnabled = true;
+            }
         }
         bool Canchange;
         private void UpdataFromComputerButton_Click(object sender, RoutedEventArgs e)
@@ -71,6 +76,7 @@ namespace NameCube.Setting
                 Task.Run(() => UpdataFromThisComputer(openFileDialog.FileName, GlobalVariables.configDir));
                 CaseText.Text = "解压缩包中...";
                 NowProgressBar.IsIndeterminate = true;
+                UpkButton.IsEnabled = false;
                 CheckButton.IsEnabled = false;
                 UpdataFromComputerButton.IsEnabled = false;
             }
@@ -96,6 +102,7 @@ namespace NameCube.Setting
                 {
                     NowProgressBar.IsIndeterminate = false;
                     CheckButton.IsEnabled = true;
+                    UpkButton.IsEnabled = true;
                     UpdataFromComputerButton.IsEnabled = true;
                     CaseText.Text = "解压缩失败";
                 });
@@ -109,7 +116,7 @@ namespace NameCube.Setting
                 string path = Path.Combine(UpdataFile, "Updata");
                 File.WriteAllText(Path.Combine(path, "Path.txt"), Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
                 File.Copy(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "NameCubeUpdata.exe"), Path.Combine(path, "NameCubeUpdata.exe"));
-                MessageBoxFunction.ShowMessageBoxInfo("更新程序即将启动，请勿关闭程序,否则可能会导致文件损坏！");
+                SnackBarFunction.ShowSnackBarInSettingWindow("更新程序即将启动，请勿关闭程序,否则可能会导致文件损坏！",Wpf.Ui.Controls.ControlAppearance.Caution);
                 new ToastContentBuilder()
                             .AddArgument("action", "viewConversation")
                             .AddArgument("conversationId", 9813)
@@ -136,6 +143,7 @@ namespace NameCube.Setting
                     {
                         NowProgressBar.IsIndeterminate = false;
                         CheckButton.IsEnabled = true;
+                        UpkButton.IsEnabled = true;
                         UpdataFromComputerButton.IsEnabled = true;
                         CaseText.Text = "准备安装程序失败";
                     });
@@ -148,6 +156,7 @@ namespace NameCube.Setting
                 {
                     NowProgressBar.IsIndeterminate = false;
                     CheckButton.IsEnabled = true;
+                    UpkButton.IsEnabled = true;
                     UpdataFromComputerButton.IsEnabled = true;
                     CaseText.Text = "准备安装程序失败";
                 });
@@ -159,6 +168,7 @@ namespace NameCube.Setting
             CaseText.Text = "获取最新版本中...";
             NowProgressBar.IsIndeterminate = true;
             CheckButton.IsEnabled = false;
+            UpkButton.IsEnabled = false;
             UpdataFromComputerButton.IsEnabled = false;
             string GetVersion = "";
             try
@@ -167,22 +177,27 @@ namespace NameCube.Setting
                     GetVersion = await GithubData.GetLatestReleaseVersionAsync("haaa4", "NameCube");
                 else
                     GetVersion = await GithubData.GetLatestReleaseVersionAsync("haaa4", "NameCube",GlobalVariables.json.AllSettings.token);
-                GlobalVariables.json.AllSettings.UpdataTime = DateTime.Now.ToString("F");
+                GlobalVariables.json.AllSettings.UpdataTime = DateTime.Now.ToString("g");
                 if(GetVersion!=GlobalVariables.Version)
                 {
                     NowProgressBar.IsIndeterminate = false;
-                    NowProgressBar.Value = 0;
-                    CaseText.Text = "检测到新的版本：" + GetVersion + "。5秒后将开始更新";
-                    await Task.Run(() => UpdataFromGithubAsync(GetVersion));
+                    NowProgressBar.Value = NowProgressBar.Maximum;
+                    CaseText.Text = "检测到新的版本：" + GetVersion;
+                    GlobalVariables.json.AllSettings.newVersion= GetVersion;
+                    GlobalVariables.SaveJson();
+                    UpkButton.IsEnabled = true;
+                    CheckText.Text = "上次检查时间:" + GlobalVariables.json.AllSettings.UpdataTime;
                 }
                 else
                 {
-                    NowProgressBar.IsIndeterminate = false;
-                    CheckButton.IsEnabled = true;
-                    UpdataFromComputerButton.IsEnabled = true;
+                    GlobalVariables.json.AllSettings.newVersion= null;
+                    GlobalVariables.SaveJson();
                     CaseText.Text = "已是最新版本";
                     CheckText.Text = "上次检查时间:" + GlobalVariables.json.AllSettings.UpdataTime;
                 }
+                NowProgressBar.IsIndeterminate = false;
+                CheckButton.IsEnabled = true;
+                UpdataFromComputerButton.IsEnabled = true;
             }
             catch (Exception ex)
             {
@@ -195,6 +210,13 @@ namespace NameCube.Setting
         }
         public async Task UpdataFromGithubAsync(string Getversion)
         {
+            this.Dispatcher.Invoke(() =>
+            {
+                NowProgressBar.IsIndeterminate = true;
+                CheckButton.IsEnabled = false;
+                UpkButton.IsEnabled = false;
+                UpdataFromComputerButton.IsEnabled = false;
+            });
             for (int i = 1; i <= 5; i++)
             {
                 Thread.Sleep(1000);
@@ -223,6 +245,7 @@ namespace NameCube.Setting
                     MessageBoxFunction.ShowMessageBoxError(ex.Message);
                     NowProgressBar.IsIndeterminate = false;
                     CheckButton.IsEnabled = true;
+                    UpkButton.IsEnabled = true;
                     UpdataFromComputerButton.IsEnabled = true;
                     CaseText.Text = "清理过往资源失败";
                 });
@@ -249,6 +272,7 @@ namespace NameCube.Setting
                     MessageBoxFunction.ShowMessageBoxError(ex.Message);
                     NowProgressBar.IsIndeterminate = false;
                     CheckButton.IsEnabled = true;
+                    UpkButton.IsEnabled = true;
                     UpdataFromComputerButton.IsEnabled = true;
                     CaseText.Text = "下载失败";
                 });
@@ -319,6 +343,11 @@ namespace NameCube.Setting
                 GlobalVariables.json.AllSettings.token=tokenText.Text;
                 GlobalVariables.SaveJson();
             }
+        }
+
+        private async void UpkButton_Click(object sender, RoutedEventArgs e)
+        {
+            await Task.Run(() => UpdataFromGithubAsync(GlobalVariables.json.AllSettings.newVersion));
         }
     }
 }

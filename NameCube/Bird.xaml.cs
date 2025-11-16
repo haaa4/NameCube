@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using Wpf.Ui.Controls;
@@ -31,17 +32,65 @@ namespace NameCube
         private DispatcherTimer _longPressTimer;
         private Point _dragOffset;
         private bool _isDragging;
+        private Storyboard LongPressAnimation;
+        private POINT LastPosition;
         System.Timers.Timer Hidetimer = new System.Timers.Timer();
         System.Timers.Timer Ab = new System.Timers.Timer();
 
         [DllImport("user32.dll")]
         private static extern bool GetCursorPos(out POINT lpPoint);
+        [DllImport("user32.dll")]
+        private static extern uint GetDpiForWindow(IntPtr hwnd);
+
+        [DllImport("user32.dll")]
+        private static extern IntPtr GetDesktopWindow();
+
+        [DllImport("user32.dll")]
+        private static extern IntPtr GetWindowDpiAwarenessContext(IntPtr hwnd);
+
+        [DllImport("user32.dll")]
+        private static extern int GetDpiForSystem();
+        [DllImport("user32.dll")]
+        private static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
+
+        [DllImport("user32.dll")]
+        private static extern int GetWindowLong(IntPtr hWnd, int nIndex);
+
+        private const int GWL_EXSTYLE = -20;
+        private const int WS_EX_TOOLWINDOW = 0x00000080;
+
 
         [StructLayout(LayoutKind.Sequential)]
         public struct POINT
         {
             public int X;
             public int Y;
+        }
+        private void HideFromTaskView()
+        {
+            var helper = new System.Windows.Interop.WindowInteropHelper(this);
+            var handle = helper.Handle;
+            int extendedStyle = GetWindowLong(handle, GWL_EXSTYLE);
+            SetWindowLong(handle, GWL_EXSTYLE, extendedStyle | WS_EX_TOOLWINDOW);
+        }
+
+        private double GetDpiScaleFactor()
+        {
+            try
+            {
+                var hwnd = new System.Windows.Interop.WindowInteropHelper(this).Handle;
+                if (hwnd != IntPtr.Zero)
+                {
+                    uint dpi = GetDpiForWindow(hwnd);
+                    return dpi / 96.0;
+                }
+            }
+            catch
+            {
+                // 如果API调用失败，使用系统DPI
+                return SystemParameters.PrimaryScreenHeight / 1080.0;
+            }
+            return 1.0;
         }
 
         public Bird()
@@ -54,6 +103,7 @@ namespace NameCube
             }
             InitializeComponent();
             InitializeBehavior();
+            HideFromTaskView();
             InitializePosition();
             //InitializeTrayIcon();
             Initialize();
@@ -82,6 +132,11 @@ namespace NameCube
             {
                 _timer.Start();
             }
+        }
+        protected override void OnSourceInitialized(EventArgs e)
+        {
+            base.OnSourceInitialized(e);
+            HideFromTaskView();
         }
 
         private void Ab_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
@@ -117,7 +172,7 @@ namespace NameCube
             // 长按计时器
             _longPressTimer = new DispatcherTimer
             {
-                Interval = TimeSpan.FromSeconds(1)
+                Interval = TimeSpan.FromSeconds(2)
             };
             _longPressTimer.Tick += LongPress_Tick;
 
@@ -149,7 +204,6 @@ namespace NameCube
 
         private void InitializePosition()
         {
-            // 明确使用WinForms别名
             var screen = WinForms.Screen.PrimaryScreen.WorkingArea;
             if (GlobalVariables.json.BirdSettings.StartLocationWay == 0)
             {
@@ -171,8 +225,18 @@ namespace NameCube
         private void OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             // 开始拖动
+            var dpiScale = GetDpiScaleFactor();
             _dragOffset = e.GetPosition(this);
+            _dragOffset = new Point(_dragOffset.X * dpiScale, _dragOffset.Y * dpiScale);
             _isDragging = true;
+            LongPressAnimation= (Storyboard)FindResource("LongPressAnimation");
+            LastPosition = new POINT
+            {
+                X = (int)Left,
+                Y = (int)Top,
+            };
+
+            LongPressAnimation.Begin();
             CaptureMouse();
 
             // 启动长按计时
@@ -188,6 +252,8 @@ namespace NameCube
             GlobalVariables.json.BirdSettings.StartLocationY = Top;
             GlobalVariables.SaveJson();
             ReleaseMouseCapture();
+            LongPressAnimation.Stop();
+            LongPressAnimation.Remove();
             _longPressTimer.Stop();
 
             // 自动吸附
@@ -198,16 +264,24 @@ namespace NameCube
         private void OnMouseMove(object sender, System.Windows.Input.MouseEventArgs e)
         {
             if (!_isDragging) return;
-            var mousePos = PointToScreen(e.GetPosition(this));
-            Left = mousePos.X - _dragOffset.X;
-            Top = mousePos.Y - _dragOffset.Y;
+
+            var dpiScale = GetDpiScaleFactor();
+            var mousePos = e.GetPosition(this);
+            var screenPoint = PointToScreen(mousePos);
+
+            Left = (screenPoint.X / dpiScale) - _dragOffset.X;
+            Top = (screenPoint.Y / dpiScale) - _dragOffset.Y;
         }
 
 
         private void LongPress_Tick(object sender, EventArgs e)
         {
             _longPressTimer.Stop();
-            if (GlobalVariables.json.BirdSettings.StartWay == 2 || GlobalVariables.json.BirdSettings.StartWay == 4)
+            LongPressAnimation.Stop();
+            LongPressAnimation.Remove();
+            var endTheLongPressAnimation=FindResource("EndTheLongPressAnimation") as Storyboard;
+            endTheLongPressAnimation.Begin();
+            if ((GlobalVariables.json.BirdSettings.StartWay == 2 || GlobalVariables.json.BirdSettings.StartWay == 4)&&Math.Max(Math.Abs(LastPosition.X-Left), Math.Abs(LastPosition.Y - Top))<= GlobalVariables.json.BirdSettings.LongPressMisjudgment)
             {
                 ShowMainWindowAsync();
             }
@@ -274,7 +348,6 @@ namespace NameCube
                 if (mainWindow != null)
                 {
                     mainWindow.ShowThisWindow();
-                    mainWindow.WindowState=WindowState.Normal;
                     mainWindow.NavigationMenu.Navigate(typeof(Mode.Home));
                 }
             });
@@ -325,6 +398,8 @@ namespace NameCube
             ImageBox.Opacity = GlobalVariables.json.BirdSettings.diaphaneity.ToDouble() / 100;
             ImageBox.Height = GlobalVariables.json.BirdSettings.Height;
             ImageBox.Width = GlobalVariables.json.BirdSettings.Width;
+            progressRing.Height=Math.Min(ImageBox.Height, ImageBox.Width);
+            progressRing.Width = Math.Min(ImageBox.Height, ImageBox.Width);
             Width = GlobalVariables.json.BirdSettings.Width + 20;
             Height=GlobalVariables.json.BirdSettings.Height + 20;
 
@@ -340,14 +415,12 @@ namespace NameCube
             ImageBox.Width = GlobalVariables.json.BirdSettings.Width;
             Width = GlobalVariables.json.BirdSettings.Width + 20;
             Height = GlobalVariables.json.BirdSettings.Height + 20;
+            progressRing.Height = Math.Min(ImageBox.Height, ImageBox.Width);
+            progressRing.Width = Math.Min(ImageBox.Height, ImageBox.Width);
             Hidetimer.Interval = 3000;
             Hidetimer.Start();
         }
 
-        private void OnTrayLeftDoubleClick(Wpf.Ui.Tray.Controls.NotifyIcon sender, RoutedEventArgs e)
-        {
-            ShowMainWindowAsync();
-        }
 
         private void MenuOpen_Click(object sender, RoutedEventArgs e)
         {

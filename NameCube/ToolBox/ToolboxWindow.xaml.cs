@@ -2,6 +2,7 @@
 using Masuit.Tools.Win32;
 using System.Speech.Synthesis;
 using System.Windows;
+using System.Windows.Media.Animation;
 
 namespace NameCube.ToolBox
 {
@@ -25,6 +26,15 @@ namespace NameCube.ToolBox
         private void FluentWindow_Loaded(object sender, RoutedEventArgs e)
         {
             NavigationMenu.Navigate(typeof(ToolBox.SpeechToolbox));
+            var showStoryBoard = FindResource("ShowStoryBoard") as Storyboard;
+            showStoryBoard.Stop();
+            showStoryBoard.Remove();
+            border.Visibility = System.Windows.Visibility.Visible;
+            showStoryBoard.Completed += (s, en) =>
+            {
+                border.Visibility = System.Windows.Visibility.Collapsed;
+            };
+            showStoryBoard.Begin();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

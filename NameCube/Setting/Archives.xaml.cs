@@ -71,6 +71,7 @@ namespace NameCube.Setting
                 {
                     WarningInfoBar.IsOpen = true;
                 }
+                GlobalVariables.SaveJson();
             }
         }
 
@@ -84,7 +85,7 @@ namespace NameCube.Setting
 
             if (AddNameTextBox.Text == "" || AddNameTextBox.Text == null)
             {
-                MessageBoxFunction.ShowMessageBoxWarning("大家好，我叫无名氏\n翻译：添加内容为空！");
+                SnackBarFunction.ShowSnackBarInSettingWindow("大家好，我叫无名氏\n翻译：添加内容为空！", Wpf.Ui.Controls.ControlAppearance.Caution);
                 return;
             }
             AllNames.Add(new AllName
@@ -97,7 +98,7 @@ namespace NameCube.Setting
             {
                 WarningInfoBar.IsOpen = true;
             }
-
+            GlobalVariables.SaveJson();
         }
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
@@ -106,6 +107,7 @@ namespace NameCube.Setting
 
             AllNames.Clear();
             GlobalVariables.json.AllSettings.Name.Clear();
+            GlobalVariables.SaveJson();
 
         }
 
@@ -192,6 +194,7 @@ namespace NameCube.Setting
             {
                 WarningInfoBar.IsOpen = true;
             }
+            GlobalVariables.SaveJson();
         }
     }
 }

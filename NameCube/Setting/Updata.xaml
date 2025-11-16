@@ -45,6 +45,14 @@
             Click="CheckButton_Click"
             Content="检查更新"
             FontWeight="Black" />
+        <ui:Button
+    x:Name="UpkButton"
+    Margin="10,0,0,10"
+    Appearance="Primary"
+    Click="UpkButton_Click"
+    Content="更新至最新版本"
+            IsEnabled="False"
+    FontWeight="Black" />
         <ui:Button Margin="10,0,0,0" Content="从本地安装">
             <ui:FlyoutService.Flyout>
                 <ui:Flyout Placement="Bottom">
@@ -125,7 +133,6 @@
                         TextWrapping="WrapWithOverflow" />
                     <ui:TextBlock
                         Appearance="Secondary"
-                        Text="使用令牌后 API 请求限制从 60 次/小时提升到 5000 次/小时"
                         TextWrapping="WrapWithOverflow" />
                 </StackPanel>
             </ui:CardControl.Header>

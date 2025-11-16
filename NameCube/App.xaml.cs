@@ -1,6 +1,7 @@
 ﻿using Masuit.Tools.Logging;
 using Microsoft.Toolkit.Uwp.Notifications;
 using NameCube.Setting;
+using NameCube.WarningWindows;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -25,6 +26,16 @@ namespace NameCube
 
     public partial class App : System.Windows.Application
     {
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        private static extern bool SetProcessDPIAware();
+
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            // 方法1：系统DPI感知
+            if (Environment.OSVersion.Version.Major >= 6)
+                SetProcessDPIAware();
+            base.OnStartup(e);
+        }
         Mutex mutex;
 
         public App()
@@ -34,6 +45,16 @@ namespace NameCube
 
         private void App_Startup(object sender, StartupEventArgs e)
         {
+
+            GlobalExceptionHandler.Initialize();
+            System.Threading.Tasks.TaskScheduler.UnobservedTaskException += (sende, args) =>
+            {
+                args.SetObserved(); 
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    new ErrorWindow(args.Exception).ShowDialog();
+                });
+            };
             bool ret;
             mutex = new Mutex(true, "NameCube", out ret);
             GlobalVariables.ret=ret;

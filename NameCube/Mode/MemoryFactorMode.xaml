@@ -9,9 +9,11 @@
     xmlns:sys="clr-namespace:System;assembly=mscorlib"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     xmlns:vio="http://schemas.lepo.co/wpfui/2022/xaml/violeta"
+    x:Name="page"
     Title="MemoryFactorMode"
-    d:DesignHeight="550"
-    d:DesignWidth="800"
+    d:DesignHeight="614.404"
+    d:DesignWidth="1015.083"
+    Loaded="Page_Loaded"
     mc:Ignorable="d">
     <Page.Resources>
         <CollectionViewSource x:Key="DescendingView" Source="{Binding thisModeJson}">
@@ -23,190 +25,1299 @@
             </CollectionViewSource.LiveSortingProperties>
             <CollectionViewSource.IsLiveSortingRequested>True</CollectionViewSource.IsLiveSortingRequested>
         </CollectionViewSource>
-
+        <Storyboard x:Key="JumpStoryBoard" RepeatBehavior="Forever">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="NowNumberText" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <BackEase EasingMode="EaseOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.2000000" Value="-21.406">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <BackEase EasingMode="EaseOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.4000000" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <BackEase EasingMode="EaseOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="Changegreen">
+            <ColorAnimationUsingKeyFrames Storyboard.TargetName="FloorPart" Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)">
+                <EasingColorKeyFrame KeyTime="00:00:00" Value="#FFF9F9F9" />
+                <EasingColorKeyFrame KeyTime="00:00:00.5000000" Value="#FF2BFF00" />
+                <EasingColorKeyFrame KeyTime="00:00:01" Value="White" />
+            </ColorAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="ChangeYellow">
+            <ColorAnimationUsingKeyFrames Storyboard.TargetName="FloorPart" Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)">
+                <EasingColorKeyFrame KeyTime="00:00:00" Value="#FFF9F9F9" />
+                <EasingColorKeyFrame KeyTime="00:00:00.5000000" Value="#FFFFF500" />
+                <EasingColorKeyFrame KeyTime="00:00:01" Value="White" />
+            </ColorAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="NewAddStoryBoard">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="AddText1" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="20">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <BackEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.5000000" Value="1">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <BackEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:01.3000000" Value="1" />
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="AddText2" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="20">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <BackEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.5000000" Value="1">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <BackEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:01.3000000" Value="1" />
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="AddText3" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="20">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <BackEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.5000000" Value="1">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <BackEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:01.3000000" Value="1" />
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="AddText4" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="20">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <BackEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.5000000" Value="1">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <BackEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:01.3000000" Value="1" />
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="AddText5" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="20">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <BackEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.5000000" Value="1">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <BackEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:01.3000000" Value="1" />
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="AddText6" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="20">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <BackEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.5000000" Value="1">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <BackEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:01.3000000" Value="1" />
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="AddText1" Storyboard.TargetProperty="(UIElement.Opacity)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <BackEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.5000000" Value="1">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <BackEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:01.3000000" Value="1" />
+                <EasingDoubleKeyFrame KeyTime="00:00:01.7000000" Value="0" />
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="AddText2" Storyboard.TargetProperty="(UIElement.Opacity)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <BackEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.5000000" Value="1">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <BackEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:01.3000000" Value="1" />
+                <EasingDoubleKeyFrame KeyTime="00:00:01.7000000" Value="0" />
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="AddText3" Storyboard.TargetProperty="(UIElement.Opacity)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <BackEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.5000000" Value="1">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <BackEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:01.3000000" Value="1" />
+                <EasingDoubleKeyFrame KeyTime="00:00:01.7000000" Value="0" />
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="AddText4" Storyboard.TargetProperty="(UIElement.Opacity)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <BackEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.5000000" Value="1">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <BackEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:01.3000000" Value="1" />
+                <EasingDoubleKeyFrame KeyTime="00:00:01.7000000" Value="0" />
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="AddText5" Storyboard.TargetProperty="(UIElement.Opacity)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <BackEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.5000000" Value="1">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <BackEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:01.3000000" Value="1" />
+                <EasingDoubleKeyFrame KeyTime="00:00:01.7000000" Value="0" />
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="AddText6" Storyboard.TargetProperty="(UIElement.Opacity)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <BackEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.5000000" Value="1">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <BackEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:01.3000000" Value="1" />
+                <EasingDoubleKeyFrame KeyTime="00:00:01.7000000" Value="0" />
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="FlickerFloorRec"/>
+        <Storyboard x:Key="ExchangeStoryBoard" RepeatBehavior="Forever">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="ExchangeLeftFactor" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <BackEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:01" Value="396">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <BackEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:01.5000000" Value="396" />
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="ExchangeLeftFactor" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <BackEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:01" Value="4">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <BackEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:01.5000000" Value="4" />
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="ExchangeRightFactor" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <BackEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:01" Value="-400">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <BackEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:01.5000000" Value="-400" />
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="GetFromOtherStoryBoard" RepeatBehavior="Forever">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="ChangeFactor" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <BackEase EasingMode="EaseIn" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:01" Value="-268.963">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <BackEase EasingMode="EaseIn" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:02" Value="-268.963" />
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="ChangeFactor" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <BackEase EasingMode="EaseIn" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:01" Value="-0.004">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <BackEase EasingMode="EaseIn" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:02" Value="-0.004" />
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="ChangeRed">
+            <ColorAnimationUsingKeyFrames Storyboard.TargetName="FloorPart" Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)">
+                <EasingColorKeyFrame KeyTime="00:00:00" Value="Transparent" />
+                <EasingColorKeyFrame KeyTime="00:00:00.5000000" Value="Red" />
+                <EasingColorKeyFrame KeyTime="00:00:01" Value="Transparent" />
+            </ColorAnimationUsingKeyFrames>
+        </Storyboard>
     </Page.Resources>
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="3*" />
-            <ColumnDefinition Width="1*" />
-            <ColumnDefinition Width="200" />
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="300" />
-            <RowDefinition Height="100" />
-            <RowDefinition Height="1*" />
-        </Grid.RowDefinitions>
-        <TextBlock
-            x:Name="NowNumberText"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"
-            FontSize="150"
-            Foreground="#30d7d7"
-            Text="XXX" />
-        <TextBlock
-            x:Name="FinishNumberText"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"
-            FontSize="150"
-            Foreground="#30d7d7"
-            Text="XXX"
-            Visibility="Hidden" />
-        <TextBlock
-            x:Name="LastFactorText"
-            Grid.Row="1"
-            HorizontalAlignment="Center"
-            FontSize="30"
-            Text="......" />
-        <ui:Button
-            x:Name="StartButton"
-            Grid.Row="1"
-            Grid.RowSpan="2"
-            Width="200"
-            Height="100"
-            HorizontalAlignment="Center"
-            Click="StartButton_Click"
-            Content="开始"
-            FontFamily="Segoe UI"
-            FontSize="72"
-            FontWeight="Black" />
-        <ui:DataGrid
-            Grid.RowSpan="2"
-            Grid.Column="1"
-            AutoGenerateColumns="False"
-            IsReadOnly="True"
-            IsSynchronizedWithCurrentItem="False"
-            ItemsSource="{Binding Source={StaticResource DescendingView}}">
-            <ui:DataGrid.Columns>
-                <DataGridTextColumn
-                    Binding="{Binding Name}"
-                    FontSize="25"
-                    Header="姓名" />
-                <DataGridTextColumn
-                    Binding="{Binding Factor}"
-                    FontSize="25"
-                    Header="因子" />
-            </ui:DataGrid.Columns>
-        </ui:DataGrid>
-        <StackPanel
-            Grid.Row="2"
-            Grid.Column="1"
-            Grid.ColumnSpan="2">
-
-            <ui:Button
-                x:Name="ResetButton"
-                Grid.Row="1"
-                Grid.Column="1"
-                Margin="0,0,0,0"
-                VerticalAlignment="Top"
-                Content="重置概率因子"
-                FontSize="36"
-                Foreground="Red">
-                <ui:FlyoutService.Flyout>
-                    <ui:Flyout Placement="Bottom">
-                        <StackPanel>
-                            <TextBlock HorizontalAlignment="Left" Text="确定重置概率因子吗？（重置概率因子后配置文件不会删除，而是会创建一个备份,但保底数据会被清空）" />
-                            <Button Click="ResetButton_Click" Content="确定" />
-                        </StackPanel>
-                    </ui:Flyout>
-                </ui:FlyoutService.Flyout>
-            </ui:Button>
-            <CheckBox
-                x:Name="SpeechButton"
-                Click="CheckBox_Click"
-                Content="启用朗读" />
-        </StackPanel>
-        <StackPanel Grid.RowSpan="3" Grid.Column="2">
+    <Viewbox Stretch="Uniform">
+        <Canvas Width="1049" Height="595">
             <TextBlock
-                HorizontalAlignment="Center"
-                FontSize="30"
-                Text="当前概率最高" />
-            <TextBlock
-                x:Name="MaxIndexName"
-                HorizontalAlignment="Center"
-                FontSize="30"
-                Text="XXX" />
-            <TextBlock
-                x:Name="MaxIndexText"
-                HorizontalAlignment="Center"
-                FontSize="30"
-                Text="XXX" />
-            <TextBlock
-                HorizontalAlignment="Center"
-                FontSize="20"
-                Text="真实概率" />
-            <TextBlock
-                x:Name="MaxIndexRealProbability"
-                HorizontalAlignment="Center"
-                FontSize="20"
-                Text="XXX" />
-            <TextBlock
-                x:Name="Mininum"
-                HorizontalAlignment="Center"
-                FontSize="20"
-                Text="距离进入保底阶段"
-                Visibility="Visible" />
-
-            <TextBlock
-                x:Name="MinimumText"
-                HorizontalAlignment="Center"
-                FontSize="20"
+                x:Name="NowNumberText"
+                Canvas.Left="10"
+                Canvas.Top="63.123"
+                Width="611"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                FontSize="150"
+                Foreground="#30d7d7"
                 Text="XXX"
-                Visibility="Visible" />
+                TextAlignment="Center">
+                <TextBlock.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform />
+                        <SkewTransform />
+                        <RotateTransform />
+                        <TranslateTransform />
+                    </TransformGroup>
+                </TextBlock.RenderTransform>
+            </TextBlock>
+            <TextBlock
+                x:Name="FinishNumberText"
+                Canvas.Left="10"
+                Canvas.Top="63.123"
+                Width="611"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                Panel.ZIndex="12"
+                FontSize="150"
+                Foreground="#30d7d7"
+                Text="XXX"
+                TextAlignment="Center"
+                Visibility="Hidden" />
+            <TextBlock
+                x:Name="LastFactorText"
+                Canvas.Top="10"
+                Width="608"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Panel.ZIndex="-8"
+                FontSize="72"
+                Foreground="Gray"
+                Opacity="0.22"
+                Text="......"
+                TextAlignment="Center"
+                TextDecorations="Underline" Canvas.Left="13" />
+            <ui:Button
+                x:Name="StartButton"
+                Grid.Row="1"
+                Canvas.Left="204"
+                Canvas.Top="303"
+                Width="200"
+                Height="100"
+                VerticalAlignment="Top"
+                Click="StartButton_Click"
+                Content="开始"
+                FontFamily="Segoe UI"
+                FontSize="72"
+                FontWeight="Black" />
+            <StackPanel
+                Grid.Row="2"
+                Grid.Column="1"
+                Grid.ColumnSpan="2" />
+            <Canvas
+                x:Name="canvas"
+                Grid.RowSpan="3"
+                Grid.Column="1"
+                Grid.ColumnSpan="2"
+                Canvas.Left="621"
+                Canvas.Top="3">
+                <ui:Border
+                    x:Name="FloorPart"
+                    Canvas.Left="262.85"
+                    Canvas.Top="86.5"
+                    Width="140"
+                    Height="464"
+                    Padding="5,5,5,1"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Top"
+                    Background="White"
+                    BorderThickness="3,3,3,3" CornerRadius="10,10,10,10">
+                    <ui:Border.BorderBrush>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="Black"/>
+                            <GradientStop Color="White" Offset="1"/>
+                        </LinearGradientBrush>
+                    </ui:Border.BorderBrush>
+                    <Canvas Margin="-6,0,0,0">
+                        <Canvas x:Name="NotGuaranteed" Height="456" Width="134">
+                            <ProgressBar x:Name="GuaranteedProgressBar" Height="88" Canvas.Left="28.262" Canvas.Top="440.736" Width="359" HorizontalAlignment="Left" VerticalAlignment="Center" Maximum="10">
+                                <ProgressBar.RenderTransform>
+                                    <TransformGroup>
+                                        <ScaleTransform/>
+                                        <SkewTransform AngleY="0"/>
+                                        <RotateTransform Angle="270"/>
+                                        <TranslateTransform X="0"/>
+                                    </TransformGroup>
+                                </ProgressBar.RenderTransform>
+                            </ProgressBar>
+                            <ui:TextBlock x:Name="RemainingGuaranteedAttempts" Canvas.Left="58.358" TextWrapping="Wrap" Canvas.Top="376.436" Foreground="White" FontSize="48" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Bold" TextAlignment="Center" Text="X"/>
+                        </Canvas>
+                        <ui:TextBlock
+                            Canvas.Left="20"
+                            Canvas.Top="10"
+                            Width="108"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            FontSize="24"
+                            TextWrapping="Wrap">
+                            <Run Language="zh-cn" Text="保底状态" />
+                        </ui:TextBlock>
+                        <ui:TextBlock
+                            x:Name="NowMaxTimesState"
+                            Canvas.Left="23.5"
+                            Canvas.Top="45.48"
+                            Width="91"
+                            Height="50"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            FontSize="22"
+                            TextAlignment="Center"
+                            TextWrapping="Wrap">
+                            <Run Language="zh-cn" Text="等待保底" />
+                        </ui:TextBlock>
+                        <Canvas x:Name="Guaranteed" Height="456" Width="134">
+                            <ui:ProgressRing Canvas.Left="13.44" Canvas.Top="204.566" HorizontalAlignment="Left" VerticalAlignment="Center" Height="121" Width="121" IsIndeterminate="True"/>
+                            <ui:TextBlock Canvas.Left="10" TextWrapping="Wrap" Canvas.Top="242.206" Foreground="#FF00EDFF" FontSize="36" FontWeight="Bold" TextAlignment="Center" HorizontalAlignment="Left" VerticalAlignment="Center" Text="{Binding Text, ElementName=MaxIndexRealProbability}" Width="137"/>
+                        </Canvas>
+                    </Canvas>
+                </ui:Border>
+                <ui:Border
+                    x:Name="IncidentPart"
+                    Canvas.Left="-594.15"
+                    Canvas.Top="423.156"
+                    Width="816"
+                    Height="127"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Top"
+                    Background="White"
+                    BorderThickness="3,3,3,3" CornerRadius="10,10,10,10">
+                    <ui:Border.BorderBrush>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="Black" Offset="0"/>
+                            <GradientStop Color="White" Offset="1"/>
+                            <GradientStop Color="White" Offset="1"/>
+                        </LinearGradientBrush>
+                    </ui:Border.BorderBrush>
+                    <Canvas>
+                        <Canvas Width="814" Height="125">
+                            <Canvas x:Name="DeterminedByFatePart" Height="125" Width="814" Visibility="Collapsed">
+                                <TextBlock Canvas.Left="152" TextWrapping="Wrap" Canvas.Top="32.02" Height="74" Width="510" FontSize="48" HorizontalAlignment="Center" VerticalAlignment="Top" FontWeight="Bold"><Run Language="zh-cn" Text="下一次必抽取前六名！"/></TextBlock>
+                            </Canvas>
+                            <Canvas
+                                x:Name="SkipPart"
+                                Width="814"
+                                Height="125" Visibility="Collapsed">
+                                <TextBlock
+                                    Canvas.Left="100.791"
+                                    Canvas.Top="42.717"
+                                    Width="81"
+                                    Height="52"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Top"
+                                    FontSize="36"
+                                    TextWrapping="Wrap"><Run Language="zh-cn" Text="跳过" /><LineBreak /><Run Language="zh-cn" /></TextBlock>
+                                <TextBlock
+                                    x:Name="BeSkipedName"
+                                    Canvas.Left="186.791"
+                                    Canvas.Top="30.541"
+                                    Width="199"
+                                    Height="58"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Top"
+                                    FontSize="48"
+                                    FontWeight="Bold"
+                                    Text="野兽先辈"
+                                    TextAlignment="Center"
+                                    TextWrapping="Wrap" />
+                                <TextBlock
+                                    Canvas.Left="390.791"
+                                    Canvas.Top="42.717"
+                                    Width="81"
+                                    Height="52"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Center"
+                                    FontSize="36"
+                                    Text="改为"
+                                    TextWrapping="Wrap" />
+                                <TextBlock
+                                    x:Name="AfterNowName"
+                                    Canvas.Left="476.791"
+                                    Canvas.Top="30.53"
+                                    Width="199"
+                                    Height="58"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Center"
+                                    FontSize="48"
+                                    FontWeight="Bold"
+                                    Text="孙爱川"
+                                    TextAlignment="Center"
+                                    TextWrapping="Wrap" />
+                                <TextBlock
+                                    Canvas.Left="186.791"
+                                    Canvas.Top="88.437"
+                                    Width="129"
+                                    Height="52"
+                                    FontSize="24"
+                                    TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Center" Text="将继承分数"/>
+                                <TextBlock x:Name="AfterSkipNowFactor"
+                                    Canvas.Left="315.791"
+                                    Canvas.Top="88.437"
+                                    Width="116"
+                                    Height="52"
+                                    FontSize="26"
+                                    TextWrapping="Wrap" Text="114" HorizontalAlignment="Left" VerticalAlignment="Center" FontWeight="Bold"/>
+                            </Canvas>
+                            <Canvas
+                                x:Name="DoubleMorePart"
+                                Width="814"
+                                Height="125"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Visibility="Collapsed">
+                                <TextBlock
+                                    x:Name="DoubleName"
+                                    Canvas.Left="18.65"
+                                    Canvas.Top="43.844"
+                                    Width="236"
+                                    Height="54"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Center"
+                                    FontSize="48"
+                                    FontWeight="Bold"
+                                    Text="野兽先辈"
+                                    TextAlignment="Right"
+                                    TextWrapping="Wrap" />
+                                <TextBlock
+                                    x:Name="DoublePast"
+                                    Canvas.Left="259.65"
+                                    Canvas.Top="56.031"
+                                    Width="97"
+                                    Height="54"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Center"
+                                    FontSize="36"
+                                    Text="114"
+                                    TextAlignment="Justify"
+                                    TextWrapping="Wrap" />
+                                <TextBlock
+                                    Canvas.Left="375.451"
+                                    Canvas.Top="37.311"
+                                    Width="97"
+                                    Height="54"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Top"
+                                    FontSize="72"
+                                    Text="→"
+                                    TextAlignment="Justify"
+                                    TextWrapping="Wrap" />
+                                <TextBlock
+                                    x:Name="DoubleAdd"
+                                    Canvas.Left="323.115"
+                                    Canvas.Top="19.468"
+                                    Width="169"
+                                    Height="54"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Center"
+                                    FontSize="36"
+                                    Text="X1.5"
+                                    TextAlignment="Center"
+                                    TextWrapping="Wrap" />
+                                <TextBlock
+                                    x:Name="DoubleNow"
+                                    Canvas.Left="496.986"
+                                    Canvas.Top="28.604"
+                                    Width="330"
+                                    Height="87"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Center"
+                                    FontSize="72"
+                                    FontWeight="Bold"
+                                    Text="514"
+                                    TextWrapping="Wrap" />
+                            </Canvas>
+                            <Canvas
+                                x:Name="ExchangePart"
+                                Width="814"
+                                Height="125"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Top"
+                                Visibility="Collapsed">
+                                <TextBlock
+                                    x:Name="ExchangeLeftName"
+                                    Canvas.Left="122.65"
+                                    Canvas.Top="18.32"
+                                    Width="197"
+                                    Height="54"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Center"
+                                    FontSize="48"
+                                    FontWeight="Bold"
+                                    Foreground="Red"
+                                    Text="野兽先辈"
+                                    TextAlignment="Center"
+                                    TextWrapping="Wrap" />
+                                <TextBlock
+                                    x:Name="ExchangeLeftFactor"
+                                    Canvas.Left="122.65"
+                                    Canvas.Top="70.123"
+                                    Width="197"
+                                    Height="54"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    FontSize="36"
+                                    Foreground="Red"
+                                    RenderTransformOrigin="0.5,0.5"
+                                    Text="114"
+                                    TextAlignment="Center"
+                                    TextWrapping="Wrap">
+                                    <TextBlock.RenderTransform>
+                                        <TransformGroup>
+                                            <ScaleTransform />
+                                            <SkewTransform />
+                                            <RotateTransform />
+                                            <TranslateTransform />
+                                        </TransformGroup>
+                                    </TextBlock.RenderTransform>
+                                </TextBlock>
+                                <TextBlock
+                                    Canvas.Left="359.65"
+                                    Canvas.Top="10"
+                                    Width="158"
+                                    Height="54"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Center"
+                                    FontSize="72"
+                                    Text="←→"
+                                    TextAlignment="Justify"
+                                    TextWrapping="Wrap" />
+                                <TextBlock
+                                    x:Name="ExchangeRightName"
+                                    Canvas.Left="517.65"
+                                    Canvas.Top="18.32"
+                                    Width="197"
+                                    Height="54"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Center"
+                                    FontSize="48"
+                                    FontWeight="Bold"
+                                    Foreground="#FF00CAFF"
+                                    Text="孙爱川"
+                                    TextAlignment="Center"
+                                    TextWrapping="Wrap" />
+                                <TextBlock
+                                    x:Name="ExchangeRightFactor"
+                                    Canvas.Left="517.65"
+                                    Canvas.Top="73.603"
+                                    Width="197"
+                                    Height="54"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Top"
+                                    FontSize="36"
+                                    Foreground="#FF00CAFF"
+                                    RenderTransformOrigin="0.5,0.5"
+                                    Text="514"
+                                    TextAlignment="Center"
+                                    TextWrapping="Wrap">
+                                    <TextBlock.RenderTransform>
+                                        <TransformGroup>
+                                            <ScaleTransform />
+                                            <SkewTransform />
+                                            <RotateTransform />
+                                            <TranslateTransform />
+                                        </TransformGroup>
+                                    </TextBlock.RenderTransform>
+                                </TextBlock>
+                            </Canvas>
+                            <Canvas
+                                x:Name="FloorAddPart"
+                                Width="814"
+                                Height="125"
+                                Visibility="Collapsed">
+                                <TextBlock
+                                    Canvas.Left="146.001"
+                                    Canvas.Top="48.767"
+                                    Width="308"
+                                    Height="52"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Center"
+                                    Cursor=""
+                                    FontSize="36"
+                                    Text="保底次数额外增加"
+                                    TextWrapping="Wrap" />
+                                <TextBlock
+                                    x:Name="FloorAdd"
+                                    Canvas.Left="429.871"
+                                    Canvas.Top="23.56"
+                                    Width="304"
+                                    Height="77"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Top"
+                                    FontSize="72"
+                                    FontWeight="Bold"
+                                    Text="114514"
+                                    TextWrapping="Wrap" />
+                            </Canvas>
+                            <Canvas
+                                x:Name="GetFactorFromOtherPart"
+                                Width="814"
+                                Height="125"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Top"
+                                Visibility="Collapsed">
+                                <TextBlock
+                                    x:Name="GetFactorFromOtherName"
+                                    Canvas.Left="171"
+                                    Canvas.Top="1.54"
+                                    Width="236"
+                                    Height="54"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Center"
+                                    FontSize="48"
+                                    FontWeight="Bold"
+                                    Text="野兽先辈"
+                                    TextAlignment="Center"
+                                    TextWrapping="Wrap" />
+                                <TextBlock
+                                    x:Name="BeforeGetOtherFactorFactor"
+                                    Canvas.Left="178.65"
+                                    Canvas.Top="61"
+                                    Width="97"
+                                    Height="54"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Center"
+                                    FontSize="36"
+                                    Text="114"
+                                    TextAlignment="Right"
+                                    TextWrapping="Wrap" />
+                                <TextBlock
+                                    Canvas.Left="435.54"
+                                    Canvas.Top="-13.7"
+                                    Width="97"
+                                    Height="56"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Center"
+                                    FontSize="72"
+                                    Text="←"
+                                    TextAlignment="Justify"
+                                    TextWrapping="Wrap" />
+                                <TextBlock
+                                    x:Name="ChangeFactor"
+                                    Canvas.Left="558.54"
+                                    Canvas.Top="61"
+                                    Width="97"
+                                    Height="54"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Center"
+                                    FontSize="36"
+                                    RenderTransformOrigin="0.5,0.5"
+                                    Text="514"
+                                    TextAlignment="Center"
+                                    TextWrapping="Wrap">
+                                    <TextBlock.RenderTransform>
+                                        <TransformGroup>
+                                            <ScaleTransform />
+                                            <SkewTransform />
+                                            <RotateTransform />
+                                            <TranslateTransform />
+                                        </TransformGroup>
+                                    </TextBlock.RenderTransform>
+                                </TextBlock>
+                                <TextBlock
+                                    Canvas.Left="275.65"
+                                    Canvas.Top="61"
+                                    Width="26"
+                                    Height="54"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Center"
+                                    FontSize="36"
+                                    Text="+"
+                                    TextAlignment="Justify"
+                                    TextWrapping="Wrap" />
+                                <TextBlock
+                                    x:Name="BeDeductedName"
+                                    Canvas.Left="537.54"
+                                    Canvas.Top="1.54"
+                                    Width="236"
+                                    Height="54"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Center"
+                                    FontSize="48"
+                                    FontWeight="Bold"
+                                    Text="孙爱川"
+                                    TextAlignment="Center"
+                                    TextWrapping="Wrap" />
+                                <TextBlock
+                                    Canvas.Left="655.54"
+                                    Canvas.Top="61"
+                                    Width="26"
+                                    Height="54"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Center"
+                                    FontSize="36"
+                                    Text="+"
+                                    TextAlignment="Justify"
+                                    TextWrapping="Wrap" />
+                                <TextBlock
+                                    x:Name="NowBeDeductedFactor"
+                                    Canvas.Left="687.24"
+                                    Canvas.Top="61"
+                                    Width="122"
+                                    Height="54"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Center"
+                                    FontSize="36"
+                                    Text="1919"
+                                    TextWrapping="Wrap" />
+                            </Canvas>
+                        </Canvas>
+                        <TextBlock
+                            Canvas.Left="10"
+                            Canvas.Top="10"
+                            Width="69"
+                            Height="26"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            FontSize="22"
+                            FontWeight="Bold"
+                            TextWrapping="Wrap"><Run Language="zh-cn" Text="事件：" /></TextBlock>
+                        <TextBlock
+                            x:Name="incidentName"
+                            Canvas.Left="66"
+                            Canvas.Top="10"
+                            Width="105"
+                            Height="26"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            FontSize="22"
+                            FontWeight="Bold"
+                            Text="..."
+                            TextWrapping="Wrap" />
+                    </Canvas>
+                </ui:Border>
+                <TextBlock
+                    x:Name="MaxIndexRealProbability"
+                    Canvas.Left="265.8"
+                    Canvas.Top="46.73"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    FontSize="20"
+                    Text="XXX" />
+                <TextBlock
+                    x:Name="Count"
+                    Canvas.Left="85.662"
+                    Canvas.Top="389.636"
+                    Width="158"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    FontSize="25"
+                    Text="XXX" />
+                <ui:TextBlock
+                    Canvas.Left="25.662"
+                    Canvas.Top="31.75"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Top"
+                    FontSize="36"
+                    Foreground="Red"
+                    TextWrapping="Wrap">
+                    <Run Language="zh-cn" Text="1" />
+                </ui:TextBlock>
+                <ui:TextBlock
+                    Canvas.Left="25.662"
+                    Canvas.Top="82.47"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    FontSize="36"
+                    Foreground="#FFFFBB00"
+                    TextWrapping="Wrap">
+                    <Run Language="zh-cn" Text="2" />
+                </ui:TextBlock>
+                <ui:TextBlock
+                    Canvas.Left="25.662"
+                    Canvas.Top="135.252"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    FontSize="36"
+                    Foreground="#FFADB700"
+                    TextWrapping="Wrap">
+                    <Run Language="zh-cn" Text="3" />
+                </ui:TextBlock>
+                <ui:TextBlock
+                    Canvas.Left="25.662"
+                    Canvas.Top="183.81"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    FontSize="36"
+                    TextWrapping="Wrap">
+                    <Run Language="zh-cn" Text="4" />
+                </ui:TextBlock>
+                <ui:TextBlock
+                    Canvas.Left="25.662"
+                    Canvas.Top="233.38"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Top"
+                    FontSize="36"
+                    TextWrapping="Wrap">
+                    <Run Language="zh-cn" Text="5" />
+                </ui:TextBlock>
+                <ui:TextBlock
+                    Canvas.Left="25.662"
+                    Canvas.Top="280.916"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Top"
+                    FontSize="36"
+                    TextWrapping="Wrap">
+                    <Run Language="zh-cn" Text="6" />
+                </ui:TextBlock>
+                <ui:TextBlock
+                    x:Name="No2Name"
+                    Canvas.Left="65.17"
+                    Canvas.Top="82"
+                    Background="#00FF0000"
+                    FontSize="36"
+                    TextWrapping="Wrap">
+                    <Run Language="zh-cn" Text="XXX" />
+                </ui:TextBlock>
+                <ui:TextBlock
+                    x:Name="No1Name"
+                    Canvas.Left="65.17"
+                    Canvas.Top="32"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    AutomationProperties.Name="No1Name"
+                    Background="#00FF0000"
+                    FontSize="36"
+                    Foreground="Black"
+                    Text="XXX"
+                    TextWrapping="Wrap" />
+                <ui:TextBlock
+                    x:Name="No3Name"
+                    Canvas.Left="65.17"
+                    Canvas.Top="132"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Background="#00FF0000"
+                    FontSize="36"
+                    TextWrapping="Wrap">
+                    <Run Language="zh-cn" Text="XXX" />
+                </ui:TextBlock>
+                <ui:TextBlock
+                    x:Name="No5Name"
+                    Canvas.Left="65.17"
+                    Canvas.Top="232"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Background="#00FF0000"
+                    FontSize="36"
+                    TextWrapping="Wrap">
+                    <Run Language="zh-cn" Text="XXX" />
+                </ui:TextBlock>
+                <ui:TextBlock
+                    x:Name="No4Name"
+                    Canvas.Left="65.17"
+                    Canvas.Top="182"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Background="#00FF0000"
+                    FontSize="36"
+                    TextWrapping="Wrap">
+                    <Run Language="zh-cn" Text="XXX" />
+                </ui:TextBlock>
+                <ui:TextBlock
+                    x:Name="No6Name"
+                    Canvas.Left="65.17"
+                    Canvas.Top="282"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Top"
+                    Background="#00FF0000"
+                    FontSize="36"
+                    TextWrapping="Wrap">
+                    <Run Language="zh-cn" Text="XXX" />
+                </ui:TextBlock>
+                <ui:TextBlock
+                    x:Name="No1Factor"
+                    Canvas.Left="211.41"
+                    Canvas.Top="44"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    Background="#00FF0000"
+                    FontSize="24"
+                    Text="XXX"
+                    TextWrapping="Wrap" />
+                <ui:TextBlock
+                    x:Name="No2Factor"
+                    Canvas.Left="211.41"
+                    Canvas.Top="94"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    Background="#00FF0000"
+                    FontSize="24"
+                    RenderTransformOrigin="1.419,0.482"
+                    Text="XXX"
+                    TextWrapping="Wrap" />
+                <ui:TextBlock
+                    x:Name="No4Factor"
+                    Canvas.Left="211.41"
+                    Canvas.Top="194"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    Background="#00FF0000"
+                    FontSize="24"
+                    Text="XXX"
+                    TextWrapping="Wrap" />
+                <ui:TextBlock
+                    x:Name="No3Factor"
+                    Canvas.Left="211.41"
+                    Canvas.Top="144"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    Background="#00FF0000"
+                    FontSize="24"
+                    Text="XXX"
+                    TextWrapping="Wrap" />
+                <ui:TextBlock
+                    x:Name="No6Factor"
+                    Canvas.Left="211.41"
+                    Canvas.Top="294"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    Background="#00FF0000"
+                    FontSize="24"
+                    Text="XXX"
+                    TextWrapping="Wrap" />
+                <ui:TextBlock
+                    x:Name="No5Factor"
+                    Canvas.Left="211.41"
+                    Canvas.Top="244"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    Background="#00FF0000"
+                    FontSize="24"
+                    Text="XXX"
+                    TextWrapping="Wrap" />
+                <ui:Button
+                    Canvas.Left="25.662"
+                    Canvas.Top="331.636"
+                    Width="235"
+                    Height="53"
+                    Panel.ZIndex="1000"
+                    Background="White"
+                    Content="查看更多...">
+                    <ui:FlyoutService.Flyout>
+                        <ui:Flyout Placement="Bottom">
+                            <StackPanel>
+                                <ui:DataGrid
+                                    Grid.RowSpan="2"
+                                    Grid.Column="1"
+                                    MaxHeight="500"
+                                    d:IsHidden="True"
+                                    AutoGenerateColumns="False"
+                                    IsReadOnly="True"
+                                    IsSynchronizedWithCurrentItem="False"
+                                    ItemsSource="{Binding Source={StaticResource DescendingView}}">
+                                    <ui:DataGrid.Columns>
+                                        <DataGridTextColumn
+                                            Binding="{Binding Name}"
+                                            FontSize="25"
+                                            Header="姓名" />
+                                        <DataGridTextColumn
+                                            Binding="{Binding Factor}"
+                                            FontSize="25"
+                                            Header="因子" />
+                                    </ui:DataGrid.Columns>
+                                </ui:DataGrid>
+                            </StackPanel>
+                        </ui:Flyout>
+                    </ui:FlyoutService.Flyout>
+                </ui:Button>
+                <TextBlock
+                    Canvas.Left="25.662"
+                    Canvas.Top="7.376"
+                    FontSize="24"
+                    TextWrapping="Wrap"><Run Language="zh-cn" Text="概率" /><Run Text="排行榜" /></TextBlock>
+                <TextBlock
+                    Canvas.Left="25.662"
+                    Canvas.Top="395.376"
+                    Width="60"
+                    Height="26"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    TextWrapping="Wrap"><Run Language="zh-cn" Text="因子数量" /><LineBreak /><Run Language="zh-cn" /></TextBlock>
+                <ui:Button
+                    Canvas.Left="150.662"
+                    Canvas.Top="7.076"
+                    VerticalAlignment="Top"
+                    Content="...">
+                    <ui:FlyoutService.Flyout>
+                        <ui:Flyout Placement="Bottom">
+                            <StackPanel>
+                                <ui:Button
+                                    x:Name="ResetButton"
+                                    Canvas.Left="17.162"
+                                    Canvas.Top="426.386"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Top"
+                                    Content="重置概率因子"
+                                    FontSize="36"
+                                    Foreground="Red">
+                                    <ui:FlyoutService.Flyout>
+                                        <ui:Flyout Placement="Bottom">
+                                            <StackPanel>
+                                                <TextBlock HorizontalAlignment="Left" Text="确定重置概率因子吗？（重置概率因子后配置文件不会删除，而是会创建一个备份,但保底数据会被清空）" />
+                                                <Button Click="ResetButton_Click" Content="确定" />
+                                            </StackPanel>
+                                        </ui:Flyout>
+                                    </ui:FlyoutService.Flyout>
+                                </ui:Button>
+                                <CheckBox
+                                    x:Name="SpeechButton"
+                                    VerticalAlignment="Top"
+                                    Click="CheckBox_Click"
+                                    Content="启用朗读" />
+                                <ui:Button
+                                    x:Name="QuitDebug"
+                                    Click="QuitDebug_Click"
+                                    Content="退出调试" />
+                                <ui:Button
+                                    x:Name="GetTraning"
+                                    Click="GetTraning_Click"
+                                    Content="get training" />
+                                <CheckBox
+                                    x:Name="DebugCheck"
+                                    Canvas.Left="11.162"
+                                    Canvas.Top="457.526"
+                                    VerticalAlignment="Top"
+                                    Content="only debug" 
+                                    IsChecked="False"/>
+                            </StackPanel>
+                        </ui:Flyout>
+                    </ui:FlyoutService.Flyout>
+                </ui:Button>
+                <TextBlock
+                    x:Name="AddText1"
+                    Canvas.Left="65.17"
+                    Canvas.Top="35.57"
+                    Width="141"
+                    Height="44"
+                    Padding="3,3,3,3"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Top"
+                    Panel.ZIndex="6"
+                    Background="#75FFFFFF"
+                    FontSize="36"
+                    FontWeight="Bold"
+                    Foreground="Red"
+                    Opacity="0"
+                    RenderTransformOrigin="0,0"
+                    Text="+1"
+                    TextAlignment="Center"
+                    TextWrapping="Wrap">
+                    <TextBlock.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform />
+                            <SkewTransform />
+                            <RotateTransform />
+                            <TranslateTransform />
+                        </TransformGroup>
+                    </TextBlock.RenderTransform>
+                </TextBlock>
+                <TextBlock
+                    x:Name="AddText2"
+                    Canvas.Left="65.17"
+                    Canvas.Top="81.47"
+                    Width="141"
+                    Height="44"
+                    Padding="3,3,3,3"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Top"
+                    Panel.ZIndex="6"
+                    d:IsHidden="True"
+                    Background="#75FFFFFF"
+                    FontSize="36"
+                    FontWeight="Bold"
+                    Foreground="Red"
+                    Opacity="0"
+                    RenderTransformOrigin="0,0"
+                    Text="+1"
+                    TextAlignment="Center"
+                    TextWrapping="Wrap">
+                    <TextBlock.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform />
+                            <SkewTransform />
+                            <RotateTransform />
+                            <TranslateTransform />
+                        </TransformGroup>
+                    </TextBlock.RenderTransform>
+                </TextBlock>
+                <TextBlock
+                    x:Name="AddText3"
+                    Canvas.Left="65.17"
+                    Canvas.Top="129.72"
+                    Width="141"
+                    Height="44"
+                    Padding="3,3,3,3"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Top"
+                    Panel.ZIndex="6"
+                    d:IsHidden="True"
+                    Background="#75FFFFFF"
+                    FontSize="36"
+                    FontWeight="Bold"
+                    Foreground="Red"
+                    Opacity="0"
+                    RenderTransformOrigin="0,0"
+                    Text="+1"
+                    TextAlignment="Center"
+                    TextWrapping="Wrap">
+                    <TextBlock.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform />
+                            <SkewTransform />
+                            <RotateTransform />
+                            <TranslateTransform />
+                        </TransformGroup>
+                    </TextBlock.RenderTransform>
+                </TextBlock>
+                <TextBlock
+                    x:Name="AddText4"
+                    Canvas.Left="65.17"
+                    Canvas.Top="179.72"
+                    Width="141"
+                    Height="44"
+                    Padding="3,3,3,3"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Top"
+                    Panel.ZIndex="6"
+                    d:IsHidden="True"
+                    Background="#75FFFFFF"
+                    FontSize="36"
+                    FontWeight="Bold"
+                    Foreground="Red"
+                    Opacity="0"
+                    RenderTransformOrigin="0,0"
+                    Text="+1"
+                    TextAlignment="Center"
+                    TextWrapping="Wrap">
+                    <TextBlock.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform />
+                            <SkewTransform />
+                            <RotateTransform />
+                            <TranslateTransform />
+                        </TransformGroup>
+                    </TextBlock.RenderTransform>
+                </TextBlock>
+                <TextBlock
+                    x:Name="AddText5"
+                    Canvas.Left="65.17"
+                    Canvas.Top="228"
+                    Width="141"
+                    Height="44"
+                    Padding="3,3,3,3"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Top"
+                    Panel.ZIndex="6"
+                    d:IsHidden="True"
+                    Background="#75FFFFFF"
+                    FontSize="36"
+                    FontWeight="Bold"
+                    Foreground="Red"
+                    Opacity="0"
+                    RenderTransformOrigin="0,0"
+                    Text="+1"
+                    TextAlignment="Center"
+                    TextWrapping="Wrap">
+                    <TextBlock.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform />
+                            <SkewTransform />
+                            <RotateTransform />
+                            <TranslateTransform />
+                        </TransformGroup>
+                    </TextBlock.RenderTransform>
+                </TextBlock>
+                <TextBlock
+                    x:Name="AddText6"
+                    Canvas.Left="65.17"
+                    Canvas.Top="278"
+                    Width="141"
+                    Height="44"
+                    Padding="3,3,3,3"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Top"
+                    Panel.ZIndex="6"
+                    d:IsHidden="True"
+                    Background="#75FFFFFF"
+                    FontSize="36"
+                    FontWeight="Bold"
+                    Foreground="Red"
+                    Opacity="0"
+                    RenderTransformOrigin="0,0"
+                    Text="+1"
+                    TextAlignment="Center"
+                    TextWrapping="Wrap">
+                    <TextBlock.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform />
+                            <SkewTransform />
+                            <RotateTransform />
+                            <TranslateTransform />
+                        </TransformGroup>
+                    </TextBlock.RenderTransform>
+                </TextBlock>
+            </Canvas>
+        </Canvas>
+    </Viewbox>
 
-            <TextBlock
-                x:Name="MininumState"
-                Margin="5,0,5,0"
-                HorizontalAlignment="Center"
-                FontSize="20"
-                FontStyle="Italic"
-                Text="当前进入保底阶段，每抽一次概率增加25%"
-                TextWrapping="Wrap"
-                Visibility="Collapsed" />
-            <Rectangle Height="3" Fill="Black" />
-            <TextBlock
-                Margin="0,10,0,0"
-                HorizontalAlignment="Center"
-                FontSize="30"
-                Text="概率UP" />
-            <TextBlock
-                x:Name="UpName"
-                HorizontalAlignment="Center"
-                FontSize="30"
-                Text="XXX" />
-            <TextBlock
-                x:Name="UpFactor"
-                HorizontalAlignment="Center"
-                FontSize="30"
-                Text="XXX" />
-            <TextBlock
-                HorizontalAlignment="Center"
-                FontSize="20"
-                Text="真实概率" />
-            <TextBlock
-                x:Name="UpRealProbability"
-                HorizontalAlignment="Center"
-                FontSize="20"
-                Text="XXX" />
-            <Rectangle Height="3" Fill="Black" />
-            <TextBlock
-                Margin="0,10,0,0"
-                HorizontalAlignment="Center"
-                FontSize="25"
-                Text="总概率因子数量" />
-            <TextBlock
-                x:Name="Count"
-                HorizontalAlignment="Center"
-                FontSize="25"
-                Text="" />
-            <Rectangle Height="3" Fill="Black" />
-            <TextBlock
-                Margin="5,10,5,0"
-                HorizontalAlignment="Center"
-                FontSize="20"
-                FontStyle="Italic"
-                Text="真实概率=概率因子数量÷总概率因子数量"
-                TextWrapping="Wrap" />
-        </StackPanel>
-
-    </Grid>
 </Page>

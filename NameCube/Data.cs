@@ -93,6 +93,12 @@ namespace NameCube
                     Locked = false,
                     Speed = 20,
                 },
+                OldMemoryFactorModeSettings = new OldMemoryFactorModeSettings
+                {
+                    Speech = true,
+                    Locked = false,
+                    Speed = 20,
+                },
                 BatchModeSettings = new BatchModeSettings
                 {
                     NumberMode = false,
@@ -151,6 +157,10 @@ namespace NameCube
             {
                 GlobalVariables.json.MemoryFactorModeSettings = new memoryFactorModeSettings();
             }
+            if (GlobalVariables.json.OldMemoryFactorModeSettings == null)
+            {
+                GlobalVariables.json.OldMemoryFactorModeSettings = new OldMemoryFactorModeSettings();
+            }
             if (GlobalVariables.json.BatchModeSettings == null)
             {
                 GlobalVariables.json.BatchModeSettings = new BatchModeSettings();
@@ -187,6 +197,10 @@ namespace NameCube
             if (GlobalVariables.json.MemoryFactorModeSettings.Speed == 0)
             {
                 GlobalVariables.json.MemoryFactorModeSettings.Speed = 20;
+            }
+            if (GlobalVariables.json.OldMemoryFactorModeSettings.Speed == 0)
+            {
+                GlobalVariables.json.OldMemoryFactorModeSettings.Speed = 20;
             }
             if (GlobalVariables.json.NumberModeSettings.Speed == 0)
             {
@@ -302,6 +316,28 @@ namespace NameCube
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
         public string token { get; set; }
+        /// <summary>
+        /// 新版本号
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+        public string newVersion { get; set; }
+
+        /// <summary>
+        /// Debug模式
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+        public bool debug { get; set; }
+
+        /// <summary>
+        /// 禁用主界面显示动画
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+        public bool DisableTheDisplayAnimationOfTheMainWindow { get; set; }
+        /// <summary>
+        /// 默认最大化窗口
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+        public bool DefaultToMaximumSize { get; set; }
     }
 
     public class onePeopleModeSettings
@@ -378,6 +414,44 @@ namespace NameCube
         public int Speed { get; set; } = 20;
 
         /// <summary>
+        /// 上一次抽取的姓名
+        /// </summary>
+        public string LastName { get; set; }
+        /// <summary>
+        /// debug模式
+        /// </summary>
+        public bool debug = false;
+        /// <summary>
+        /// 每一种事件的发生概率
+        /// </summary>
+        public List<int> probabilityOfHappening = new List<int> { 4, 2, 3, 4, 2, 2, 3, 1, 1 };
+    }
+    public class OldMemoryFactorModeSettings
+    {
+        /// <summary>
+        /// 是否启用旧因子模式
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+        public bool? IsEnable { set; get; } = false;
+        /// <summary>
+        /// 启用朗读
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+        public bool? Speech { set; get; } = true;
+
+        /// <summary>
+        /// 是否允许修改
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+        public bool? Locked { get; set; } = false;
+
+        /// <summary>
+        /// 主界面字体跳动速度
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+        public int? Speed { get; set; } = 20;
+
+        /// <summary>
         /// 保底人姓名
         /// </summary>
         public string MaxName { get; set; }
@@ -450,7 +524,11 @@ namespace NameCube
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
         public int AdsorbValue { get; set; } = 60;
-
+        /// <summary>
+        /// 长按误判阈值
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+        public int LongPressMisjudgment { get; set; } = 30;
         /// <summary>
         /// 无反应后自动吸附
         /// </summary>
@@ -571,6 +649,7 @@ namespace NameCube
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
         public int openWay { get; set; } = -1;
+
         /// <summary>
         /// 触发的自动流程(为null时则以openway为准)
         /// </summary>
@@ -639,11 +718,13 @@ namespace NameCube
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
         public List<ProcessGroup> processGroups { get; set; } =
             new List<ProcessGroup> { new ProcessGroup() };
+
         /// <summary>
         /// 自动运行流程组的时间表
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
-        public Dictionary<int,List<ProcessGroup>> processesSchedule { get; set; } = new Dictionary<int,List<ProcessGroup>>();
+        public Dictionary<int, List<ProcessGroup>> processesSchedule { get; set; } =
+            new Dictionary<int, List<ProcessGroup>>();
     }
 
     public class ProcessGroup
@@ -659,25 +740,30 @@ namespace NameCube
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
         public string name { get; set; } = "默认流程";
+
         /// <summary>
         /// 准备时提醒信息
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
         public string remindText;
+
         /// <summary>
         /// 准备时提醒时间（秒）
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
         public int remindTime = 5;
+
         /// <summary>
         /// 可否取消流程
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
         public bool canCancle = true;
+
         /// <summary>
         /// 每个流程组的唯一标识符
         /// </summary>
         public int uid;
+
         /// <summary>
         /// 是否显示窗口
         /// </summary>
@@ -755,12 +841,17 @@ namespace NameCube
         public startToDo StartToDo { get; set; } = new startToDo();
 
         /// <summary>
-        /// 记忆因子模式设置
+        /// 因子模式设置
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
         public memoryFactorModeSettings MemoryFactorModeSettings { get; set; } =
             new memoryFactorModeSettings();
-
+        /// <summary>
+        /// 旧因子模式设置
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+        public OldMemoryFactorModeSettings OldMemoryFactorModeSettings { get; set; } =
+            new OldMemoryFactorModeSettings();
         /// <summary>
         /// 批量模式设置
         /// </summary>
@@ -845,7 +936,7 @@ namespace NameCube
         /// 当前版本
         /// </summary>
         //Bro为什么这样写！！？
-        public static string Version = "V1.1";
+        public static string Version = "V1.2";
         public static bool IsBeta = false;
         public static bool ret = false;
     }

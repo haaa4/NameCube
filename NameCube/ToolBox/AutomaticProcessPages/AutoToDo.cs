@@ -35,11 +35,7 @@ namespace NameCube.ToolBox.AutomaticProcessPages
         private static void RunProcessesGroup(ProcessGroup  processGroup)
         {
             ProcessesRunningWindow processesRunningWindow=new ProcessesRunningWindow(processGroup);
-            if(processGroup.show)
-            {
-                processesRunningWindow.Show();
-                processesRunningWindow.Activate();
-            }
+
 
         }
     }

@@ -25,7 +25,7 @@
                         TextWrapping="WrapWithOverflow" />
                     <ui:TextBlock
                         Appearance="Secondary"
-                        Text="改变界面黑白主题"
+                        Text="改变界面黑白主题(测试中...)"
                         TextWrapping="WrapWithOverflow" />
                 </StackPanel>
             </ui:CardControl.Header>

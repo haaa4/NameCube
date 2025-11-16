@@ -36,8 +36,22 @@ namespace NameCube.ToolBox.AutomaticProcessPages.ProcessPages
             _mediaPlayer = new MediaPlayer();
             _mediaPlayer.MediaOpened += MediaPlayer_MediaOpened;
             _mediaPlayer.MediaEnded += MediaPlayer_MediaEnded;
-
-            InitializeMediaPlayer(Path.Combine(musicPath,url));
+            try
+            {
+                InitializeMediaPlayer(Path.Combine(musicPath, url));
+            }
+            catch (Exception ex)
+            {
+                MessageBoxFunction.ShowMessageBoxError("音频文件加载失败", true, ex);
+                if (isDebug)
+                {
+                    CallParentMethodDebug($"音频文件加载失败: {ex.Message}");
+                }
+                else
+                {
+                    CallEndThePage();
+                }
+            }
             waitTimeInThisPage = waitTime;
             isDebug = debug;
             if(!show)

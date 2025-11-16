@@ -328,12 +328,12 @@ namespace NameCube.Setting
                     var combox = panel.Children.OfType<ComboBox>().FirstOrDefault();
                     if (keys.Count == 0)
                     {
-                        MessageBoxFunction.ShowMessageBoxWarning("快捷键为空");
+                        SnackBarFunction.ShowSnackBarInSettingWindow("快捷键为空",ControlAppearance.Caution);
                         return null;
                     }
                     else if (HaveSameKeys(GlobalVariables.json.ShortCutKey.keysGrounp, keys) > 1)
                     {
-                        MessageBoxFunction.ShowMessageBoxWarning("快捷键不得重复");
+                        SnackBarFunction.ShowSnackBarInSettingWindow("快捷键不得重复", Wpf.Ui.Controls.ControlAppearance.Caution);
                         return null;
                     }
                     else
@@ -487,11 +487,11 @@ namespace NameCube.Setting
                     var combox = panel.Children.OfType<ComboBox>().FirstOrDefault();
                     if (keys.Count == 0)
                     {
-                        MessageBoxFunction.ShowMessageBoxWarning("快捷键为空");
+                        SnackBarFunction.ShowSnackBarInSettingWindow("快捷键为空", Wpf.Ui.Controls.ControlAppearance.Caution);
                     }
                     else if (HaveSameKeys(GlobalVariables.json.ShortCutKey.keysGrounp, keys) > 0)
                     {
-                        MessageBoxFunction.ShowMessageBoxWarning("快捷键不得重复");
+                        SnackBarFunction.ShowSnackBarInSettingWindow("快捷键不得重复", Wpf.Ui.Controls.ControlAppearance.Caution);
                     }
                     else
                     {

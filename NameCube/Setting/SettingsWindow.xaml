@@ -7,9 +7,19 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     Title="应用设置"
-    Width="1000"
-    Height="450"
+    Width="1200"
+    Height="650"
+    Loaded="FluentWindow_Loaded"
     mc:Ignorable="d">
+    <ui:FluentWindow.Resources>
+        <Storyboard x:Key="ShowStoryBoard">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="border" Storyboard.TargetProperty="(UIElement.Opacity)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="1" />
+                <EasingDoubleKeyFrame KeyTime="00:00:00.6000000" Value="1" />
+                <EasingDoubleKeyFrame KeyTime="00:00:01" Value="0" />
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+    </ui:FluentWindow.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="50" />
@@ -70,6 +80,12 @@
                     Content="关于"
                     Icon="{ui:SymbolIcon Symbol=Info24}"
                     TargetPageType="{x:Type local:About}" />
+                <ui:NavigationViewItem
+                    x:Name="DebugItem"
+                    Content="调试"
+                    Icon="{ui:SymbolIcon Symbol=Bug24}"
+                    TargetPageType="{x:Type local:DebugPage}"
+                    Visibility="Collapsed" />
             </ui:NavigationView.MenuItems>
             <ui:NavigationView.PaneHeader>
                 <ui:Button Icon="{ui:SymbolIcon Symbol=ArrowClockwise24}">
@@ -85,5 +101,35 @@
             </ui:NavigationView.PaneHeader>
         </ui:NavigationView>
         <ui:SnackbarPresenter x:Name="SnackbarPresenterHost" Grid.Row="1" />
+        <Border
+            x:Name="border"
+            Grid.RowSpan="2"
+            Background="White"
+            BorderBrush="White"
+            BorderThickness="1"
+            Visibility="Visible" d:IsHidden="True">
+            <Canvas>
+                <Image
+                    Canvas.Left="335.393"
+                    Canvas.Top="221.947"
+                    Width="189"
+                    Height="192"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Source="/icon.png"
+                    Stretch="Fill" />
+                <TextBlock
+                    Canvas.Left="529.393"
+                    Canvas.Top="268.947"
+                    Width="420"
+                    Height="145"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    FontFamily="Segoe UI Black"
+                    FontSize="72"
+                    Foreground="#FF1D1D1D"
+                    TextWrapping="Wrap"><Run Language="zh-cn" Text="应用设置" /></TextBlock>
+            </Canvas>
+        </Border>
     </Grid>
 </ui:FluentWindow>
