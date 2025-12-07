@@ -226,6 +226,10 @@ namespace NameCube
             {
                 GlobalVariables.json.automaticProcess = new AutomaticProcess();
             }
+            if(GlobalVariables.json.BirdSettings.LongPressMisjudgment==0)
+            {
+                GlobalVariables.json.BirdSettings.LongPressMisjudgment = 30;
+            }
             //未来的开发请注意！！！！
             GlobalVariables.json.AllSettings.LowMemoryMode = false;
         }
@@ -936,7 +940,7 @@ namespace NameCube
         /// 当前版本
         /// </summary>
         //Bro为什么这样写！！？
-        public static string Version = "V1.2";
+        public static string Version = "V1.2.1";
         public static bool IsBeta = false;
         public static bool ret = false;
     }
