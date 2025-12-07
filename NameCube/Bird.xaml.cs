@@ -172,7 +172,7 @@ namespace NameCube
             // 长按计时器
             _longPressTimer = new DispatcherTimer
             {
-                Interval = TimeSpan.FromSeconds(2)
+                Interval = TimeSpan.FromSeconds(1)
             };
             _longPressTimer.Tick += LongPress_Tick;
 
