@@ -121,7 +121,7 @@ namespace NameCube
                );
             }
             _timer = new DispatcherTimer();
-            _timer.Interval = TimeSpan.FromSeconds(600);
+            _timer.Interval = TimeSpan.FromSeconds(30);
             _timer.Tick += Timer_Tick;
             Ab.Interval = 10000;
             Ab.Elapsed += Ab_Elapsed;
@@ -133,6 +133,25 @@ namespace NameCube
                 _timer.Start();
             }
         }
+        /// <summary>
+        /// 获取系统可用物理内存
+        /// </summary>
+        public static long GetAvailablePhysicalMemory()
+        {
+            try
+            {
+                using (PerformanceCounter pc = new PerformanceCounter("Memory", "Available Bytes"))
+                {
+                    return (long)pc.NextValue()/1048576;
+                }
+            }
+            catch (Exception ex)
+            {
+                LogManager.Error(ex);
+                return -1;
+            }
+        }
+
         protected override void OnSourceInitialized(EventArgs e)
         {
             base.OnSourceInitialized(e);
@@ -159,8 +178,9 @@ namespace NameCube
         }
         private void Timer_Tick(object sender, EventArgs e)
         {
-            LogManager.Info("开始内存清理......");
+            LogManager.Info("开始自动内存清理，当前可用："+GetAvailablePhysicalMemory().ToString()+"MB");
             Masuit.Tools.Win32.Windows.ClearMemory();
+            LogManager.Info("内存清理结束，当前可用：" + GetAvailablePhysicalMemory().ToString() + "MB");
         }
 
         private void InitializeBehavior()

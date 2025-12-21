@@ -1,4 +1,5 @@
 ﻿using Masuit.Tools;
+using Masuit.Tools.Logging;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -38,6 +39,7 @@ namespace NameCube.FirstUse
         {
             string[] args = Environment.GetCommandLineArgs();
             File.WriteAllText(Path.Combine(GlobalVariables.configDir, "START"), "The cake is a lie");
+            LogManager.Info("程序退出");
             System.Windows.Application.Current.Shutdown();
             Process.Start(System.Windows.Application.ResourceAssembly.Location, string.Join(" ", args.Skip(1)));
         }

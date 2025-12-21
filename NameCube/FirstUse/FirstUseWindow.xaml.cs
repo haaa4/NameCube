@@ -22,6 +22,7 @@ using Wpf.Ui.Violeta.Controls;
 using NameCube.Setting;
 using NameCube.FirstUse;
 using Application = System.Windows.Application;
+using Masuit.Tools.Logging;
 
 namespace NameCube.FirstUse
 {
@@ -100,7 +101,9 @@ namespace NameCube.FirstUse
                     var SevenZipCompressor = new SevenZipCompressor(null);
                     SevenZipCompressor.Decompress(openFileDialog.FileName, GlobalVariables.configDir);
                     MessageBoxFunction.ShowMessageBoxInfo("添加成功，请自行启动软件");
+                    LogManager.Info("程序退出");
                     System.Windows.Application.Current.Shutdown();
+                    
                 }
                 catch (Exception ex)
                 {

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Serilog;
+using System;
 using System.Drawing;
 using System.Linq;
 using System.Windows;
@@ -16,113 +17,178 @@ namespace NameCube.Setting
     public partial class Appearance : Page
     {
         bool CanChange;
+
         public Appearance()
         {
             InitializeComponent();
-            CanChange = false;
-            if (GlobalVariables.json.AllSettings.color == null)
+
+            try
             {
-                GlobalVariables.json.AllSettings.color = (Brush)new BrushConverter().ConvertFromInvariantString("#30d7d7");
+                Log.Debug("Appearance页面初始化");
+
+                CanChange = false;
+
+                if (GlobalVariables.json.AllSettings.color == null)
+                {
+                    Log.Debug("颜色设置为空，初始化为默认颜色 #30d7d7");
+                    GlobalVariables.json.AllSettings.color = (Brush)new BrushConverter().ConvertFromInvariantString("#30d7d7");
+                }
+
+                DarkLight.IsChecked = GlobalVariables.json.AllSettings.Dark;
+                PreviewText.Foreground = GlobalVariables.json.AllSettings.color;
+                PreviewText.FontFamily = GlobalVariables.json.AllSettings.Font;
+                ColorTextBox.Foreground = GlobalVariables.json.AllSettings.color;
+                ColorTextBox.Text = GlobalVariables.json.AllSettings.color.ToString();
+                FontComboBox.SelectedItem = GlobalVariables.json.AllSettings.Font;
+
+                CanChange = true;
+
+                Log.Debug("外观设置加载完成，当前主题: {Theme}, 颜色: {Color}, 字体: {Font}",
+                    GlobalVariables.json.AllSettings.Dark ? "深色" : "浅色",
+                    GlobalVariables.json.AllSettings.color.ToString(),
+                    GlobalVariables.json.AllSettings.Font?.Source);
             }
-            DarkLight.IsChecked = GlobalVariables.json.AllSettings.Dark;
-            PreviewText.Foreground = GlobalVariables.json.AllSettings.color;
-            PreviewText.FontFamily = GlobalVariables.json.AllSettings.Font;
-            ColorTextBox.Foreground = GlobalVariables.json.AllSettings.color;
-            ColorTextBox.Text = GlobalVariables.json.AllSettings.color.ToString();
-            FontComboBox.SelectedItem = GlobalVariables.json.AllSettings.Font;
-            CanChange = true;
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Appearance页面初始化时发生异常");
+                CanChange = true; // 确保后续可以修改
+            }
         }
+
         private void DarkLight_Click(object sender, RoutedEventArgs e)
         {
-            if (CanChange)
+            try
             {
-                GlobalVariables.json.AllSettings.Dark = DarkLight.IsChecked.Value;
-                GlobalVariables.SaveJson();
-                if (DarkLight.IsChecked.Value)
+                if (CanChange)
                 {
-                    MessageBoxFunction.ShowMessageBoxWarning("当前黑暗模式存在较大问题，请勿使用");
-                    Wpf.Ui.Appearance.ApplicationThemeManager.Apply(
-                        Wpf.Ui.Appearance.ApplicationTheme.Dark, // Theme type
-                         Wpf.Ui.Controls.WindowBackdropType.Auto,  // Background type
-                         true                                      // Whether to change accents automatically
-                       );
-                }
-                else
-                {
-                    Wpf.Ui.Appearance.ApplicationThemeManager.Apply(
-                        Wpf.Ui.Appearance.ApplicationTheme.Light, // Theme type
-                         Wpf.Ui.Controls.WindowBackdropType.Auto,  // Background type
-                         true                                      // Whether to change accents automatically
-                       );
-                }
+                    bool newTheme = DarkLight.IsChecked.Value;
+                    Log.Information("切换主题模式: {Theme}", newTheme ? "深色" : "浅色");
 
-                var settingsWindow = Application.Current.Windows.OfType<SettingsWindow>().FirstOrDefault();
+                    GlobalVariables.json.AllSettings.Dark = newTheme;
+                    GlobalVariables.SaveJson();
 
-                if (settingsWindow == null)
-                {
-                    // 创建新实例
+                    if (DarkLight.IsChecked.Value)
+                    {
+                        Log.Warning("用户尝试启用深色模式");
+                        MessageBoxFunction.ShowMessageBoxWarning("当前黑暗模式存在较大问题，请勿使用");
+                        Wpf.Ui.Appearance.ApplicationThemeManager.Apply(
+                            Wpf.Ui.Appearance.ApplicationTheme.Dark,
+                            Wpf.Ui.Controls.WindowBackdropType.Auto,
+                            true
+                        );
+                    }
+                    else
+                    {
+                        Log.Debug("应用浅色主题");
+                        Wpf.Ui.Appearance.ApplicationThemeManager.Apply(
+                            Wpf.Ui.Appearance.ApplicationTheme.Light,
+                            Wpf.Ui.Controls.WindowBackdropType.Auto,
+                            true
+                        );
+                    }
+
+                    var settingsWindow = Application.Current.Windows.OfType<SettingsWindow>().FirstOrDefault();
+
+                    if (settingsWindow == null)
+                    {
+                        Log.Debug("未找到现有的设置窗口，创建新实例");
+                        settingsWindow = new SettingsWindow();
+                    }
+
+                    // 重新创建设置窗口以应用主题更改
+                    Log.Debug("重新创建设置窗口以应用主题更改");
+                    settingsWindow.Close();
                     settingsWindow = new SettingsWindow();
+                    settingsWindow.Show();
+                    settingsWindow.Activate();
+                    settingsWindow.WindowState = WindowState.Normal;
                 }
-
-                // 确保窗口可见并激活
-                settingsWindow.Close();
-                settingsWindow = new SettingsWindow();
-                settingsWindow.Show();
-                settingsWindow.Activate();
-                settingsWindow.WindowState = WindowState.Normal;
-
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "切换主题时发生异常");
             }
         }
 
         private void TextBox_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
-            if (e.Key == Key.Enter)
+            try
             {
-
-                try
+                if (e.Key == Key.Enter)
                 {
-                    GlobalVariables.json.AllSettings.color = (Brush)new BrushConverter().ConvertFromInvariantString(ColorTextBox.Text);
-                    PreviewText.Foreground = GlobalVariables.json.AllSettings.color;
-                    ColorTextBox.Foreground = GlobalVariables.json.AllSettings.color;
+                    Log.Debug("通过回车键提交颜色值: {Color}", ColorTextBox.Text);
+
+                    try
+                    {
+                        Brush newColor = (Brush)new BrushConverter().ConvertFromInvariantString(ColorTextBox.Text);
+                        GlobalVariables.json.AllSettings.color = newColor;
+                        PreviewText.Foreground = newColor;
+                        ColorTextBox.Foreground = newColor;
+                        GlobalVariables.SaveJson();
+
+                        Log.Information("颜色设置更新: {Color}", ColorTextBox.Text);
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.Warning(ex, "颜色格式无效: {Color}", ColorTextBox.Text);
+                        SnackBarFunction.ShowSnackBarInSettingWindow(ex.Message, Wpf.Ui.Controls.ControlAppearance.Caution);
+                        ColorTextBox.Text = null;
+                    }
                 }
-                catch (Exception ex)
-                {
-                    SnackBarFunction.ShowSnackBarInSettingWindow(ex.Message,Wpf.Ui.Controls.ControlAppearance.Caution);
-                    ColorTextBox.Text = null;
-                }
-
-
-
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "处理颜色输入时发生异常");
             }
         }
 
         private void ColorTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if(CanChange)
+            try
             {
-                try
+                if (CanChange)
                 {
-                    GlobalVariables.json.AllSettings.color = (Brush)new BrushConverter().ConvertFromString(ColorTextBox.Text);
-                    PreviewText.Foreground = GlobalVariables.json.AllSettings.color;
-                    ColorTextBox.Foreground = GlobalVariables.json.AllSettings.color;
-                }
-                catch
-                {
+                    // 仅记录调试信息，不频繁保存
+                    Log.Verbose("颜色文本框内容变化: {Color}", ColorTextBox.Text);
 
+                    try
+                    {
+                        Brush newColor = (Brush)new BrushConverter().ConvertFromString(ColorTextBox.Text);
+                        GlobalVariables.json.AllSettings.color = newColor;
+                        PreviewText.Foreground = newColor;
+                        ColorTextBox.Foreground = newColor;
+                    }
+                    catch 
+                    {
+                        Log.Verbose("颜色解析失败，可能正在输入中: {Color}", ColorTextBox.Text);
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "处理颜色文本框变化时发生异常");
             }
         }
 
         private void FontComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if(CanChange)
+            try
             {
-                if(FontComboBox.SelectedItem is FontFamily font)
+                if (CanChange)
                 {
-                    PreviewText.FontFamily = font;
-                    GlobalVariables.json.AllSettings.Font= font;
-                    GlobalVariables.SaveJson();
+                    if (FontComboBox.SelectedItem is FontFamily font)
+                    {
+                        Log.Information("字体选择更改: {Font}", font.Source);
+
+                        PreviewText.FontFamily = font;
+                        GlobalVariables.json.AllSettings.Font = font;
+                        GlobalVariables.SaveJson();
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "处理字体选择更改时发生异常");
             }
         }
     }

@@ -1,4 +1,5 @@
 ﻿using Masuit.Tools;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,49 +27,63 @@ namespace NameCube.Mode
     {
         bool CanChange;
         public System.Timers.Timer timer = new System.Timers.Timer();
-        Random Random=new Random();
+        Random Random = new Random();
         private SpeechSynthesizer _speechSynthesizer = new SpeechSynthesizer();
 
         public NumberMode()
         {
             InitializeComponent();
-           
+            Log.Debug("NumberMode页面初始化完成");
         }
 
         private void Timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
-            string text= Random.StrictNext(GlobalVariables.json.NumberModeSettings.Num + 1).ToString();
-            if(text=="0")
+            try
             {
-                return;
-            }
-            else
-            {
-                this.Dispatcher.Invoke(new Action(() =>
+                string text = Random.StrictNext(GlobalVariables.json.NumberModeSettings.Num + 1).ToString();
+                if (text == "0")
                 {
-                    NowNumberText.Text = text;
-                }));
+                    return;
+                }
+                else
+                {
+                    this.Dispatcher.Invoke(new Action(() =>
+                    {
+                        NowNumberText.Text = text;
+                    }));
+                }
             }
-            
+            catch (Exception ex)
+            {
+                Log.Error(ex, "NumberMode定时器处理时发生异常");
+            }
         }
 
         private void SpeechCheck_Click(object sender, RoutedEventArgs e)
         {
             if (CanChange)
             {
-                GlobalVariables.json.NumberModeSettings.Speak = SpeakCheck.IsChecked.Value;
+                bool newValue = SpeakCheck.IsChecked.Value;
+                Log.Debug("语音播报开关: {Value}", newValue);
+                GlobalVariables.json.NumberModeSettings.Speak = newValue;
                 GlobalVariables.SaveJson();
             }
         }
 
         private void NumberBox_ValueChanged(object sender, Wpf.Ui.Controls.NumberBoxValueChangedEventArgs args)
         {
-            if(CanChange)
+            if (CanChange)
             {
-                if(NumberBox.Value==null)
+                if (NumberBox.Value == null)
                 {
-                    Button_Click(sender,null);
+                    Log.Debug("数字框值为空，重置为名单数量");
+                    Button_Click(sender, null);
                 }
+                else
+                {
+                    Log.Debug("数字范围变化: {Value}", NumberBox.Value);
+                }
+
                 GlobalVariables.json.NumberModeSettings.Num = (int)NumberBox.Value;
                 GlobalVariables.SaveJson();
             }
@@ -76,16 +91,18 @@ namespace NameCube.Mode
 
         private void NumberBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if(CanChange)
+            if (CanChange)
             {
                 int get = NumberBox.Text.ToInt32(-1);
-                if(get!=-1)
+                if (get != -1)
                 {
-                    NumberBox.Value=get;
+                    Log.Debug("文本输入有效: {Value}", get);
+                    NumberBox.Value = get;
                 }
                 else
                 {
-                    NumberBox.Value=GlobalVariables.json.AllSettings.Name.Count;
+                    Log.Warning("文本输入无效，重置为名单数量");
+                    NumberBox.Value = GlobalVariables.json.AllSettings.Name.Count;
                     NumberBox.Text = null;
                 }
             }
@@ -93,74 +110,112 @@ namespace NameCube.Mode
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            Log.Debug("重置数字范围为名单数量: {Count}", GlobalVariables.json.AllSettings.Name.Count);
             NumberBox.Value = GlobalVariables.json.AllSettings.Name.Count;
         }
 
         private void StartButton_Click(object sender, RoutedEventArgs e)
         {
-            _speechSynthesizer.SpeakAsyncCancelAll();
-            StartButton.IsEnabled = false;
-            var jumpStoryBoard = FindResource("JumpStoryBoard") as Storyboard;
-            if (StartButton.Content.ToString()=="开始")
+            try
             {
-                timer.Interval = GlobalVariables.json.NumberModeSettings.Speed;
-                FinishText.Visibility = Visibility.Hidden;
-                NowNumberText.Visibility = Visibility.Visible;
-                StartButton.Content = "结束";
-                jumpStoryBoard.Begin();
-                timer.Start();
-                StartButton.IsEnabled=true;
-            }
-            else
-            {
-                StartButton.Content = "开始";
-                jumpStoryBoard.Stop();
-                jumpStoryBoard.Remove();
-                timer.Stop();
-                string get = NowNumberText.Text;
-                FinishText.Text= get;
-                NowNumberText.Visibility = Visibility.Hidden;
-                FinishText.Visibility= Visibility.Visible;
-                if(GlobalVariables.json.NumberModeSettings.Speak)
+                _speechSynthesizer.SpeakAsyncCancelAll();
+                StartButton.IsEnabled = false;
+                var jumpStoryBoard = FindResource("JumpStoryBoard") as Storyboard;
+
+                if (StartButton.Content.ToString() == "开始")
                 {
-                    _speechSynthesizer.SpeakAsync(get);
+                    Log.Information("开始数字模式抽取，范围: 1-{Num}", GlobalVariables.json.NumberModeSettings.Num);
+                    timer.Interval = GlobalVariables.json.NumberModeSettings.Speed;
+                    FinishText.Visibility = Visibility.Hidden;
+                    NowNumberText.Visibility = Visibility.Visible;
+                    StartButton.Content = "结束";
+                    jumpStoryBoard.Begin();
+                    timer.Start();
+                    StartButton.IsEnabled = true;
                 }
-                GlobalVariables.json.NumberModeSettings.LastName = get;
+                else
+                {
+                    Log.Information("结束数字模式抽取");
+                    StartButton.Content = "开始";
+                    jumpStoryBoard.Stop();
+                    jumpStoryBoard.Remove();
+                    timer.Stop();
+                    string get = NowNumberText.Text;
+                    FinishText.Text = get;
+                    NowNumberText.Visibility = Visibility.Hidden;
+                    FinishText.Visibility = Visibility.Visible;
+
+                    if (GlobalVariables.json.NumberModeSettings.Speak)
+                    {
+                        Log.Debug("语音播报数字: {Number}", get);
+                        _speechSynthesizer.SpeakAsync(get);
+                    }
+
+                    GlobalVariables.json.NumberModeSettings.LastName = get;
+                    StartButton.IsEnabled = true;
+                    Log.Information("数字模式抽取结果: {Number}", get);
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "NumberMode开始/结束操作时发生异常");
                 StartButton.IsEnabled = true;
             }
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            CanChange = false;
-            SpeakCheck.IsChecked = GlobalVariables.json.NumberModeSettings.Speak;
-            NumberBox.Value = GlobalVariables.json.NumberModeSettings.Num;
-            CanChange = true;
-            timer.Elapsed += Timer_Elapsed;
-            if (GlobalVariables.json.NumberModeSettings.Speed == 0)
+            try
             {
-                GlobalVariables.json.NumberModeSettings.Speed = 20;
+                Log.Debug("NumberMode页面加载");
+
+                CanChange = false;
+                SpeakCheck.IsChecked = GlobalVariables.json.NumberModeSettings.Speak;
+                NumberBox.Value = GlobalVariables.json.NumberModeSettings.Num;
+                CanChange = true;
+                timer.Elapsed += Timer_Elapsed;
+
+                if (GlobalVariables.json.NumberModeSettings.Speed == 0)
+                {
+                    Log.Debug("重置速度为默认值20");
+                    GlobalVariables.json.NumberModeSettings.Speed = 20;
+                }
+
+                if (!GlobalVariables.json.AllSettings.SystemSpeech)
+                {
+                    _speechSynthesizer.SelectVoiceByHints(VoiceGender.Female, VoiceAge.Adult);
+                    _speechSynthesizer.Volume = GlobalVariables.json.AllSettings.Volume;
+                    _speechSynthesizer.Rate = GlobalVariables.json.AllSettings.Speed;
+                    Log.Debug("配置语音合成器: 性别=Female, 音量={Volume}, 语速={Speed}",
+                        GlobalVariables.json.AllSettings.Volume,
+                        GlobalVariables.json.AllSettings.Speed);
+                }
+
+                if (GlobalVariables.json.NumberModeSettings.Locked)
+                {
+                    Log.Debug("页面设置为锁定状态");
+                    SpeakCheck.IsEnabled = false;
+                    NumberBox.IsEnabled = false;
+                    Button1.IsEnabled = false;
+                }
+
+                if (GlobalVariables.json.NumberModeSettings.LastName != null)
+                {
+                    NowNumberText.Text = GlobalVariables.json.NumberModeSettings.LastName;
+                    Log.Debug("设置上次抽取结果: {LastName}", GlobalVariables.json.NumberModeSettings.LastName);
+                }
+
+                NowNumberText.Foreground = GlobalVariables.json.AllSettings.color;
+                FinishText.Foreground = GlobalVariables.json.AllSettings.color;
+                NowNumberText.FontFamily = GlobalVariables.json.AllSettings.Font;
+                FinishText.FontFamily = GlobalVariables.json.AllSettings.Font;
+
+                Log.Information("NumberMode页面加载完成，数字范围: 1-{Num}", GlobalVariables.json.NumberModeSettings.Num);
             }
-            if (!GlobalVariables.json.AllSettings.SystemSpeech)
+            catch (Exception ex)
             {
-                _speechSynthesizer.SelectVoiceByHints(VoiceGender.Female, VoiceAge.Adult);
-                _speechSynthesizer.Volume = GlobalVariables.json.AllSettings.Volume;
-                _speechSynthesizer.Rate = GlobalVariables.json.AllSettings.Speed;
+                Log.Error(ex, "NumberMode页面加载时发生异常");
             }
-            if (GlobalVariables.json.NumberModeSettings.Locked)
-            {
-                SpeakCheck.IsEnabled = false;
-                NumberBox.IsEnabled = false;
-                Button1.IsEnabled = false;
-            }
-            if (GlobalVariables.json.NumberModeSettings.LastName != null)
-            {
-                NowNumberText.Text = GlobalVariables.json.NumberModeSettings.LastName;
-            }
-            NowNumberText.Foreground = GlobalVariables.json.AllSettings.color;
-            FinishText.Foreground = GlobalVariables.json.AllSettings.color;
-            NowNumberText.FontFamily = GlobalVariables.json.AllSettings.Font;
-            FinishText.FontFamily = GlobalVariables.json.AllSettings.Font;
         }
     }
 }
