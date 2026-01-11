@@ -243,7 +243,7 @@ namespace NameCube
                     Log.Debug("NameCube模式不为0，显示主窗口");
                     mainWindow.ShowThisWindow();
                 }
-                
+                InitializeSerilogAgain();
                 Notify notify = new Notify();
                 Log.Information("应用程序启动完成");
             }
@@ -274,8 +274,8 @@ namespace NameCube
                         rollingInterval: RollingInterval.Day,
                         retainedFileCountLimit: 7, // 减少保留天数
                         outputTemplate: "{Timestamp:HH:mm:ss} [{Level:u3}] {Message:lj}{NewLine}{Exception}",
-                        buffered: true, // 启用缓冲
-                        flushToDiskInterval: TimeSpan.FromSeconds(5))) // 每2秒刷新到磁盘
+                        shared: true,
+                        flushToDiskInterval: TimeSpan.FromSeconds(5))) // 每5秒刷新到磁盘
                     .WriteTo.Console(
                         restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Warning, // 控制台只显示警告及以上
                         outputTemplate: "{Timestamp:HH:mm:ss} [{Level:u3}] {Message:lj}{NewLine}")
@@ -302,6 +302,91 @@ namespace NameCube
             // 确保日志被刷新
             Log.CloseAndFlush();
             base.OnExit(e);
+        }
+        /// <summary>
+        /// 重新按照用户配置初始化Serilog日志配置
+        /// </summary>
+        public void InitializeSerilogAgain()
+        {
+            string logDirectory = Path.Combine(GlobalVariables.configDir, "logs");
+            string logFilePath = Path.Combine(logDirectory, "NameCube-.log");
+            switch (GlobalVariables.json.AllSettings.LogLevel)
+            {
+                case 0://调试级别
+                    Log.Logger = new LoggerConfiguration()
+                   .MinimumLevel.Debug()
+                   .Enrich.FromLogContext()
+                   // 使用异步文件写入，避免阻塞主线程
+                   .WriteTo.Async(a => a.File(
+                       logFilePath,
+                       rollingInterval: RollingInterval.Day,
+                       retainedFileCountLimit: 7, // 减少保留天数
+                       outputTemplate: "{Timestamp:HH:mm:ss} [{Level:u3}] {Message:lj}{NewLine}{Exception}",
+                       shared: true,
+                       flushToDiskInterval: TimeSpan.FromSeconds(5))) // 每5秒刷新到磁盘
+                   .WriteTo.Console(
+                       restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Warning, // 控制台只显示警告及以上
+                       outputTemplate: "{Timestamp:HH:mm:ss} [{Level:u3}] {Message:lj}{NewLine}")
+                   .CreateLogger();
+                    break;
+                case 1://调试级别
+                    Log.Logger = new LoggerConfiguration()
+                   .MinimumLevel.Information()
+                   .Enrich.FromLogContext()
+                   // 使用异步文件写入，避免阻塞主线程
+                   .WriteTo.Async(a => a.File(
+                       logFilePath,
+                       rollingInterval: RollingInterval.Day,
+                       retainedFileCountLimit: 7, // 减少保留天数
+                       outputTemplate: "{Timestamp:HH:mm:ss} [{Level:u3}] {Message:lj}{NewLine}{Exception}",
+
+                       shared: true,
+                       flushToDiskInterval: TimeSpan.FromSeconds(5))) // 每5秒刷新到磁盘
+                   .WriteTo.Console(
+                       restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Warning, // 控制台只显示警告及以上
+                       outputTemplate: "{Timestamp:HH:mm:ss} [{Level:u3}] {Message:lj}{NewLine}")
+                   .CreateLogger();
+                    break;
+                case 2://警告级别
+                    Log.Logger = new LoggerConfiguration()
+                   .MinimumLevel.Warning()
+                   .Enrich.FromLogContext()
+                   // 使用异步文件写入，避免阻塞主线程
+                   .WriteTo.Async(a => a.File(
+                       logFilePath,
+                       rollingInterval: RollingInterval.Day,
+                       retainedFileCountLimit: 7, // 减少保留天数
+                       outputTemplate: "{Timestamp:HH:mm:ss} [{Level:u3}] {Message:lj}{NewLine}{Exception}",
+
+                       shared: true,
+                       flushToDiskInterval: TimeSpan.FromSeconds(5))) // 每5秒刷新到磁盘
+                   .WriteTo.Console(
+                       restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Warning, // 控制台只显示警告及以上
+                       outputTemplate: "{Timestamp:HH:mm:ss} [{Level:u3}] {Message:lj}{NewLine}")
+                   .CreateLogger();
+                    break;
+                case 3://错误级别
+                    Log.Logger = new LoggerConfiguration()
+                   .MinimumLevel.Error()
+                   .Enrich.FromLogContext()
+                   // 使用异步文件写入，避免阻塞主线程
+                   .WriteTo.Async(a => a.File(
+                       logFilePath,
+                       rollingInterval: RollingInterval.Day,
+                       retainedFileCountLimit: 7, // 减少保留天数
+                       outputTemplate: "{Timestamp:HH:mm:ss} [{Level:u3}] {Message:lj}{NewLine}{Exception}",
+                       shared: true,
+                       flushToDiskInterval: TimeSpan.FromSeconds(5))) // 每5秒刷新到磁盘
+                   .WriteTo.Console(
+                       restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Warning, // 控制台只显示警告及以上
+                       outputTemplate: "{Timestamp:HH:mm:ss} [{Level:u3}] {Message:lj}{NewLine}")
+                   .CreateLogger();
+                    break;
+                default:
+                    //什么也不做
+                    break;
+            }
+            Log.Debug("Serilog二次初始化成功");
         }
     }
 }

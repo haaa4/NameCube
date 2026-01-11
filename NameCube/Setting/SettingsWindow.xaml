@@ -69,6 +69,10 @@
                     Icon="{ui:SymbolIcon Symbol=Document24}"
                     TargetPageType="{x:Type local:Document}" />
                 <ui:NavigationViewItem
+                    Content="日志"
+                    Icon="{ui:SymbolIcon Symbol=Pen24}"
+                    TargetPageType="{x:Type local:LogSetting}" />
+                <ui:NavigationViewItem
                     Content="更新"
                     Icon="{ui:SymbolIcon Symbol=ArrowUpload24}"
                     TargetPageType="{x:Type local:Updata}" />

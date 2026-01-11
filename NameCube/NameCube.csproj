@@ -137,6 +137,9 @@
     <Compile Include="Setting\DebugPage.xaml.cs">
       <DependentUpon>DebugPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Setting\LogSetting.xaml.cs">
+      <DependentUpon>LogSetting.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Setting\ModeSetting\OldMemoryFactorModeSetting.xaml.cs">
       <DependentUpon>OldMemoryFactorModeSetting.xaml</DependentUpon>
     </Compile>
@@ -329,6 +332,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Setting\DebugPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Setting\LogSetting.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -707,7 +714,10 @@
     <None Include="Image\V1.2_Beta-5.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Image\V1.2.png" />
+    <None Include="Image\V1.2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\V1.3 Beta-1.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

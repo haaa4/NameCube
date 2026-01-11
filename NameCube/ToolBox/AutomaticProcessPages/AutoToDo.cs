@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using Serilog;
 
 namespace NameCube.ToolBox.AutomaticProcessPages
 {
@@ -11,32 +12,66 @@ namespace NameCube.ToolBox.AutomaticProcessPages
     {
         public async static void StartRunAutomaticProcesses()
         {
-            while(true)
+            Log.Information("开始自动流程调度任务");
+            int loopCount = 0;
+
+            try
             {
-                await Task.Delay(1000);
-                int hour=DateTime.Now.Hour,minute=DateTime.Now.Minute,second=DateTime.Now.Second;
-                int index = TimeToIndex(hour, minute, second);
-                if (GlobalVariables.json.automaticProcess.processesSchedule.ContainsKey(index) && GlobalVariables.json.automaticProcess.processesSchedule[index].Count>0)
+                while (true)
                 {
-                    for(int i = 0; i < GlobalVariables.json.automaticProcess.processesSchedule[index].Count;i++)
+                    await Task.Delay(1000);
+                    loopCount++;
+
+                    // 每60次循环记录一次信息（每分钟）
+                    if (loopCount % 60 == 0)
                     {
-                        Application.Current.Dispatcher.Invoke(() =>
+                        Log.Debug("自动流程调度器运行中，已循环 {LoopCount} 次", loopCount);
+                    }
+
+                    int hour = DateTime.Now.Hour, minute = DateTime.Now.Minute, second = DateTime.Now.Second;
+                    int index = TimeToIndex(hour, minute, second);
+
+                    if (GlobalVariables.json.automaticProcess.processesSchedule.ContainsKey(index)
+                        && GlobalVariables.json.automaticProcess.processesSchedule[index].Count > 0)
+                    {
+                        Log.Information("检测到当前时间 {Hour:00}:{Minute:00}:{Second:00} 有 {Count} 个流程组需要执行",
+                            hour, minute, second, GlobalVariables.json.automaticProcess.processesSchedule[index].Count);
+
+                        for (int i = 0; i < GlobalVariables.json.automaticProcess.processesSchedule[index].Count; i++)
                         {
-                            RunProcessesGroup(GlobalVariables.json.automaticProcess.processesSchedule[index][i]);
-                        });
+                            Application.Current.Dispatcher.Invoke(() =>
+                            {
+                                RunProcessesGroup(GlobalVariables.json.automaticProcess.processesSchedule[index][i]);
+                            });
+                        }
                     }
                 }
             }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "自动流程调度任务发生异常，已停止运行");
+            }
         }
+
         private static int TimeToIndex(int hour, int minute, int second)
         {
             return hour * 3600 + minute * 60 + second;
         }
-        private static void RunProcessesGroup(ProcessGroup  processGroup)
+
+        private static void RunProcessesGroup(ProcessGroup processGroup)
         {
-            ProcessesRunningWindow processesRunningWindow=new ProcessesRunningWindow(processGroup);
+            try
+            {
+                Log.Information("执行流程组: {ProcessGroupName}, UID: {Uid}, 包含 {ProcessCount} 个流程",
+                    processGroup?.name, processGroup?.uid, processGroup?.processDatas?.Count ?? 0);
 
-
+                ProcessesRunningWindow processesRunningWindow = new ProcessesRunningWindow(processGroup);
+                Log.Debug("已创建流程执行窗口");
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "执行流程组时发生错误: {ProcessGroupName}", processGroup?.name);
+            }
         }
     }
 }

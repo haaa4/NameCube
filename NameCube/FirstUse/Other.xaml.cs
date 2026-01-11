@@ -4,6 +4,7 @@ using System;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
+using Serilog;  // 添加Serilog命名空间
 
 namespace NameCube.FirstUse
 {
@@ -17,31 +18,53 @@ namespace NameCube.FirstUse
         {
             InitializeComponent();
             CanChange = false;
-            StartCheck.IsChecked = IsStartupApplication(AppName);
+            Log.Information("Other页面初始化");
+
+            bool isStartup = IsStartupApplication(AppName);
+            StartCheck.IsChecked = isStartup;
             TopCheck.IsChecked = GlobalVariables.json.AllSettings.Top;
-            if(GlobalVariables.json.AllSettings.NameCubeMode==1)
+
+            Log.Information("开机自启动状态: {StartupStatus}", isStartup);
+            Log.Information("窗口置顶状态: {TopStatus}", GlobalVariables.json.AllSettings.Top);
+
+            if (GlobalVariables.json.AllSettings.NameCubeMode == 1)
             {
+                Log.Debug("传统窗口模式，隐藏悬浮球相关设置");
                 StartActionCard.Visibility = Visibility.Collapsed;
                 TopActionCard.Visibility = Visibility.Collapsed;
             }
+
             CanChange = true;
+            Log.Information("Other页面初始化完成");
         }
+
         private void StartCheck_Click(object sender, RoutedEventArgs e)
         {
             if (CanChange)
             {
-                if (StartCheck.IsChecked.Value)
+                try
                 {
-                    EnableAutoStart();
+                    if (StartCheck.IsChecked.Value)
+                    {
+                        Log.Information("用户启用开机自启动");
+                        EnableAutoStart();
+                    }
+                    else
+                    {
+                        Log.Information("用户禁用开机自启动");
+                        DisableAutoStart();
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
-                    DisableAutoStart();
+                    Log.Error(ex, "更改开机自启动设置时发生错误");
                 }
             }
         }
+
         private const string RegistryRunPath = @"Software\Microsoft\Windows\CurrentVersion\Run";
-        private const string AppName = "NameCube"; // 注册表中显示的名称
+        private const string AppName = "NameCube";
+
         /// <summary>
         /// 启用开机自启动
         /// </summary>
@@ -49,19 +72,19 @@ namespace NameCube.FirstUse
         {
             try
             {
+                Log.Information("开始启用开机自启动");
                 using (var key = Registry.CurrentUser.OpenSubKey(RegistryRunPath, true))
                 {
-                    // 获取当前应用的完整路径
                     var appPath = Process.GetCurrentProcess().MainModule.FileName;
+                    Log.Debug("应用路径: {AppPath}", appPath);
 
-                    // 添加注册表项（带引号防止路径中有空格）
                     key.SetValue(AppName, $"\"{appPath}\"");
+                    Log.Information("开机自启动已成功启用");
                 }
             }
             catch (Exception ex)
             {
-                // 处理异常（如权限不足）
-                Debug.WriteLine($"启用自启动失败: {ex.Message}");
+                Log.Error(ex, "启用开机自启动失败");
             }
         }
 
@@ -72,31 +95,48 @@ namespace NameCube.FirstUse
         {
             try
             {
+                Log.Information("开始禁用开机自启动");
                 using (var key = Registry.CurrentUser.OpenSubKey(RegistryRunPath, true))
                 {
                     if (key.GetValue(AppName) != null)
                     {
                         key.DeleteValue(AppName);
+                        Log.Information("开机自启动已成功禁用");
+                    }
+                    else
+                    {
+                        Log.Warning("注册表中未找到自启动项，无需删除");
                     }
                 }
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"禁用自启动失败: {ex.Message}");
+                Log.Error(ex, "禁用开机自启动失败");
             }
         }
 
         private void TopCheck_Click(object sender, RoutedEventArgs e)
         {
-            if(CanChange)
+            if (CanChange)
             {
-                GlobalVariables.json.AllSettings.Top = TopCheck.IsChecked.Value;
+                try
+                {
+                    bool isTop = TopCheck.IsChecked.Value;
+                    GlobalVariables.json.AllSettings.Top = isTop;
+                    Log.Information("窗口置顶状态更改为: {TopStatus}", isTop);
+                }
+                catch (Exception ex)
+                {
+                    Log.Error(ex, "更改窗口置顶状态时发生错误");
+                }
             }
         }
+
         static bool IsStartupApplication(string appName)
         {
             try
             {
+                Log.Debug("检查开机自启动状态，应用名: {AppName}", appName);
                 using (RegistryKey runKey = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run"))
                 {
                     if (runKey != null)
@@ -106,20 +146,24 @@ namespace NameCube.FirstUse
                         {
                             if (valueName.EndsWith(appName, StringComparison.OrdinalIgnoreCase))
                             {
+                                Log.Debug("在自启动项中找到: {ValueName}", valueName);
                                 return true;
                             }
                         }
+                        Log.Debug("未在自启动项中找到应用");
+                    }
+                    else
+                    {
+                        Log.Warning("无法打开注册表自启动项");
                     }
                 }
                 return false;
             }
             catch (Exception ex)
             {
-                MessageBoxFunction.ShowMessageBoxError(ex.Message, false);
-                LogManager.Error(ex);
+                Log.Error(ex, "检查开机自启动状态时发生错误");
                 return false;
             }
         }
-
     }
 }

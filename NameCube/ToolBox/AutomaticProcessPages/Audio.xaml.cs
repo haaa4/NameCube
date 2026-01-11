@@ -15,6 +15,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Path = System.IO.Path;
+using Serilog;
 
 namespace NameCube.ToolBox.AutomaticProcessPages
 {
@@ -29,15 +30,23 @@ namespace NameCube.ToolBox.AutomaticProcessPages
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is Icon icon)
+            try
             {
-                return System.Windows.Interop.Imaging.CreateBitmapSourceFromHIcon(
-                    icon.Handle,
-                    Int32Rect.Empty,
-                    BitmapSizeOptions.FromEmptyOptions()
-                );
+                if (value is Icon icon)
+                {
+                    return System.Windows.Interop.Imaging.CreateBitmapSourceFromHIcon(
+                        icon.Handle,
+                        Int32Rect.Empty,
+                        BitmapSizeOptions.FromEmptyOptions()
+                    );
+                }
+                return null;
             }
-            return null;
+            catch (Exception ex)
+            {
+                Log.Error(ex, "转换图标到ImageSource时发生错误");
+                return null;
+            }
         }
 
         public object ConvertBack(
@@ -92,22 +101,35 @@ namespace NameCube.ToolBox.AutomaticProcessPages
         /// <returns>文件类型对应的图标</returns>
         public static Icon GetFileIcon(string fileExtension, bool isLargeIcon = true)
         {
-            SHFILEINFO shinfo = new SHFILEINFO();
-            uint flags = SHGFI_ICON | SHGFI_USEFILEATTRIBUTES;
+            try
+            {
+                SHFILEINFO shinfo = new SHFILEINFO();
+                uint flags = SHGFI_ICON | SHGFI_USEFILEATTRIBUTES;
 
-            if (isLargeIcon)
-                flags |= SHGFI_LARGEICON;
-            else
-                flags |= SHGFI_SMALLICON;
+                if (isLargeIcon)
+                    flags |= SHGFI_LARGEICON;
+                else
+                    flags |= SHGFI_SMALLICON;
 
-            SHGetFileInfo(fileExtension, 0x80, ref shinfo, (uint)Marshal.SizeOf(shinfo), flags);
+                SHGetFileInfo(fileExtension, 0x80, ref shinfo, (uint)Marshal.SizeOf(shinfo), flags);
 
-            if (shinfo.hIcon == IntPtr.Zero)
+                if (shinfo.hIcon == IntPtr.Zero)
+                {
+                    Log.Warning("获取文件图标失败，文件扩展名: {FileExtension}", fileExtension);
+                    return null;
+                }
+
+                Icon icon = (Icon)Icon.FromHandle(shinfo.hIcon).Clone();
+                DestroyIcon(shinfo.hIcon);
+
+                Log.Debug("成功获取文件图标，扩展名: {FileExtension}", fileExtension);
+                return icon;
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "获取文件图标时发生错误，文件扩展名: {FileExtension}", fileExtension);
                 return null;
-
-            Icon icon = (Icon)Icon.FromHandle(shinfo.hIcon).Clone();
-            DestroyIcon(shinfo.hIcon);
-            return icon;
+            }
         }
     }
 
@@ -118,32 +140,47 @@ namespace NameCube.ToolBox.AutomaticProcessPages
     {
         public Audio()
         {
+            Log.Information("初始化音频管理页面");
             InitializeComponent();
             Directory.CreateDirectory(musicPath);
             DataContext = this;
             GetAudio(musicPath);
+            Log.Information("音频管理页面初始化完成");
         }
 
         private void GetAudio(string path)
         {
+            Log.Debug("开始获取音频文件列表，路径: {Path}", path);
             AudioFamliy.Clear();
-            string[] filenames = Directory.GetFiles(path);
-            foreach (string filename in filenames)
+            try
             {
-                FileInfo fileInfo = new FileInfo(filename);
-                if (
-                    fileInfo.Extension == ".mp3"
-                    || fileInfo.Extension == ".wma"
-                    || fileInfo.Extension == ".wav"
-                )
+                string[] filenames = Directory.GetFiles(path);
+                int audioCount = 0;
+
+                foreach (string filename in filenames)
                 {
-                    AudioSave audioSave = new AudioSave()
+                    FileInfo fileInfo = new FileInfo(filename);
+                    if (
+                        fileInfo.Extension == ".mp3"
+                        || fileInfo.Extension == ".wma"
+                        || fileInfo.Extension == ".wav"
+                    )
                     {
-                        icon = FileIconHelper.GetFileIcon(fileInfo.Extension),
-                        name = fileInfo.Name,
-                    };
-                    AudioFamliy.Add(audioSave);
+                        AudioSave audioSave = new AudioSave()
+                        {
+                            icon = FileIconHelper.GetFileIcon(fileInfo.Extension),
+                            name = fileInfo.Name,
+                        };
+                        AudioFamliy.Add(audioSave);
+                        audioCount++;
+                    }
                 }
+
+                Log.Information("成功加载 {AudioCount} 个音频文件", audioCount);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "获取音频文件列表时发生错误，路径: {Path}", path);
             }
         }
 
@@ -151,7 +188,17 @@ namespace NameCube.ToolBox.AutomaticProcessPages
 
         private void OpenFolderButton_Click(object sender, RoutedEventArgs e)
         {
-            Process.Start(musicPath);
+            Log.Information("用户点击打开音频文件夹按钮");
+            try
+            {
+                Process.Start(musicPath);
+                Log.Debug("已打开音频文件夹: {MusicPath}", musicPath);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "打开音频文件夹失败");
+                MessageBoxFunction.ShowMessageBoxError($"打开文件夹失败: {ex.Message}");
+            }
         }
 
         public class AudioSave
@@ -166,6 +213,7 @@ namespace NameCube.ToolBox.AutomaticProcessPages
         public ICommand DeleteCommand =>
             new RelayCommand<AudioSave>(audio =>
             {
+                Log.Information("用户请求删除音频文件: {AudioName}", audio?.name);
                 try
                 {
                     string filePath = Path.Combine(musicPath, audio.name);
@@ -173,10 +221,16 @@ namespace NameCube.ToolBox.AutomaticProcessPages
                     {
                         File.Delete(filePath);
                         AudioFamliy.Remove(audio);
+                        Log.Information("成功删除音频文件: {AudioName}", audio.name);
+                    }
+                    else
+                    {
+                        Log.Warning("要删除的音频文件不存在: {FilePath}", filePath);
                     }
                 }
                 catch (Exception ex)
                 {
+                    Log.Error(ex, "删除音频文件失败: {AudioName}", audio?.name);
                     MessageBoxFunction.ShowMessageBoxError($"删除失败: {ex.Message}");
                 }
             });
@@ -184,15 +238,29 @@ namespace NameCube.ToolBox.AutomaticProcessPages
         public ICommand GetDataCommand =>
             new RelayCommand<AudioSave>(audio =>
             {
-                string filePath = Path.Combine(musicPath, audio.name);
-                if (File.Exists(filePath))
+                Log.Information("用户请求打开音频文件: {AudioName}", audio?.name);
+                try
                 {
-                    Process.Start(new ProcessStartInfo(filePath) { UseShellExecute = true });
+                    string filePath = Path.Combine(musicPath, audio.name);
+                    if (File.Exists(filePath))
+                    {
+                        Process.Start(new ProcessStartInfo(filePath) { UseShellExecute = true });
+                        Log.Debug("已打开音频文件: {AudioName}", audio.name);
+                    }
+                    else
+                    {
+                        Log.Warning("要打开的音频文件不存在: {FilePath}", filePath);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Log.Error(ex, "打开音频文件失败: {AudioName}", audio?.name);
                 }
             });
 
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
+            Log.Information("用户点击添加音频文件按钮");
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.Title = "导入音频";
             openFileDialog.Filter =
@@ -202,19 +270,32 @@ namespace NameCube.ToolBox.AutomaticProcessPages
             {
                 try
                 {
+                    int copiedCount = 0;
                     foreach (string file in openFileDialog.FileNames)
                     {
                         string sourceFile = file;
                         string fileName = Path.GetFileName(sourceFile);
                         string destPath = Path.Combine(musicPath, fileName);
+
+                        Log.Debug("正在复制音频文件: {FileName} 从 {SourcePath} 到 {DestPath}",
+                            fileName, sourceFile, destPath);
+
                         File.Copy(sourceFile, destPath, true);
+                        copiedCount++;
                     }
+
+                    Log.Information("成功导入 {CopiedCount} 个音频文件", copiedCount);
+                    GetAudio(musicPath);
                 }
                 catch (Exception ex)
                 {
+                    Log.Error(ex, "导入音频文件时发生错误");
                     MessageBoxFunction.ShowMessageBoxError(ex.Message);
                 }
-                GetAudio(musicPath);
+            }
+            else
+            {
+                Log.Debug("用户取消了音频文件选择对话框");
             }
         }
     }
@@ -232,7 +313,18 @@ namespace NameCube.ToolBox.AutomaticProcessPages
 
         public bool CanExecute(object parameter) => _canExecute?.Invoke((T)parameter) ?? true;
 
-        public void Execute(object parameter) => _execute((T)parameter);
+        public void Execute(object parameter)
+        {
+            try
+            {
+                _execute((T)parameter);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "执行RelayCommand时发生错误");
+                throw;
+            }
+        }
 
         public event EventHandler CanExecuteChanged
         {

@@ -20,6 +20,7 @@ using Masuit.Tools;
 using Masuit.Tools.DateTimeExt;
 using Windows.ApplicationModel.ConversationalAgent;
 using Application = System.Windows.Application;
+using Serilog;
 
 namespace NameCube.ToolBox.AutomaticProcessPages
 {
@@ -36,13 +37,16 @@ namespace NameCube.ToolBox.AutomaticProcessPages
 
         public AutomaticProcessSetting()
         {
+            Log.Information("初始化自动流程设置页面");
             InitializeComponent();
             DataContext = this;
             if (GlobalVariables.json.automaticProcess.processGroups == null)
             {
+                Log.Debug("初始化自动流程组列表为空，创建新列表");
                 GlobalVariables.json.automaticProcess.processGroups = new List<ProcessGroup>();
             }
             Loaded += AutomaticProcessSetting_Loaded;
+            Log.Information("自动流程设置页面初始化完成");
         }
 
         /// <summary>
@@ -51,6 +55,7 @@ namespace NameCube.ToolBox.AutomaticProcessPages
         /// <param name="selectLastOne">选中最后一个</param>
         private void RefreshList(bool selectLastOne = false)
         {
+            Log.Debug("刷新流程组列表，选择最后一个: {SelectLastOne}", selectLastOne);
             canChange = false;
             ProcessGroupsListView.UnselectAll();
             ProcessGroups.Clear();
@@ -65,7 +70,9 @@ namespace NameCube.ToolBox.AutomaticProcessPages
             if (selectLastOne)
             {
                 ProcessGroupsListView.SelectedIndex = ProcessGroups.Count - 2;
+                Log.Debug("选择了最后一个流程组，索引: {Index}", ProcessGroups.Count - 2);
             }
+            Log.Information("流程组列表刷新完成，共 {Count} 个流程组", ProcessGroups.Count - 1);
         }
 
         private string GetMaxName(string get)
@@ -86,47 +93,55 @@ namespace NameCube.ToolBox.AutomaticProcessPages
 
         private string GetProcessName(ProcessData processData)
         {
-            switch (processData.state)
+            try
             {
-                case ProcessState.start:
-                    if (processData.stringData1 != null)
-                    {
-                        FileInfo fileInfo = new FileInfo(processData.stringData1);
-                        return "运行:" + GetMaxName(fileInfo.Name);
-                    }
-                    else
-                    {
-                        return "运行？？？";
-                    }
-                case ProcessState.audio:
-                    if (processData.stringData1 != null)
-                    {
-                        FileInfo fileInfo1 = new FileInfo(processData.stringData1);
-                        return "播放音频:" + GetMaxName(fileInfo1.Name);
-                    }
-                    else
-                    {
-                        return "播放音频？？？";
-                    }
-                case ProcessState.read:
-                    return "展示文字:" + GetMaxName(processData.stringData1);
-                case ProcessState.cmd:
-                    return "执行命令:" + GetMaxName(processData.stringData1);
-                case ProcessState.wait:
-                    return "等待" + processData.doubleData + "秒";
-                case ProcessState.clear:
-                    return "清理内存";
-                case ProcessState.shutDown:
-                    if (processData.doubleData == 0)
-                        return "立即关机";
-                    else if (processData.doubleData == 1)
-                        return "一般关机";
-                    else if (processData.doubleData == 2)
-                        return "强制关机";
-                    else
+                switch (processData.state)
+                {
+                    case ProcessState.start:
+                        if (processData.stringData1 != null)
+                        {
+                            FileInfo fileInfo = new FileInfo(processData.stringData1);
+                            return "运行:" + GetMaxName(fileInfo.Name);
+                        }
+                        else
+                        {
+                            return "运行？？？";
+                        }
+                    case ProcessState.audio:
+                        if (processData.stringData1 != null)
+                        {
+                            FileInfo fileInfo1 = new FileInfo(processData.stringData1);
+                            return "播放音频:" + GetMaxName(fileInfo1.Name);
+                        }
+                        else
+                        {
+                            return "播放音频？？？";
+                        }
+                    case ProcessState.read:
+                        return "展示文字:" + GetMaxName(processData.stringData1);
+                    case ProcessState.cmd:
+                        return "执行命令:" + GetMaxName(processData.stringData1);
+                    case ProcessState.wait:
+                        return "等待" + processData.doubleData + "秒";
+                    case ProcessState.clear:
+                        return "清理内存";
+                    case ProcessState.shutDown:
+                        if (processData.doubleData == 0)
+                            return "立即关机";
+                        else if (processData.doubleData == 1)
+                            return "一般关机";
+                        else if (processData.doubleData == 2)
+                            return "强制关机";
+                        else
+                            return "?";
+                    default:
                         return "?";
-                default:
-                    return "?";
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "获取流程名称时发生错误");
+                return "获取名称失败";
             }
         }
 
@@ -136,6 +151,8 @@ namespace NameCube.ToolBox.AutomaticProcessPages
             int selected = -1
         )
         {
+            Log.Debug("刷新流程列表，流程组: {ProcessGroupName}, 选择最后一个: {SelectedLastOne}, 选择索引: {Selected}",
+                processGroup?.name, selectedLastOne, selected);
             canChange = false;
             ProcessesListView.UnselectAll();
             ProcessKinds.Clear();
@@ -148,15 +165,19 @@ namespace NameCube.ToolBox.AutomaticProcessPages
             if (selectedLastOne)
             {
                 ProcessesListView.SelectedIndex = ProcessKinds.Count - 2;
+                Log.Debug("选择了最后一个流程，索引: {Index}", ProcessKinds.Count - 2);
             }
             if (selected != -1)
             {
                 ProcessesListView.SelectedIndex = selected;
+                Log.Debug("选择了指定索引的流程，索引: {Index}", selected);
             }
+            Log.Information("流程列表刷新完成，共 {Count} 个流程", ProcessKinds.Count - 1);
         }
 
         private void AutomaticProcessSetting_Loaded(object sender, RoutedEventArgs e)
         {
+            Log.Debug("自动流程设置页面加载完成");
             RefreshList();
         }
 
@@ -168,9 +189,11 @@ namespace NameCube.ToolBox.AutomaticProcessPages
             if (canChange && ProcessGroupsListView.SelectedItem != null)
             {
                 string selectedItem = ProcessGroupsListView.SelectedItem.ToString();
+                Log.Information("用户选择流程组: {SelectedItem}", selectedItem);
 
                 if (selectedItem == "新建流程组...")
                 {
+                    Log.Debug("用户选择新建流程组");
                     var dialog = new Wpf.Ui.Controls.ContentDialog()
                     {
                         CloseButtonText = "取消",
@@ -181,7 +204,7 @@ namespace NameCube.ToolBox.AutomaticProcessPages
                             MinWidth = 200,
                             MinHeight = 30,
                             Text = "未命名流程组",
-                            PlaceholderText = "请输入流程组名称(不能以“*”开头)",
+                            PlaceholderText = "请输入流程组名称(不能以\" * \"开头)",
                         },
                         DialogHost = Host,
                     };
@@ -201,9 +224,12 @@ namespace NameCube.ToolBox.AutomaticProcessPages
                                 };
                                 GlobalVariables.json.automaticProcess.processGroups.Add(newGroup);
                                 GlobalVariables.SaveJson();
+                                Log.Information("成功创建新流程组: {GroupName}, UID: {Uid}",
+                                    textBox.Text, newGroup.uid);
                             }
                             else
                             {
+                                Log.Warning("流程组命名不符合规定: {GroupName}", textBox.Text);
                                 SnackBarFunction.ShowSnackBarInToolBoxWindow("命名不符合规定", Wpf.Ui.Controls.ControlAppearance.Caution);
                             }
                             RefreshList(true);
@@ -211,6 +237,7 @@ namespace NameCube.ToolBox.AutomaticProcessPages
                     }
                     else
                     {
+                        Log.Debug("用户取消了新建流程组");
                         dialog.Hide();
                         RefreshList(true);
                     }
@@ -220,6 +247,9 @@ namespace NameCube.ToolBox.AutomaticProcessPages
                     selectedProcessGroup = GlobalVariables.json.automaticProcess.processGroups[
                         ProcessGroupsListView.SelectedIndex
                     ];
+                    Log.Debug("选择流程组详情: {GroupName}, UID: {Uid}, 流程数量: {ProcessCount}",
+                        selectedProcessGroup.name, selectedProcessGroup.uid,
+                        selectedProcessGroup.processDatas?.Count ?? 0);
 
                     RemindTextTextBox.Text = selectedProcessGroup.remindText;
                     RemindTimeNumberBox.Value = selectedProcessGroup.remindTime;
@@ -253,6 +283,7 @@ namespace NameCube.ToolBox.AutomaticProcessPages
 
         private async void RenameMenuItem_Click(object sender, RoutedEventArgs e)
         {
+            Log.Information("用户请求重命名流程组");
             if (
                 ProcessGroupsListView.SelectedItem == null
                 || ProcessGroupsListView.SelectedItem.ToString() == "新建流程组..."
@@ -265,7 +296,10 @@ namespace NameCube.ToolBox.AutomaticProcessPages
             );
 
             if (processGroup == null)
+            {
+                Log.Warning("未找到要重命名的流程组: {OldName}", oldName);
                 return;
+            }
 
             var dialog = new Wpf.Ui.Controls.ContentDialog()
             {
@@ -290,15 +324,22 @@ namespace NameCube.ToolBox.AutomaticProcessPages
                     && !string.IsNullOrWhiteSpace(textBox.Text)
                 )
                 {
-                    processGroup.name = textBox.Text;
+                    string newName = textBox.Text;
+                    processGroup.name = newName;
                     GlobalVariables.SaveJson();
+                    Log.Information("成功重命名流程组: {OldName} -> {NewName}", oldName, newName);
                     RefreshList();
                 }
+            }
+            else
+            {
+                Log.Debug("用户取消了重命名操作");
             }
         }
 
         private async void DeleteMenuItem_Click(object sender, RoutedEventArgs e)
         {
+            Log.Information("用户请求删除流程组");
             if (
                 ProcessGroupsListView.SelectedItem == null
                 || ProcessGroupsListView.SelectedItem.ToString() == "新建流程组..."
@@ -334,8 +375,14 @@ namespace NameCube.ToolBox.AutomaticProcessPages
                     SaveButton.IsEnabled = false;
                     BrowseButton.IsEnabled = false;
                     GlobalVariables.SaveJson();
+                    Log.Information("成功删除流程组: {GroupName}, UID: {Uid}",
+                        itemToDelete, processGroup.uid);
                     RefreshList();
                 }
+            }
+            else
+            {
+                Log.Debug("用户取消了删除操作");
             }
         }
 
@@ -343,64 +390,95 @@ namespace NameCube.ToolBox.AutomaticProcessPages
         {
             ProcessGroupsListView.MaxHeight = e.NewSize.Height / 2 - 60;
             ProcessesListView.MaxHeight = e.NewSize.Height / 2 - 60;
+            Log.Debug("页面大小改变，新高度: {NewHeight}, 新宽度: {NewWidth}",
+                e.NewSize.Height, e.NewSize.Width);
         }
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            int findGroup = GlobalVariables.json.automaticProcess.processGroups.IndexOf(
-                selectedProcessGroup
-            );
-            if (findGroup != -1)
+            Log.Information("用户点击保存按钮");
+            try
             {
-                selectedProcessGroup.remindText = RemindTextTextBox.Text;
-                selectedProcessGroup.remindTime = (int)RemindTimeNumberBox.Value;
-                selectedProcessGroup.canCancle = CanCancleCheckBox.IsChecked ?? false;
-                selectedProcessGroup.show=ShowCheckBox.IsChecked ?? true;
-                if (ProcessKindComboBox.SelectedItem != null)
+                int findGroup = GlobalVariables.json.automaticProcess.processGroups.IndexOf(
+                    selectedProcessGroup
+                );
+                if (findGroup != -1)
                 {
-                    selectedProcessData.state = IndexToProcessState(
-                        ProcessKindComboBox.SelectedIndex
-                    );
-                    selectedProcessData.stringData1 = null;
-                    selectedProcessData.stringData2 = null;
-                    selectedProcessData.doubleData = double.NaN;
-                    selectedProcessData.boolData = false;
-                    object getPageContent = MainFrame.Content;
-                    if (getPageContent is ProcessSettingPages.StartSettingPage startPage)
+                    selectedProcessGroup.remindText = RemindTextTextBox.Text;
+                    selectedProcessGroup.remindTime = (int)RemindTimeNumberBox.Value;
+                    selectedProcessGroup.canCancle = CanCancleCheckBox.IsChecked ?? false;
+                    selectedProcessGroup.show = ShowCheckBox.IsChecked ?? true;
+
+                    Log.Debug("更新流程组配置: 提醒文本长度={RemindTextLength}, 提醒时间={RemindTime}, 可取消={CanCancle}, 显示={Show}",
+                        RemindTextTextBox.Text.Length, RemindTimeNumberBox.Value,
+                        selectedProcessGroup.canCancle, selectedProcessGroup.show);
+
+                    if (ProcessKindComboBox.SelectedItem != null)
                     {
-                        selectedProcessData.stringData1 = startPage.path;
-                    }
-                    else if (getPageContent is ProcessSettingPages.AudioSettingPage audioPage)
-                    {
-                        selectedProcessData.stringData1 = audioPage.url;
-                        selectedProcessData.doubleData = audioPage.waitTime;
-                    }
-                    else if (getPageContent is ProcessSettingPages.ReadSettingPage readPage)
-                    {
-                        selectedProcessData.stringData1 = readPage.text;
-                        selectedProcessData.doubleData = readPage.time;
-                        selectedProcessData.boolData = readPage.read ?? false;
-                    }
-                    else if (getPageContent is ProcessSettingPages.CmdSettingPage cmdPage)
-                    {
-                        selectedProcessData.stringData1 = cmdPage.cmd;
-                        selectedProcessData.boolData = cmdPage.visibility ?? false;
-                    }
-                    else if (getPageContent is ProcessSettingPages.WaitTimeSettingPage waitPage)
-                    {
-                        selectedProcessData.doubleData = waitPage.waitTime;
-                    }
-                    else if(getPageContent is ProcessSettingPages.ShutDownSettingPage shutDownSettingPage)
-                    {
-                        selectedProcessData.doubleData = (int)shutDownSettingPage.shutDownWay;
-                    }
+                        selectedProcessData.state = IndexToProcessState(
+                            ProcessKindComboBox.SelectedIndex
+                        );
+                        selectedProcessData.stringData1 = null;
+                        selectedProcessData.stringData2 = null;
+                        selectedProcessData.doubleData = double.NaN;
+                        selectedProcessData.boolData = false;
+                        object getPageContent = MainFrame.Content;
+                        if (getPageContent is ProcessSettingPages.StartSettingPage startPage)
+                        {
+                            selectedProcessData.stringData1 = startPage.path;
+                            Log.Debug("更新启动设置，路径: {Path}", startPage.path);
+                        }
+                        else if (getPageContent is ProcessSettingPages.AudioSettingPage audioPage)
+                        {
+                            selectedProcessData.stringData1 = audioPage.url;
+                            selectedProcessData.doubleData = audioPage.waitTime;
+                            Log.Debug("更新音频设置，URL: {Url}, 等待时间: {WaitTime}",
+                                audioPage.url, audioPage.waitTime);
+                        }
+                        else if (getPageContent is ProcessSettingPages.ReadSettingPage readPage)
+                        {
+                            selectedProcessData.stringData1 = readPage.text;
+                            selectedProcessData.doubleData = readPage.time;
+                            selectedProcessData.boolData = readPage.read ?? false;
+                            Log.Debug("更新阅读设置，文本长度: {TextLength}, 时间: {Time}, 阅读: {Read}",
+                                readPage.text?.Length ?? 0, readPage.time, readPage.read ?? false);
+                        }
+                        else if (getPageContent is ProcessSettingPages.CmdSettingPage cmdPage)
+                        {
+                            selectedProcessData.stringData1 = cmdPage.cmd;
+                            selectedProcessData.boolData = cmdPage.visibility ?? false;
+                            Log.Debug("更新CMD设置，命令: {Cmd}, 可见性: {Visibility}",
+                                cmdPage.cmd, cmdPage.visibility ?? false);
+                        }
+                        else if (getPageContent is ProcessSettingPages.WaitTimeSettingPage waitPage)
+                        {
+                            selectedProcessData.doubleData = waitPage.waitTime;
+                            Log.Debug("更新等待时间设置，等待时间: {WaitTime}", waitPage.waitTime);
+                        }
+                        else if (getPageContent is ProcessSettingPages.ShutDownSettingPage shutDownSettingPage)
+                        {
+                            selectedProcessData.doubleData = (int)shutDownSettingPage.shutDownWay;
+                            Log.Debug("更新关机设置，关机方式: {ShutDownWay}",
+                                (int)shutDownSettingPage.shutDownWay);
+                        }
                         selectedProcessGroup.processDatas[ProcessesListView.SelectedIndex] =
                             selectedProcessData;
-                    GlobalVariables.json.automaticProcess.processGroups[findGroup] =
-                        selectedProcessGroup;
+                        GlobalVariables.json.automaticProcess.processGroups[findGroup] =
+                            selectedProcessGroup;
+                    }
+                    GlobalVariables.SaveJson();
+                    Log.Information("成功保存流程组: {GroupName}", selectedProcessGroup.name);
+                    RefreshProcessKinds(selectedProcessGroup, false, ProcessesListView.SelectedIndex);
                 }
-                GlobalVariables.SaveJson();
-                RefreshProcessKinds(selectedProcessGroup, false, ProcessesListView.SelectedIndex);
+                else
+                {
+                    Log.Warning("未找到要保存的流程组");
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "保存流程组时发生错误");
+                throw;
             }
         }
 
@@ -413,6 +491,7 @@ namespace NameCube.ToolBox.AutomaticProcessPages
             {
                 if (!(RemindTimeNumberBox.Value >= 0))
                 {
+                    Log.Warning("提醒时间输入无效，重置为默认值5");
                     RemindTimeNumberBox.Value = 5;
                 }
             }
@@ -420,24 +499,32 @@ namespace NameCube.ToolBox.AutomaticProcessPages
 
         private ProcessState IndexToProcessState(int index)
         {
-            switch (index)
+            try
             {
-                case 0:
-                    return ProcessState.start;
-                case 1:
-                    return ProcessState.audio;
-                case 2:
-                    return ProcessState.read;
-                case 3:
-                    return ProcessState.cmd;
-                case 4:
-                    return ProcessState.wait;
-                case 5:
-                    return ProcessState.clear;
-                case 6:
-                    return ProcessState.shutDown;
-                default:
-                    throw new NotImplementedException("找不到属性");
+                switch (index)
+                {
+                    case 0:
+                        return ProcessState.start;
+                    case 1:
+                        return ProcessState.audio;
+                    case 2:
+                        return ProcessState.read;
+                    case 3:
+                        return ProcessState.cmd;
+                    case 4:
+                        return ProcessState.wait;
+                    case 5:
+                        return ProcessState.clear;
+                    case 6:
+                        return ProcessState.shutDown;
+                    default:
+                        throw new NotImplementedException("找不到属性");
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "转换索引到流程状态时发生错误，索引: {Index}", index);
+                throw;
             }
         }
 
@@ -449,9 +536,11 @@ namespace NameCube.ToolBox.AutomaticProcessPages
                 if (get != -1)
                 {
                     RemindTimeNumberBox.Value = get;
+                    Log.Debug("提醒时间输入框失去焦点，解析值为: {Value}", get);
                 }
                 else
                 {
+                    Log.Warning("提醒时间输入无效，重置为默认值5");
                     RemindTimeNumberBox.Text = null;
                     RemindTimeNumberBox.Value = 5;
                 }
@@ -463,18 +552,21 @@ namespace NameCube.ToolBox.AutomaticProcessPages
             if (canChange && ProcessesListView.SelectedItem != null)
             {
                 string selectedItem = ProcessesListView.SelectedItem.ToString();
+                Log.Information("用户选择流程: {SelectedItem}", selectedItem);
+
                 if (selectedItem == "新建流程...")
                 {
-                    if(ProcessKinds.Count>1)
+                    if (ProcessKinds.Count > 1)
                     {
                         string lastSelectedItem = ProcessKinds[ProcessKinds.Count - 2].ToString();
                         if (lastSelectedItem == "立即关机" || lastSelectedItem == "一般关机" || lastSelectedItem == "强制关机")
                         {
-                            SnackBarFunction.ShowSnackBarInToolBoxWindow("自动关机流程后不能加入新流程",Wpf.Ui.Controls.ControlAppearance.Caution);
+                            Log.Warning("在关机流程后尝试添加新流程被阻止");
+                            SnackBarFunction.ShowSnackBarInToolBoxWindow("自动关机流程后不能加入新流程", Wpf.Ui.Controls.ControlAppearance.Caution);
                             ProcessesListView.UnselectAll();
                             return;
                         }
-                    }           
+                    }
                     ProcessData processData = new ProcessData()
                     {
                         state = ProcessState.wait,
@@ -482,6 +574,8 @@ namespace NameCube.ToolBox.AutomaticProcessPages
                     };
                     selectedProcessGroup.processDatas.Add(processData);
                     GlobalVariables.SaveJson();
+                    Log.Information("成功新建流程，状态: {State}, 等待时间: {WaitTime}",
+                        ProcessState.wait, 5);
                     RefreshProcessKinds(selectedProcessGroup, true);
                 }
                 else
@@ -492,6 +586,11 @@ namespace NameCube.ToolBox.AutomaticProcessPages
                     ProcessKindComboBox.IsEnabled = true;
                     int lastSelectedIndex = ProcessesListView.SelectedIndex;
                     isUserInteraction = false;
+
+                    Log.Debug("选择的流程详情: 状态={State}, 字符串数据1长度={StringData1Length}, 双精度数据={DoubleData}",
+                        selectedProcessData.state, selectedProcessData.stringData1?.Length ?? 0,
+                        selectedProcessData.doubleData);
+
                     switch (selectedProcessData.state)
                     {
                         case ProcessState.start:
@@ -509,13 +608,14 @@ namespace NameCube.ToolBox.AutomaticProcessPages
                         case ProcessState.wait:
                             ProcessKindComboBox.SelectedIndex = 4;
                             break;
-                        case ProcessState.clear: 
+                        case ProcessState.clear:
                             ProcessKindComboBox.SelectedIndex = 5;
                             break;
                         case ProcessState.shutDown:
                             ProcessKindComboBox.SelectedIndex = 6;
                             break;
                         default:
+                            Log.Warning("未知的流程状态: {ProcessState}", selectedProcessData.state);
                             break;
                     }
 
@@ -537,6 +637,7 @@ namespace NameCube.ToolBox.AutomaticProcessPages
         {
             if (isUserInteraction)
             {
+                Log.Debug("用户选择流程类型，索引: {SelectedIndex}", ProcessKindComboBox.SelectedIndex);
                 ProcessState processState = selectedProcessData.state;
                 selectedProcessData = new ProcessData() { state = processState, doubleData = 5 };
             }
@@ -546,32 +647,41 @@ namespace NameCube.ToolBox.AutomaticProcessPages
             {
                 case 0:
                     page = new ProcessSettingPages.StartSettingPage(selectedProcessData);
+                    Log.Debug("创建启动设置页面");
                     break;
                 case 1:
                     page = new ProcessSettingPages.AudioSettingPage(selectedProcessData);
+                    Log.Debug("创建音频设置页面");
                     break;
                 case 2:
                     page = new ProcessSettingPages.ReadSettingPage(selectedProcessData);
+                    Log.Debug("创建阅读设置页面");
                     break;
                 case 3:
                     page = new ProcessSettingPages.CmdSettingPage(selectedProcessData);
+                    Log.Debug("创建CMD设置页面");
                     break;
                 case 4:
                     page = new ProcessSettingPages.WaitTimeSettingPage(selectedProcessData);
+                    Log.Debug("创建等待时间设置页面");
                     break;
                 case 5:
                     page = null;
+                    Log.Debug("清理内存页面不需要设置");
                     break;
                 case 6:
                     page = new ProcessSettingPages.ShutDownSettingPage(selectedProcessData);
+                    Log.Debug("创建关机设置页面");
                     break;
                 default:
                     page = null;
+                    Log.Warning("未知的流程类型索引: {Index}", ProcessKindComboBox.SelectedIndex);
                     break;
             }
             if (page != null)
             {
                 MainFrame.Navigate(page);
+                Log.Debug("导航到设置页面完成");
             }
         }
 
@@ -584,11 +694,12 @@ namespace NameCube.ToolBox.AutomaticProcessPages
             {
                 ProcessesListViewContextMenu.Visibility = Visibility.Collapsed;
             }
-            else if(ProcessesListView.SelectedItem.ToString()=="立即关机"|| ProcessesListView.SelectedItem.ToString() == "一般关机"|| ProcessesListView.SelectedItem.ToString() == "强制关机")
+            else if (ProcessesListView.SelectedItem.ToString() == "立即关机" || ProcessesListView.SelectedItem.ToString() == "一般关机" || ProcessesListView.SelectedItem.ToString() == "强制关机")
             {
                 ProcessesListViewContextMenu.Visibility = Visibility.Visible;
                 UpMove.IsEnabled = false;
                 DownMove.IsEnabled = false;
+                Log.Debug("关机流程的上下文菜单，禁用移动功能");
             }
             else
             {
@@ -609,11 +720,14 @@ namespace NameCube.ToolBox.AutomaticProcessPages
                 {
                     DownMove.IsEnabled = true;
                 }
+                Log.Debug("流程上下文菜单，向上移动={UpMoveEnabled}, 向下移动={DownMoveEnabled}",
+                    UpMove.IsEnabled, DownMove.IsEnabled);
             }
         }
 
         private async void MenuItem_Click(object sender, RoutedEventArgs e)
         {
+            Log.Information("用户请求删除流程");
             if (
                 ProcessesListView.SelectedItem == null
                 || ProcessesListView.SelectedItem.ToString() == "新建流程组..."
@@ -643,16 +757,22 @@ namespace NameCube.ToolBox.AutomaticProcessPages
                     GlobalVariables.json.automaticProcess.processGroups[findGroup] =
                         selectedProcessGroup;
                     GlobalVariables.SaveJson();
+                    Log.Information("成功删除流程: {ProcessName}", itemToDelete);
                 }
                 MainFrame.Content = null;
                 ProcessKindComboBox.IsEnabled = false;
                 ProcessKinds.RemoveAt(ProcessesListView.SelectedIndex);
                 ProcessesListView.UnselectAll();
             }
+            else
+            {
+                Log.Debug("用户取消了删除流程操作");
+            }
         }
 
         private void UpMove_Click(object sender, RoutedEventArgs e)
         {
+            Log.Information("用户请求向上移动流程");
             if (selectedProcessData != null)
             {
                 int findGroup = GlobalVariables.json.automaticProcess.processGroups.IndexOf(
@@ -678,12 +798,15 @@ namespace NameCube.ToolBox.AutomaticProcessPages
                     ProcessKinds[ProcessesListView.SelectedIndex] = lastProcessDataName;
                     ProcessesListView.SelectedIndex = lastIndex - 1;
                     GlobalVariables.SaveJson();
+                    Log.Information("成功向上移动流程，从索引 {FromIndex} 移动到 {ToIndex}",
+                        lastIndex, lastIndex - 1);
                 }
             }
         }
 
         private void DownMove_Click(object sender, RoutedEventArgs e)
         {
+            Log.Information("用户请求向下移动流程");
             if (selectedProcessData != null)
             {
                 int findGroup = GlobalVariables.json.automaticProcess.processGroups.IndexOf(
@@ -709,12 +832,15 @@ namespace NameCube.ToolBox.AutomaticProcessPages
                     ProcessKinds[ProcessesListView.SelectedIndex] = lastProcessDataName;
                     ProcessesListView.SelectedIndex = lastIndex + 1;
                     GlobalVariables.SaveJson();
+                    Log.Information("成功向下移动流程，从索引 {FromIndex} 移动到 {ToIndex}",
+                        lastIndex, lastIndex + 1);
                 }
             }
         }
 
         private void BrowseButton_Click(object sender, RoutedEventArgs e)
         {
+            Log.Information("用户点击浏览按钮，预览流程组");
             SaveButton_Click(sender, e);
             Application.Current.Dispatcher.Invoke(() =>
             {
@@ -724,6 +850,7 @@ namespace NameCube.ToolBox.AutomaticProcessPages
 
         private void BrowseProcesses(ProcessGroup processGroup)
         {
+            Log.Information("开始预览流程组: {ProcessGroupName}", processGroup?.name);
             ProcessesRunningWindow processesRunningWindow = new ProcessesRunningWindow(
                 processGroup
             );

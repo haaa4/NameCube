@@ -15,6 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Wpf.Ui.Controls;
+using Serilog;
 
 namespace NameCube.ToolBox
 {
@@ -23,9 +24,12 @@ namespace NameCube.ToolBox
     /// </summary>
     public partial class ShutDown : Page
     {
+        private static readonly ILogger _logger = Log.ForContext<ShutDown>();
+
         public ShutDown()
         {
             InitializeComponent();
+            _logger.Debug("关机工具箱页面初始化");
         }
     }
 }

@@ -11,170 +11,246 @@
     x:Name="fluentWindow"
     Title="点鸣魔方"
     Width="1400"
-    Height="650"
+    Height="700"
     Closing="FluentWindow_Closing"
     DpiChanged="fluentWindow_DpiChanged"
     Loaded="fluentWindow_Loaded"
     WindowStyle="None"
     mc:Ignorable="d">
+
+    <!-- 添加主题资源 -->
     <ui:FluentWindow.Resources>
+        <SolidColorBrush x:Key="AppAccentColor" Color="#0078D4"/>
+        <SolidColorBrush x:Key="AppBackgroundLight" Color="#FAFAFA"/>
+        <SolidColorBrush x:Key="AppBackgroundDark" Color="#202020"/>
+
+        <!-- 优化后的启动动画 -->
         <Storyboard x:Key="ShowStoryBoard">
             <DoubleAnimationUsingKeyFrames Storyboard.TargetName="border2" Storyboard.TargetProperty="(UIElement.Opacity)">
                 <EasingDoubleKeyFrame KeyTime="00:00:00" Value="1" />
-                <EasingDoubleKeyFrame KeyTime="00:00:00.6000000" Value="1" />
-                <EasingDoubleKeyFrame KeyTime="00:00:01" Value="0" />
+                <EasingDoubleKeyFrame KeyTime="00:00:00.8" Value="1" />
+                <EasingDoubleKeyFrame KeyTime="00:00:01.2" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CubicEase EasingMode="EaseInOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
+
+        <!-- 优化后的加载动画 -->
         <Storyboard x:Key="LoadPageStoryBoard">
             <DoubleAnimationUsingKeyFrames Storyboard.TargetName="border" Storyboard.TargetProperty="(UIElement.Opacity)">
                 <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0" />
-                <EasingDoubleKeyFrame KeyTime="00:00:00.5000000" Value="1" />
+                <EasingDoubleKeyFrame KeyTime="00:00:00.6" Value="1">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CubicEase EasingMode="EaseOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
             </DoubleAnimationUsingKeyFrames>
             <DoubleAnimationUsingKeyFrames Storyboard.TargetName="image" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[2].(RotateTransform.Angle)">
-                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="47.004">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="360">
                     <EasingDoubleKeyFrame.EasingFunction>
-                        <BackEase EasingMode="EaseOut" />
+                        <CircleEase EasingMode="EaseOut"/>
                     </EasingDoubleKeyFrame.EasingFunction>
                 </EasingDoubleKeyFrame>
-                <EasingDoubleKeyFrame KeyTime="00:00:00.5000000" Value="0.511">
+                <EasingDoubleKeyFrame KeyTime="00:00:00.6" Value="0">
                     <EasingDoubleKeyFrame.EasingFunction>
-                        <BackEase EasingMode="EaseOut" />
-                    </EasingDoubleKeyFrame.EasingFunction>
-                </EasingDoubleKeyFrame>
-            </DoubleAnimationUsingKeyFrames>
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="image" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)">
-                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0">
-                    <EasingDoubleKeyFrame.EasingFunction>
-                        <BackEase EasingMode="EaseOut" />
-                    </EasingDoubleKeyFrame.EasingFunction>
-                </EasingDoubleKeyFrame>
-                <EasingDoubleKeyFrame KeyTime="00:00:00.5000000" Value="193.025">
-                    <EasingDoubleKeyFrame.EasingFunction>
-                        <BackEase EasingMode="EaseOut" />
+                        <CircleEase EasingMode="EaseOut"/>
                     </EasingDoubleKeyFrame.EasingFunction>
                 </EasingDoubleKeyFrame>
             </DoubleAnimationUsingKeyFrames>
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="image" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)">
+            <DoubleAnimationUsingKeyFrames 
+                Storyboard.TargetName="image" 
+                Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)">
                 <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0">
                     <EasingDoubleKeyFrame.EasingFunction>
-                        <BackEase EasingMode="EaseOut" />
+                        <CircleEase EasingMode="EaseOut"/>
                     </EasingDoubleKeyFrame.EasingFunction>
                 </EasingDoubleKeyFrame>
-                <EasingDoubleKeyFrame KeyTime="00:00:00.5000000" Value="56.299">
+                <EasingDoubleKeyFrame KeyTime="00:00:00.6" Value="193.025">
                     <EasingDoubleKeyFrame.EasingFunction>
-                        <BackEase EasingMode="EaseOut" />
+                        <CircleEase EasingMode="EaseOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames 
+                Storyboard.TargetName="image" 
+                Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CircleEase EasingMode="EaseOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.6" Value="56.299">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CircleEase EasingMode="EaseOut"/>
                     </EasingDoubleKeyFrame.EasingFunction>
                 </EasingDoubleKeyFrame>
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
+
         <Storyboard x:Key="LoadedPageStoryBoard">
             <DoubleAnimationUsingKeyFrames Storyboard.TargetName="border" Storyboard.TargetProperty="(UIElement.Opacity)">
                 <EasingDoubleKeyFrame KeyTime="00:00:00" Value="1" />
-                <EasingDoubleKeyFrame KeyTime="00:00:00.5000000" Value="1" />
-                <EasingDoubleKeyFrame KeyTime="00:00:01" Value="0" />
+                <EasingDoubleKeyFrame KeyTime="00:00:00.5" Value="1" />
+                <EasingDoubleKeyFrame KeyTime="00:00:01" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CubicEase EasingMode="EaseInOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
     </ui:FluentWindow.Resources>
-    <Grid>
+
+    <Grid x:Name="RootGrid" Background="{DynamicResource AppBackgroundLight}">
         <Grid.RowDefinitions>
             <RowDefinition Height="50" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
+        <!-- 简化标题栏，版本号放在其他地方 -->
         <ui:TitleBar
             Title="点鸣魔方"
             Grid.Row="0"
-            Icon="{ui:ImageIcon icon.png}" />
+            Icon="{ui:ImageIcon icon.png}"/>
+
+        <!-- 版本号显示在右上角 -->
+        <Border 
+            Grid.Row="0" 
+            HorizontalAlignment="Right" 
+            VerticalAlignment="Center" 
+            Margin="0,0,20,0"
+            Padding="8,4"
+            Background="Transparent">
+            <TextBlock 
+                x:Name="VersionTextBlock"
+                FontSize="12"
+                Text="{Binding verson}"
+                ToolTip="当前软件版本"/>
+        </Border>
+
         <ui:NavigationView
             x:Name="NavigationMenu"
             Grid.Row="1"
             Margin="0"
             IsBackButtonVisible="Auto"
             IsPaneToggleVisible="True"
-            PaneDisplayMode="Left">
+            PaneDisplayMode="Left"
+            OpenPaneLength="260">
+
+            <!-- 优化信息栏样式 -->
             <ui:NavigationView.Header>
                 <ui:InfoBar
                     x:Name="VolumeInfoBar"
                     Title="提示"
-                    FontSize="20"
-                    FontWeight="Black"
-                    IsClosable="False"
+                    FontSize="14"
+                    IsClosable="True"
                     IsOpen="True"
                     Message="电脑已静音，朗读人可能没有声音"
                     Severity="Informational"
-                    Visibility="Collapsed" />
+                    Visibility="Collapsed"
+                    Margin="10,10,10,20"/>
             </ui:NavigationView.Header>
+
+            <!-- 优化菜单项样式 -->
             <ui:NavigationView.MenuItems>
                 <ui:NavigationViewItem
                     Click="NavigationViewItem_Click"
                     Content="主页"
-                    Icon="{ui:SymbolIcon Symbol=Home24}" />
+                    Icon="{ui:SymbolIcon Symbol=Home24}"
+                    Margin="0,2"/>
                 <ui:NavigationViewItem
                     Click="NavigationViewItem_Click_1"
                     Content="单人模式"
-                    Icon="{ui:SymbolIcon Symbol=Accessibility16}" />
+                    Icon="{ui:SymbolIcon Symbol=Accessibility16}"
+                    Margin="0,2"/>
                 <ui:NavigationViewItem
                     Click="NavigationViewItem_Click_2"
                     Content="因子模式"
-                    Icon="{ui:SymbolIcon Symbol=PeopleSettings24}">
-                    <ui:NavigationViewItem.InfoBadge>
-                        <ui:InfoBadge
-                            Width="30"
-                            Height="30"
-                            Padding="30,0,0,0"
-                            Severity="Attention"
-                            Value="新" />
-                    </ui:NavigationViewItem.InfoBadge>
+                    Icon="{ui:SymbolIcon Symbol=PeopleSettings24}"
+                    Margin="0,2">
                 </ui:NavigationViewItem>
                 <ui:NavigationViewItem
                     Click="NavigationViewItem_Click_7"
                     Content="旧因子模式"
                     Icon="{ui:SymbolIcon Symbol=PeopleSettings24}"
                     Visibility="Collapsed"
-                    x:Name="OldMemoryFactorItem"/>
+                    x:Name="OldMemoryFactorItem"
+                    Margin="0,2"/>
                 <ui:NavigationViewItem
                     Click="NavigationViewItem_Click_3"
                     Content="批量模式"
-                    Icon="{ui:SymbolIcon Symbol=PeopleCommunity24}" />
+                    Icon="{ui:SymbolIcon Symbol=PeopleCommunity24}"
+                    Margin="0,2"/>
                 <ui:NavigationViewItem
                     Click="NavigationViewItem_Click_4"
                     Content="数字模式"
-                    Icon="{ui:SymbolIcon Symbol=NumberSymbol24}" />
+                    Icon="{ui:SymbolIcon Symbol=NumberSymbol24}"
+                    Margin="0,2"/>
                 <ui:NavigationViewItem
                     Click="NavigationViewItem_Click_5"
                     Content="预备模式"
-                    Icon="{ui:SymbolIcon Symbol=Run24}" />
+                    Icon="{ui:SymbolIcon Symbol=Run24}"
+                    Margin="0,2"/>
                 <ui:NavigationViewItem
                     Click="NavigationViewItem_Click_6"
                     Content="记忆模式"
-                    Icon="{ui:SymbolIcon Symbol=BrainCircuit24}" />
-
+                    Icon="{ui:SymbolIcon Symbol=BrainCircuit24}"
+                    Margin="0,2"/>
             </ui:NavigationView.MenuItems>
+
+            <!-- 优化底部按钮区域，添加版本号显示 -->
             <ui:NavigationView.PaneFooter>
                 <StackPanel>
                     <ui:CardAction
-                        Height="55"
-                        Margin="5,0"
+                        Height="58"
+                        Margin="10,0,10,5"
                         Click="CardAction_Click"
                         Content="应用设置"
-                        Icon="{ui:SymbolIcon Symbol=Settings24}" />
+                        Icon="{ui:SymbolIcon Symbol=Settings24}"/>
                     <ui:CardAction
                         x:Name="ToolBoxCardAction"
-                        Height="55"
-                        Margin="5,5"
+                        Height="58"
+                        Margin="10,0,10,10"
                         Click="CardAction_Click_1"
                         Content="小工具"
-                        Icon="{ui:SymbolIcon Symbol=Toolbox24}" />
+                        Icon="{ui:SymbolIcon Symbol=Toolbox24}"/>
+
+                    <!-- 底部版本信息区域 -->
+                    <Border 
+                        Height="1" 
+                        Margin="10,0" />
+
+                    <!-- 版本号显示区域2 - 备用位置 -->
+                    <StackPanel 
+                        Orientation="Horizontal" 
+                        Margin="12,8"
+                        VerticalAlignment="Center">
+                        <ui:SymbolIcon 
+                            Symbol="Info24" 
+                            Width="16" 
+                            Height="16"
+                            Margin="0,0,6,0"/>
+                        <TextBlock 
+                            x:Name="AppVersionTextBlock"
+                            FontSize="12"
+                            Text="{Binding verson}"
+                            ToolTip="点击查看更新信息"/>
+                    </StackPanel>
                 </StackPanel>
             </ui:NavigationView.PaneFooter>
         </ui:NavigationView>
+
+        <!-- 优化启动动画容器 -->
         <Border
             x:Name="border"
             Grid.Row="1"
-            Margin="321,0,0,0"
             Background="White"
-            BorderThickness="1" Grid.IsSharedSizeScope="True" Visibility="Collapsed">
-            <Viewbox Margin="0,0,0,-1">
+            BorderThickness="0"
+            Grid.IsSharedSizeScope="True" 
+            Visibility="Collapsed"
+            Margin="260,0,0,0">
+            <Viewbox>
                 <Canvas Height="699" Width="1039" RenderTransformOrigin="0.5,0.5">
                     <Canvas.RenderTransform>
                         <TransformGroup>
@@ -185,10 +261,14 @@
                         </TransformGroup>
                     </Canvas.RenderTransform>
                     <Image
-                x:Name="image"
-                RenderTransformOrigin="0.5,0.5"
-                Source="/icon.png"
-                Stretch="Fill" MinWidth="250" MinHeight="250" Height="250" Canvas.Left="210.188" Canvas.Top="172.75" Width="250">
+                        x:Name="image"
+                        RenderTransformOrigin="0.5,0.5"
+                        Source="/icon.png"
+                        Stretch="Uniform"
+                        Width="180"
+                        Height="180"
+                        Canvas.Left="210.188" 
+                        Canvas.Top="172.75">
                         <Image.RenderTransform>
                             <TransformGroup>
                                 <ScaleTransform />
@@ -201,31 +281,86 @@
                 </Canvas>
             </Viewbox>
         </Border>
+
+        <!-- 优化启动画面 -->
         <Border
             x:Name="border2"
             Grid.RowSpan="2"
-            Background="White"
-            BorderBrush="White"
-            BorderThickness="1"
+            Background="#0078D4"
+            BorderThickness="0"
             Visibility="Visible" d:IsHidden="True">
-            <ui:StackPanel>
-                <Image
-                    Width="189"
-                    Height="192"
-                    RenderTransformOrigin="1.081,0.477"
-                    Source="/icon.png"
-                    Stretch="Fill" Margin="434,228,775,0" />
-                <TextBlock
-                    Width="420"
-                    Height="145"
-                    FontFamily="Segoe UI Black"
-                    FontSize="72"
-                    Foreground="#FF171717"
-                    TextWrapping="Wrap" Margin="623,-145,355,0"><Run Language="zh-cn" Text="点鸣魔方" /></TextBlock>
-            </ui:StackPanel>
+            <Grid>
+                <!-- 背景渐变 -->
+                <Rectangle>
+                    <Rectangle.Fill>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                            <GradientStop Color="#0078D4" Offset="0"/>
+                            <GradientStop Color="#005A9E" Offset="0.5"/>
+                            <GradientStop Color="#004275" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Rectangle.Fill>
+                </Rectangle>
+
+                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <!-- 应用图标 -->
+                    <Border 
+                        Width="150" 
+                        Height="150" 
+                        CornerRadius="24"
+                        Background="White"
+                        Padding="24"
+                        Margin="0,0,0,40">
+                        <Image
+                            Source="/icon.png"
+                            Stretch="Uniform"/>
+                    </Border>
+
+                    <!-- 应用名称 -->
+                    <TextBlock
+                        FontFamily="Segoe UI"
+                        FontSize="48"
+                        FontWeight="Bold"
+                        Foreground="White"
+                        Text="点鸣魔方"
+                        HorizontalAlignment="Center"
+                        Margin="0,0,0,10"/>
+
+                    <!-- 副标题 -->
+                    <TextBlock x:Name="textBlock"
+                        FontFamily="Segoe UI"
+                        FontSize="16"
+                        Foreground="White"
+                        Opacity="0.8"
+                        Text="功能强大的抽学号软件"
+                        HorizontalAlignment="Center"/>
+
+                    <!-- 加载指示器 -->
+                    <ProgressBar
+                        Width="200"
+                        Height="4"
+                        Margin="0,40,0,0"
+                        Foreground="White"
+                        IsIndeterminate="True"/>
+
+                    <!-- 版本号显示区域3 - 启动画面 -->
+                    <TextBlock
+                        x:Name="StartupVersionTextBlock"
+                        FontFamily="Segoe UI"
+                        FontSize="12"
+                        Foreground="White"
+                        Opacity="0.6"
+                        Text="{Binding verson}"
+                        HorizontalAlignment="Center"
+                        Margin="0,20,0,0"/>
+                </StackPanel>
+            </Grid>
         </Border>
+
+        <!-- 消息通知容器 -->
         <ui:SnackbarPresenter
             x:Name="SnackbarPresenterHost"
-            Grid.Row="1" d:IsHidden="True" />
+            Grid.Row="1" 
+            d:IsHidden="True"
+            Margin="0,0,20,20"/>
     </Grid>
 </ui:FluentWindow>

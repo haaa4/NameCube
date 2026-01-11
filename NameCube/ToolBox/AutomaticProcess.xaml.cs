@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Serilog;
 
 namespace NameCube.ToolBox
 {
@@ -20,12 +21,21 @@ namespace NameCube.ToolBox
     /// </summary>
     public partial class AutomaticProcess : Page
     {
+        private static readonly ILogger _logger = Log.ForContext<AutomaticProcess>();
+
         public AutomaticProcess()
         {
             InitializeComponent();
-            if(GlobalVariables.json.automaticProcess.debug)
+            _logger.Debug("自动处理页面初始化");
+
+            if (GlobalVariables.json.automaticProcess.debug)
             {
-                DebugItem.Visibility= Visibility.Visible;
+                DebugItem.Visibility = Visibility.Visible;
+                _logger.Warning("自动处理调试模式已启用");
+            }
+            else
+            {
+                _logger.Debug("自动处理调试模式未启用");
             }
         }
     }

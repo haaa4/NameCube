@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Serilog;
 
 namespace NameCube.ToolBox.AutomaticProcessPages.ProcessPages
 {
@@ -34,9 +35,11 @@ namespace NameCube.ToolBox.AutomaticProcessPages.ProcessPages
             string info = null,
             bool canCancle = true,
             bool isDebug = false,
-            bool show=true
+            bool show = true
         )
         {
+            Log.Information("初始化就绪页面 - 流程名称: {ProcessName}, 准备时间: {Time}秒, 信息: {Info}, 可取消: {CanCancel}, 调试模式: {Debug}, 显示: {Show}",
+                processName, time, info ?? "无", canCancle, isDebug, show);
             InitializeComponent();
             this.DataContext = this;
             ProcessName = processName;
@@ -50,16 +53,19 @@ namespace NameCube.ToolBox.AutomaticProcessPages.ProcessPages
             {
                 CancleButton.IsEnabled = false;
                 CancleButton.Content = "不可取消";
+                Log.Debug("取消按钮已禁用");
             }
             Loaded += ReadyPage_Loaded;
-            if(!show)
+            if (!show)
             {
-                ReadyPage_Loaded(null,null);
+                Log.Debug("页面设置为不显示模式，自动触发加载");
+                ReadyPage_Loaded(null, null);
             }
         }
 
         private async void ReadyPage_Loaded(object sender, RoutedEventArgs e)
         {
+            Log.Information("开始就绪等待，时间: {Time}秒", Time);
             await Task.Delay(Time * 1000);
             if (debug)
             {
@@ -77,18 +83,22 @@ namespace NameCube.ToolBox.AutomaticProcessPages.ProcessPages
         public bool debug = false;
         public event Action<string> RequestParentAction;
         public event Action<int> EndThePageAction;
-        private void CallEndThePage(int ret=0)
+
+        private void CallEndThePage(int ret = 0)
         {
+            Log.Debug("调用结束页面，返回码: {ReturnCode}", ret);
             EndThePageAction?.Invoke(ret);
         }
 
         private void CallParentMethodDebug(string data)
         {
+            Log.Debug("调用父页面调试方法，数据: {Data}", data);
             RequestParentAction?.Invoke(data);
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            Log.Information("用户点击执行按钮");
             if (debug)
             {
                 CallParentMethodDebug("执行");
@@ -101,6 +111,7 @@ namespace NameCube.ToolBox.AutomaticProcessPages.ProcessPages
 
         private void CancleButton_Click(object sender, RoutedEventArgs e)
         {
+            Log.Information("用户点击取消按钮");
             if (debug)
             {
                 CallParentMethodDebug("取消");

@@ -338,6 +338,11 @@ namespace NameCube
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
         public bool DefaultToMaximumSize { get; set; }
+        /// <summary>
+        /// log等级
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+        public int LogLevel { get; set; } = 1;
     }
 
     public class onePeopleModeSettings
@@ -936,8 +941,8 @@ namespace NameCube
         /// 当前版本
         /// </summary>
         //Bro为什么这样写！！？
-        public static string Version = "V1.2";
-        public static bool IsBeta = false;
+        public static string Version = "V1.3_Beta-1";
+        public static bool IsBeta = true;
         public static bool ret = false;
     }
 

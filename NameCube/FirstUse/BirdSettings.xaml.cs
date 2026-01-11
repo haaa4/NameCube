@@ -11,6 +11,7 @@ using System.Windows.Forms;
 using System.Windows.Media.Imaging;
 using Wpf.Ui.Controls;
 using Application = System.Windows.Application;
+using Serilog;  // 添加Serilog命名空间
 
 namespace NameCube.FirstUse
 {
@@ -24,35 +25,45 @@ namespace NameCube.FirstUse
         {
             InitializeComponent();
             CanChange = false;
+            Log.Information("初始化BirdSettings页面");
             Initialize();
             CanChange = true;
+            Log.Information("BirdSettings页面初始化完成");
         }
+
         private void BallCheck_Click(object sender, RoutedEventArgs e)
         {
             if (CanChange)
             {
                 GlobalVariables.json.StartToDo.Ball = BallCheck.IsChecked.Value;
+                Log.Information("切换悬浮球启动状态: {BallStatus}", BallCheck.IsChecked.Value);
             }
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            string[] args = Environment.GetCommandLineArgs();
-            File.WriteAllText(Path.Combine(GlobalVariables.configDir, "START"), "The cake is a lie");
-            LogManager.Info("程序退出");
-            System.Windows.Application.Current.Shutdown();
-            Process.Start(System.Windows.Application.ResourceAssembly.Location, string.Join(" ", args.Skip(1)));
+            try
+            {
+                string[] args = Environment.GetCommandLineArgs();
+                Log.Information("开始重启应用操作");
+                File.WriteAllText(Path.Combine(GlobalVariables.configDir, "START"), "The cake is a lie");
+                Log.Information("重启标记文件已写入");
+                Log.Information("程序退出，准备重启");
+                System.Windows.Application.Current.Shutdown();
+                Process.Start(System.Windows.Application.ResourceAssembly.Location, string.Join(" ", args.Skip(1)));
+                Log.Information("新进程已启动");
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "重启应用时发生错误");
+            }
         }
-
-
-
-
-
 
         private void ImageIcon_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             if (CanChange)
             {
+                Log.Information("开始选择自定义图片");
                 using (OpenFileDialog openFileDialog = new OpenFileDialog())
                 {
                     openFileDialog.InitialDirectory = "c:\\";
@@ -63,33 +74,78 @@ namespace NameCube.FirstUse
 
                     if (openFileDialog.ShowDialog() == DialogResult.OK)
                     {
+                        Log.Information("用户选择了图片文件: {FileName}", openFileDialog.FileName);
                         Ring.Visibility = Visibility.Visible;
                         ImageIcon.Visibility = Visibility.Collapsed;
                         CopyImage(openFileDialog.FileName);
                         GlobalVariables.json.BirdSettings.UseDefinedImage = true;
+                        Log.Information("已切换到自定义图片模式");
+                    }
+                    else
+                    {
+                        Log.Information("用户取消了图片选择");
                     }
                 }
             }
         }
+
         private async void CopyImage(string Filename)
         {
+            Log.Information("开始复制图片: {FileName}", Filename);
             await Task.Run(() =>
             {
-
-                File.Delete(Path.Combine(GlobalVariables.configDir, "Bird_data", "Image", "image.png"));
-                File.Copy(Filename, Path.Combine(GlobalVariables.configDir, "Bird_data", "Image", "image.png"));
-                this.Dispatcher.Invoke(new Action(() =>
+                try
                 {
-                    BitmapImage bitmap = new BitmapImage();
-                    bitmap.BeginInit();
-                    bitmap.UriSource = new Uri(Path.Combine(GlobalVariables.configDir, "Bird_data", "Image", "image.png"));
-                    bitmap.CacheOption = BitmapCacheOption.OnLoad;
-                    bitmap.EndInit();
-                    ImageIcon.Source = bitmap;
-                    Ring.Visibility = Visibility.Collapsed;
-                    ImageIcon.Visibility = Visibility.Visible;
-                    ChangeBird();
-                }));
+                    string targetPath = Path.Combine(GlobalVariables.configDir, "Bird_data", "Image", "image.png");
+                    string targetDir = Path.GetDirectoryName(targetPath);
+
+                    // 确保目录存在
+                    if (!Directory.Exists(targetDir))
+                    {
+                        Directory.CreateDirectory(targetDir);
+                        Log.Debug("创建图片目录: {Directory}", targetDir);
+                    }
+
+                    // 删除已存在的文件
+                    if (File.Exists(targetPath))
+                    {
+                        File.Delete(targetPath);
+                        Log.Debug("删除已存在的图片文件");
+                    }
+
+                    File.Copy(Filename, targetPath);
+                    Log.Information("图片复制完成: {Source} -> {Target}", Filename, targetPath);
+
+                    this.Dispatcher.Invoke(new Action(() =>
+                    {
+                        try
+                        {
+                            BitmapImage bitmap = new BitmapImage();
+                            bitmap.BeginInit();
+                            bitmap.UriSource = new Uri(targetPath);
+                            bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                            bitmap.EndInit();
+                            ImageIcon.Source = bitmap;
+                            Ring.Visibility = Visibility.Collapsed;
+                            ImageIcon.Visibility = Visibility.Visible;
+                            ChangeBird();
+                            Log.Debug("UI图片更新完成");
+                        }
+                        catch (Exception ex)
+                        {
+                            Log.Error(ex, "更新UI图片时发生错误");
+                        }
+                    }));
+                }
+                catch (Exception ex)
+                {
+                    Log.Error(ex, "复制图片时发生错误");
+                    this.Dispatcher.Invoke(new Action(() =>
+                    {
+                        Ring.Visibility = Visibility.Collapsed;
+                        ImageIcon.Visibility = Visibility.Visible;
+                    }));
+                }
                 return;
             });
         }
@@ -98,9 +154,11 @@ namespace NameCube.FirstUse
         {
             if (CanChange)
             {
+                Log.Information("恢复默认图片");
                 ImageIcon.Source = new BitmapImage(new Uri("pack://application:,,,/BallPicture.png"));
                 GlobalVariables.json.BirdSettings.UseDefinedImage = false;
                 ChangeBird();
+                Log.Information("已恢复到默认图片");
             }
         }
 
@@ -108,7 +166,9 @@ namespace NameCube.FirstUse
         {
             if (CanChange)
             {
-                GlobalVariables.json.BirdSettings.AdsorbValue = ABSlider.Value.ToInt32();
+                int value = ABSlider.Value.ToInt32();
+                GlobalVariables.json.BirdSettings.AdsorbValue = value;
+                Log.Information("吸附值更改为: {AdsorbValue}", value);
                 ChangeBird();
             }
         }
@@ -117,7 +177,9 @@ namespace NameCube.FirstUse
         {
             if (CanChange)
             {
-                GlobalVariables.json.BirdSettings.AutoAbsord = AutoAdsorb.IsChecked.Value;
+                bool isChecked = AutoAdsorb.IsChecked.Value;
+                GlobalVariables.json.BirdSettings.AutoAbsord = isChecked;
+                Log.Information("自动吸附状态更改为: {AutoAdsorb}", isChecked);
                 ChangeBird();
             }
         }
@@ -126,53 +188,101 @@ namespace NameCube.FirstUse
         {
             if (CanChange)
             {
-                GlobalVariables.json.BirdSettings.diaphaneity = Diaphaneity.Value.ToInt32();
+                int value = Diaphaneity.Value.ToInt32();
+                GlobalVariables.json.BirdSettings.diaphaneity = value;
+                Log.Information("透明度更改为: {Diaphaneity}%", value);
                 ChangeBird();
             }
         }
+
         private void Initialize()
         {
-            BallCheck.IsChecked = GlobalVariables.json.StartToDo.Ball;
-            StartWayComboBox.SelectedIndex = GlobalVariables.json.BirdSettings.StartWay;
-            if (GlobalVariables.json.BirdSettings.UseDefinedImage)
+            try
             {
-                BitmapImage bitmap = new BitmapImage();
-                bitmap.BeginInit();
-                bitmap.UriSource = new Uri(Path.Combine(GlobalVariables.configDir, "Bird_data", "Image", "image.png"));
-                bitmap.CacheOption = BitmapCacheOption.OnLoad;
-                bitmap.EndInit();
-                ImageIcon.Source = bitmap;
+                Log.Information("开始初始化BirdSettings控件");
+                BallCheck.IsChecked = GlobalVariables.json.StartToDo.Ball;
+                StartWayComboBox.SelectedIndex = GlobalVariables.json.BirdSettings.StartWay;
+
+                if (GlobalVariables.json.BirdSettings.UseDefinedImage)
+                {
+                    Log.Debug("加载自定义图片");
+                    string imagePath = Path.Combine(GlobalVariables.configDir, "Bird_data", "Image", "image.png");
+
+                    if (File.Exists(imagePath))
+                    {
+                        BitmapImage bitmap = new BitmapImage();
+                        bitmap.BeginInit();
+                        bitmap.UriSource = new Uri(imagePath);
+                        bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                        bitmap.EndInit();
+                        ImageIcon.Source = bitmap;
+                        Log.Debug("自定义图片加载成功");
+                    }
+                    else
+                    {
+                        Log.Warning("自定义图片文件不存在: {ImagePath}", imagePath);
+                        GlobalVariables.json.BirdSettings.UseDefinedImage = false;
+                    }
+                }
+                else
+                {
+                    Log.Debug("使用默认图片");
+                }
+
+                if (GlobalVariables.json.BirdSettings.diaphaneity == 0)
+                {
+                    GlobalVariables.json.BirdSettings.diaphaneity = 100;
+                    Log.Debug("修复透明度为默认值100%");
+                }
+
+                ABSlider.Value = GlobalVariables.json.BirdSettings.AdsorbValue;
+                AutoAdsorb.IsChecked = GlobalVariables.json.BirdSettings.AutoAbsord;
+                Diaphaneity.Value = GlobalVariables.json.BirdSettings.diaphaneity;
+                StartLocationWay.SelectedIndex = GlobalVariables.json.BirdSettings.StartLocationWay;
+                BallWidth.Value = GlobalVariables.json.BirdSettings.Width;
+                BallHeight.Value = GlobalVariables.json.BirdSettings.Height;
+
+                Log.Information("BirdSettings控件初始化完成");
             }
-            if (GlobalVariables.json.BirdSettings.diaphaneity == 0)
+            catch (Exception ex)
             {
-                GlobalVariables.json.BirdSettings.diaphaneity = 100;
+                Log.Error(ex, "初始化BirdSettings控件时发生错误");
             }
-            ABSlider.Value = GlobalVariables.json.BirdSettings.AdsorbValue;
-            AutoAdsorb.IsChecked = GlobalVariables.json.BirdSettings.AutoAbsord;
-            Diaphaneity.Value = GlobalVariables.json.BirdSettings.diaphaneity;
-            StartLocationWay.SelectedIndex = GlobalVariables.json.BirdSettings.StartLocationWay;
-            BallWidth.Value = GlobalVariables.json.BirdSettings.Width;
-            BallHeight.Value = GlobalVariables.json.BirdSettings.Height;
         }
+
         private void ChangeBird()
         {
-            var Bird = System.Windows.Application.Current.Windows.OfType<Bird>().FirstOrDefault();
-
-            if (Bird == null)
+            try
             {
-                // 创建新实例
-                Bird = new Bird();
-            }
+                Log.Information("开始更新Bird窗口");
+                var Bird = System.Windows.Application.Current.Windows.OfType<Bird>().FirstOrDefault();
 
-            // 确保窗口可见并激活
-            Bird.Initialize();
+                if (Bird == null)
+                {
+                    Log.Debug("未找到现有Bird窗口，创建新实例");
+                    Bird = new Bird();
+                }
+                else
+                {
+                    Log.Debug("找到现有Bird窗口，重新初始化");
+                }
+
+                Bird.Initialize();
+                Log.Information("Bird窗口更新完成");
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "更新Bird窗口时发生错误");
+            }
         }
 
         private void StartWayComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (CanChange)
             {
-                GlobalVariables.json.BirdSettings.StartWay = StartWayComboBox.SelectedIndex;
+                int selectedIndex = StartWayComboBox.SelectedIndex;
+                GlobalVariables.json.BirdSettings.StartWay = selectedIndex;
+                Log.Information("启动方式更改为索引: {StartWay}", selectedIndex);
             }
         }
 
@@ -180,7 +290,9 @@ namespace NameCube.FirstUse
         {
             if (CanChange)
             {
-                GlobalVariables.json.BirdSettings.StartLocationWay = StartLocationWay.SelectedIndex;
+                int selectedIndex = StartLocationWay.SelectedIndex;
+                GlobalVariables.json.BirdSettings.StartLocationWay = selectedIndex;
+                Log.Information("启动位置方式更改为索引: {StartLocationWay}", selectedIndex);
             }
         }
 
@@ -188,18 +300,24 @@ namespace NameCube.FirstUse
         {
             if (CanChange)
             {
-                GlobalVariables.json.BirdSettings.Width = BallWidth.Value.ToInt32();
-                GlobalVariables.json.BirdSettings.Height = BallHeight.Value.ToInt32();
+                int width = BallWidth.Value.ToInt32();
+                int height = BallHeight.Value.ToInt32();
+
+                GlobalVariables.json.BirdSettings.Width = width;
+                GlobalVariables.json.BirdSettings.Height = height;
+
+                Log.Information("悬浮球尺寸更改为: {Width}x{Height}", width, height);
+
                 var Bird = System.Windows.Application.Current.Windows.OfType<Bird>().FirstOrDefault();
 
                 if (Bird == null)
                 {
-                    // 创建新实例
+                    Log.Debug("未找到Bird窗口，创建新实例");
                     Bird = new Bird();
                 }
 
-                // 确保窗口可见并激活
                 Bird.ShowReRectangle();
+                Log.Debug("已请求更新悬浮球矩形");
             }
         }
     }
