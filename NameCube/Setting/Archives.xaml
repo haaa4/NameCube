@@ -7,6 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     Title="Archives"
+    FontFamily="{StaticResource AppFont}"
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
@@ -35,7 +36,7 @@
                     KeyDown="AddNameTextBox_KeyDown"
                     Unloaded="AddNameTextBox_Unloaded" />
                 <ui:Button Click="Button_Click_1" Content="添加" />
-                <ui:Button Click="Button_Click_4" Content="使用默认名单" />
+                <ui:Button Click="Button_Click_4" Content="使用示例名单" />
                 <ui:Button Margin="20,0,0,0" Content="清空">
                     <ui:FlyoutService.Flyout>
                         <ui:Flyout Placement="Bottom">

@@ -20,6 +20,47 @@
                 <EasingDoubleKeyFrame KeyTime="00:00:00.4000000" Value="0" />
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
+        <Storyboard x:Key="flicker">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="ellipse" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="1.043"/>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="11.788"/>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="ellipse" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleY)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="1.076"/>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="12.161"/>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="ellipse" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="1.084"/>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="0.001"/>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="ellipse" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="1.898"/>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="0.292"/>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="ellipse" Storyboard.TargetProperty="(UIElement.Opacity)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0"/>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.1000000" Value="1"/>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="0"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="_flicker">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="ellipse" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0.88"/>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="15.64"/>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="ellipse" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleY)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0.94"/>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="9.64"/>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="ellipse" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="-3"/>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="366"/>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="ellipse" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="1.5"/>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="-216"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
     </Page.Resources>
     <Grid>
 
@@ -66,7 +107,7 @@
             Click="StartButton_Click"
             Content="开始"
             FontFamily="Segoe UI"
-            FontSize="72"
+            FontSize="36"
             FontWeight="Black" />
         <StackPanel Grid.Row="2" Orientation="Horizontal">
             <CheckBox
@@ -117,6 +158,17 @@
         <ContentPresenter
             x:Name="RootContentDialogPresenter"
             Grid.RowSpan="3"
-            Grid.ColumnSpan="2" />
+            Grid.ColumnSpan="2" 
+            d:Visibility="Collapsed"/>
+        <Ellipse x:Name="ellipse" HorizontalAlignment="Center" Height="50" Grid.Row="1" VerticalAlignment="Center" Width="50" Fill="{Binding Foreground, ElementName=NowNumberText}" Panel.ZIndex="-2" Opacity="0.005" RenderTransformOrigin="0.5,0.5">
+            <Ellipse.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Ellipse.RenderTransform>
+        </Ellipse>
     </Grid>
 </Page>

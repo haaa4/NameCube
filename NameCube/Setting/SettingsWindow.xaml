@@ -6,6 +6,7 @@
     xmlns:local="clr-namespace:NameCube.Setting"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    FontFamily="{StaticResource AppFont}"
     Title="应用设置"
     Width="1200"
     Height="650"

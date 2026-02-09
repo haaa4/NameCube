@@ -29,9 +29,9 @@ namespace NameCube.Setting.ModeSetting
             _logger.Debug("记忆模式设置页面初始化开始");
 
             CanChange = false;
-            LockedCheck.IsChecked = GlobalVariables.json.MemoryModeSettings.Locked;
-            Speed.Value = GlobalVariables.json.MemoryModeSettings.Speed - 10;
-            AddSwitch.IsChecked = GlobalVariables.json.MemoryModeSettings.AutoAddFile;
+            LockedCheck.IsChecked = GlobalVariablesData.config.MemoryModeSettings.Locked;
+            Speed.Value = GlobalVariablesData.config.MemoryModeSettings.Speed - 10;
+            AddSwitch.IsChecked = GlobalVariablesData.config.MemoryModeSettings.AutoAddFile;
             CanChange = true;
 
             _logger.Information("记忆模式设置加载完成，锁定状态: {Locked}, 速度: {Speed}, 自动添加文件: {AutoAddFile}",
@@ -46,8 +46,8 @@ namespace NameCube.Setting.ModeSetting
         {
             if (CanChange)
             {
-                GlobalVariables.json.MemoryModeSettings.Locked = LockedCheck.IsChecked.Value;
-                GlobalVariables.SaveJson();
+                GlobalVariablesData.config.MemoryModeSettings.Locked = LockedCheck.IsChecked.Value;
+                GlobalVariablesData.SaveConfig();
                 _logger.Information("记忆模式锁定状态修改为: {Locked}", LockedCheck.IsChecked.Value);
             }
         }
@@ -56,8 +56,8 @@ namespace NameCube.Setting.ModeSetting
         {
             if (CanChange)
             {
-                GlobalVariables.json.MemoryModeSettings.Speed = (int)Speed.Value + 10;
-                GlobalVariables.SaveJson();
+                GlobalVariablesData.config.MemoryModeSettings.Speed = (int)Speed.Value + 10;
+                GlobalVariablesData.SaveConfig();
                 _logger.Debug("记忆模式速度修改为: {Speed}", (int)Speed.Value + 10);
             }
         }
@@ -66,8 +66,8 @@ namespace NameCube.Setting.ModeSetting
         {
             if (CanChange)
             {
-                GlobalVariables.json.MemoryModeSettings.AutoAddFile = AddSwitch.IsChecked.Value;
-                GlobalVariables.SaveJson();
+                GlobalVariablesData.config.MemoryModeSettings.AutoAddFile = AddSwitch.IsChecked.Value;
+                GlobalVariablesData.SaveConfig();
                 _logger.Information("记忆模式自动添加文件修改为: {AutoAddFile}", AddSwitch.IsChecked.Value);
             }
         }

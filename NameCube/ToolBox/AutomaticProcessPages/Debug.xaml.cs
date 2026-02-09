@@ -31,8 +31,8 @@ namespace NameCube.ToolBox.AutomaticProcessPages
         private void ExitButton_Click(object sender, RoutedEventArgs e)
         {
             Log.Information("用户点击退出调试模式按钮");
-            GlobalVariables.json.automaticProcess.debug = false;
-            GlobalVariables.SaveJson();
+            GlobalVariablesData.config.AutomaticProcess.debug = false;
+            GlobalVariablesData.SaveConfig();
             Log.Information("已关闭调试模式");
         }
 

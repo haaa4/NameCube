@@ -74,8 +74,8 @@ namespace NameCube.Mode
         private void CloseRecommendButtom_Click(object sender, RoutedEventArgs e)
         {
             Log.Information("关闭推荐显示");
-            GlobalVariables.json.AllSettings.Recommend = GlobalVariables.Version;
-            GlobalVariables.SaveJson();
+            GlobalVariablesData.config.AllSettings.Recommend = GlobalVariablesData.VERSION;
+            GlobalVariablesData.SaveConfig();
             SnackBarFunction.ShowSnackBarInMainWindow("本版本内，推荐将不再显示。如果想要永久关闭，请到应用设置->其他", Wpf.Ui.Controls.ControlAppearance.Info);
             Recommend.Visibility = Visibility.Collapsed;
             CloseRecommendButtom.Visibility = Visibility.Collapsed;
@@ -84,7 +84,7 @@ namespace NameCube.Mode
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             Log.Debug("Home页面加载");
-            if (GlobalVariables.json.AllSettings.Recommend == GlobalVariables.Version || GlobalVariables.json.AllSettings.Recommend == "None")
+            if (GlobalVariablesData.config.AllSettings.Recommend == GlobalVariablesData.VERSION || GlobalVariablesData.config.AllSettings.Recommend == "None")
             {
                 Log.Debug("推荐已关闭");
                 Recommend.Visibility = Visibility.Collapsed;

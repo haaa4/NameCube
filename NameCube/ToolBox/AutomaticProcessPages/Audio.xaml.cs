@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using NameCube.Function;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -184,7 +185,7 @@ namespace NameCube.ToolBox.AutomaticProcessPages
             }
         }
 
-        string musicPath = Path.Combine(GlobalVariables.configDir, "Music");
+        string musicPath = Path.Combine(GlobalVariablesData.userDataDir, "Music");
 
         private void OpenFolderButton_Click(object sender, RoutedEventArgs e)
         {

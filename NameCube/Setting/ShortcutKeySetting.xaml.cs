@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using NameCube.GlobalVariables.DataClass;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -52,7 +53,7 @@ namespace NameCube.Setting
         {
             _logger.Information("开始初始化快捷键设置");
 
-            if (GlobalVariables.json.ShortCutKey.keysGrounp.Count <= 0)
+            if (GlobalVariablesData.config.ShortCutKey.keysGrounp.Count <= 0)
             {
                 ShortCutHost.Children.Clear();
                 _logger.Debug("快捷键分组为空，清空界面");
@@ -76,17 +77,17 @@ namespace NameCube.Setting
                 "主页",
             };
 
-            for (int i = 0; i < GlobalVariables.json.ShortCutKey.keysGrounp.Count; i++)
+            for (int i = 0; i < GlobalVariablesData.config.ShortCutKey.keysGrounp.Count; i++)
             {
                 string shortCut = "";
-                if (GlobalVariables.json.ShortCutKey.keysGrounp[i].keys.Count <= 0)
+                if (GlobalVariablesData.config.ShortCutKey.keysGrounp[i].keys.Count <= 0)
                 {
                     shortCut = "Unknow";
                     _logger.Warning("第 {Index} 个快捷键组没有按键", i);
                 }
                 else
                 {
-                    foreach (Key key in GlobalVariables.json.ShortCutKey.keysGrounp[i].keys)
+                    foreach (Key key in GlobalVariablesData.config.ShortCutKey.keysGrounp[i].keys)
                     {
                         shortCut = shortCut + key.ToString() + " ";
                     }
@@ -101,21 +102,21 @@ namespace NameCube.Setting
                 };
 
                 string Text;
-                if (GlobalVariables.json.ShortCutKey.keysGrounp[i].ProcessGroup == null)
+                if (GlobalVariablesData.config.ShortCutKey.keysGrounp[i].ProcessGroup == null)
                 {
-                    if (GlobalVariables.json.ShortCutKey.keysGrounp[i].openWay <= 7 && GlobalVariables.json.ShortCutKey.keysGrounp[i].openWay >= 0)
+                    if (GlobalVariablesData.config.ShortCutKey.keysGrounp[i].openWay <= 7 && GlobalVariablesData.config.ShortCutKey.keysGrounp[i].openWay >= 0)
                     {
-                        Text = items[GlobalVariables.json.ShortCutKey.keysGrounp[i].openWay];
+                        Text = items[GlobalVariablesData.config.ShortCutKey.keysGrounp[i].openWay];
                     }
                     else
                     {
                         Text = "???";
-                        _logger.Warning("未知的打开方式: {OpenWay}", GlobalVariables.json.ShortCutKey.keysGrounp[i].openWay);
+                        _logger.Warning("未知的打开方式: {OpenWay}", GlobalVariablesData.config.ShortCutKey.keysGrounp[i].openWay);
                     }
                 }
                 else
                 {
-                    Text = GlobalVariables.json.ShortCutKey.keysGrounp[i].ProcessGroup.name;
+                    Text = GlobalVariablesData.config.ShortCutKey.keysGrounp[i].ProcessGroup.name;
                 }
 
                 CardAction action = new CardAction()
@@ -130,7 +131,7 @@ namespace NameCube.Setting
                                 Text =
                                     Text
                                     + "("
-                                    + GlobalVariables.json.ShortCutKey.keysGrounp[i].LastChangeTime
+                                    + GlobalVariablesData.config.ShortCutKey.keysGrounp[i].LastChangeTime
                                     + ")",
                                 FontSize = 20,
                                 FontWeight = FontWeights.Black,
@@ -147,23 +148,23 @@ namespace NameCube.Setting
                     ShortCut newShortCut = await ChangeData(action.Uid.ToInt32(0));
                     if (newShortCut != null && newShortCut.ProcessGroup == null && newShortCut.openWay == -2)
                     {
-                        GlobalVariables.json.ShortCutKey.keysGrounp[action.Uid.ToInt32(0)].keys = newShortCut.keys;
-                        GlobalVariables.json.ShortCutKey.keysGrounp[action.Uid.ToInt32(0)].LastChangeTime = newShortCut.LastChangeTime;
-                        GlobalVariables.SaveJson();
+                        GlobalVariablesData.config.ShortCutKey.keysGrounp[action.Uid.ToInt32(0)].keys = newShortCut.keys;
+                        GlobalVariablesData.config.ShortCutKey.keysGrounp[action.Uid.ToInt32(0)].LastChangeTime = newShortCut.LastChangeTime;
+                        GlobalVariablesData.SaveConfig();
                         InitializeShortCutKey();
                     }
                     else if (newShortCut != null && newShortCut.LastChangeTime != "Delete")
                     {
-                        GlobalVariables.json.ShortCutKey.keysGrounp[action.Uid.ToInt32(0)] =
+                        GlobalVariablesData.config.ShortCutKey.keysGrounp[action.Uid.ToInt32(0)] =
                             newShortCut;
-                        GlobalVariables.SaveJson();
+                        GlobalVariablesData.SaveConfig();
                         InitializeShortCutKey();
                     }
                     else if (newShortCut != null && newShortCut.LastChangeTime == "Delete")
                     {
                         _logger.Information("删除快捷键组 {Uid}", action.Uid);
-                        GlobalVariables.json.ShortCutKey.keysGrounp.RemoveAt(action.Uid.ToInt32(0));
-                        GlobalVariables.SaveJson();
+                        GlobalVariablesData.config.ShortCutKey.keysGrounp.RemoveAt(action.Uid.ToInt32(0));
+                        GlobalVariablesData.SaveConfig();
                         InitializeShortCutKey();
                     }
                 };
@@ -178,7 +179,7 @@ namespace NameCube.Setting
             {
                 WaitingProcessBar.Visibility = Visibility.Collapsed;
                 AddCardAction.IsEnabled = true;
-                _logger.Information("快捷键初始化完成，共 {Count} 个快捷键组", GlobalVariables.json.ShortCutKey.keysGrounp.Count);
+                _logger.Information("快捷键初始化完成，共 {Count} 个快捷键组", GlobalVariablesData.config.ShortCutKey.keysGrounp.Count);
             });
         }
 
@@ -189,9 +190,9 @@ namespace NameCube.Setting
 
         private int HaveTheSame(ProcessGroup processGroup)
         {
-            for (int i = 0; i < GlobalVariables.json.automaticProcess.processGroups.Count; i++)
+            for (int i = 0; i < GlobalVariablesData.config.AutomaticProcess.processGroups.Count; i++)
             {
-                if (processGroup.uid == GlobalVariables.json.automaticProcess.processGroups[i].uid)
+                if (processGroup.uid == GlobalVariablesData.config.AutomaticProcess.processGroups[i].uid)
                 {
                     return i;
                 }
@@ -205,7 +206,7 @@ namespace NameCube.Setting
 
             try
             {
-                ShortCut shortCut = GlobalVariables.json.ShortCutKey.keysGrounp[uid];
+                ShortCut shortCut = GlobalVariablesData.config.ShortCutKey.keysGrounp[uid];
                 List<Key> keys = new List<Key>();
                 var dialog = new Wpf.Ui.Controls.ContentDialog();
                 var button = new Wpf.Ui.Controls.Button()
@@ -282,7 +283,7 @@ namespace NameCube.Setting
                 {
                     keyText = keyText + key3.ToString() + " ";
                 }
-                keys = GlobalVariables.json.ShortCutKey.keysGrounp[uid].keys;
+                keys = GlobalVariablesData.config.ShortCutKey.keysGrounp[uid].keys;
 
                 List<string> itemsource = new List<string>()
                 {
@@ -296,9 +297,9 @@ namespace NameCube.Setting
                 };
 
                 int selected;
-                for (int i = 0; i < GlobalVariables.json.automaticProcess.processGroups.Count; i++)
+                for (int i = 0; i < GlobalVariablesData.config.AutomaticProcess.processGroups.Count; i++)
                 {
-                    itemsource.Add(GlobalVariables.json.automaticProcess.processGroups[i].name);
+                    itemsource.Add(GlobalVariablesData.config.AutomaticProcess.processGroups[i].name);
                 }
 
                 if (shortCut.ProcessGroup == null)
@@ -372,7 +373,7 @@ namespace NameCube.Setting
                             _logger.Warning("快捷键组 {Uid} 的快捷键为空", uid);
                             return null;
                         }
-                        else if (HaveSameKeys(GlobalVariables.json.ShortCutKey.keysGrounp, keys) > 1)
+                        else if (HaveSameKeys(GlobalVariablesData.config.ShortCutKey.keysGrounp, keys) > 1)
                         {
                             SnackBarFunction.ShowSnackBarInSettingWindow("快捷键不得重复", Wpf.Ui.Controls.ControlAppearance.Caution);
                             _logger.Warning("快捷键组 {Uid} 的快捷键重复", uid);
@@ -396,7 +397,7 @@ namespace NameCube.Setting
                                 throwShortCut = new ShortCut()
                                 {
                                     keys = keys,
-                                    ProcessGroup = GlobalVariables.json.automaticProcess.processGroups[
+                                    ProcessGroup = GlobalVariablesData.config.AutomaticProcess.processGroups[
                                         combox.SelectedIndex - 7
                                     ],
                                     LastChangeTime = DateTime.Now.ToString("F"),
@@ -493,7 +494,7 @@ namespace NameCube.Setting
                                 KeyText.Text = KeyText.Text + key2.ToString() + " ";
                             }
                             KeyText.Text.Remove(KeyText.Text.Length - 1);
-                            GlobalVariables.SaveJson();
+                            GlobalVariablesData.SaveConfig();
                             _logger.Debug("添加按键: {Key}，当前按键数: {Count}", key, keys.Count);
                         }
                     }
@@ -510,9 +511,9 @@ namespace NameCube.Setting
                     "记忆模式",
                 };
 
-                for (int i = 0; i < GlobalVariables.json.automaticProcess.processGroups.Count; i++)
+                for (int i = 0; i < GlobalVariablesData.config.AutomaticProcess.processGroups.Count; i++)
                 {
-                    itemsSource.Add(GlobalVariables.json.automaticProcess.processGroups[i].name);
+                    itemsSource.Add(GlobalVariablesData.config.AutomaticProcess.processGroups[i].name);
                 }
 
                 dialog = new Wpf.Ui.Controls.ContentDialog()
@@ -554,7 +555,7 @@ namespace NameCube.Setting
                             SnackBarFunction.ShowSnackBarInSettingWindow("快捷键为空", Wpf.Ui.Controls.ControlAppearance.Caution);
                             _logger.Warning("新建快捷键组的快捷键为空");
                         }
-                        else if (HaveSameKeys(GlobalVariables.json.ShortCutKey.keysGrounp, keys) > 0)
+                        else if (HaveSameKeys(GlobalVariablesData.config.ShortCutKey.keysGrounp, keys) > 0)
                         {
                             SnackBarFunction.ShowSnackBarInSettingWindow("快捷键不得重复", Wpf.Ui.Controls.ControlAppearance.Caution);
                             _logger.Warning("新建快捷键组的快捷键重复");
@@ -577,16 +578,16 @@ namespace NameCube.Setting
                                 shortCut = new ShortCut()
                                 {
                                     keys = keys,
-                                    ProcessGroup = GlobalVariables.json.automaticProcess.processGroups[combox.SelectedIndex - 7],
+                                    ProcessGroup = GlobalVariablesData.config.AutomaticProcess.processGroups[combox.SelectedIndex - 7],
                                     LastChangeTime = DateTime.Now.ToString("F"),
                                 };
                                 _logger.Information("创建新的快捷键组，处理组: {ProcessGroup}", combox.SelectedItem);
                             }
 
-                            GlobalVariables.json.ShortCutKey.keysGrounp.Add(shortCut);
-                            GlobalVariables.SaveJson();
+                            GlobalVariablesData.config.ShortCutKey.keysGrounp.Add(shortCut);
+                            GlobalVariablesData.SaveConfig();
                             InitializeShortCutKey();
-                            _logger.Information("新快捷键组创建成功，当前总数: {Count}", GlobalVariables.json.ShortCutKey.keysGrounp.Count);
+                            _logger.Information("新快捷键组创建成功，当前总数: {Count}", GlobalVariablesData.config.ShortCutKey.keysGrounp.Count);
                         }
                     }
                 }

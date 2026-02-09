@@ -10,6 +10,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using NameCube.Function;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Media;
@@ -28,7 +29,6 @@ namespace NameCube
 
         protected override void OnStartup(StartupEventArgs e)
         {
-            // 方法1：系统DPI感知
             if (Environment.OSVersion.Version.Major >= 6)
             {
                 SetProcessDPIAware();
@@ -68,22 +68,13 @@ namespace NameCube
                 
                 bool ret;
                 mutex = new Mutex(true, "NameCube", out ret);
-                GlobalVariables.ret = ret;
+                GlobalVariablesData.ret = ret;
                 
                 Log.Debug("Mutex创建结果: {Result}, 是否为首次实例: {IsFirstInstance}", ret, ret);
-
-                if (Directory.Exists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Namecube")))
-                {
-                    GlobalVariables.configDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Namecube");
-                    Log.Information("使用应用程序目录下的配置目录: {ConfigDir}", GlobalVariables.configDir);
-                }
-                else
-                {
-                    GlobalVariables.configDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "NameCube");
-                    Log.Information("使用AppData配置目录: {ConfigDir}", GlobalVariables.configDir);
-                }
-
-                if (!ret && !File.Exists(Path.Combine(GlobalVariables.configDir, "START")))
+                GlobalVariablesData.configDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "NameCube");
+                Log.Information("使用AppData配置目录: {ConfigDir}", GlobalVariablesData.configDir);
+                InitializationUserData();
+                if (!ret && !File.Exists(Path.Combine(GlobalVariablesData.configDir, "START")))
                 {
                     Log.Warning("应用程序重复启动且无START文件，显示重复警告窗口");
                     RepeatWarning repeat = new RepeatWarning();
@@ -94,26 +85,26 @@ namespace NameCube
                 }
                 
                 // 处理更新目录
-                if(Directory.Exists(Path.Combine(GlobalVariables.configDir, "Updata")))
+                if(Directory.Exists(Path.Combine(GlobalVariablesData.userDataDir, "Updata")))
                 {
                     Log.Information("检测到更新目录，处理更新后清理");
                     
-                    if(File.Exists(Path.Combine(GlobalVariables.configDir, "UpdataZip.zip")))
+                    if(File.Exists(Path.Combine(GlobalVariablesData.userDataDir, "UpdataZip.zip")))
                     {
-                        File.Delete(Path.Combine(GlobalVariables.configDir, "UpdataZip.zip"));
+                        File.Delete(Path.Combine(GlobalVariablesData.userDataDir, "UpdataZip.zip"));
                         Log.Debug("删除旧的更新压缩包");
                     }
                     
-                    if(File.Exists(Path.Combine(GlobalVariables.configDir, "Updata", "Success")))
+                    if(File.Exists(Path.Combine(GlobalVariablesData.userDataDir, "Updata", "Success")))
                     {
                         string username = System.Security.Principal.WindowsIdentity.GetCurrent().Name;
-                        Log.Information("更新成功，显示欢迎通知。用户: {Username}, 版本: {Version}", username, GlobalVariables.Version);
+                        Log.Information("更新成功，显示欢迎通知。用户: {Username}, 版本: {Version}", username, GlobalVariablesData.VERSION);
                         
                         new ToastContentBuilder()
                             .AddArgument("action", "viewConversation")
                             .AddArgument("conversationId", 9813)
                             .AddText("点鸣魔方")
-                            .AddText("点鸣魔方已经升级到" + GlobalVariables.Version + "。" + username + "，欢迎")
+                            .AddText("点鸣魔方已经升级到" + GlobalVariablesData.VERSION + "。" + username + "，欢迎")
                             .Show();
                     }
                     else
@@ -123,13 +114,13 @@ namespace NameCube
                             .AddArgument("action", "viewConversation")
                             .AddArgument("conversationId", 9813)
                             .AddText("点鸣魔方")
-                            .AddText("当前版本是：" + GlobalVariables.Version + "。升级遇到问题？尝试去Github项目询问")
+                            .AddText("当前版本是：" + GlobalVariablesData.VERSION + "。升级遇到问题？尝试去Github项目询问")
                             .Show();
                     }
                     
                     try
                     {
-                        Directory.Delete(Path.Combine(GlobalVariables.configDir, "Updata"), true);
+                        Directory.Delete(Path.Combine(GlobalVariablesData.userDataDir, "Updata"), true);
                         Log.Information("清理更新目录成功");
                     }
                     catch(Exception ex)
@@ -139,29 +130,27 @@ namespace NameCube
                     }
                 }
 
-                string configPath = Path.Combine(GlobalVariables.configDir, "config.json");
+                string configPath = Path.Combine(GlobalVariablesData.configDir, "config.json");
                 
-                // 删除旧的日志目录引用，使用Serilog
-                // LogManager.LogDirectory = Path.Combine(GlobalVariables.configDir, "logs"); // 删除此行
 
-                if (File.Exists(Path.Combine(GlobalVariables.configDir, "START")))
+                if (File.Exists(Path.Combine(GlobalVariablesData.configDir, "START")))
                 {
-                    File.Delete(Path.Combine(GlobalVariables.configDir, "START"));
+                    File.Delete(Path.Combine(GlobalVariablesData.configDir, "START"));
                     Log.Debug("删除START标记文件");
                 }
                 
                 try
                 {
                     // 确保目录存在
-                    Directory.CreateDirectory(GlobalVariables.configDir);
-                    Log.Debug("确保配置目录存在: {ConfigDir}", GlobalVariables.configDir);
+                    Directory.CreateDirectory(GlobalVariablesData.configDir);
+                    Log.Debug("确保配置目录存在: {ConfigDir}", GlobalVariablesData.configDir);
                     
-                    InitializationAll.InitializeData();
+                    GlobalVariables.InitializationAll.InitializeData();
                     
                     if (!File.Exists(configPath))
                     {
                         Log.Warning("找不到配置文件，启动首次使用向导");
-                        GlobalVariables.ret = false;
+                        GlobalVariablesData.ret = false;
                         
                         // 初始化默认配置
                         FirstUse.FirstUseWindow firstUseWindow = new FirstUse.FirstUseWindow();
@@ -184,8 +173,8 @@ namespace NameCube
                             DefaultValueHandling = DefaultValueHandling.Populate
                         };
                         
-                        GlobalVariables.json = JsonConvert.DeserializeObject<Json>(jsonString);
-                        InitializationAll.KeepDataNotNull();
+                        GlobalVariablesData.config = JsonConvert.DeserializeObject<Json>(jsonString);
+                        GlobalVariables.InitializationAll.KeepDataNotNull();
                         Log.Information("配置文件加载成功");
                     }
                     else
@@ -204,7 +193,7 @@ namespace NameCube
                 
                 try
                 {
-                    string tempDir = Path.Combine(GlobalVariables.configDir, "Mode_data", "MemoryMode", "temporary");
+                    string tempDir = Path.Combine(GlobalVariablesData.userDataDir, "Mode_data", "MemoryMode", "temporary");
                     if (Directory.Exists(tempDir))
                     {
                         Directory.Delete(tempDir, true);
@@ -235,10 +224,10 @@ namespace NameCube
                     $"\n系统目录: {Environment.SystemDirectory}" +
                     $"\n当前目录: {Environment.CurrentDirectory}" +
                     $"\n进程工作集内存: {Environment.WorkingSet}" +
-                    $"\n应用版本: {GlobalVariables.Version}");
+                    $"\n应用版本: {GlobalVariablesData.VERSION}");
                 
                 MainWindow mainWindow = new MainWindow();
-                if (GlobalVariables.json.AllSettings.NameCubeMode != 0)
+                if (GlobalVariablesData.config.AllSettings.NameCubeMode != 0)
                 {
                     Log.Debug("NameCube模式不为0，显示主窗口");
                     mainWindow.ShowThisWindow();
@@ -262,7 +251,7 @@ namespace NameCube
         {
             try
             {
-                string logDirectory = Path.Combine(GlobalVariables.configDir, "logs");
+                string logDirectory = Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "logs");
                 string logFilePath = Path.Combine(logDirectory, "NameCube-.log");
 
                 Log.Logger = new LoggerConfiguration()
@@ -308,9 +297,9 @@ namespace NameCube
         /// </summary>
         public void InitializeSerilogAgain()
         {
-            string logDirectory = Path.Combine(GlobalVariables.configDir, "logs");
+            string logDirectory = Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "logs");
             string logFilePath = Path.Combine(logDirectory, "NameCube-.log");
-            switch (GlobalVariables.json.AllSettings.LogLevel)
+            switch (GlobalVariablesData.config.AllSettings.LogLevel)
             {
                 case 0://调试级别
                     Log.Logger = new LoggerConfiguration()
@@ -388,5 +377,25 @@ namespace NameCube
             }
             Log.Debug("Serilog二次初始化成功");
         }
+        /// <summary>
+        /// 初始化用户数据文件夹
+        /// </summary>
+        private void InitializationUserData()
+        {
+            try
+            {
+                Directory.CreateDirectory("user\\Bird_data\\Image");
+                Directory.CreateDirectory("user\\Mode_data\\MemoryFactoryMode");
+                Directory.CreateDirectory("user\\Mode_data\\MemoryMode\\permanent");
+                Directory.CreateDirectory("user\\Mode_data\\MemoryMode\\temporary");
+                Directory.CreateDirectory("user\\Music");
+                Log.Debug("用户数据文件夹初始化完成");
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
     }
 }

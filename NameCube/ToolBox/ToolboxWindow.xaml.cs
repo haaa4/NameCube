@@ -2,6 +2,7 @@
 using System.Speech.Synthesis;
 using System.Windows;
 using System.Windows.Media.Animation;
+using NameCube.Function;
 using Serilog;
 
 namespace NameCube.ToolBox
@@ -19,7 +20,7 @@ namespace NameCube.ToolBox
             InitializeComponent();
             _logger.Debug("工具箱窗口初始化开始");
 
-            if (GlobalVariables.json.AllSettings.Top)
+            if (GlobalVariablesData.config.AllSettings.Top)
             {
                 Topmost = true;
                 _logger.Debug("工具箱窗口启用置顶");

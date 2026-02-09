@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using NameCube.FirstUse;
 using Serilog; // 添加Serilog引用
 
 namespace NameCube.Setting
@@ -33,8 +34,8 @@ namespace NameCube.Setting
         private void ExitButton_Click(object sender, RoutedEventArgs e)
         {
             _logger.Information("退出调试模式");
-            GlobalVariables.json.AllSettings.debug = false;
-            GlobalVariables.SaveJson();
+            GlobalVariablesData.config.AllSettings.debug = false;
+            GlobalVariablesData.SaveConfig();
         }
 
         //空引用异常
@@ -227,6 +228,12 @@ namespace NameCube.Setting
         {
             _logger.Warning("用户点击触发多线程竞争条件异常按钮");
             ThreadingCrash.TriggerRaceCondition();
+        }
+
+        private void Button_Click_7(object sender, RoutedEventArgs e)
+        {
+            NewVersionWindow newVersionWindow = new NewVersionWindow();
+            newVersionWindow.Show();
         }
     }
 }

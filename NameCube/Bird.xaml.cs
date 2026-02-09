@@ -107,7 +107,7 @@ namespace NameCube
         {
             try
             {
-                if (!GlobalVariables.ret)
+                if (!GlobalVariablesData.ret)
                 {
                     Log.Information("全局变量ret为false，跳过Bird窗口初始化");
                     this.Hide();
@@ -123,14 +123,14 @@ namespace NameCube
                 //InitializeTrayIcon();
                 Initialize();
 
-                if (!GlobalVariables.json.StartToDo.Ball || GlobalVariables.json.AllSettings.NameCubeMode == 1)
+                if (!GlobalVariablesData.config.StartToDo.Ball || GlobalVariablesData.config.AllSettings.NameCubeMode == 1)
                 {
                     Log.Information("配置为不显示悬浮球或使用传统模式，隐藏Bird窗口");
                     this.Hide();
                     ShowMainWindowAsync();
                 }
 
-                if (GlobalVariables.json.AllSettings.Dark)
+                if (GlobalVariablesData.config.AllSettings.Dark)
                 {
                     Log.Debug("应用深色主题");
                     Wpf.Ui.Appearance.ApplicationThemeManager.Apply(
@@ -148,11 +148,11 @@ namespace NameCube
                 Hidetimer.Elapsed += HideTimer_Elapsed;
                 Hidetimer.Interval = 3000;
 
-                string imageDir = Path.Combine(GlobalVariables.configDir, "Bird_data", "Image");
+                string imageDir = Path.Combine(GlobalVariablesData.userDataDir, "Bird_data", "Image");
                 Directory.CreateDirectory(imageDir);
                 Log.Debug("创建图片目录: {ImageDir}", imageDir);
 
-                if (GlobalVariables.json.StartToDo.AlwaysCleanMemory)
+                if (GlobalVariablesData.config.StartToDo.AlwaysCleanMemory)
                 {
                     Log.Information("启用自动内存清理定时器");
                     _timer.Start();
@@ -213,7 +213,7 @@ namespace NameCube
                 this.Dispatcher.Invoke(new Action(() =>
                 {
                     SnapToEdges(0);
-                    SnapThreshold = GlobalVariables.json.BirdSettings.AdsorbValue;
+                    SnapThreshold = GlobalVariablesData.config.BirdSettings.AdsorbValue;
                     Log.Debug("自动吸附完成，吸附阈值恢复为: {AdsorbValue}", SnapThreshold);
                 }));
             }
@@ -259,7 +259,7 @@ namespace NameCube
                 // 长按计时器
                 _longPressTimer = new DispatcherTimer
                 {
-                    Interval = TimeSpan.FromSeconds(2)
+                    Interval = TimeSpan.FromSeconds(1)
                 };
                 _longPressTimer.Tick += LongPress_Tick;
 
@@ -282,14 +282,14 @@ namespace NameCube
         {
             try
             {
-                if (GlobalVariables.json.BirdSettings.StartWay == 0 || GlobalVariables.json.BirdSettings.StartWay == 3)
+                if (GlobalVariablesData.config.BirdSettings.StartWay == 0 || GlobalVariablesData.config.BirdSettings.StartWay == 3)
                 {
-                    Log.Information("左键点击启动主窗口，启动方式: {StartWay}", GlobalVariables.json.BirdSettings.StartWay);
+                    Log.Information("左键点击启动主窗口，启动方式: {StartWay}", GlobalVariablesData.config.BirdSettings.StartWay);
                     ShowMainWindowAsync();
                 }
                 else
                 {
-                    Log.Debug("左键点击，但启动方式配置不触发启动: {StartWay}", GlobalVariables.json.BirdSettings.StartWay);
+                    Log.Debug("左键点击，但启动方式配置不触发启动: {StartWay}", GlobalVariablesData.config.BirdSettings.StartWay);
                 }
             }
             catch (Exception ex)
@@ -302,14 +302,14 @@ namespace NameCube
         {
             try
             {
-                if (GlobalVariables.json.BirdSettings.StartWay == 1 || GlobalVariables.json.BirdSettings.StartWay == 3 || GlobalVariables.json.BirdSettings.StartWay == 4)
+                if (GlobalVariablesData.config.BirdSettings.StartWay == 1 || GlobalVariablesData.config.BirdSettings.StartWay == 3 || GlobalVariablesData.config.BirdSettings.StartWay == 4)
                 {
-                    Log.Information("右键点击启动主窗口，启动方式: {StartWay}", GlobalVariables.json.BirdSettings.StartWay);
+                    Log.Information("右键点击启动主窗口，启动方式: {StartWay}", GlobalVariablesData.config.BirdSettings.StartWay);
                     ShowMainWindowAsync();
                 }
                 else
                 {
-                    Log.Debug("右键点击，但启动方式配置不触发启动: {StartWay}", GlobalVariables.json.BirdSettings.StartWay);
+                    Log.Debug("右键点击，但启动方式配置不触发启动: {StartWay}", GlobalVariablesData.config.BirdSettings.StartWay);
                 }
             }
             catch (Exception ex)
@@ -324,13 +324,13 @@ namespace NameCube
             {
                 Log.Debug("开始初始化Bird窗口位置");
                 var screen = WinForms.Screen.PrimaryScreen.WorkingArea;
-                if (GlobalVariables.json.BirdSettings.StartLocationWay == 0)
+                if (GlobalVariablesData.config.BirdSettings.StartLocationWay == 0)
                 {
                     Left = screen.Left;
                     Top = screen.Height / 2 - Height / 2;
                     Log.Debug("窗口位置: 左侧居中，X={Left}, Y={Top}", Left, Top);
                 }
-                else if (GlobalVariables.json.BirdSettings.StartLocationWay == 1)
+                else if (GlobalVariablesData.config.BirdSettings.StartLocationWay == 1)
                 {
                     Left = screen.Right - this.Width;
                     Top = screen.Height / 2 - Height / 2;
@@ -338,8 +338,8 @@ namespace NameCube
                 }
                 else
                 {
-                    Left = GlobalVariables.json.BirdSettings.StartLocationX;
-                    Top = GlobalVariables.json.BirdSettings.StartLocationY;
+                    Left = GlobalVariablesData.config.BirdSettings.StartLocationX;
+                    Top = GlobalVariablesData.config.BirdSettings.StartLocationY;
                     Log.Debug("窗口位置: 自定义位置，X={Left}, Y={Top}", Left, Top);
                 }
                 Log.Debug("Bird窗口位置初始化完成");
@@ -389,9 +389,9 @@ namespace NameCube
                 Log.Debug("结束拖动Bird窗口");
                 // 结束拖动
                 _isDragging = false;
-                GlobalVariables.json.BirdSettings.StartLocationX = Left;
-                GlobalVariables.json.BirdSettings.StartLocationY = Top;
-                GlobalVariables.SaveJson();
+                GlobalVariablesData.config.BirdSettings.StartLocationX = Left;
+                GlobalVariablesData.config.BirdSettings.StartLocationY = Top;
+                GlobalVariablesData.SaveConfig();
                 Log.Information("保存窗口位置: X={Left}, Y={Top}", Left, Top);
 
                 ReleaseMouseCapture();
@@ -443,11 +443,11 @@ namespace NameCube
                 endTheLongPressAnimation.Begin();
 
                 double moveDistance = Math.Max(Math.Abs(LastPosition.X - Left), Math.Abs(LastPosition.Y - Top));
-                Log.Debug("长按移动距离: {MoveDistance}，误判阈值: {Misjudgment}", moveDistance, GlobalVariables.json.BirdSettings.LongPressMisjudgment);
+                Log.Debug("长按移动距离: {MoveDistance}，误判阈值: {Misjudgment}", moveDistance, GlobalVariablesData.config.BirdSettings.LongPressMisjudgment);
 
-                if ((GlobalVariables.json.BirdSettings.StartWay == 2 || GlobalVariables.json.BirdSettings.StartWay == 4) && moveDistance <= GlobalVariables.json.BirdSettings.LongPressMisjudgment)
+                if ((GlobalVariablesData.config.BirdSettings.StartWay == 2 || GlobalVariablesData.config.BirdSettings.StartWay == 4) && moveDistance <= GlobalVariablesData.config.BirdSettings.LongPressMisjudgment)
                 {
-                    Log.Information("长按触发启动主窗口，启动方式: {StartWay}", GlobalVariables.json.BirdSettings.StartWay);
+                    Log.Information("长按触发启动主窗口，启动方式: {StartWay}", GlobalVariablesData.config.BirdSettings.StartWay);
                     ShowMainWindowAsync();
                 }
                 else
@@ -624,10 +624,10 @@ namespace NameCube
             try
             {
                 Log.Information("开始初始化Bird窗口配置");
-                if (GlobalVariables.json.BirdSettings.UseDefinedImage)
+                if (GlobalVariablesData.config.BirdSettings.UseDefinedImage)
                 {
                     Log.Debug("使用自定义图片");
-                    string imagePath = Path.Combine(GlobalVariables.configDir, "Bird_data", "Image", "image.png");
+                    string imagePath = Path.Combine(GlobalVariablesData.userDataDir, "Bird_data", "Image", "image.png");
 
                     if (File.Exists(imagePath))
                     {
@@ -643,7 +643,7 @@ namespace NameCube
                     {
                         Log.Warning("自定义图片文件不存在: {ImagePath}，使用默认图片", imagePath);
                         ImageBox.Source = new BitmapImage(new Uri("pack://application:,,,/BallPicture.png"));
-                        GlobalVariables.json.BirdSettings.UseDefinedImage = false;
+                        GlobalVariablesData.config.BirdSettings.UseDefinedImage = false;
                     }
                 }
                 else
@@ -652,17 +652,17 @@ namespace NameCube
                     ImageBox.Source = new BitmapImage(new Uri("pack://application:,,,/BallPicture.png"));
                 }
 
-                SnapThreshold = GlobalVariables.json.BirdSettings.AdsorbValue;
-                ImageBox.Opacity = GlobalVariables.json.BirdSettings.diaphaneity.ToDouble() / 100;
-                ImageBox.Height = GlobalVariables.json.BirdSettings.Height;
-                ImageBox.Width = GlobalVariables.json.BirdSettings.Width;
+                SnapThreshold = GlobalVariablesData.config.BirdSettings.AdsorbValue;
+                ImageBox.Opacity = GlobalVariablesData.config.BirdSettings.diaphaneity.ToDouble() / 100;
+                ImageBox.Height = GlobalVariablesData.config.BirdSettings.Height;
+                ImageBox.Width = GlobalVariablesData.config.BirdSettings.Width;
                 progressRing.Height = Math.Min(ImageBox.Height, ImageBox.Width);
                 progressRing.Width = Math.Min(ImageBox.Height, ImageBox.Width);
-                Width = GlobalVariables.json.BirdSettings.Width + 20;
-                Height = GlobalVariables.json.BirdSettings.Height + 20;
+                Width = GlobalVariablesData.config.BirdSettings.Width + 20;
+                Height = GlobalVariablesData.config.BirdSettings.Height + 20;
 
                 Log.Information("Bird窗口配置初始化完成，尺寸: {Width}x{Height}，透明度: {Opacity}%，吸附阈值: {AdsorbValue}",
-                    Width, Height, GlobalVariables.json.BirdSettings.diaphaneity, SnapThreshold);
+                    Width, Height, GlobalVariablesData.config.BirdSettings.diaphaneity, SnapThreshold);
             }
             catch (Exception ex)
             {
@@ -680,10 +680,10 @@ namespace NameCube
                 rec2.Visibility = Visibility.Visible;
                 rec3.Visibility = Visibility.Visible;
                 rec4.Visibility = Visibility.Visible;
-                ImageBox.Height = GlobalVariables.json.BirdSettings.Height;
-                ImageBox.Width = GlobalVariables.json.BirdSettings.Width;
-                Width = GlobalVariables.json.BirdSettings.Width + 20;
-                Height = GlobalVariables.json.BirdSettings.Height + 20;
+                ImageBox.Height = GlobalVariablesData.config.BirdSettings.Height;
+                ImageBox.Width = GlobalVariablesData.config.BirdSettings.Width;
+                Width = GlobalVariablesData.config.BirdSettings.Width + 20;
+                Height = GlobalVariablesData.config.BirdSettings.Height + 20;
                 progressRing.Height = Math.Min(ImageBox.Height, ImageBox.Width);
                 progressRing.Width = Math.Min(ImageBox.Height, ImageBox.Width);
                 Hidetimer.Interval = 3000;

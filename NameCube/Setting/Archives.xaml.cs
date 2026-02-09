@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Windows;
+using NameCube.Function;
 using System.Windows.Controls;
 using System.Windows.Input;
 
@@ -31,16 +32,16 @@ namespace NameCube.Setting
             {
                 Log.Debug("Archives页面初始化");
 
-                if (GlobalVariables.json.AllSettings.Name != null)
+                if (GlobalVariablesData.config.AllSettings.Name != null)
                 {
-                    int nameCount = GlobalVariables.json.AllSettings.Name.Count;
+                    int nameCount = GlobalVariablesData.config.AllSettings.Name.Count;
                     Log.Information("加载学生名单，数量: {Count}", nameCount);
 
                     for (int i = 1; i <= nameCount; i++)
                     {
                         AllNames.Add(new AllName
                         {
-                            Name = GlobalVariables.json.AllSettings.Name[i - 1]
+                            Name = GlobalVariablesData.config.AllSettings.Name[i - 1]
                         });
                     }
 
@@ -53,7 +54,7 @@ namespace NameCube.Setting
                 else
                 {
                     Log.Debug("学生名单为空，初始化空列表");
-                    GlobalVariables.json.AllSettings.Name = new List<string>();
+                    GlobalVariablesData.config.AllSettings.Name = new List<string>();
                 }
 
                 Log.Information("Archives页面初始化完成，显示 {Count} 个姓名", AllNames.Count);
@@ -79,7 +80,7 @@ namespace NameCube.Setting
                     Log.Debug("用户选择文件: {FilePath}", openFileDialog.FileName);
 
                     AllNames.Clear();
-                    GlobalVariables.json.AllSettings.Name.Clear();
+                    GlobalVariablesData.config.AllSettings.Name.Clear();
                     int importedCount = 0;
 
                     try
@@ -89,7 +90,7 @@ namespace NameCube.Setting
                             if (!string.IsNullOrWhiteSpace(line))
                             {
                                 AllNames.Add(new AllName { Name = line.Trim() });
-                                GlobalVariables.json.AllSettings.Name.Add(line.Trim());
+                                GlobalVariablesData.config.AllSettings.Name.Add(line.Trim());
                                 importedCount++;
                             }
                         }
@@ -102,9 +103,9 @@ namespace NameCube.Setting
                         MessageBoxFunction.ShowMessageBoxError(ex.Message);
                     }
 
-                    if (GlobalVariables.json.AllSettings.Name.Count >= 120)
+                    if (GlobalVariablesData.config.AllSettings.Name.Count >= 120)
                     {
-                        Log.Warning("导入后学生名单数量达到 {Count}，显示警告", GlobalVariables.json.AllSettings.Name.Count);
+                        Log.Warning("导入后学生名单数量达到 {Count}，显示警告", GlobalVariablesData.config.AllSettings.Name.Count);
                         WarningInfoBar.IsOpen = true;
                     }
                     else
@@ -112,7 +113,7 @@ namespace NameCube.Setting
                         WarningInfoBar.IsOpen = false;
                     }
 
-                    GlobalVariables.SaveJson();
+                    GlobalVariablesData.SaveConfig();
                 }
                 else
                 {
@@ -141,17 +142,17 @@ namespace NameCube.Setting
                 Log.Information("添加学生姓名: {Name}", nameToAdd);
 
                 AllNames.Add(new AllName { Name = nameToAdd });
-                GlobalVariables.json.AllSettings.Name.Add(nameToAdd);
+                GlobalVariablesData.config.AllSettings.Name.Add(nameToAdd);
                 AddNameTextBox.Text = "";
 
-                if (GlobalVariables.json.AllSettings.Name.Count >= 120)
+                if (GlobalVariablesData.config.AllSettings.Name.Count >= 120)
                 {
-                    Log.Warning("添加后学生名单数量达到 {Count}，显示警告", GlobalVariables.json.AllSettings.Name.Count);
+                    Log.Warning("添加后学生名单数量达到 {Count}，显示警告", GlobalVariablesData.config.AllSettings.Name.Count);
                     WarningInfoBar.IsOpen = true;
                 }
 
-                GlobalVariables.SaveJson();
-                Log.Debug("姓名添加成功，当前总数: {Count}", GlobalVariables.json.AllSettings.Name.Count);
+                GlobalVariablesData.SaveConfig();
+                Log.Debug("姓名添加成功，当前总数: {Count}", GlobalVariablesData.config.AllSettings.Name.Count);
             }
             catch (Exception ex)
             {
@@ -167,9 +168,9 @@ namespace NameCube.Setting
                 Log.Warning("清空所有学生名单，当前数量: {Count}", currentCount);
 
                 AllNames.Clear();
-                GlobalVariables.json.AllSettings.Name.Clear();
+                GlobalVariablesData.config.AllSettings.Name.Clear();
                 WarningInfoBar.IsOpen = false;
-                GlobalVariables.SaveJson();
+                GlobalVariablesData.SaveConfig();
 
                 Log.Information("学生名单已清空");
             }
@@ -191,15 +192,15 @@ namespace NameCube.Setting
                         Log.Information("删除学生姓名: {Name}", allnames.Name);
 
                         AllNames.Remove(allnames);
-                        GlobalVariables.json.AllSettings.Name.Remove(allnames.Name);
-                        GlobalVariables.SaveJson();
+                        GlobalVariablesData.config.AllSettings.Name.Remove(allnames.Name);
+                        GlobalVariablesData.SaveConfig();
 
-                        if (GlobalVariables.json.AllSettings.Name.Count < 120)
+                        if (GlobalVariablesData.config.AllSettings.Name.Count < 120)
                         {
                             WarningInfoBar.IsOpen = false;
                         }
 
-                        Log.Debug("姓名删除成功，剩余数量: {Count}", GlobalVariables.json.AllSettings.Name.Count);
+                        Log.Debug("姓名删除成功，剩余数量: {Count}", GlobalVariablesData.config.AllSettings.Name.Count);
                     }
                     else
                     {
@@ -241,7 +242,7 @@ namespace NameCube.Setting
                 Log.Information("添加示例学生名单");
 
                 AllNames.Clear();
-                GlobalVariables.json.AllSettings.Name.Clear();
+                GlobalVariablesData.config.AllSettings.Name.Clear();
 
                 List<string> Names = new List<string>
                 {
@@ -258,12 +259,12 @@ namespace NameCube.Setting
                 foreach (string name in Names)
                 {
                     AllNames.Add(new AllName { Name = name });
-                    GlobalVariables.json.AllSettings.Name.Add(name);
+                    GlobalVariablesData.config.AllSettings.Name.Add(name);
                 }
 
-                if (GlobalVariables.json.AllSettings.Name.Count >= 120)
+                if (GlobalVariablesData.config.AllSettings.Name.Count >= 120)
                 {
-                    Log.Warning("示例名单数量达到 {Count}，显示警告", GlobalVariables.json.AllSettings.Name.Count);
+                    Log.Warning("示例名单数量达到 {Count}，显示警告", GlobalVariablesData.config.AllSettings.Name.Count);
                     WarningInfoBar.IsOpen = true;
                 }
                 else
@@ -271,7 +272,7 @@ namespace NameCube.Setting
                     WarningInfoBar.IsOpen = false;
                 }
 
-                GlobalVariables.SaveJson();
+                GlobalVariablesData.SaveConfig();
                 Log.Information("示例名单添加完成，共 {Count} 个姓名", Names.Count);
             }
             catch (Exception ex)
@@ -282,7 +283,7 @@ namespace NameCube.Setting
 
         private void AddNameTextBox_Unloaded(object sender, RoutedEventArgs e)
         {
-            GlobalVariables.SaveJson();
+            GlobalVariablesData.SaveConfig();
         }
     }
 }

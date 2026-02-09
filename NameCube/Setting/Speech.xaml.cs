@@ -20,25 +20,25 @@ namespace NameCube.Setting
             _logger.Debug("Speech 页面初始化开始");
 
             CanChange = false;
-            VolumeSlider.Value = GlobalVariables.json.AllSettings.Volume;
-            SpeedSlider.Value = GlobalVariables.json.AllSettings.Speed + 10;
-            SystemSpeechCheck.IsChecked = GlobalVariables.json.AllSettings.SystemSpeech;
-            SpeedSlider.IsEnabled = !GlobalVariables.json.AllSettings.SystemSpeech;
-            VolumeSlider.IsEnabled = !GlobalVariables.json.AllSettings.SystemSpeech;
+            VolumeSlider.Value = GlobalVariablesData.config.AllSettings.Volume;
+            SpeedSlider.Value = GlobalVariablesData.config.AllSettings.Speed + 10;
+            SystemSpeechCheck.IsChecked = GlobalVariablesData.config.AllSettings.SystemSpeech;
+            SpeedSlider.IsEnabled = !GlobalVariablesData.config.AllSettings.SystemSpeech;
+            VolumeSlider.IsEnabled = !GlobalVariablesData.config.AllSettings.SystemSpeech;
             CanChange = true;
 
             _logger.Information("语音设置加载完成，音量: {Volume}, 语速: {Speed}, 系统语音: {SystemSpeech}",
-                GlobalVariables.json.AllSettings.Volume,
-                GlobalVariables.json.AllSettings.Speed,
-                GlobalVariables.json.AllSettings.SystemSpeech);
+                GlobalVariablesData.config.AllSettings.Volume,
+                GlobalVariablesData.config.AllSettings.Speed,
+                GlobalVariablesData.config.AllSettings.SystemSpeech);
         }
 
         private void VolumeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             if (CanChange)
             {
-                GlobalVariables.json.AllSettings.Volume = (int)VolumeSlider.Value;
-                GlobalVariables.SaveJson();
+                GlobalVariablesData.config.AllSettings.Volume = (int)VolumeSlider.Value;
+                GlobalVariablesData.SaveConfig();
                 _logger.Debug("音量设置修改为: {Volume}", (int)VolumeSlider.Value);
             }
         }
@@ -47,8 +47,8 @@ namespace NameCube.Setting
         {
             if (CanChange)
             {
-                GlobalVariables.json.AllSettings.Speed = (int)SpeedSlider.Value - 10;
-                GlobalVariables.SaveJson();
+                GlobalVariablesData.config.AllSettings.Speed = (int)SpeedSlider.Value - 10;
+                GlobalVariablesData.SaveConfig();
                 _logger.Debug("语速设置修改为: {Speed}", (int)SpeedSlider.Value - 10);
             }
         }
@@ -57,10 +57,10 @@ namespace NameCube.Setting
         {
             if (CanChange)
             {
-                GlobalVariables.json.AllSettings.SystemSpeech = SystemSpeechCheck.IsChecked.Value;
-                GlobalVariables.SaveJson();
-                SpeedSlider.IsEnabled = !GlobalVariables.json.AllSettings.SystemSpeech;
-                VolumeSlider.IsEnabled = !GlobalVariables.json.AllSettings.SystemSpeech;
+                GlobalVariablesData.config.AllSettings.SystemSpeech = SystemSpeechCheck.IsChecked.Value;
+                GlobalVariablesData.SaveConfig();
+                SpeedSlider.IsEnabled = !GlobalVariablesData.config.AllSettings.SystemSpeech;
+                VolumeSlider.IsEnabled = !GlobalVariablesData.config.AllSettings.SystemSpeech;
                 _logger.Information("系统语音设置修改为: {SystemSpeech}", SystemSpeechCheck.IsChecked.Value);
             }
         }

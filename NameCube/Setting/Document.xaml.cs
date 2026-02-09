@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using NameCube.Function;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
@@ -34,28 +35,15 @@ namespace NameCube.Setting
         {
             InitializeComponent();
             _logger.Debug("Document 页面初始化开始");
-
-            canChange = false;
             string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Namecube");
-            if (GlobalVariables.configDir == path)
-            {
-                ModeCombox.SelectedIndex = 0;
-                _logger.Information("配置目录为应用程序目录: {ConfigDir}", GlobalVariables.configDir);
-            }
-            else
-            {
-                ModeCombox.SelectedIndex = 1;
-                _logger.Information("配置目录为AppData目录: {ConfigDir}", GlobalVariables.configDir);
-            }
-            canChange = true;
+
         }
 
-        bool canChange = true;
 
         private void CardAction_Click(object sender, RoutedEventArgs e)
         {
-            _logger.Information("打开配置目录: {ConfigDir}", GlobalVariables.configDir);
-            Process.Start(GlobalVariables.configDir);
+            _logger.Information("打开配置目录: {ConfigDir}", GlobalVariablesData.configDir);
+            Process.Start(GlobalVariablesData.configDir);
         }
 
         private void CardAction_Click_1(object sender, RoutedEventArgs e)
@@ -66,22 +54,22 @@ namespace NameCube.Setting
             {
                 try
                 {
-                    if (Directory.Exists(System.IO.Path.Combine(GlobalVariables.configDir, "logs")))
+                    if (Directory.Exists(System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "logs")))
                     {
                         _logger.Debug("删除日志目录");
-                        Directory.Delete(System.IO.Path.Combine(GlobalVariables.configDir, "logs"), true);
+                        Directory.Delete(System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "logs"), true);
                     }
 
-                    if (Directory.Exists(System.IO.Path.Combine(GlobalVariables.configDir, "Mode_data", "MemoryFactoryMode", "Backups")))
+                    if (Directory.Exists(System.IO.Path.Combine(GlobalVariablesData.userDataDir, "Mode_data", "MemoryFactoryMode", "Backups")))
                     {
                         _logger.Debug("删除备份目录");
-                        Directory.Delete(System.IO.Path.Combine(GlobalVariables.configDir, "Mode_data", "MemoryFactoryMode", "Backups"), true);
+                        Directory.Delete(System.IO.Path.Combine(GlobalVariablesData.userDataDir, "Mode_data", "MemoryFactoryMode", "Backups"), true);
                     }
 
-                    if (Directory.Exists(System.IO.Path.Combine(GlobalVariables.configDir, "Updata")))
+                    if (Directory.Exists(System.IO.Path.Combine(GlobalVariablesData.userDataDir, "Updata")))
                     {
                         _logger.Debug("删除更新目录");
-                        Directory.Delete(System.IO.Path.Combine(GlobalVariables.configDir, "Updata"), true);
+                        Directory.Delete(System.IO.Path.Combine(GlobalVariablesData.userDataDir, "Updata"), true);
                     }
 
                     MessageBoxFunction.ShowMessageBoxInfo("删除成功");
@@ -97,13 +85,14 @@ namespace NameCube.Setting
 
         private void CardAction_Click_2(object sender, RoutedEventArgs e)
         {
-            _logger.Warning("用户请求删除整个配置目录: {ConfigDir}", GlobalVariables.configDir);
+            _logger.Warning("用户请求删除整个配置目录: {ConfigDir}", GlobalVariablesData.configDir);
             SnackBarFunction.ShowSnackBarInSettingWindow("正在删除，请稍等", ControlAppearance.Primary, null, 1);
             Task.Run(() =>
             {
                 try
                 {
-                    Directory.Delete(GlobalVariables.configDir, true);
+                    Directory.Delete(GlobalVariablesData.configDir, true);
+                    Directory.Delete(GlobalVariablesData.userDataDir, true);
                     MessageBoxFunction.ShowMessageBoxInfo("删除成功，请自行启动软件");
                     _logger.Information("配置目录删除成功，程序即将退出");
 
@@ -126,8 +115,8 @@ namespace NameCube.Setting
             using (SaveFileDialog saveFileDialog = new SaveFileDialog())
             {
                 saveFileDialog.InitialDirectory = "c:\\";
-                saveFileDialog.Filter = "压缩包(*.zip)|*.zip|所有文件 (*.*)|*.*";
-                saveFileDialog.Title = "保存配置文件";
+                saveFileDialog.Filter = "数据备份包(*.dataBackup)|*.dataBackup|所有文件 (*.*)|*.*";
+                saveFileDialog.Title = "保存备份文件";
 
                 if (saveFileDialog.ShowDialog() == DialogResult.OK)
                 {
@@ -139,7 +128,9 @@ namespace NameCube.Setting
                         try
                         {
                             var SevenZipCompressor = new SevenZipCompressor(null);
-                            SevenZipCompressor.Zip(new List<string>() { GlobalVariables.configDir }, saveFileDialog.FileName);
+                            File.Copy(Path.Combine(GlobalVariablesData.configDir, "config.json"), Path.Combine(GlobalVariablesData.userDataDir, "config_backup.json"),true);
+                            SevenZipCompressor.Zip(new List<string>() { GlobalVariablesData.userDataDir }, saveFileDialog.FileName);
+                            File.Delete(Path.Combine(GlobalVariablesData.userDataDir, "config_backup.json"));
                             MessageBoxFunction.ShowMessageBoxInfo("保存成功");
                             _logger.Information("配置文件备份成功: {FilePath}", saveFileDialog.FileName);
                         }
@@ -156,8 +147,8 @@ namespace NameCube.Setting
         private void CardAction_Click_4(object sender, RoutedEventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Title = "从压缩包导入";
-            openFileDialog.Filter = "压缩包 (*.zip)|*.zip|所有文件 (*.*)|*.*";
+            openFileDialog.Title = "从数据备份包导入";
+            openFileDialog.Filter = "数据备份包(*.dataBackup)|*.dataBackup|压缩包（<v1.3)(*.zip)|*.zip|所有文件 (*.*)|*.*";
 
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
@@ -168,12 +159,12 @@ namespace NameCube.Setting
                 {
                     try
                     {
-                        Directory.Delete(GlobalVariables.configDir, true);
-                        Directory.CreateDirectory(GlobalVariables.configDir);
-
+                        Directory.Delete(GlobalVariablesData.userDataDir, true);
+                        Directory.CreateDirectory(GlobalVariablesData.userDataDir);
                         var SevenZipCompressor = new SevenZipCompressor(null);
-                        SevenZipCompressor.Decompress(openFileDialog.FileName, GlobalVariables.configDir);
-
+                        SevenZipCompressor.Decompress(openFileDialog.FileName, GlobalVariablesData.userDataDir);
+                        File.Copy(Path.Combine(GlobalVariablesData.userDataDir, "config_backup.json"), Path.Combine(GlobalVariablesData.configDir, "config.json"), true);
+                        File.Delete(Path.Combine(GlobalVariablesData.userDataDir, "config_backup.json"));
                         MessageBoxFunction.ShowMessageBoxInfo("覆盖成功，请自行启动软件");
                         _logger.Information("配置恢复成功，程序即将重启");
 
@@ -192,54 +183,10 @@ namespace NameCube.Setting
             }
         }
 
-        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void CardAction_Click_5(object sender, RoutedEventArgs e)
         {
-            if (canChange)
-            {
-                _logger.Information("更改配置目录存储模式为: {Mode}", ModeCombox.SelectedIndex);
-                SnackBarFunction.ShowSnackBarInSettingWindow("正在保存，请稍等", ControlAppearance.Primary, null, 1);
-
-                if (ModeCombox.SelectedIndex == 1)
-                {
-                    string movePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "NameCube");
-                    _logger.Information("移动配置目录从 {OldPath} 到 {NewPath}", GlobalVariables.configDir, movePath);
-
-                    Task.Run(() =>
-                    {
-                        try
-                        {
-                            FolderMover.MoveFolder(GlobalVariables.configDir, movePath, true);
-                            MessageBoxFunction.ShowMessageBoxInfo("移动成功");
-                            GlobalVariables.configDir = movePath;
-                            _logger.Information("配置目录移动完成");
-                        }
-                        catch (Exception ex)
-                        {
-                            _logger.Error(ex, "移动配置目录时发生异常");
-                        }
-                    });
-                }
-                else
-                {
-                    string movePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Namecube");
-                    _logger.Information("移动配置目录从 {OldPath} 到 {NewPath}", GlobalVariables.configDir, movePath);
-
-                    Task.Run(() =>
-                    {
-                        try
-                        {
-                            FolderMover.MoveFolder(GlobalVariables.configDir, movePath, true);
-                            MessageBoxFunction.ShowMessageBoxInfo("移动成功");
-                            GlobalVariables.configDir = movePath;
-                            _logger.Information("配置目录移动完成");
-                        }
-                        catch (Exception ex)
-                        {
-                            _logger.Error(ex, "移动配置目录时发生异常");
-                        }
-                    });
-                }
-            }
+            _logger.Information("打开数据目录: {ConfigDir}", GlobalVariablesData.userDataDir);
+            Process.Start(GlobalVariablesData.userDataDir);
         }
     }
 }

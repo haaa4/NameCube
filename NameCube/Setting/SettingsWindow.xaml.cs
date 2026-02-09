@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Media.Animation;
 using Wpf.Ui;
+using NameCube.Function;
 using Serilog; // 添加Serilog引用
 
 namespace NameCube.Setting
@@ -17,13 +18,13 @@ namespace NameCube.Setting
             InitializeComponent();
             _logger.Debug("SettingsWindow 初始化开始");
 
-            if (GlobalVariables.json.AllSettings.NameCubeMode == 1)
+            if (GlobalVariablesData.config.AllSettings.NameCubeMode == 1)
             {
                 BallSetting.Visibility = System.Windows.Visibility.Collapsed;
                 _logger.Debug("当前为模式1，隐藏悬浮球设置");
             }
 
-            if (GlobalVariables.json.AllSettings.Top)
+            if (GlobalVariablesData.config.AllSettings.Top)
             {
                 Topmost = true;
                 _logger.Debug("启用窗口置顶");
@@ -35,9 +36,9 @@ namespace NameCube.Setting
         private void NavigationMenu_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
             NavigationMenu.Navigate(typeof(Setting.Appearance));
-            DebugItem.Visibility = GlobalVariables.json.AllSettings.debug ? System.Windows.Visibility.Visible : System.Windows.Visibility.Collapsed;
+            DebugItem.Visibility = GlobalVariablesData.config.AllSettings.debug ? System.Windows.Visibility.Visible : System.Windows.Visibility.Collapsed;
 
-            _logger.Information("导航菜单加载完成，调试项可见性: {DebugVisible}", GlobalVariables.json.AllSettings.debug);
+            _logger.Information("导航菜单加载完成，调试项可见性: {DebugVisible}", GlobalVariablesData.config.AllSettings.debug);
         }
 
         private void Button_Click(object sender, System.Windows.RoutedEventArgs e)

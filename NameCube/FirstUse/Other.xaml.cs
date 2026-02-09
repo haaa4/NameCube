@@ -22,12 +22,12 @@ namespace NameCube.FirstUse
 
             bool isStartup = IsStartupApplication(AppName);
             StartCheck.IsChecked = isStartup;
-            TopCheck.IsChecked = GlobalVariables.json.AllSettings.Top;
+            TopCheck.IsChecked = GlobalVariablesData.config.AllSettings.Top;
 
             Log.Information("开机自启动状态: {StartupStatus}", isStartup);
-            Log.Information("窗口置顶状态: {TopStatus}", GlobalVariables.json.AllSettings.Top);
+            Log.Information("窗口置顶状态: {TopStatus}", GlobalVariablesData.config.AllSettings.Top);
 
-            if (GlobalVariables.json.AllSettings.NameCubeMode == 1)
+            if (GlobalVariablesData.config.AllSettings.NameCubeMode == 1)
             {
                 Log.Debug("传统窗口模式，隐藏悬浮球相关设置");
                 StartActionCard.Visibility = Visibility.Collapsed;
@@ -122,7 +122,7 @@ namespace NameCube.FirstUse
                 try
                 {
                     bool isTop = TopCheck.IsChecked.Value;
-                    GlobalVariables.json.AllSettings.Top = isTop;
+                    GlobalVariablesData.config.AllSettings.Top = isTop;
                     Log.Information("窗口置顶状态更改为: {TopStatus}", isTop);
                 }
                 catch (Exception ex)

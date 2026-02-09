@@ -2,6 +2,7 @@
 using Masuit.Tools.DateTimeExt;
 using Newtonsoft.Json;
 using Serilog;
+using NameCube.Function;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -86,8 +87,8 @@ namespace NameCube.Mode
             {
                 bool newValue = SpeakCheck.IsChecked.Value;
                 Log.Debug("语音播报开关: {Value}", newValue);
-                GlobalVariables.json.MemoryModeSettings.Speak = newValue;
-                GlobalVariables.SaveJson();
+                GlobalVariablesData.config.MemoryModeSettings.Speak = newValue;
+                GlobalVariablesData.SaveConfig();
             }
         }
 
@@ -98,7 +99,8 @@ namespace NameCube.Mode
                 _speechSynthesizer.SpeakAsyncCancelAll();
                 StartButton.IsEnabled = false;
                 var jumpStoryBoard = FindResource("JumpStoryBoard") as Storyboard;
-
+                var flicker = FindResource("flicker") as Storyboard;
+                flicker.Begin();
                 if (StartButton.Content.ToString() == "开始")
                 {
                     Log.Information("开始记忆模式抽取");
@@ -109,19 +111,19 @@ namespace NameCube.Mode
                         SnackBarFunction.ShowSnackBarInMainWindow("名单已完成，将删除", ControlAppearance.Primary);
                         if (AllFiles.Count <= 1)
                         {
-                            foreach (string name in GlobalVariables.json.AllSettings.Name)
+                            foreach (string name in GlobalVariablesData.config.AllSettings.Name)
                             {
                                 AllNames.Add(name);
                             }
                             string filename = DateTime.Now.GetTotalMilliseconds().ToString() + ".json";
-                            File.WriteAllText(Path.Combine(GlobalVariables.configDir, "Mode_data", "MemoryMode", "temporary", filename), JsonConvert.SerializeObject(AllNames));
+                            File.WriteAllText(Path.Combine(GlobalVariablesData.userDataDir, "Mode_data", "MemoryMode", "temporary", filename), JsonConvert.SerializeObject(AllNames));
                             Log.Information("创建临时名单文件: {Filename}", filename);
                         }
                         Button_Click(sender, e);
                         return;
                     }
 
-                    timer.Interval = GlobalVariables.json.MemoryModeSettings.Speed;
+                    timer.Interval = GlobalVariablesData.config.MemoryModeSettings.Speed;
                     FinishText.Visibility = Visibility.Hidden;
                     NowNumberText.Visibility = Visibility.Visible;
                     ChangeButton.IsEnabled = false;
@@ -132,7 +134,7 @@ namespace NameCube.Mode
                     StartButton.IsEnabled = true;
                     now = 0;
 
-                    Log.Debug("记忆模式开始，轮播间隔: {Speed}ms", GlobalVariables.json.MemoryModeSettings.Speed);
+                    Log.Debug("记忆模式开始，轮播间隔: {Speed}ms", GlobalVariablesData.config.MemoryModeSettings.Speed);
                 }
                 else
                 {
@@ -146,17 +148,17 @@ namespace NameCube.Mode
                     NowNumberText.Visibility = Visibility.Hidden;
                     FinishText.Visibility = Visibility.Visible;
 
-                    if (GlobalVariables.json.MemoryModeSettings.Speak)
+                    if (GlobalVariablesData.config.MemoryModeSettings.Speak)
                     {
                         Log.Debug("语音播报: {Name}", get);
                         _speechSynthesizer.SpeakAsync(get);
                     }
 
                     AllNames.Remove(get);
-                    GlobalVariables.json.MemoryModeSettings.LastName = get;
+                    GlobalVariablesData.config.MemoryModeSettings.LastName = get;
 
-                    string path1 = Path.Combine(GlobalVariables.configDir, "Mode_data", "MemoryMode", "permanent", AllFiles[ComboBox.SelectedIndex]);
-                    string path2 = Path.Combine(GlobalVariables.configDir, "Mode_data", "MemoryMode", "temporary", AllFiles[ComboBox.SelectedIndex]);
+                    string path1 = Path.Combine(GlobalVariablesData.userDataDir, "Mode_data", "MemoryMode", "permanent", AllFiles[ComboBox.SelectedIndex]);
+                    string path2 = Path.Combine(GlobalVariablesData.userDataDir, "Mode_data", "MemoryMode", "temporary", AllFiles[ComboBox.SelectedIndex]);
 
                     if (File.Exists(path1))
                     {
@@ -175,12 +177,12 @@ namespace NameCube.Mode
                         SnackBarFunction.ShowSnackBarInMainWindow("名单已完成，将删除", ControlAppearance.Primary);
                         if (AllFiles.Count <= 1)
                         {
-                            foreach (string name in GlobalVariables.json.AllSettings.Name)
+                            foreach (string name in GlobalVariablesData.config.AllSettings.Name)
                             {
                                 AllNames.Add(name);
                             }
                             string filename = DateTime.Now.GetTotalMilliseconds().ToString() + ".json";
-                            File.WriteAllText(Path.Combine(GlobalVariables.configDir, "Mode_data", "MemoryMode", "temporary", filename), JsonConvert.SerializeObject(AllNames));
+                            File.WriteAllText(Path.Combine(GlobalVariablesData.userDataDir, "Mode_data", "MemoryMode", "temporary", filename), JsonConvert.SerializeObject(AllNames));
                             Log.Debug("创建新临时名单文件: {Filename}", filename);
                         }
                         Button_Click(sender, e);
@@ -228,8 +230,8 @@ namespace NameCube.Mode
                         string selectedFile = AllFiles[ComboBox.SelectedIndex];
                         Log.Debug("选择名单文件: {Filename}", selectedFile);
 
-                        string path1 = Path.Combine(GlobalVariables.configDir, "Mode_data", "MemoryMode", "permanent", selectedFile);
-                        string path2 = Path.Combine(GlobalVariables.configDir, "Mode_data", "MemoryMode", "temporary", selectedFile);
+                        string path1 = Path.Combine(GlobalVariablesData.userDataDir, "Mode_data", "MemoryMode", "permanent", selectedFile);
+                        string path2 = Path.Combine(GlobalVariablesData.userDataDir, "Mode_data", "MemoryMode", "temporary", selectedFile);
                         string jsonstring;
                         now = 0;
 
@@ -242,7 +244,7 @@ namespace NameCube.Mode
                         else
                         {
                             jsonstring = File.ReadAllText(path2);
-                            if (!GlobalVariables.json.MemoryModeSettings.Locked)
+                            if (!GlobalVariablesData.config.MemoryModeSettings.Locked)
                             {
                                 ChangeButton.IsEnabled = true;
                             }
@@ -308,8 +310,8 @@ namespace NameCube.Mode
                             {
                                 Canchange = false;
                                 ChangeButton.IsEnabled = false;
-                                string path1 = Path.Combine(GlobalVariables.configDir, "Mode_data", "MemoryMode", "permanent", InputTextBox.Text + ".json");
-                                string path2 = Path.Combine(GlobalVariables.configDir, "Mode_data", "MemoryMode", "temporary", AllFiles[ComboBox.SelectedIndex]);
+                                string path1 = Path.Combine(GlobalVariablesData.userDataDir, "Mode_data", "MemoryMode", "permanent", InputTextBox.Text + ".json");
+                                string path2 = Path.Combine(GlobalVariablesData.userDataDir, "Mode_data", "MemoryMode", "temporary", AllFiles[ComboBox.SelectedIndex]);
 
                                 Log.Information("重命名文件: {OldName} -> {NewName}", AllFiles[ComboBox.SelectedIndex], InputTextBox.Text + ".json");
 
@@ -351,8 +353,8 @@ namespace NameCube.Mode
                 string fileToDelete = AllFiles[ComboBox.SelectedIndex];
                 Log.Information("删除名单文件: {Filename}", fileToDelete);
 
-                string path1 = Path.Combine(GlobalVariables.configDir, "Mode_data", "MemoryMode", "permanent", fileToDelete);
-                string path2 = Path.Combine(GlobalVariables.configDir, "Mode_data", "MemoryMode", "temporary", fileToDelete);
+                string path1 = Path.Combine(GlobalVariablesData.userDataDir, "Mode_data", "MemoryMode", "permanent", fileToDelete);
+                string path2 = Path.Combine(GlobalVariablesData.userDataDir, "Mode_data", "MemoryMode", "temporary", fileToDelete);
 
                 try
                 {
@@ -397,13 +399,13 @@ namespace NameCube.Mode
             {
                 Log.Information("创建新的临时名单");
                 List<string> NameList = new List<string>();
-                foreach (string name in GlobalVariables.json.AllSettings.Name)
+                foreach (string name in GlobalVariablesData.config.AllSettings.Name)
                 {
                     NameList.Add(name);
                 }
 
                 string filename = DateTime.Now.ToString("yyyy_M_d_H_m_s ") + ".json";
-                string filePath = Path.Combine(GlobalVariables.configDir, "Mode_data", "MemoryMode", "temporary", filename);
+                string filePath = Path.Combine(GlobalVariablesData.userDataDir, "Mode_data", "MemoryMode", "temporary", filename);
 
                 File.WriteAllText(filePath, JsonConvert.SerializeObject(NameList));
 
@@ -437,24 +439,24 @@ namespace NameCube.Mode
             {
                 Log.Debug("MemoryMode页面加载");
 
-                Directory.CreateDirectory(Path.Combine(GlobalVariables.configDir, "Mode_data", "MemoryMode", "permanent"));
-                Directory.CreateDirectory(Path.Combine(GlobalVariables.configDir, "Mode_data", "MemoryMode", "temporary"));
+                Directory.CreateDirectory(Path.Combine(GlobalVariablesData.userDataDir, "Mode_data", "MemoryMode", "permanent"));
+                Directory.CreateDirectory(Path.Combine(GlobalVariablesData.userDataDir, "Mode_data", "MemoryMode", "temporary"));
 
                 string filename = DateTime.Now.ToString("yyyy_M_d_H_m_s ") + ".json";
-                if (GlobalVariables.json.MemoryModeSettings.AutoAddFile)
+                if (GlobalVariablesData.config.MemoryModeSettings.AutoAddFile)
                 {
                     Log.Debug("自动创建名单文件");
-                    foreach (string name in GlobalVariables.json.AllSettings.Name)
+                    foreach (string name in GlobalVariablesData.config.AllSettings.Name)
                     {
                         AllNames.Add(name);
                     }
-                    File.WriteAllText(Path.Combine(GlobalVariables.configDir, "Mode_data", "MemoryMode", "temporary", filename), JsonConvert.SerializeObject(AllNames));
+                    File.WriteAllText(Path.Combine(GlobalVariablesData.userDataDir, "Mode_data", "MemoryMode", "temporary", filename), JsonConvert.SerializeObject(AllNames));
                     AllFiles.Add(filename);
                     Log.Information("自动创建名单文件: {Filename}", filename);
                 }
 
-                string[] fileNames1 = Directory.GetFiles(Path.Combine(GlobalVariables.configDir, "Mode_data", "MemoryMode", "permanent"));
-                string[] fileNames2 = Directory.GetFiles(Path.Combine(GlobalVariables.configDir, "Mode_data", "MemoryMode", "temporary"));
+                string[] fileNames1 = Directory.GetFiles(Path.Combine(GlobalVariablesData.userDataDir, "Mode_data", "MemoryMode", "permanent"));
+                string[] fileNames2 = Directory.GetFiles(Path.Combine(GlobalVariablesData.userDataDir, "Mode_data", "MemoryMode", "temporary"));
 
                 Log.Debug("发现永久名单文件: {Count} 个", fileNames1.Length);
                 Log.Debug("发现临时名单文件: {Count} 个", fileNames2.Length);
@@ -475,28 +477,28 @@ namespace NameCube.Mode
 
                 AllNames.Clear();
                 CanChange = false;
-                SpeakCheck.IsChecked = GlobalVariables.json.MemoryModeSettings.Speak;
+                SpeakCheck.IsChecked = GlobalVariablesData.config.MemoryModeSettings.Speak;
                 CanChange = true;
                 Canchange = true;
                 timer.Elapsed += Timer_Elapsed;
 
-                if (GlobalVariables.json.MemoryModeSettings.Speed == 0)
+                if (GlobalVariablesData.config.MemoryModeSettings.Speed == 0)
                 {
                     Log.Debug("重置轮播速度为默认值20");
-                    GlobalVariables.json.MemoryModeSettings.Speed = 20;
+                    GlobalVariablesData.config.MemoryModeSettings.Speed = 20;
                 }
 
-                if (!GlobalVariables.json.AllSettings.SystemSpeech)
+                if (!GlobalVariablesData.config.AllSettings.SystemSpeech)
                 {
                     _speechSynthesizer.SelectVoiceByHints(VoiceGender.Female, VoiceAge.Adult);
-                    _speechSynthesizer.Volume = GlobalVariables.json.AllSettings.Volume;
-                    _speechSynthesizer.Rate = GlobalVariables.json.AllSettings.Speed;
+                    _speechSynthesizer.Volume = GlobalVariablesData.config.AllSettings.Volume;
+                    _speechSynthesizer.Rate = GlobalVariablesData.config.AllSettings.Speed;
                     Log.Debug("配置语音合成器: 性别=Female, 音量={Volume}, 语速={Speed}",
-                        GlobalVariables.json.AllSettings.Volume,
-                        GlobalVariables.json.AllSettings.Speed);
+                        GlobalVariablesData.config.AllSettings.Volume,
+                        GlobalVariablesData.config.AllSettings.Speed);
                 }
 
-                if (GlobalVariables.json.MemoryModeSettings.Locked)
+                if (GlobalVariablesData.config.MemoryModeSettings.Locked)
                 {
                     Log.Debug("页面设置为锁定状态");
                     SpeakCheck.IsEnabled = false;
@@ -513,15 +515,15 @@ namespace NameCube.Mode
                     DelButton.IsEnabled = false;
                 }
 
-                NowNumberText.Foreground = GlobalVariables.json.AllSettings.color;
-                FinishText.Foreground = GlobalVariables.json.AllSettings.color;
-                NowNumberText.FontFamily = GlobalVariables.json.AllSettings.Font;
-                FinishText.FontFamily = GlobalVariables.json.AllSettings.Font;
+                NowNumberText.Foreground = GlobalVariablesData.config.AllSettings.color;
+                FinishText.Foreground = GlobalVariablesData.config.AllSettings.color;
+                //NowNumberText.FontFamily = GlobalVariablesData.config.AllSettings.Font;
+                //FinishText.FontFamily = GlobalVariablesData.config.AllSettings.Font;
 
-                if (GlobalVariables.json.MemoryModeSettings.LastName != null)
+                if (GlobalVariablesData.config.MemoryModeSettings.LastName != null)
                 {
-                    NowNumberText.Text = GlobalVariables.json.MemoryModeSettings.LastName;
-                    Log.Debug("设置上次抽取结果: {LastName}", GlobalVariables.json.MemoryModeSettings.LastName);
+                    NowNumberText.Text = GlobalVariablesData.config.MemoryModeSettings.LastName;
+                    Log.Debug("设置上次抽取结果: {LastName}", GlobalVariablesData.config.MemoryModeSettings.LastName);
                 }
 
                 Log.Information("MemoryMode页面加载完成，总文件数: {FileCount}", AllFiles.Count);

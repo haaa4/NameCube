@@ -30,7 +30,7 @@ namespace NameCube.ToolBox
             InitializeComponent();
             _logger.Debug("内存工具箱页面初始化");
 
-            MemoryCheck.IsChecked = GlobalVariables.json.StartToDo.AlwaysCleanMemory;
+            MemoryCheck.IsChecked = GlobalVariablesData.config.StartToDo.AlwaysCleanMemory;
             _logger.Information("内存清理设置加载完成，总是清理内存: {AlwaysCleanMemory}", MemoryCheck.IsChecked);
         }
 
@@ -38,8 +38,8 @@ namespace NameCube.ToolBox
         {
             _logger.Information("内存清理设置修改为: {AlwaysCleanMemory}", MemoryCheck.IsChecked.Value);
 
-            GlobalVariables.json.StartToDo.AlwaysCleanMemory = MemoryCheck.IsChecked.Value;
-            GlobalVariables.SaveJson();
+            GlobalVariablesData.config.StartToDo.AlwaysCleanMemory = MemoryCheck.IsChecked.Value;
+            GlobalVariablesData.SaveConfig();
 
             var snackbar = new Snackbar(SnackbarPresenterHost)
             {

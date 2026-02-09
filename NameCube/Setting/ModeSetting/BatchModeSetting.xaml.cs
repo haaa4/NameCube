@@ -30,7 +30,7 @@ namespace NameCube.Setting.ModeSetting
             _logger.Debug("批量模式设置页面初始化开始");
 
             CanChange = false;
-            LockedCheck.IsChecked = GlobalVariables.json.BatchModeSettings.Locked;
+            LockedCheck.IsChecked = GlobalVariablesData.config.BatchModeSettings.Locked;
             CanChange = true;
 
             _logger.Information("批量模式设置加载完成，锁定状态: {Locked}", LockedCheck.IsChecked);
@@ -40,8 +40,8 @@ namespace NameCube.Setting.ModeSetting
         {
             if (CanChange)
             {
-                GlobalVariables.json.BatchModeSettings.Locked = LockedCheck.IsChecked.Value;
-                GlobalVariables.SaveJson();
+                GlobalVariablesData.config.BatchModeSettings.Locked = LockedCheck.IsChecked.Value;
+                GlobalVariablesData.SaveConfig();
                 _logger.Information("批量模式锁定状态修改为: {Locked}", LockedCheck.IsChecked.Value);
             }
         }

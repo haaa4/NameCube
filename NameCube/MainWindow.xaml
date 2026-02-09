@@ -16,6 +16,7 @@
     DpiChanged="fluentWindow_DpiChanged"
     Loaded="fluentWindow_Loaded"
     WindowStyle="None"
+    FontFamily="{StaticResource AppFont}"
     mc:Ignorable="d">
 
     <!-- 添加主题资源 -->
@@ -170,13 +171,6 @@
                     Icon="{ui:SymbolIcon Symbol=PeopleSettings24}"
                     Margin="0,2">
                 </ui:NavigationViewItem>
-                <ui:NavigationViewItem
-                    Click="NavigationViewItem_Click_7"
-                    Content="旧因子模式"
-                    Icon="{ui:SymbolIcon Symbol=PeopleSettings24}"
-                    Visibility="Collapsed"
-                    x:Name="OldMemoryFactorItem"
-                    Margin="0,2"/>
                 <ui:NavigationViewItem
                     Click="NavigationViewItem_Click_3"
                     Content="批量模式"

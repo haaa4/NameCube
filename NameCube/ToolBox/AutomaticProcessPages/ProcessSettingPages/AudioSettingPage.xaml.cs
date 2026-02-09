@@ -16,6 +16,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using static NameCube.ToolBox.AutomaticProcessPages.Audio;
 using Path = System.IO.Path;
+using NameCube.GlobalVariables.DataClass;
 using Serilog;
 
 namespace NameCube.ToolBox.AutomaticProcessPages.ProcessSettingPages
@@ -29,7 +30,7 @@ namespace NameCube.ToolBox.AutomaticProcessPages.ProcessSettingPages
         public int waitTime;
         bool canChange = false;
         List<string> AudioFamily = new List<string>();
-        string musicPath = Path.Combine(GlobalVariables.configDir, "Music");
+        string musicPath = Path.Combine(GlobalVariablesData.userDataDir, "Music");
         public AudioSettingPage(ProcessData processData)
         {
             Log.Information("初始化音频设置页面");

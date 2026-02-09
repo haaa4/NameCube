@@ -299,6 +299,29 @@
                 <EasingColorKeyFrame KeyTime="00:00:01" Value="Transparent" />
             </ColorAnimationUsingKeyFrames>
         </Storyboard>
+        <Storyboard x:Key="flicker">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="ellipse" Storyboard.TargetProperty="(FrameworkElement.Width)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="50"/>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="600"/>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="ellipse" Storyboard.TargetProperty="(FrameworkElement.Height)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="50"/>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="600"/>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="ellipse" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0"/>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="-277.472"/>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="ellipse" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0"/>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="-274.371"/>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="ellipse" Storyboard.TargetProperty="(UIElement.Opacity)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0"/>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.1000000" Value="1"/>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="0"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
     </Page.Resources>
     <Viewbox Stretch="Uniform">
         <Canvas Width="1049" Height="595">
@@ -359,7 +382,7 @@
                 Click="StartButton_Click"
                 Content="开始"
                 FontFamily="Segoe UI"
-                FontSize="72"
+                FontSize="36"
                 FontWeight="Black" />
             <StackPanel
                 Grid.Row="2"
@@ -382,13 +405,10 @@
                     HorizontalAlignment="Center"
                     VerticalAlignment="Top"
                     Background="White"
-                    BorderThickness="3,3,3,3" CornerRadius="10,10,10,10">
-                    <ui:Border.BorderBrush>
-                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                            <GradientStop Color="Black"/>
-                            <GradientStop Color="White" Offset="1"/>
-                        </LinearGradientBrush>
-                    </ui:Border.BorderBrush>
+                    BorderThickness="3,8,3,8" CornerRadius="20,20,20,20" BorderBrush="{Binding Foreground, ElementName=NowNumberText}">
+                    <ui:Border.Effect>
+                        <DropShadowEffect BlurRadius="20"/>
+                    </ui:Border.Effect>
                     <Canvas Margin="-6,0,0,0">
                         <Canvas x:Name="NotGuaranteed" Height="456" Width="134">
                             <ProgressBar x:Name="GuaranteedProgressBar" Height="88" Canvas.Left="28.262" Canvas.Top="440.736" Width="359" HorizontalAlignment="Left" VerticalAlignment="Center" Maximum="10">
@@ -428,7 +448,7 @@
                         </ui:TextBlock>
                         <Canvas x:Name="Guaranteed" Height="456" Width="134">
                             <ui:ProgressRing Canvas.Left="13.44" Canvas.Top="204.566" HorizontalAlignment="Left" VerticalAlignment="Center" Height="121" Width="121" IsIndeterminate="True"/>
-                            <ui:TextBlock Canvas.Left="10" TextWrapping="Wrap" Canvas.Top="242.206" Foreground="#FF00EDFF" FontSize="36" FontWeight="Bold" TextAlignment="Center" HorizontalAlignment="Left" VerticalAlignment="Center" Text="{Binding Text, ElementName=MaxIndexRealProbability}" Width="137"/>
+                            <ui:TextBlock Canvas.Left="10" TextWrapping="Wrap" Canvas.Top="242.206" Foreground="{Binding Foreground, ElementName=NowNumberText}" FontSize="36" FontWeight="Bold" TextAlignment="Center" HorizontalAlignment="Left" VerticalAlignment="Center" Text="{Binding Text, ElementName=MaxIndexRealProbability}" Width="137"/>
                         </Canvas>
                     </Canvas>
                 </ui:Border>
@@ -441,14 +461,10 @@
                     HorizontalAlignment="Center"
                     VerticalAlignment="Top"
                     Background="White"
-                    BorderThickness="3,3,3,3" CornerRadius="10,10,10,10">
-                    <ui:Border.BorderBrush>
-                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                            <GradientStop Color="Black" Offset="0"/>
-                            <GradientStop Color="White" Offset="1"/>
-                            <GradientStop Color="White" Offset="1"/>
-                        </LinearGradientBrush>
-                    </ui:Border.BorderBrush>
+                    BorderThickness="8,3,8,3" CornerRadius="20,20,20,20" BorderBrush="{Binding Foreground, ElementName=NowNumberText}">
+                    <ui:Border.Effect>
+                        <DropShadowEffect BlurRadius="25"/>
+                    </ui:Border.Effect>
                     <Canvas>
                         <Canvas Width="814" Height="125">
                             <Canvas x:Name="DeterminedByFatePart" Height="125" Width="814" Visibility="Collapsed">
@@ -523,8 +539,7 @@
                                 Width="814"
                                 Height="125"
                                 HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
-                                Visibility="Collapsed">
+                                VerticalAlignment="Center" Visibility="Collapsed">
                                 <TextBlock
                                     x:Name="DoubleName"
                                     Canvas.Left="18.65"
@@ -554,8 +569,8 @@
                                     Canvas.Left="375.451"
                                     Canvas.Top="37.311"
                                     Width="97"
-                                    Height="54"
-                                    HorizontalAlignment="Left"
+                                    Height="82"
+                                    HorizontalAlignment="Center"
                                     VerticalAlignment="Top"
                                     FontSize="72"
                                     Text="→"
@@ -591,8 +606,7 @@
                                 Width="814"
                                 Height="125"
                                 HorizontalAlignment="Left"
-                                VerticalAlignment="Top"
-                                Visibility="Collapsed">
+                                VerticalAlignment="Top" Visibility="Collapsed">
                                 <TextBlock
                                     x:Name="ExchangeLeftName"
                                     Canvas.Left="122.65"
@@ -634,9 +648,9 @@
                                     Canvas.Left="359.65"
                                     Canvas.Top="10"
                                     Width="158"
-                                    Height="54"
-                                    HorizontalAlignment="Left"
-                                    VerticalAlignment="Center"
+                                    Height="98"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Top"
                                     FontSize="72"
                                     Text="←→"
                                     TextAlignment="Justify"
@@ -682,8 +696,7 @@
                             <Canvas
                                 x:Name="FloorAddPart"
                                 Width="814"
-                                Height="125"
-                                Visibility="Collapsed">
+                                Height="125" Visibility="Collapsed">
                                 <TextBlock
                                     Canvas.Left="146.001"
                                     Canvas.Top="48.767"
@@ -713,8 +726,7 @@
                                 Width="814"
                                 Height="125"
                                 HorizontalAlignment="Left"
-                                VerticalAlignment="Top"
-                                Visibility="Collapsed">
+                                VerticalAlignment="Top" Visibility="Collapsed">
                                 <TextBlock
                                     x:Name="GetFactorFromOtherName"
                                     Canvas.Left="171"
@@ -744,9 +756,9 @@
                                     Canvas.Left="435.54"
                                     Canvas.Top="-13.7"
                                     Width="97"
-                                    Height="56"
-                                    HorizontalAlignment="Left"
-                                    VerticalAlignment="Center"
+                                    Height="122"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Top"
                                     FontSize="72"
                                     Text="←"
                                     TextAlignment="Justify"
@@ -830,7 +842,7 @@
                             VerticalAlignment="Center"
                             FontSize="22"
                             FontWeight="Bold"
-                            TextWrapping="Wrap"><Run Language="zh-cn" Text="事件：" /></TextBlock>
+                            TextWrapping="Wrap" Foreground="{Binding Foreground, ElementName=NowNumberText}"><Run Language="zh-cn" Text="事件：" /></TextBlock>
                         <TextBlock
                             x:Name="incidentName"
                             Canvas.Left="66"
@@ -868,7 +880,7 @@
                     HorizontalAlignment="Center"
                     VerticalAlignment="Top"
                     FontSize="36"
-                    Foreground="Red"
+                    Foreground="{Binding Foreground, ElementName=NowNumberText}"
                     TextWrapping="Wrap">
                     <Run Language="zh-cn" Text="1" />
                 </ui:TextBlock>
@@ -878,7 +890,7 @@
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
                     FontSize="36"
-                    Foreground="#FFFFBB00"
+                    Foreground="Black"
                     TextWrapping="Wrap">
                     <Run Language="zh-cn" Text="2" />
                 </ui:TextBlock>
@@ -888,7 +900,7 @@
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
                     FontSize="36"
-                    Foreground="#FFADB700"
+                    Foreground="Black"
                     TextWrapping="Wrap">
                     <Run Language="zh-cn" Text="3" />
                 </ui:TextBlock>
@@ -1108,7 +1120,7 @@
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Top"
                                     Content="重置概率因子"
-                                    FontSize="36"
+                                    FontSize="12"
                                     Foreground="Red">
                                     <ui:FlyoutService.Flyout>
                                         <ui:Flyout Placement="Bottom">
@@ -1317,6 +1329,16 @@
                     </TextBlock.RenderTransform>
                 </TextBlock>
             </Canvas>
+            <Ellipse x:Name="ellipse" Height="50" Width="50" Fill="{Binding Foreground, ElementName=NowNumberText}" Panel.ZIndex="-2" Opacity="0.005" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" Canvas.Left="279" Canvas.Top="328" VerticalAlignment="Top">
+                <Ellipse.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform/>
+                        <RotateTransform/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </Ellipse.RenderTransform>
+            </Ellipse>
         </Canvas>
     </Viewbox>
 

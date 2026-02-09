@@ -18,8 +18,8 @@ namespace NameCube.Setting.ModeSetting
             _logger.Debug("单人模式设置页面初始化开始");
 
             CanChange = false;
-            LockedCheck.IsChecked = GlobalVariables.json.OnePeopleModeSettings.Locked;
-            Speed.Value = GlobalVariables.json.OnePeopleModeSettings.Speed - 10;
+            LockedCheck.IsChecked = GlobalVariablesData.config.OnePeopleModeSettings.Locked;
+            Speed.Value = GlobalVariablesData.config.OnePeopleModeSettings.Speed - 10;
             CanChange = true;
 
             _logger.Information("单人模式设置加载完成，锁定状态: {Locked}, 速度: {Speed}",
@@ -31,8 +31,8 @@ namespace NameCube.Setting.ModeSetting
         {
             if (CanChange)
             {
-                GlobalVariables.json.OnePeopleModeSettings.Locked = LockedCheck.IsChecked.Value;
-                GlobalVariables.SaveJson();
+                GlobalVariablesData.config.OnePeopleModeSettings.Locked = LockedCheck.IsChecked.Value;
+                GlobalVariablesData.SaveConfig();
                 _logger.Information("单人模式锁定状态修改为: {Locked}", LockedCheck.IsChecked.Value);
             }
         }
@@ -41,8 +41,8 @@ namespace NameCube.Setting.ModeSetting
         {
             if (CanChange)
             {
-                GlobalVariables.json.OnePeopleModeSettings.Speed = (int)Speed.Value + 10;
-                GlobalVariables.SaveJson();
+                GlobalVariablesData.config.OnePeopleModeSettings.Speed = (int)Speed.Value + 10;
+                GlobalVariablesData.SaveConfig();
                 _logger.Debug("单人模式速度修改为: {Speed}", (int)Speed.Value + 10);
             }
         }

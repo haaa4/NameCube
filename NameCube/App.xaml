@@ -11,6 +11,34 @@
                 <ui:ThemesDictionary Theme="Light" />
                 <ui:ControlsDictionary />
             </ResourceDictionary.MergedDictionaries>
+
+            <!-- 全局字体资源 -->
+            <FontFamily x:Key="AppFont">./Fonts/#MiSans Medium</FontFamily>
+
+            <!-- 对 Window 的默认字体（可保留或移除） -->
+            <Style TargetType="Page">
+                <Setter Property="FontFamily" Value="{StaticResource AppFont}"/>
+            </Style>
+
+            <!-- 对所有 Control 的默认字体（按钮、TextBox、ComboBox 等） -->
+            <Style TargetType="{x:Type Control}">
+                <Setter Property="FontFamily" Value="{StaticResource AppFont}" />
+            </Style>
+
+            <Style TargetType="{x:Type ui:TextBlock}">
+                <Setter Property="FontFamily" Value="{StaticResource AppFont}" />
+            </Style>
+
+            <!-- TextBlock 不继承 Control，要单独设置 -->
+            <Style TargetType="{x:Type TextBlock}">
+                <Setter Property="FontFamily" Value="{StaticResource AppFont}" />
+            </Style>
+
+            <!-- 可选：对 Inline/Run 等文本元素的回退设置 -->
+            <Style TargetType="{x:Type Run}">
+                <Setter Property="FontFamily" Value="{StaticResource AppFont}" />
+            </Style>
+
         </ResourceDictionary>
     </Application.Resources>
 </Application>

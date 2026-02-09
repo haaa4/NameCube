@@ -29,8 +29,8 @@ namespace NameCube.Setting.ModeSetting
             _logger.Debug("数字模式设置页面初始化开始");
 
             CanChange = false;
-            LockedCheck.IsChecked = GlobalVariables.json.NumberModeSettings.Locked;
-            Speed.Value = GlobalVariables.json.NumberModeSettings.Speed - 10;
+            LockedCheck.IsChecked = GlobalVariablesData.config.NumberModeSettings.Locked;
+            Speed.Value = GlobalVariablesData.config.NumberModeSettings.Speed - 10;
             CanChange = true;
 
             _logger.Information("数字模式设置加载完成，锁定状态: {Locked}, 速度: {Speed}",
@@ -44,8 +44,8 @@ namespace NameCube.Setting.ModeSetting
         {
             if (CanChange)
             {
-                GlobalVariables.json.NumberModeSettings.Locked = LockedCheck.IsChecked.Value;
-                GlobalVariables.SaveJson();
+                GlobalVariablesData.config.NumberModeSettings.Locked = LockedCheck.IsChecked.Value;
+                GlobalVariablesData.SaveConfig();
                 _logger.Information("数字模式锁定状态修改为: {Locked}", LockedCheck.IsChecked.Value);
             }
         }
@@ -54,8 +54,8 @@ namespace NameCube.Setting.ModeSetting
         {
             if (CanChange)
             {
-                GlobalVariables.json.NumberModeSettings.Speed = (int)Speed.Value + 10;
-                GlobalVariables.SaveJson();
+                GlobalVariablesData.config.NumberModeSettings.Speed = (int)Speed.Value + 10;
+                GlobalVariablesData.SaveConfig();
                 _logger.Debug("数字模式速度修改为: {Speed}", (int)Speed.Value + 10);
             }
         }

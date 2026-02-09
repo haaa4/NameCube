@@ -7,6 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     Title="DebugPage"
+    FontFamily="{StaticResource AppFont}"
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
@@ -50,5 +51,9 @@
             Margin="10,0,0,0"
             Click="Button_Click_6"
             Content="多线程竞争条件异常" />
+        <ui:Button
+    Margin="10,0,0,0"
+    Click="Button_Click_7"  
+    Content="打开新版本介绍" />
     </StackPanel>
 </Page>

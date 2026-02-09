@@ -1,0 +1,107 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
+
+namespace NameCube.FirstUse
+{
+    /// <summary>
+    /// NewVersionWindow.xaml 的交互逻辑
+    /// </summary>
+    public partial class NewVersionWindow
+    {
+        public NewVersionWindow()
+        {
+            InitializeComponent();
+            Markdown.Markdown = MarkdownText;
+        }
+        private string MarkdownText = @"![WPF UI Banner Dark](https://user-images.githubusercontent.com/13592821/174165081-9c62d188-ecb6-4200-abd8-419afbaf32c2.png#gh-dark-mode-only)
+
+![WPF UI Banner Light](https://user-images.githubusercontent.com/13592821/174165388-921c4745-90ed-4396-9a4b-9c86478f7447.png#gh-light-mode-only)
+
+# WPF-UI.Markdown
+
+[![GitHub license](https://img.shields.io/github/license/emako/wpfui.markdown)](https://github.com/emako/wpfui.markdown/blob/master/LICENSE) [![NuGet](https://img.shields.io/nuget/v/WPF-UI.Markdown.svg)](https://nuget.org/packages/WPF-UI.Markdown) [![VS 2022 Downloads](https://img.shields.io/visual-studio-marketplace/i/lepo.WPF-UI?label=vs-2022)](https://marketplace.visualstudio.com/items?itemName=lepo.WPF-UI) [![Actions](https://github.com/emako/wpfui.markdown/actions/workflows/library.nuget.yml/badge.svg)](https://github.com/emako/wpfui.markdown/actions/workflows/library.nuget.yml) [![Platform](https://img.shields.io/badge/platform-Windows-blue?logo=windowsxp&color=1E9BFA)](https://dotnet.microsoft.com/zh-cn/download/dotnet/latest/runtime)
+
+WPF UI Markdown is based on WPF UI, and provides the simple markdown viewer.
+
+Pure C# Markdown Viewer without any Webview Engine.
+
+Some Markdown feature are not supported in WPF.
+
+See the [example](src/Wpf.Ui.Markdown/) for how to use.
+
+## Usage
+
+```xaml
+<Application
+    xmlns:md=""http://schemas.lepo.co/wpfui/2022/xaml/markdown""
+    xmlns:ui=""http://schemas.lepo.co/wpfui/2022/xaml"">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ui:ThemesDictionary Theme=""Dark"" />
+                <ui:ControlsDictionary />
+                <md:ThemesDictionary Theme=""Dark"" />
+                <md:ControlsDictionary />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>
+```
+
+```c#
+<md:MarkdownViewer Markdown=""{Binding Markdown}"" />
+```
+
+If you expect better Code Block highlighting, you can use the following code:
+
+```c#
+ApplicationAccentColorManager.Apply(
+    Color.FromArgb(0xFF, 0xEE, 0x00, 0xBB),
+    ApplicationTheme.Dark,
+    false
+);
+```
+
+## Syntax
+
+> Support following markdown syntax.
+
+```
+CodeBlock
+Code
+Heading
+Hyperlink
+Image
+QuoteBlock
+Table
+TaskList
+ThematicBreak
+Subscript
+Superscript
+StrikeThrough
+Inserted
+Marked
+```
+
+## Screenshot
+
+![image-20240913172834279](https://raw.githubusercontent.com/emako/wpfui.markdown/refs/heads/master/assets/image-20240913172834279.png)
+
+## Thanks to
+
+- [markdig.wpf](https://github.com/Kryptos-FR/markdig.wpf)
+
+- [Markdig.Wpf.ColorCode](https://github.com/coltrane2ny/Markdig.Wpf.ColorCode)";
+    }
+}

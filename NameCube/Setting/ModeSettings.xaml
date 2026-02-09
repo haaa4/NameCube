@@ -8,6 +8,7 @@
     xmlns:mode="clr-namespace:NameCube.Setting.ModeSetting"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     Title="ModeSettings"
+    FontFamily="{StaticResource AppFont}"
     d:DesignHeight="400"
     d:DesignWidth="800"
     mc:Ignorable="d">
@@ -46,11 +47,6 @@
                     Content="记忆模式"
                     Icon="{ui:SymbolIcon Symbol=BrainCircuit24}"
                     TargetPageType="{x:Type mode:MemoryModeSetting}" />
-                <ui:NavigationViewItem
-                    Content="旧因子模式"
-                    Icon="{ui:SymbolIcon Symbol=PeopleSettings24}"
-                    Foreground="Gray"
-                    TargetPageType="{x:Type mode:OldMemoryFactorModeSetting}" />
             </ui:NavigationView.MenuItems>
         </ui:NavigationView>
     </Grid>

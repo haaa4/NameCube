@@ -28,7 +28,7 @@ namespace NameCube.ToolBox
             InitializeComponent();
             _logger.Debug("自动处理页面初始化");
 
-            if (GlobalVariables.json.automaticProcess.debug)
+            if (GlobalVariablesData.config.AutomaticProcess.debug)
             {
                 DebugItem.Visibility = Visibility.Visible;
                 _logger.Warning("自动处理调试模式已启用");

@@ -29,8 +29,8 @@ namespace NameCube.Setting.ModeSetting
             _logger.Debug("预备模式设置页面初始化开始");
 
             CanChange = false;
-            LockedCheck.IsChecked = GlobalVariables.json.PrepareModeSetting.Locked;
-            Speed.Value = GlobalVariables.json.PrepareModeSetting.Speed - 10;
+            LockedCheck.IsChecked = GlobalVariablesData.config.PrepareModeSetting.Locked;
+            Speed.Value = GlobalVariablesData.config.PrepareModeSetting.Speed - 10;
             CanChange = true;
 
             _logger.Information("预备模式设置加载完成，锁定状态: {Locked}, 速度: {Speed}",
@@ -44,8 +44,8 @@ namespace NameCube.Setting.ModeSetting
         {
             if (CanChange)
             {
-                GlobalVariables.json.PrepareModeSetting.Locked = LockedCheck.IsChecked.Value;
-                GlobalVariables.SaveJson();
+                GlobalVariablesData.config.PrepareModeSetting.Locked = LockedCheck.IsChecked.Value;
+                GlobalVariablesData.SaveConfig();
                 _logger.Information("预备模式锁定状态修改为: {Locked}", LockedCheck.IsChecked.Value);
             }
         }
@@ -54,8 +54,8 @@ namespace NameCube.Setting.ModeSetting
         {
             if (CanChange)
             {
-                GlobalVariables.json.PrepareModeSetting.Speed = (int)Speed.Value + 10;
-                GlobalVariables.SaveJson();
+                GlobalVariablesData.config.PrepareModeSetting.Speed = (int)Speed.Value + 10;
+                GlobalVariablesData.SaveConfig();
                 _logger.Debug("预备模式速度修改为: {Speed}", (int)Speed.Value + 10);
             }
         }

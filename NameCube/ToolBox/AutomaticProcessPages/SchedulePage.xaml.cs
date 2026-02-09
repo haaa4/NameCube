@@ -10,6 +10,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
+using NameCube.GlobalVariables.DataClass;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -124,34 +125,34 @@ namespace NameCube.ToolBox.AutomaticProcessPages
             processesGroupList.Clear();
             processGroups.Clear();
 
-            if (GlobalVariables.json.automaticProcess.processesSchedule == null)
+            if (GlobalVariablesData.config.AutomaticProcess.processesSchedule == null)
             {
                 Log.Debug("时间表为空，创建新字典");
-                GlobalVariables.json.automaticProcess.processesSchedule =
+                GlobalVariablesData.config.AutomaticProcess.processesSchedule =
                     new Dictionary<int, List<ProcessGroup>>();
             }
 
             int scheduleCount = 0;
             for (int key = 0; key <= 86399; key++)
             {
-                if (GlobalVariables.json.automaticProcess.processesSchedule.ContainsKey(key))
+                if (GlobalVariablesData.config.AutomaticProcess.processesSchedule.ContainsKey(key))
                 {
                     for (
                         int i = 0;
-                        i < GlobalVariables.json.automaticProcess.processesSchedule[key].Count;
+                        i < GlobalVariablesData.config.AutomaticProcess.processesSchedule[key].Count;
                         i++
                     )
                     {
                         string timeString = IndexToTimeString(key);
-                        string processName = GlobalVariables
-                            .json
-                            .automaticProcess
+                        string processName = GlobalVariablesData
+                            .config
+                            .AutomaticProcess
                             .processesSchedule[key][i]
                             .name;
 
                         processesGroupList.Add(timeString + " " + processName);
                         processGroups.Add(
-                            GlobalVariables.json.automaticProcess.processesSchedule[key][i]
+                            GlobalVariablesData.config.AutomaticProcess.processesSchedule[key][i]
                         );
                         keyList.Add(key);
                         indexList.Add(i);
@@ -169,11 +170,11 @@ namespace NameCube.ToolBox.AutomaticProcessPages
             processesChooseList.Clear();
             ToChooseProcessGroup.Clear();
 
-            int processGroupCount = GlobalVariables.json.automaticProcess.processGroups?.Count ?? 0;
+            int processGroupCount = GlobalVariablesData.config.AutomaticProcess.processGroups?.Count ?? 0;
             Log.Information("当前有 {ProcessGroupCount} 个流程组可用", processGroupCount);
 
             foreach (
-                ProcessGroup processGroup in GlobalVariables.json.automaticProcess.processGroups
+                ProcessGroup processGroup in GlobalVariablesData.config.AutomaticProcess.processGroups
             )
             {
                 processesChooseList.Add(processGroup.name);
@@ -210,7 +211,7 @@ namespace NameCube.ToolBox.AutomaticProcessPages
             {
                 int selectedIndex = TimeListView.SelectedIndex;
                 int index = keyList[selectedIndex];
-                ProcessGroup processGroup = GlobalVariables.json.automaticProcess.processesSchedule[
+                ProcessGroup processGroup = GlobalVariablesData.config.AutomaticProcess.processesSchedule[
                     keyList[selectedIndex]
                 ][indexList[selectedIndex]];
 
@@ -252,9 +253,9 @@ namespace NameCube.ToolBox.AutomaticProcessPages
 
         private bool HaveTheSame(ProcessGroup processGroup)
         {
-            for (int i = 0; i < GlobalVariables.json.automaticProcess.processGroups.Count; i++)
+            for (int i = 0; i < GlobalVariablesData.config.AutomaticProcess.processGroups.Count; i++)
             {
-                if (processGroup.uid == GlobalVariables.json.automaticProcess.processGroups[i].uid)
+                if (processGroup.uid == GlobalVariablesData.config.AutomaticProcess.processGroups[i].uid)
                 {
                     return true;
                 }
@@ -312,7 +313,7 @@ namespace NameCube.ToolBox.AutomaticProcessPages
                     TimePicker2.SelectedIndex,
                     TimePicker3.SelectedIndex
                 );
-                ProcessGroup processGroup = GlobalVariables.json.automaticProcess.processGroups[
+                ProcessGroup processGroup = GlobalVariablesData.config.AutomaticProcess.processGroups[
                     ProcessesPicker.SelectedIndex
                 ];
 
@@ -320,21 +321,21 @@ namespace NameCube.ToolBox.AutomaticProcessPages
                     TimePicker1.SelectedIndex, TimePicker2.SelectedIndex, TimePicker3.SelectedIndex,
                     processGroup.name);
 
-                if (GlobalVariables.json.automaticProcess.processesSchedule.ContainsKey(timeKey))
+                if (GlobalVariablesData.config.AutomaticProcess.processesSchedule.ContainsKey(timeKey))
                 {
-                    GlobalVariables
-                        .json.automaticProcess.processesSchedule[timeKey]
+                    GlobalVariablesData
+                        .config.AutomaticProcess.processesSchedule[timeKey]
                         .Add(processGroup);
                 }
                 else
                 {
-                    GlobalVariables.json.automaticProcess.processesSchedule.Add(
+                    GlobalVariablesData.config.AutomaticProcess.processesSchedule.Add(
                         timeKey,
                         new List<ProcessGroup>() { processGroup }
                     );
                 }
 
-                GlobalVariables.SaveJson();
+                GlobalVariablesData.SaveConfig();
                 Part2.IsEnabled = false;
                 RefreshList();
                 RefreshChooesList();
@@ -371,23 +372,23 @@ namespace NameCube.ToolBox.AutomaticProcessPages
                 Log.Warning("尝试保存已删除的流程组");
                 int selected = TimeListView.SelectedIndex;
                 ProcessGroup processGroup = processGroups[selected];
-                GlobalVariables
-                    .json.automaticProcess.processesSchedule[keyList[selected]]
+                GlobalVariablesData
+                    .config.AutomaticProcess.processesSchedule[keyList[selected]]
                     .RemoveAt(indexList[selected]);
                 int newKey = TimeToIndex(
                     TimePicker1.SelectedIndex,
                     TimePicker2.SelectedIndex,
                     TimePicker3.SelectedIndex
                 );
-                if (GlobalVariables.json.automaticProcess.processesSchedule.ContainsKey(newKey))
+                if (GlobalVariablesData.config.AutomaticProcess.processesSchedule.ContainsKey(newKey))
                 {
-                    GlobalVariables
-                        .json.automaticProcess.processesSchedule[newKey]
+                    GlobalVariablesData
+                        .config.AutomaticProcess.processesSchedule[newKey]
                         .Add(processGroup);
                 }
                 else
                 {
-                    GlobalVariables.json.automaticProcess.processesSchedule.Add(
+                    GlobalVariablesData.config.AutomaticProcess.processesSchedule.Add(
                         newKey,
                         new List<ProcessGroup>() { processGroup }
                     );
@@ -407,30 +408,30 @@ namespace NameCube.ToolBox.AutomaticProcessPages
                         TimePicker3.SelectedIndex
                     )), newProcessGroup.name);
 
-                GlobalVariables
-                    .json.automaticProcess.processesSchedule[keyList[selected]]
+                GlobalVariablesData
+                    .config.AutomaticProcess.processesSchedule[keyList[selected]]
                     .RemoveAt(indexList[selected]);
                 int newKey = TimeToIndex(
                     TimePicker1.SelectedIndex,
                     TimePicker2.SelectedIndex,
                     TimePicker3.SelectedIndex
                 );
-                if (GlobalVariables.json.automaticProcess.processesSchedule.ContainsKey(newKey))
+                if (GlobalVariablesData.config.AutomaticProcess.processesSchedule.ContainsKey(newKey))
                 {
-                    GlobalVariables
-                        .json.automaticProcess.processesSchedule[newKey]
+                    GlobalVariablesData
+                        .config.AutomaticProcess.processesSchedule[newKey]
                         .Add(newProcessGroup);
                 }
                 else
                 {
-                    GlobalVariables.json.automaticProcess.processesSchedule.Add(
+                    GlobalVariablesData.config.AutomaticProcess.processesSchedule.Add(
                         newKey,
                         new List<ProcessGroup>() { newProcessGroup }
                     );
                 }
             }
 
-            GlobalVariables.SaveJson();
+            GlobalVariablesData.SaveConfig();
             RefreshList();
             RefreshChooesList();
             Part2.IsEnabled = false;
@@ -466,10 +467,10 @@ namespace NameCube.ToolBox.AutomaticProcessPages
                 Log.Information("删除时间表项: {Time} {ProcessGroupName}",
                     IndexToTimeString(keyList[selected]), processGroup.name);
 
-                GlobalVariables
-                    .json.automaticProcess.processesSchedule[keyList[selected]]
+                GlobalVariablesData
+                    .config.AutomaticProcess.processesSchedule[keyList[selected]]
                     .RemoveAt(indexList[selected]);
-                GlobalVariables.SaveJson();
+                GlobalVariablesData.SaveConfig();
                 RefreshList();
                 RefreshChooesList();
                 Part2.IsEnabled = false;

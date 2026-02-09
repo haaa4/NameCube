@@ -10,6 +10,7 @@
     Loaded="Page_Loaded"
     d:DesignHeight="450"
     d:DesignWidth="800"
+    FontFamily="{StaticResource AppFont}"
     mc:Ignorable="d">
     <Grid>
         <Grid.RowDefinitions>
@@ -29,7 +30,7 @@
                 FontWeight="Black"
                 Text="主页" />
         </StackPanel>
-        <Image x:Name="Recommend" Source="/Image/V1.3 Beta-1.png" />
+        <Image x:Name="Recommend" Source="/Image/V1.3 Beta-2.png" />
         <ui:Button
             x:Name="CloseRecommendButtom"
             VerticalAlignment="Top"

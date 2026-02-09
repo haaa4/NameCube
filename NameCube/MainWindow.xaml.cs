@@ -7,6 +7,7 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using NameCube.GlobalVariables.DataClass;
 using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Input;
@@ -171,7 +172,7 @@ namespace NameCube
                 UpdateHotkeys();
                 Application.Current.ShutdownMode = ShutdownMode.OnExplicitShutdown;
 
-                if (GlobalVariables.json.AllSettings.NameCubeMode == 1)
+                if (GlobalVariablesData.config.AllSettings.NameCubeMode == 1)
                 {
                     Log.Debug("传统窗口模式，隐藏工具箱卡片");
                     ToolBoxCardAction.Visibility = Visibility.Hidden;
@@ -183,7 +184,7 @@ namespace NameCube
                 Timer.Start();
                 Log.Debug("窗口置顶检查定时器已启动");
 
-                if (GlobalVariables.json.AllSettings.Dark)
+                if (GlobalVariablesData.config.AllSettings.Dark)
                 {
                     Log.Debug("应用深色主题");
                     Wpf.Ui.Appearance.ApplicationThemeManager.Apply(
@@ -200,13 +201,15 @@ namespace NameCube
                     Log.Debug("主窗口加载完成，导航到主页");
                 };
                 this.DataContext= this;
-                if(GlobalVariables.IsBeta)
+                if(GlobalVariablesData.ISBETA)
                 {
-                    verson = "测试版:" + GlobalVariables.Version;
+                    verson = "测试版:" + GlobalVariablesData.VERSION;
                 }
                 else
                 {
-                    verson = "正式版:" + GlobalVariables.Version;
+#pragma warning disable CS0162 // 检测到无法访问的代码
+                    verson = "正式版:" + GlobalVariablesData.VERSION;
+#pragma warning restore CS0162 // 检测到无法访问的代码
                 }
                     Log.Information("主窗口初始化完成");
             }
@@ -221,8 +224,8 @@ namespace NameCube
         {
             try
             {
-                this.Topmost = GlobalVariables.json.AllSettings.Top;
-                if (GlobalVariables.json.AllSettings.Top)
+                this.Topmost = GlobalVariablesData.config.AllSettings.Top;
+                if (GlobalVariablesData.config.AllSettings.Top)
                 {
                     Log.Debug("窗口置顶状态检查: 已置顶");
                 }
@@ -237,7 +240,7 @@ namespace NameCube
         {
             try
             {
-                if (GlobalVariables.json.AllSettings.NameCubeMode == 1)
+                if (GlobalVariablesData.config.AllSettings.NameCubeMode == 1)
                 {
                     Log.Information("传统窗口模式，直接退出应用");
                     Application.Current.Shutdown();
@@ -347,7 +350,7 @@ namespace NameCube
                     lock (_lock)
                     {
                         // 检查所有快捷键组
-                        foreach (var shortcut in GlobalVariables.json.ShortCutKey.keysGrounp)
+                        foreach (var shortcut in GlobalVariablesData.config.ShortCutKey.keysGrounp)
                         {
                             if (shortcut.keys.Contains(key))
                             {
@@ -546,8 +549,8 @@ namespace NameCube
                 lock (_lock)
                 {
                     // 清理无效组的记录
-                    var validGroupIds = GlobalVariables
-                        .json.ShortCutKey.keysGrounp.Select(s => s.LastChangeTime)
+                    var validGroupIds = GlobalVariablesData
+                        .config.ShortCutKey.keysGrounp.Select(s => s.LastChangeTime)
                         .ToList();
 
                     var keysToRemove = _shortcutKeyTimes
@@ -596,7 +599,7 @@ namespace NameCube
                     {
                         Log.Debug("窗口已存在但未激活，激活窗口");
                         this.Activate();
-                        if (GlobalVariables.json.AllSettings.DefaultToMaximumSize)
+                        if (GlobalVariablesData.config.AllSettings.DefaultToMaximumSize)
                         {
                             this.WindowState = WindowState.Maximized;
                             Log.Debug("窗口最大化");
@@ -623,13 +626,13 @@ namespace NameCube
                             Log.Debug("计算窗口居中位置: X={Left}, Y={Top}", Left, Top);
                         }
 
-                        if (GlobalVariables.json.AllSettings.DisableTheDisplayAnimationOfTheMainWindow)
+                        if (GlobalVariablesData.config.AllSettings.DisableTheDisplayAnimationOfTheMainWindow)
                         {
                             Log.Debug("禁用主窗口显示动画");
                             this.Opacity = 1.0; // 确保窗口完全不透明
                             this.Show();
                             this.Activate();
-                            if (GlobalVariables.json.AllSettings.DefaultToMaximumSize)
+                            if (GlobalVariablesData.config.AllSettings.DefaultToMaximumSize)
                             {
                                 this.WindowState = WindowState.Maximized;
                             }
@@ -749,17 +752,6 @@ namespace NameCube
 
                 loadPageStoryBoard.Completed += loadCompletedHandler;
                 loadPageStoryBoard.Begin();
-
-                if (GlobalVariables.json.OldMemoryFactorModeSettings.IsEnable ?? false)
-                {
-                    OldMemoryFactorItem.Visibility = Visibility.Visible;
-                    Log.Debug("旧记忆因子模式已启用，显示菜单项");
-                }
-                else
-                {
-                    OldMemoryFactorItem.Visibility = Visibility.Collapsed;
-                    Log.Debug("旧记忆因子模式已禁用，隐藏菜单项");
-                }
             }
             catch (Exception ex)
             {
@@ -917,19 +909,6 @@ namespace NameCube
             catch (Exception ex)
             {
                 Log.Error(ex, "处理DPI变化事件时发生错误");
-            }
-        }
-
-        private void NavigationViewItem_Click_7(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                Log.Information("导航到旧记忆因子模式");
-                LoadPage(new OldMemoryFactorMode());
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex, "导航到旧记忆因子模式时发生错误");
             }
         }
     }

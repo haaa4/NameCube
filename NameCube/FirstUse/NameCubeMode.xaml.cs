@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using NameCube.Function;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -53,12 +54,12 @@ namespace NameCube.FirstUse
             {
                 if (RadioButton1.IsChecked.Value)
                 {
-                    GlobalVariables.json.AllSettings.NameCubeMode = 0;
+                    GlobalVariablesData.config.AllSettings.NameCubeMode = 0;
                     Log.Information("用户选择了悬浮球模式");
                 }
                 else
                 {
-                    GlobalVariables.json.AllSettings.NameCubeMode = 1;
+                    GlobalVariablesData.config.AllSettings.NameCubeMode = 1;
                     Log.Information("用户选择了传统窗口模式");
                 }
             }

@@ -38,8 +38,8 @@ namespace NameCube.Setting
         {
             if (CanChange)
             {
-                GlobalVariables.json.StartToDo.Ball = BallCheck.IsChecked.Value;
-                GlobalVariables.SaveJson();
+                GlobalVariablesData.config.StartToDo.Ball = BallCheck.IsChecked.Value;
+                GlobalVariablesData.SaveConfig();
                 _logger.Information("悬浮球显示状态修改为: {Ball}", BallCheck.IsChecked.Value);
 
                 var bird = Application.Current.Windows.OfType<Bird>().FirstOrDefault();
@@ -48,7 +48,7 @@ namespace NameCube.Setting
                     bird = new Bird();
                 }
 
-                if (GlobalVariables.json.StartToDo.Ball)
+                if (GlobalVariablesData.config.StartToDo.Ball)
                 {
                     bird.Show();
                     _logger.Debug("显示悬浮球窗口");
@@ -65,7 +65,7 @@ namespace NameCube.Setting
         {
             _logger.Information("重启悬浮球功能");
             string[] args = Environment.GetCommandLineArgs();
-            File.WriteAllText(Path.Combine(GlobalVariables.configDir, "START"), "The cake is a lie");
+            File.WriteAllText(Path.Combine(GlobalVariablesData.configDir, "START"), "The cake is a lie");
 
             _logger.Information("程序退出以重启悬浮球");
             Application.Current.Shutdown();
@@ -90,8 +90,8 @@ namespace NameCube.Setting
                         Ring.Visibility = Visibility.Visible;
                         ImageIcon.Visibility = Visibility.Collapsed;
                         CopyImage(openFileDialog.FileName);
-                        GlobalVariables.json.BirdSettings.UseDefinedImage = true;
-                        GlobalVariables.SaveJson();
+                        GlobalVariablesData.config.BirdSettings.UseDefinedImage = true;
+                        GlobalVariablesData.SaveConfig();
                     }
                 }
             }
@@ -105,14 +105,14 @@ namespace NameCube.Setting
             {
                 try
                 {
-                    File.Delete(Path.Combine(GlobalVariables.configDir, "Bird_data", "Image", "image.png"));
-                    File.Copy(Filename, Path.Combine(GlobalVariables.configDir, "Bird_data", "Image", "image.png"));
+                    File.Delete(Path.Combine(GlobalVariablesData.userDataDir, "Bird_data", "Image", "image.png"));
+                    File.Copy(Filename, Path.Combine(GlobalVariablesData.userDataDir, "Bird_data", "Image", "image.png"));
 
                     this.Dispatcher.Invoke(new Action(() =>
                     {
                         BitmapImage bitmap = new BitmapImage();
                         bitmap.BeginInit();
-                        bitmap.UriSource = new Uri(Path.Combine(GlobalVariables.configDir, "Bird_data", "Image", "image.png"));
+                        bitmap.UriSource = new Uri(Path.Combine(GlobalVariablesData.userDataDir, "Bird_data", "Image", "image.png"));
                         bitmap.CacheOption = BitmapCacheOption.OnLoad;
                         bitmap.EndInit();
                         ImageIcon.Source = bitmap;
@@ -135,8 +135,8 @@ namespace NameCube.Setting
             if (CanChange)
             {
                 ImageIcon.Source = new BitmapImage(new Uri("pack://application:,,,/BallPicture.png"));
-                GlobalVariables.json.BirdSettings.UseDefinedImage = false;
-                GlobalVariables.SaveJson();
+                GlobalVariablesData.config.BirdSettings.UseDefinedImage = false;
+                GlobalVariablesData.SaveConfig();
                 _logger.Information("恢复悬浮球默认图片");
                 ChangeBird();
             }
@@ -146,8 +146,8 @@ namespace NameCube.Setting
         {
             if (CanChange)
             {
-                GlobalVariables.json.BirdSettings.AdsorbValue = ABSlider.Value.ToInt32();
-                GlobalVariables.SaveJson();
+                GlobalVariablesData.config.BirdSettings.AdsorbValue = ABSlider.Value.ToInt32();
+                GlobalVariablesData.SaveConfig();
                 _logger.Debug("吸附值修改为: {Value}", ABSlider.Value.ToInt32());
                 ChangeBird();
             }
@@ -157,8 +157,8 @@ namespace NameCube.Setting
         {
             if (CanChange)
             {
-                GlobalVariables.json.BirdSettings.AutoAbsord = AutoAdsorb.IsChecked.Value;
-                GlobalVariables.SaveJson();
+                GlobalVariablesData.config.BirdSettings.AutoAbsord = AutoAdsorb.IsChecked.Value;
+                GlobalVariablesData.SaveConfig();
                 _logger.Information("自动吸附修改为: {AutoAbsorb}", AutoAdsorb.IsChecked.Value);
                 ChangeBird();
             }
@@ -168,8 +168,8 @@ namespace NameCube.Setting
         {
             if (CanChange)
             {
-                GlobalVariables.json.BirdSettings.diaphaneity = Diaphaneity.Value.ToInt32();
-                GlobalVariables.SaveJson();
+                GlobalVariablesData.config.BirdSettings.diaphaneity = Diaphaneity.Value.ToInt32();
+                GlobalVariablesData.SaveConfig();
                 _logger.Debug("透明度修改为: {Diaphaneity}", Diaphaneity.Value.ToInt32());
                 ChangeBird();
             }
@@ -177,33 +177,33 @@ namespace NameCube.Setting
 
         private void Initialize()
         {
-            BallCheck.IsChecked = GlobalVariables.json.StartToDo.Ball;
-            StartWayComboBox.SelectedIndex = GlobalVariables.json.BirdSettings.StartWay;
+            BallCheck.IsChecked = GlobalVariablesData.config.StartToDo.Ball;
+            StartWayComboBox.SelectedIndex = GlobalVariablesData.config.BirdSettings.StartWay;
 
-            if (GlobalVariables.json.BirdSettings.UseDefinedImage)
+            if (GlobalVariablesData.config.BirdSettings.UseDefinedImage)
             {
                 BitmapImage bitmap = new BitmapImage();
                 bitmap.BeginInit();
-                bitmap.UriSource = new Uri(Path.Combine(GlobalVariables.configDir, "Bird_data", "Image", "image.png"));
+                bitmap.UriSource = new Uri(Path.Combine(GlobalVariablesData.userDataDir, "Bird_data", "Image", "image.png"));
                 bitmap.CacheOption = BitmapCacheOption.OnLoad;
                 bitmap.EndInit();
                 ImageIcon.Source = bitmap;
                 _logger.Debug("加载自定义悬浮球图片");
             }
 
-            if (GlobalVariables.json.BirdSettings.diaphaneity == 0)
+            if (GlobalVariablesData.config.BirdSettings.diaphaneity == 0)
             {
-                GlobalVariables.json.BirdSettings.diaphaneity = 100;
+                GlobalVariablesData.config.BirdSettings.diaphaneity = 100;
                 _logger.Debug("透明度为0，重置为100");
             }
 
-            ABSlider.Value = GlobalVariables.json.BirdSettings.AdsorbValue;
-            AutoAdsorb.IsChecked = GlobalVariables.json.BirdSettings.AutoAbsord;
-            Diaphaneity.Value = GlobalVariables.json.BirdSettings.diaphaneity;
-            StartLocationWay.SelectedIndex = GlobalVariables.json.BirdSettings.StartLocationWay;
-            BallWidth.Value = GlobalVariables.json.BirdSettings.Width;
-            BallHeight.Value = GlobalVariables.json.BirdSettings.Height;
-            LongPressMisjudgment.Value = GlobalVariables.json.BirdSettings.LongPressMisjudgment;
+            ABSlider.Value = GlobalVariablesData.config.BirdSettings.AdsorbValue;
+            AutoAdsorb.IsChecked = GlobalVariablesData.config.BirdSettings.AutoAbsord;
+            Diaphaneity.Value = GlobalVariablesData.config.BirdSettings.diaphaneity;
+            StartLocationWay.SelectedIndex = GlobalVariablesData.config.BirdSettings.StartLocationWay;
+            BallWidth.Value = GlobalVariablesData.config.BirdSettings.Width;
+            BallHeight.Value = GlobalVariablesData.config.BirdSettings.Height;
+            LongPressMisjudgment.Value = GlobalVariablesData.config.BirdSettings.LongPressMisjudgment;
         }
 
         private void ChangeBird()
@@ -224,8 +224,8 @@ namespace NameCube.Setting
         {
             if (CanChange)
             {
-                GlobalVariables.json.BirdSettings.StartWay = StartWayComboBox.SelectedIndex;
-                GlobalVariables.SaveJson();
+                GlobalVariablesData.config.BirdSettings.StartWay = StartWayComboBox.SelectedIndex;
+                GlobalVariablesData.SaveConfig();
                 _logger.Information("悬浮球启动方式修改为: {StartWay}", StartWayComboBox.SelectedIndex);
             }
         }
@@ -234,8 +234,8 @@ namespace NameCube.Setting
         {
             if (CanChange)
             {
-                GlobalVariables.json.BirdSettings.StartLocationWay = StartLocationWay.SelectedIndex;
-                GlobalVariables.SaveJson();
+                GlobalVariablesData.config.BirdSettings.StartLocationWay = StartLocationWay.SelectedIndex;
+                GlobalVariablesData.SaveConfig();
                 _logger.Information("悬浮球启动位置修改为: {StartLocationWay}", StartLocationWay.SelectedIndex);
             }
         }
@@ -244,9 +244,9 @@ namespace NameCube.Setting
         {
             if (CanChange)
             {
-                GlobalVariables.json.BirdSettings.Width = BallWidth.Value.ToInt32();
-                GlobalVariables.json.BirdSettings.Height = BallHeight.Value.ToInt32();
-                GlobalVariables.SaveJson();
+                GlobalVariablesData.config.BirdSettings.Width = BallWidth.Value.ToInt32();
+                GlobalVariablesData.config.BirdSettings.Height = BallHeight.Value.ToInt32();
+                GlobalVariablesData.SaveConfig();
                 _logger.Information("悬浮球尺寸修改为: {Width}x{Height}", BallWidth.Value.ToInt32(), BallHeight.Value.ToInt32());
 
                 var Bird = Application.Current.Windows.OfType<Bird>().FirstOrDefault();
@@ -264,8 +264,8 @@ namespace NameCube.Setting
         {
             if (CanChange)
             {
-                GlobalVariables.json.BirdSettings.LongPressMisjudgment = (int)LongPressMisjudgment.Value;
-                GlobalVariables.SaveJson();
+                GlobalVariablesData.config.BirdSettings.LongPressMisjudgment = (int)LongPressMisjudgment.Value;
+                GlobalVariablesData.SaveConfig();
                 _logger.Debug("长按误判阈值修改为: {Value}", (int)LongPressMisjudgment.Value);
             }
         }

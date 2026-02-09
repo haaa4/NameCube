@@ -17,13 +17,14 @@ using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using NameCube.Function;
 using Wpf.Ui.Controls;
 using Wpf.Ui.Violeta.Controls;
 using NameCube.Setting;
 using NameCube.FirstUse;
 using Application = System.Windows.Application;
 using Masuit.Tools.Logging;
-using Serilog;  // 添加Serilog命名空间
+using Serilog;  
 
 namespace NameCube.FirstUse
 {
@@ -58,7 +59,7 @@ namespace NameCube.FirstUse
                 }
                 else if (now == 3)
                 {
-                    if (GlobalVariables.json.AllSettings.NameCubeMode == 0)
+                    if (GlobalVariablesData.config.AllSettings.NameCubeMode == 0)
                     {
                         Log.Information("加载页面: 悬浮球设置");
                         LoadPage("悬浮球设置", "悬浮球是一个很好的东西，可以更快地启动主窗口", new BirdSettings());
@@ -67,13 +68,13 @@ namespace NameCube.FirstUse
                     {
                         Log.Information("加载页面: 完成(非悬浮球模式)");
                         LoadPage("完成！", "所有基本设置均已完成，更多设置请在应用设置里查看", new About());
-                        GlobalVariables.SaveJson();
+                        GlobalVariablesData.SaveConfig();
                         Log.Information("向导设置已保存");
                     }
                 }
                 else if (now == 4)
                 {
-                    if (GlobalVariables.json.AllSettings.NameCubeMode == 0)
+                    if (GlobalVariablesData.config.AllSettings.NameCubeMode == 0)
                     {
                         Log.Information("加载页面: 其他设置");
                         LoadPage("其他......", "这里还有一些其他设置，也许有些用", new Other());
@@ -88,7 +89,7 @@ namespace NameCube.FirstUse
                 {
                     Log.Information("加载页面: 完成(悬浮球模式)");
                     LoadPage("完成！", "所有基本设置均已完成，更多设置请在应用设置里查看", new About());
-                    GlobalVariables.SaveJson();
+                    GlobalVariablesData.SaveConfig();
                     Log.Information("向导设置已保存");
                 }
                 else if (now == 6)
@@ -124,18 +125,18 @@ namespace NameCube.FirstUse
 
                     try
                     {
-                        if (Directory.Exists(GlobalVariables.configDir))
+                        if (Directory.Exists(GlobalVariablesData.configDir))
                         {
-                            Log.Information("删除现有配置目录: {ConfigDir}", GlobalVariables.configDir);
-                            Directory.Delete(GlobalVariables.configDir, true);
+                            Log.Information("删除现有配置目录: {ConfigDir}", GlobalVariablesData.configDir);
+                            Directory.Delete(GlobalVariablesData.configDir, true);
                         }
 
-                        Directory.CreateDirectory(GlobalVariables.configDir);
+                        Directory.CreateDirectory(GlobalVariablesData.configDir);
                         Log.Information("创建新的配置目录");
 
                         var SevenZipCompressor = new SevenZipCompressor(null);
                         Log.Information("开始解压压缩包");
-                        SevenZipCompressor.Decompress(openFileDialog.FileName, GlobalVariables.configDir);
+                        SevenZipCompressor.Decompress(openFileDialog.FileName, GlobalVariablesData.configDir);
 
                         MessageBoxFunction.ShowMessageBoxInfo("添加成功，请自行启动软件");
                         Log.Information("压缩包导入成功，准备退出应用");

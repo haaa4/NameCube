@@ -54,6 +54,9 @@
             VerticalAlignment="Center"
             RenderOptions.BitmapScalingMode="HighQuality"
             Source="BallPicture.png" >
+            <Image.Effect>
+                <DropShadowEffect BlurRadius="20" Opacity="0.62" RenderingBias="Performance" ShadowDepth="0"/>
+            </Image.Effect>
         </Image>
         <ui:ProgressRing x:Name="progressRing" HorizontalAlignment="Center"
 VerticalAlignment="Center" Foreground="#FF4F504E" Progress="0" Height="50" Width="50" Opacity="0"/>

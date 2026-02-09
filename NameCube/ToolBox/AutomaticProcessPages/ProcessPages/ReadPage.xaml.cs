@@ -69,13 +69,13 @@ namespace NameCube.ToolBox.AutomaticProcessPages.ProcessPages
             if (_read)
             {
                 Log.Information("开始朗读文本，长度: {TextLength}", _text?.Length ?? 0);
-                if (!GlobalVariables.json.AllSettings.SystemSpeech)
+                if (!GlobalVariablesData.config.AllSettings.SystemSpeech)
                 {
                     _speechSynthesizer.SelectVoiceByHints(VoiceGender.Female, VoiceAge.Adult);
-                    _speechSynthesizer.Volume = GlobalVariables.json.AllSettings.Volume;
-                    _speechSynthesizer.Rate = GlobalVariables.json.AllSettings.Speed;
+                    _speechSynthesizer.Volume = GlobalVariablesData.config.AllSettings.Volume;
+                    _speechSynthesizer.Rate = GlobalVariablesData.config.AllSettings.Speed;
                     Log.Debug("语音合成器设置 - 音量: {Volume}, 速度: {Speed}",
-                        GlobalVariables.json.AllSettings.Volume, GlobalVariables.json.AllSettings.Speed);
+                        GlobalVariablesData.config.AllSettings.Volume, GlobalVariablesData.config.AllSettings.Speed);
                 }
                 _speechSynthesizer.SpeakAsync(_text);
             }

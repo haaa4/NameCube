@@ -21,6 +21,7 @@ using Masuit.Tools.DateTimeExt;
 using Windows.ApplicationModel.ConversationalAgent;
 using Application = System.Windows.Application;
 using Serilog;
+using NameCube.GlobalVariables.DataClass;
 
 namespace NameCube.ToolBox.AutomaticProcessPages
 {
@@ -40,10 +41,10 @@ namespace NameCube.ToolBox.AutomaticProcessPages
             Log.Information("初始化自动流程设置页面");
             InitializeComponent();
             DataContext = this;
-            if (GlobalVariables.json.automaticProcess.processGroups == null)
+            if (GlobalVariablesData.config.AutomaticProcess.processGroups == null)
             {
                 Log.Debug("初始化自动流程组列表为空，创建新列表");
-                GlobalVariables.json.automaticProcess.processGroups = new List<ProcessGroup>();
+                GlobalVariablesData.config.AutomaticProcess.processGroups = new List<ProcessGroup>();
             }
             Loaded += AutomaticProcessSetting_Loaded;
             Log.Information("自动流程设置页面初始化完成");
@@ -60,7 +61,7 @@ namespace NameCube.ToolBox.AutomaticProcessPages
             ProcessGroupsListView.UnselectAll();
             ProcessGroups.Clear();
             foreach (
-                ProcessGroup processGroup in GlobalVariables.json.automaticProcess.processGroups
+                ProcessGroup processGroup in GlobalVariablesData.config.AutomaticProcess.processGroups
             )
             {
                 ProcessGroups.Add(processGroup.name);
@@ -222,8 +223,8 @@ namespace NameCube.ToolBox.AutomaticProcessPages
                                     processDatas = new List<ProcessData>(),
                                     uid = (int)DateTime.Now.GetTotalMilliseconds(),
                                 };
-                                GlobalVariables.json.automaticProcess.processGroups.Add(newGroup);
-                                GlobalVariables.SaveJson();
+                                GlobalVariablesData.config.AutomaticProcess.processGroups.Add(newGroup);
+                                GlobalVariablesData.SaveConfig();
                                 Log.Information("成功创建新流程组: {GroupName}, UID: {Uid}",
                                     textBox.Text, newGroup.uid);
                             }
@@ -244,7 +245,7 @@ namespace NameCube.ToolBox.AutomaticProcessPages
                 }
                 else
                 {
-                    selectedProcessGroup = GlobalVariables.json.automaticProcess.processGroups[
+                    selectedProcessGroup = GlobalVariablesData.config.AutomaticProcess.processGroups[
                         ProcessGroupsListView.SelectedIndex
                     ];
                     Log.Debug("选择流程组详情: {GroupName}, UID: {Uid}, 流程数量: {ProcessCount}",
@@ -291,7 +292,7 @@ namespace NameCube.ToolBox.AutomaticProcessPages
                 return;
 
             string oldName = ProcessGroupsListView.SelectedItem.ToString();
-            var processGroup = GlobalVariables.json.automaticProcess.processGroups.FirstOrDefault(
+            var processGroup = GlobalVariablesData.config.AutomaticProcess.processGroups.FirstOrDefault(
                 pg => pg.name == oldName
             );
 
@@ -326,7 +327,7 @@ namespace NameCube.ToolBox.AutomaticProcessPages
                 {
                     string newName = textBox.Text;
                     processGroup.name = newName;
-                    GlobalVariables.SaveJson();
+                    GlobalVariablesData.SaveConfig();
                     Log.Information("成功重命名流程组: {OldName} -> {NewName}", oldName, newName);
                     RefreshList();
                 }
@@ -362,19 +363,19 @@ namespace NameCube.ToolBox.AutomaticProcessPages
             if (result == Wpf.Ui.Controls.ContentDialogResult.Primary)
             {
                 var processGroup =
-                    GlobalVariables.json.automaticProcess.processGroups.FirstOrDefault(pg =>
+                    GlobalVariablesData.config.AutomaticProcess.processGroups.FirstOrDefault(pg =>
                         pg.name == itemToDelete
                     );
 
                 if (processGroup != null)
                 {
-                    GlobalVariables.json.automaticProcess.processGroups.Remove(processGroup);
+                    GlobalVariablesData.config.AutomaticProcess.processGroups.Remove(processGroup);
                     Part3.IsEnabled = false;
                     MainFrame.Content = null;
                     ProcessKinds.Clear();
                     SaveButton.IsEnabled = false;
                     BrowseButton.IsEnabled = false;
-                    GlobalVariables.SaveJson();
+                    GlobalVariablesData.SaveConfig();
                     Log.Information("成功删除流程组: {GroupName}, UID: {Uid}",
                         itemToDelete, processGroup.uid);
                     RefreshList();
@@ -399,7 +400,7 @@ namespace NameCube.ToolBox.AutomaticProcessPages
             Log.Information("用户点击保存按钮");
             try
             {
-                int findGroup = GlobalVariables.json.automaticProcess.processGroups.IndexOf(
+                int findGroup = GlobalVariablesData.config.AutomaticProcess.processGroups.IndexOf(
                     selectedProcessGroup
                 );
                 if (findGroup != -1)
@@ -463,10 +464,10 @@ namespace NameCube.ToolBox.AutomaticProcessPages
                         }
                         selectedProcessGroup.processDatas[ProcessesListView.SelectedIndex] =
                             selectedProcessData;
-                        GlobalVariables.json.automaticProcess.processGroups[findGroup] =
+                        GlobalVariablesData.config.AutomaticProcess.processGroups[findGroup] =
                             selectedProcessGroup;
                     }
-                    GlobalVariables.SaveJson();
+                    GlobalVariablesData.SaveConfig();
                     Log.Information("成功保存流程组: {GroupName}", selectedProcessGroup.name);
                     RefreshProcessKinds(selectedProcessGroup, false, ProcessesListView.SelectedIndex);
                 }
@@ -573,7 +574,7 @@ namespace NameCube.ToolBox.AutomaticProcessPages
                         doubleData = 5,
                     };
                     selectedProcessGroup.processDatas.Add(processData);
-                    GlobalVariables.SaveJson();
+                    GlobalVariablesData.SaveConfig();
                     Log.Information("成功新建流程，状态: {State}, 等待时间: {WaitTime}",
                         ProcessState.wait, 5);
                     RefreshProcessKinds(selectedProcessGroup, true);
@@ -749,14 +750,14 @@ namespace NameCube.ToolBox.AutomaticProcessPages
             if (result == Wpf.Ui.Controls.ContentDialogResult.Primary)
             {
                 selectedProcessGroup.processDatas.RemoveAt(ProcessesListView.SelectedIndex);
-                int findGroup = GlobalVariables.json.automaticProcess.processGroups.IndexOf(
+                int findGroup = GlobalVariablesData.config.AutomaticProcess.processGroups.IndexOf(
                     selectedProcessGroup
                 );
                 if (findGroup != -1)
                 {
-                    GlobalVariables.json.automaticProcess.processGroups[findGroup] =
+                    GlobalVariablesData.config.AutomaticProcess.processGroups[findGroup] =
                         selectedProcessGroup;
-                    GlobalVariables.SaveJson();
+                    GlobalVariablesData.SaveConfig();
                     Log.Information("成功删除流程: {ProcessName}", itemToDelete);
                 }
                 MainFrame.Content = null;
@@ -775,29 +776,29 @@ namespace NameCube.ToolBox.AutomaticProcessPages
             Log.Information("用户请求向上移动流程");
             if (selectedProcessData != null)
             {
-                int findGroup = GlobalVariables.json.automaticProcess.processGroups.IndexOf(
+                int findGroup = GlobalVariablesData.config.AutomaticProcess.processGroups.IndexOf(
                     selectedProcessGroup
                 );
                 if (findGroup != -1)
                 {
-                    ProcessData lastProcessData = GlobalVariables
-                        .json
-                        .automaticProcess
+                    ProcessData lastProcessData = GlobalVariablesData
+                        .config
+                        .AutomaticProcess
                         .processGroups[findGroup]
                         .processDatas[ProcessesListView.SelectedIndex - 1];
                     string lastProcessDataName = ProcessKinds[ProcessesListView.SelectedIndex - 1];
                     int lastIndex = ProcessesListView.SelectedIndex;
-                    GlobalVariables.json.automaticProcess.processGroups[findGroup].processDatas[
+                    GlobalVariablesData.config.AutomaticProcess.processGroups[findGroup].processDatas[
                         ProcessesListView.SelectedIndex - 1
                     ] = selectedProcessData;
                     ProcessKinds[ProcessesListView.SelectedIndex - 1] =
                         ProcessesListView.SelectedItem.ToString();
-                    GlobalVariables.json.automaticProcess.processGroups[findGroup].processDatas[
+                    GlobalVariablesData.config.AutomaticProcess.processGroups[findGroup].processDatas[
                         ProcessesListView.SelectedIndex
                     ] = lastProcessData;
                     ProcessKinds[ProcessesListView.SelectedIndex] = lastProcessDataName;
                     ProcessesListView.SelectedIndex = lastIndex - 1;
-                    GlobalVariables.SaveJson();
+                    GlobalVariablesData.SaveConfig();
                     Log.Information("成功向上移动流程，从索引 {FromIndex} 移动到 {ToIndex}",
                         lastIndex, lastIndex - 1);
                 }
@@ -809,29 +810,29 @@ namespace NameCube.ToolBox.AutomaticProcessPages
             Log.Information("用户请求向下移动流程");
             if (selectedProcessData != null)
             {
-                int findGroup = GlobalVariables.json.automaticProcess.processGroups.IndexOf(
+                int findGroup = GlobalVariablesData.config.AutomaticProcess.processGroups.IndexOf(
                     selectedProcessGroup
                 );
                 if (findGroup != -1)
                 {
-                    ProcessData lastProcessData = GlobalVariables
-                        .json
-                        .automaticProcess
+                    ProcessData lastProcessData = GlobalVariablesData
+                        .config
+                        .AutomaticProcess
                         .processGroups[findGroup]
                         .processDatas[ProcessesListView.SelectedIndex + 1];
                     string lastProcessDataName = ProcessKinds[ProcessesListView.SelectedIndex + 1];
                     int lastIndex = ProcessesListView.SelectedIndex;
-                    GlobalVariables.json.automaticProcess.processGroups[findGroup].processDatas[
+                    GlobalVariablesData.config.AutomaticProcess.processGroups[findGroup].processDatas[
                         ProcessesListView.SelectedIndex + 1
                     ] = selectedProcessData;
                     ProcessKinds[ProcessesListView.SelectedIndex + 1] =
                         ProcessesListView.SelectedItem.ToString();
-                    GlobalVariables.json.automaticProcess.processGroups[findGroup].processDatas[
+                    GlobalVariablesData.config.AutomaticProcess.processGroups[findGroup].processDatas[
                         ProcessesListView.SelectedIndex
                     ] = lastProcessData;
                     ProcessKinds[ProcessesListView.SelectedIndex] = lastProcessDataName;
                     ProcessesListView.SelectedIndex = lastIndex + 1;
-                    GlobalVariables.SaveJson();
+                    GlobalVariablesData.SaveConfig();
                     Log.Information("成功向下移动流程，从索引 {FromIndex} 移动到 {ToIndex}",
                         lastIndex, lastIndex + 1);
                 }

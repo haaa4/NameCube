@@ -3,6 +3,7 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using NameCube.Function;
 using System.Windows.Media;
 using System.Windows.Threading;
 using System.Windows.Interop; // 添加这个命名空间
@@ -25,7 +26,7 @@ namespace NameCube.ToolBox.AutomaticProcessPages.ProcessPages
             Playing,
             Paused,
         }
-        string musicPath = Path.Combine(GlobalVariables.configDir, "Music");
+        string musicPath = Path.Combine(GlobalVariablesData.userDataDir, "Music");
         private PlayerState _currentState = PlayerState.Stopped;
 
         public AudioPage(string url, int waitTime, bool debug = false, bool show = true)

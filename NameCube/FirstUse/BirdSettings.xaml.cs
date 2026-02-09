@@ -35,7 +35,7 @@ namespace NameCube.FirstUse
         {
             if (CanChange)
             {
-                GlobalVariables.json.StartToDo.Ball = BallCheck.IsChecked.Value;
+                GlobalVariablesData.config.StartToDo.Ball = BallCheck.IsChecked.Value;
                 Log.Information("切换悬浮球启动状态: {BallStatus}", BallCheck.IsChecked.Value);
             }
         }
@@ -46,7 +46,7 @@ namespace NameCube.FirstUse
             {
                 string[] args = Environment.GetCommandLineArgs();
                 Log.Information("开始重启应用操作");
-                File.WriteAllText(Path.Combine(GlobalVariables.configDir, "START"), "The cake is a lie");
+                File.WriteAllText(Path.Combine(GlobalVariablesData.configDir, "START"), "The cake is a lie");
                 Log.Information("重启标记文件已写入");
                 Log.Information("程序退出，准备重启");
                 System.Windows.Application.Current.Shutdown();
@@ -78,7 +78,7 @@ namespace NameCube.FirstUse
                         Ring.Visibility = Visibility.Visible;
                         ImageIcon.Visibility = Visibility.Collapsed;
                         CopyImage(openFileDialog.FileName);
-                        GlobalVariables.json.BirdSettings.UseDefinedImage = true;
+                        GlobalVariablesData.config.BirdSettings.UseDefinedImage = true;
                         Log.Information("已切换到自定义图片模式");
                     }
                     else
@@ -96,7 +96,7 @@ namespace NameCube.FirstUse
             {
                 try
                 {
-                    string targetPath = Path.Combine(GlobalVariables.configDir, "Bird_data", "Image", "image.png");
+                    string targetPath = Path.Combine(GlobalVariablesData.userDataDir, "Bird_data", "Image", "image.png");
                     string targetDir = Path.GetDirectoryName(targetPath);
 
                     // 确保目录存在
@@ -156,7 +156,7 @@ namespace NameCube.FirstUse
             {
                 Log.Information("恢复默认图片");
                 ImageIcon.Source = new BitmapImage(new Uri("pack://application:,,,/BallPicture.png"));
-                GlobalVariables.json.BirdSettings.UseDefinedImage = false;
+                GlobalVariablesData.config.BirdSettings.UseDefinedImage = false;
                 ChangeBird();
                 Log.Information("已恢复到默认图片");
             }
@@ -167,7 +167,7 @@ namespace NameCube.FirstUse
             if (CanChange)
             {
                 int value = ABSlider.Value.ToInt32();
-                GlobalVariables.json.BirdSettings.AdsorbValue = value;
+                GlobalVariablesData.config.BirdSettings.AdsorbValue = value;
                 Log.Information("吸附值更改为: {AdsorbValue}", value);
                 ChangeBird();
             }
@@ -178,7 +178,7 @@ namespace NameCube.FirstUse
             if (CanChange)
             {
                 bool isChecked = AutoAdsorb.IsChecked.Value;
-                GlobalVariables.json.BirdSettings.AutoAbsord = isChecked;
+                GlobalVariablesData.config.BirdSettings.AutoAbsord = isChecked;
                 Log.Information("自动吸附状态更改为: {AutoAdsorb}", isChecked);
                 ChangeBird();
             }
@@ -189,7 +189,7 @@ namespace NameCube.FirstUse
             if (CanChange)
             {
                 int value = Diaphaneity.Value.ToInt32();
-                GlobalVariables.json.BirdSettings.diaphaneity = value;
+                GlobalVariablesData.config.BirdSettings.diaphaneity = value;
                 Log.Information("透明度更改为: {Diaphaneity}%", value);
                 ChangeBird();
             }
@@ -200,13 +200,13 @@ namespace NameCube.FirstUse
             try
             {
                 Log.Information("开始初始化BirdSettings控件");
-                BallCheck.IsChecked = GlobalVariables.json.StartToDo.Ball;
-                StartWayComboBox.SelectedIndex = GlobalVariables.json.BirdSettings.StartWay;
+                BallCheck.IsChecked = GlobalVariablesData.config.StartToDo.Ball;
+                StartWayComboBox.SelectedIndex = GlobalVariablesData.config.BirdSettings.StartWay;
 
-                if (GlobalVariables.json.BirdSettings.UseDefinedImage)
+                if (GlobalVariablesData.config.BirdSettings.UseDefinedImage)
                 {
                     Log.Debug("加载自定义图片");
-                    string imagePath = Path.Combine(GlobalVariables.configDir, "Bird_data", "Image", "image.png");
+                    string imagePath = Path.Combine(GlobalVariablesData.userDataDir, "Bird_data", "Image", "image.png");
 
                     if (File.Exists(imagePath))
                     {
@@ -221,7 +221,7 @@ namespace NameCube.FirstUse
                     else
                     {
                         Log.Warning("自定义图片文件不存在: {ImagePath}", imagePath);
-                        GlobalVariables.json.BirdSettings.UseDefinedImage = false;
+                        GlobalVariablesData.config.BirdSettings.UseDefinedImage = false;
                     }
                 }
                 else
@@ -229,18 +229,18 @@ namespace NameCube.FirstUse
                     Log.Debug("使用默认图片");
                 }
 
-                if (GlobalVariables.json.BirdSettings.diaphaneity == 0)
+                if (GlobalVariablesData.config.BirdSettings.diaphaneity == 0)
                 {
-                    GlobalVariables.json.BirdSettings.diaphaneity = 100;
+                    GlobalVariablesData.config.BirdSettings.diaphaneity = 100;
                     Log.Debug("修复透明度为默认值100%");
                 }
 
-                ABSlider.Value = GlobalVariables.json.BirdSettings.AdsorbValue;
-                AutoAdsorb.IsChecked = GlobalVariables.json.BirdSettings.AutoAbsord;
-                Diaphaneity.Value = GlobalVariables.json.BirdSettings.diaphaneity;
-                StartLocationWay.SelectedIndex = GlobalVariables.json.BirdSettings.StartLocationWay;
-                BallWidth.Value = GlobalVariables.json.BirdSettings.Width;
-                BallHeight.Value = GlobalVariables.json.BirdSettings.Height;
+                ABSlider.Value = GlobalVariablesData.config.BirdSettings.AdsorbValue;
+                AutoAdsorb.IsChecked = GlobalVariablesData.config.BirdSettings.AutoAbsord;
+                Diaphaneity.Value = GlobalVariablesData.config.BirdSettings.diaphaneity;
+                StartLocationWay.SelectedIndex = GlobalVariablesData.config.BirdSettings.StartLocationWay;
+                BallWidth.Value = GlobalVariablesData.config.BirdSettings.Width;
+                BallHeight.Value = GlobalVariablesData.config.BirdSettings.Height;
 
                 Log.Information("BirdSettings控件初始化完成");
             }
@@ -281,7 +281,7 @@ namespace NameCube.FirstUse
             if (CanChange)
             {
                 int selectedIndex = StartWayComboBox.SelectedIndex;
-                GlobalVariables.json.BirdSettings.StartWay = selectedIndex;
+                GlobalVariablesData.config.BirdSettings.StartWay = selectedIndex;
                 Log.Information("启动方式更改为索引: {StartWay}", selectedIndex);
             }
         }
@@ -291,7 +291,7 @@ namespace NameCube.FirstUse
             if (CanChange)
             {
                 int selectedIndex = StartLocationWay.SelectedIndex;
-                GlobalVariables.json.BirdSettings.StartLocationWay = selectedIndex;
+                GlobalVariablesData.config.BirdSettings.StartLocationWay = selectedIndex;
                 Log.Information("启动位置方式更改为索引: {StartLocationWay}", selectedIndex);
             }
         }
@@ -303,8 +303,8 @@ namespace NameCube.FirstUse
                 int width = BallWidth.Value.ToInt32();
                 int height = BallHeight.Value.ToInt32();
 
-                GlobalVariables.json.BirdSettings.Width = width;
-                GlobalVariables.json.BirdSettings.Height = height;
+                GlobalVariablesData.config.BirdSettings.Width = width;
+                GlobalVariablesData.config.BirdSettings.Height = height;
 
                 Log.Information("悬浮球尺寸更改为: {Width}x{Height}", width, height);
 

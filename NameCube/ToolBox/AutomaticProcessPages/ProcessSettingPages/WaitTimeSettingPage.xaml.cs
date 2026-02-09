@@ -12,6 +12,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
+using NameCube.GlobalVariables.DataClass;
 using System.Windows.Shapes;
 using Serilog;
 

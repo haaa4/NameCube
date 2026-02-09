@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NameCube.Function;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;

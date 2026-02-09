@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Serilog;
+using NameCube.GlobalVariables.DataClass;
 
 namespace NameCube.ToolBox.AutomaticProcessPages.ProcessSettingPages
 {

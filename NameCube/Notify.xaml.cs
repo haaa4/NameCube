@@ -9,6 +9,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
+using NameCube.Function;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -36,14 +37,14 @@ namespace NameCube
             {
                 Log.Information("初始化通知窗口");
                 InitializeComponent();
-                if (GlobalVariables.json.AllSettings.NameCubeMode == 0)
+                if (GlobalVariablesData.config.AllSettings.NameCubeMode == 0)
                 {
                     Log.Debug("悬浮球模式，初始化托盘图标");
                     InitializeTrayIcon();
                 }
 
-                VersonText.Text = GlobalVariables.Version;
-                Log.Debug("设置版本文本: {Version}", GlobalVariables.Version);
+                VersonText.Text = GlobalVariablesData.VERSION;
+                Log.Debug("设置版本文本: {Version}", GlobalVariablesData.VERSION);
 
                 if (_currentStoryboard != null)
                 {

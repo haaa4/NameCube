@@ -75,20 +75,20 @@ namespace NameCube.Setting
                             {
                                 case "0d612c12d2ac33625bf3e0351b6f5e4f73829fa8":
                                     Log.Information("开启自动流程Debug模式");
-                                    GlobalVariables.json.automaticProcess.debug = true;
-                                    GlobalVariables.SaveJson();
+                                    GlobalVariablesData.config.AutomaticProcess.debug = true;
+                                    GlobalVariablesData.SaveConfig();
                                     SnackBarFunction.ShowSnackBarInSettingWindow("自动流程Debug模式已开启", ControlAppearance.Success);
                                     break;
                                 case "c53d2f1a9a8499bcb477be56c31caa5c76ae60f5":
                                     Log.Information("开启崩溃调试模式");
-                                    GlobalVariables.json.AllSettings.debug = true;
-                                    GlobalVariables.SaveJson();
+                                    GlobalVariablesData.config.AllSettings.debug = true;
+                                    GlobalVariablesData.SaveConfig();
                                     SnackBarFunction.ShowSnackBarInSettingWindow("崩溃调试已开启", ControlAppearance.Success);
                                     break;
                                 case "7a7bc4496e501462270ce7f6f8023c96d32098d8":
                                     Log.Information("开启因子模式调试模式");
-                                    GlobalVariables.json.MemoryFactorModeSettings.debug = true;
-                                    GlobalVariables.SaveJson();
+                                    GlobalVariablesData.config.MemoryFactorModeSettings.debug = true;
+                                    GlobalVariablesData.SaveConfig();
                                     SnackBarFunction.ShowSnackBarInSettingWindow("因子模式调试已开启", ControlAppearance.Success);
                                     break;
                                 default:

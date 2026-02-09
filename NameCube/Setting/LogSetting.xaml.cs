@@ -33,14 +33,14 @@ namespace NameCube.Setting
         private void CardAction_Click(object sender, RoutedEventArgs e)
         {
             _logger.Information("打开日志文件夹");
-            Process.Start(System.IO.Path.Combine(GlobalVariables.configDir, "logs"));
+            Process.Start(System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "logs"));
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             _logger.Debug("LogSetting 开始初始化");
             canChange = false;
-            LogLevelComboBox.SelectedIndex = GlobalVariables.json.AllSettings.LogLevel;
+            LogLevelComboBox.SelectedIndex = GlobalVariablesData.config.AllSettings.LogLevel;
             canChange = true;
             _logger.Debug("LogSetting 页面加载完成");
         }
@@ -48,19 +48,19 @@ namespace NameCube.Setting
         private void LogLevelComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if(!canChange) return;
-            GlobalVariables.json.AllSettings.LogLevel=LogLevelComboBox.SelectedIndex;
+            GlobalVariablesData.config.AllSettings.LogLevel=LogLevelComboBox.SelectedIndex;
             InitializeSerilogAgain();
-            GlobalVariables.SaveJson();
-            _logger.Information("日志级别已修改：{level}",GlobalVariables.json.AllSettings.LogLevel);
+            GlobalVariablesData.SaveConfig();
+            _logger.Information("日志级别已修改：{level}",GlobalVariablesData.config.AllSettings.LogLevel);
         }
         /// <summary>
         /// 重新按照用户配置初始化Serilog日志配置
         /// </summary>
         public void InitializeSerilogAgain()
         {
-            string logDirectory = Path.Combine(GlobalVariables.configDir, "logs");
+            string logDirectory = Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "logs");
             string logFilePath = Path.Combine(logDirectory, "NameCube-.log");
-            switch (GlobalVariables.json.AllSettings.LogLevel)
+            switch (GlobalVariablesData.config.AllSettings.LogLevel)
             {
                 case 0://调试级别
                     Log.Logger = new LoggerConfiguration()

@@ -2,6 +2,7 @@
 using Microsoft.Win32;
 using System;
 using System.Diagnostics;
+using NameCube.Function;
 using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -27,10 +28,10 @@ namespace NameCube.Setting
 
             CanChange = false;
             StartCheck.IsChecked = IsStartupApplication("NameCube");
-            TopCheck.IsChecked = GlobalVariables.json.AllSettings.Top;
-            ModeCombox.SelectedIndex = GlobalVariables.json.AllSettings.NameCubeMode;
-            DisabledAnimationCheck.IsChecked = GlobalVariables.json.AllSettings.DisableTheDisplayAnimationOfTheMainWindow;
-            MaxSizeCheck.IsChecked = GlobalVariables.json.AllSettings.DefaultToMaximumSize;
+            TopCheck.IsChecked = GlobalVariablesData.config.AllSettings.Top;
+            ModeCombox.SelectedIndex = GlobalVariablesData.config.AllSettings.NameCubeMode;
+            DisabledAnimationCheck.IsChecked = GlobalVariablesData.config.AllSettings.DisableTheDisplayAnimationOfTheMainWindow;
+            MaxSizeCheck.IsChecked = GlobalVariablesData.config.AllSettings.DefaultToMaximumSize;
 
             if (MaxSizeCheck.IsChecked.Value)
             {
@@ -41,7 +42,7 @@ namespace NameCube.Setting
                 DisabledAnimationCardContorl.IsEnabled = true;
             }
 
-            if (GlobalVariables.json.AllSettings.Recommend == "None")
+            if (GlobalVariablesData.config.AllSettings.Recommend == "None")
             {
                 RecommendCheck.IsChecked = true;
             }
@@ -50,7 +51,7 @@ namespace NameCube.Setting
                 RecommendCheck.IsChecked = false;
             }
 
-            if (GlobalVariables.json.AllSettings.NameCubeMode == 1)
+            if (GlobalVariablesData.config.AllSettings.NameCubeMode == 1)
             {
                 StartActionCard.Visibility = Visibility.Collapsed;
                 TopActionCard.Visibility = Visibility.Collapsed;
@@ -135,8 +136,8 @@ namespace NameCube.Setting
         {
             if (CanChange)
             {
-                GlobalVariables.json.AllSettings.Top = TopCheck.IsChecked.Value;
-                GlobalVariables.SaveJson();
+                GlobalVariablesData.config.AllSettings.Top = TopCheck.IsChecked.Value;
+                GlobalVariablesData.SaveConfig();
                 _logger.Information("窗口置顶修改为: {Top}", TopCheck.IsChecked.Value);
             }
         }
@@ -145,8 +146,8 @@ namespace NameCube.Setting
         {
             if (CanChange)
             {
-                GlobalVariables.json.AllSettings.NameCubeMode = ModeCombox.SelectedIndex;
-                GlobalVariables.SaveJson();
+                GlobalVariablesData.config.AllSettings.NameCubeMode = ModeCombox.SelectedIndex;
+                GlobalVariablesData.SaveConfig();
                 _logger.Information("应用程序模式修改为: {Mode}，程序即将重启", ModeCombox.SelectedIndex);
                 AppFunction.Restart();
             }
@@ -241,15 +242,15 @@ namespace NameCube.Setting
             {
                 if (RecommendCheck.IsChecked.Value)
                 {
-                    GlobalVariables.json.AllSettings.Recommend = "None";
+                    GlobalVariablesData.config.AllSettings.Recommend = "None";
                     _logger.Information("推荐设置已禁用");
                 }
                 else
                 {
-                    GlobalVariables.json.AllSettings.Recommend = null;
+                    GlobalVariablesData.config.AllSettings.Recommend = null;
                     _logger.Information("推荐设置已启用");
                 }
-                GlobalVariables.SaveJson();
+                GlobalVariablesData.SaveConfig();
             }
         }
 
@@ -257,8 +258,8 @@ namespace NameCube.Setting
         {
             if (CanChange)
             {
-                GlobalVariables.json.AllSettings.DisableTheDisplayAnimationOfTheMainWindow = DisabledAnimationCheck.IsChecked.Value;
-                GlobalVariables.SaveJson();
+                GlobalVariablesData.config.AllSettings.DisableTheDisplayAnimationOfTheMainWindow = DisabledAnimationCheck.IsChecked.Value;
+                GlobalVariablesData.SaveConfig();
                 _logger.Information("主窗口显示动画修改为: {Disabled}", DisabledAnimationCheck.IsChecked.Value);
             }
         }
@@ -267,8 +268,8 @@ namespace NameCube.Setting
         {
             if (CanChange)
             {
-                GlobalVariables.json.AllSettings.DefaultToMaximumSize = MaxSizeCheck.IsChecked.Value;
-                GlobalVariables.SaveJson();
+                GlobalVariablesData.config.AllSettings.DefaultToMaximumSize = MaxSizeCheck.IsChecked.Value;
+                GlobalVariablesData.SaveConfig();
 
                 if (MaxSizeCheck.IsChecked.Value)
                 {

@@ -30,14 +30,14 @@ namespace NameCube.ToolBox
             InitializeComponent();
             _logger.Debug("语音工具箱页面初始化");
 
-            if (!GlobalVariables.json.AllSettings.SystemSpeech)
+            if (!GlobalVariablesData.config.AllSettings.SystemSpeech)
             {
                 _speechSynthesizer.SelectVoiceByHints(VoiceGender.Female, VoiceAge.Adult);
-                _speechSynthesizer.Volume = GlobalVariables.json.AllSettings.Volume;
-                _speechSynthesizer.Rate = GlobalVariables.json.AllSettings.Speed;
+                _speechSynthesizer.Volume = GlobalVariablesData.config.AllSettings.Volume;
+                _speechSynthesizer.Rate = GlobalVariablesData.config.AllSettings.Speed;
                 _logger.Debug("使用自定义语音合成器，音量: {Volume}, 语速: {Speed}",
-                    GlobalVariables.json.AllSettings.Volume,
-                    GlobalVariables.json.AllSettings.Speed);
+                    GlobalVariablesData.config.AllSettings.Volume,
+                    GlobalVariablesData.config.AllSettings.Speed);
             }
             else
             {

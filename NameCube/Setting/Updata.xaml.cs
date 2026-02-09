@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net.NetworkInformation;
 using System.Runtime.Remoting.Contexts;
 using System.Text;
+using NameCube.Function;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -44,40 +45,41 @@ namespace NameCube.Setting
         {
             InitializeComponent();
             _logger.Debug("Updata 页面初始化开始");
-
+            GlobalVariablesData.config.StartToDo.AutoUpdata = false;
+            GlobalVariablesData.SaveConfig();
             Canchange = false;
-            VersionText.Text = GlobalVariables.Version;
-            UpdataWayComboBox.SelectedIndex = GlobalVariables.json.AllSettings.UpdataGet;
-            AutoStart.IsChecked = GlobalVariables.json.StartToDo.AutoUpdata;
-            tokenText.Text = GlobalVariables.json.AllSettings.token;
+            VersionText.Text = GlobalVariablesData.VERSION;
+            UpdataWayComboBox.SelectedIndex = GlobalVariablesData.config.AllSettings.UpdataGet;
+            AutoStart.IsChecked = GlobalVariablesData.config.StartToDo.AutoUpdata;
+            tokenText.Text = GlobalVariablesData.config.AllSettings.token;
             Canchange = true;
 
-            if (GlobalVariables.json.AllSettings.UpdataTime != null)
+            if (GlobalVariablesData.config.AllSettings.UpdataTime != null)
             {
-                CheckText.Text = "上次检查时间:" + GlobalVariables.json.AllSettings.UpdataTime;
+                CheckText.Text = "上次检查时间:" + GlobalVariablesData.config.AllSettings.UpdataTime;
             }
             else
             {
                 CheckText.Text = "上次检查时间:从未检查过";
             }
 
-            if (GlobalVariables.IsBeta)
+            if (GlobalVariablesData.ISBETA)
             {
                 WarningInfo.IsOpen = true;
                 _logger.Warning("当前运行的是Beta版本");
             }
 
-            if (GlobalVariables.json.AllSettings.newVersion != null)
+            if (GlobalVariablesData.config.AllSettings.newVersion != null)
             {
-                CaseText.Text = "检测到新的版本：" + GlobalVariables.json.AllSettings.newVersion;
+                CaseText.Text = "检测到新的版本：" + GlobalVariablesData.config.AllSettings.newVersion;
                 UpkButton.IsEnabled = true;
-                _logger.Information("检测到新版本: {NewVersion}", GlobalVariables.json.AllSettings.newVersion);
+                _logger.Information("检测到新版本: {NewVersion}", GlobalVariablesData.config.AllSettings.newVersion);
             }
 
             _logger.Information("更新设置加载完成，当前版本: {Version}, 自动更新: {AutoUpdate}, 更新方式: {UpdateWay}",
-                GlobalVariables.Version,
-                GlobalVariables.json.StartToDo.AutoUpdata,
-                GlobalVariables.json.AllSettings.UpdataGet);
+                GlobalVariablesData.VERSION,
+                GlobalVariablesData.config.StartToDo.AutoUpdata,
+                GlobalVariablesData.config.AllSettings.UpdataGet);
         }
 
         bool Canchange;
@@ -92,7 +94,7 @@ namespace NameCube.Setting
             if (openFileDialog.ShowDialog() == true)
             {
                 _logger.Information("选择本地安装包: {FilePath}", openFileDialog.FileName);
-                Task.Run(() => UpdataFromThisComputer(openFileDialog.FileName, GlobalVariables.configDir));
+                Task.Run(() => UpdataFromThisComputer(openFileDialog.FileName, GlobalVariablesData.configDir));
                 CaseText.Text = "解压缩包中...";
                 NowProgressBar.IsIndeterminate = true;
                 UpkButton.IsEnabled = false;
@@ -214,7 +216,7 @@ namespace NameCube.Setting
             string GetVersion = "";
             try
             {
-                if (GlobalVariables.json.AllSettings.token == "" || GlobalVariables.json.AllSettings.token == null)
+                if (GlobalVariablesData.config.AllSettings.token == "" || GlobalVariablesData.config.AllSettings.token == null)
                 {
                     _logger.Debug("使用匿名方式检查更新");
                     GetVersion = await GithubData.GetLatestReleaseVersionAsync("haaa4", "NameCube");
@@ -222,30 +224,30 @@ namespace NameCube.Setting
                 else
                 {
                     _logger.Debug("使用Token方式检查更新");
-                    GetVersion = await GithubData.GetLatestReleaseVersionAsync("haaa4", "NameCube", GlobalVariables.json.AllSettings.token);
+                    GetVersion = await GithubData.GetLatestReleaseVersionAsync("haaa4", "NameCube", GlobalVariablesData.config.AllSettings.token);
                 }
 
-                GlobalVariables.json.AllSettings.UpdataTime = DateTime.Now.ToString("g");
+                GlobalVariablesData.config.AllSettings.UpdataTime = DateTime.Now.ToString("g");
 
-                if (GetVersion != GlobalVariables.Version)
+                if (GetVersion != GlobalVariablesData.VERSION)
                 {
                     NowProgressBar.IsIndeterminate = false;
                     NowProgressBar.Value = NowProgressBar.Maximum;
                     CaseText.Text = "检测到新的版本：" + GetVersion;
-                    GlobalVariables.json.AllSettings.newVersion = GetVersion;
-                    GlobalVariables.SaveJson();
+                    GlobalVariablesData.config.AllSettings.newVersion = GetVersion;
+                    GlobalVariablesData.SaveConfig();
                     UpkButton.IsEnabled = true;
-                    CheckText.Text = "上次检查时间:" + GlobalVariables.json.AllSettings.UpdataTime;
+                    CheckText.Text = "上次检查时间:" + GlobalVariablesData.config.AllSettings.UpdataTime;
 
-                    _logger.Information("发现新版本: {NewVersion}, 当前版本: {CurrentVersion}", GetVersion, GlobalVariables.Version);
+                    _logger.Information("发现新版本: {NewVersion}, 当前版本: {CurrentVersion}", GetVersion, GlobalVariablesData.VERSION);
                 }
                 else
                 {
-                    GlobalVariables.json.AllSettings.newVersion = null;
-                    GlobalVariables.SaveJson();
+                    GlobalVariablesData.config.AllSettings.newVersion = null;
+                    GlobalVariablesData.SaveConfig();
                     CaseText.Text = "已是最新版本";
-                    CheckText.Text = "上次检查时间:" + GlobalVariables.json.AllSettings.UpdataTime;
-                    _logger.Information("已是最新版本: {CurrentVersion}", GlobalVariables.Version);
+                    CheckText.Text = "上次检查时间:" + GlobalVariablesData.config.AllSettings.UpdataTime;
+                    _logger.Information("已是最新版本: {CurrentVersion}", GlobalVariablesData.VERSION);
                 }
 
                 NowProgressBar.IsIndeterminate = false;
@@ -293,10 +295,10 @@ namespace NameCube.Setting
 
             try
             {
-                if (File.Exists(Path.Combine(GlobalVariables.configDir, "UpdataZip.zip")))
+                if (File.Exists(Path.Combine(GlobalVariablesData.userDataDir, "UpdataZip.zip")))
                 {
                     _logger.Debug("删除旧的更新文件");
-                    File.Delete(Path.Combine(GlobalVariables.configDir, "UpdataZip.zip"));
+                    File.Delete(Path.Combine(GlobalVariablesData.userDataDir, "UpdataZip.zip"));
                 }
             }
             catch (Exception ex)
@@ -324,7 +326,7 @@ namespace NameCube.Setting
             try
             {
                 string url = $"https://github.com/haaa4/NameCube/releases/download/{Getversion}/NameCube.{Getversion}.Setup.x64.zip";
-                string filename = Path.Combine(GlobalVariables.configDir, "UpdataZip.zip");
+                string filename = Path.Combine(GlobalVariablesData.userDataDir, "UpdataZip.zip");
                 _logger.Information("开始下载更新文件: {Url}", url);
                 await DownloadFileAsync(url, filename);
                 _logger.Information("下载完成");
@@ -344,7 +346,7 @@ namespace NameCube.Setting
                 return;
             }
 
-            await Task.Run(() => UpdataFromThisComputer(Path.Combine(GlobalVariables.configDir, "UpdataZip.zip"), GlobalVariables.configDir));
+            await Task.Run(() => UpdataFromThisComputer(Path.Combine(GlobalVariablesData.userDataDir, "UpdataZip.zip"), GlobalVariablesData.userDataDir));
         }
 
         private async Task DownloadFileAsync(string url, string fileName)
@@ -394,8 +396,8 @@ namespace NameCube.Setting
         {
             if (Canchange)
             {
-                GlobalVariables.json.AllSettings.UpdataGet = UpdataWayComboBox.SelectedIndex;
-                GlobalVariables.SaveJson();
+                GlobalVariablesData.config.AllSettings.UpdataGet = UpdataWayComboBox.SelectedIndex;
+                GlobalVariablesData.SaveConfig();
                 _logger.Information("更新方式修改为: {UpdateWay}", UpdataWayComboBox.SelectedIndex);
             }
         }
@@ -404,8 +406,8 @@ namespace NameCube.Setting
         {
             if (Canchange)
             {
-                GlobalVariables.json.StartToDo.AutoUpdata = AutoStart.IsChecked.Value;
-                GlobalVariables.SaveJson();
+                GlobalVariablesData.config.StartToDo.AutoUpdata = AutoStart.IsChecked.Value;
+                GlobalVariablesData.SaveConfig();
                 _logger.Information("自动更新修改为: {AutoUpdate}", AutoStart.IsChecked.Value);
             }
         }
@@ -414,16 +416,22 @@ namespace NameCube.Setting
         {
             if (Canchange)
             {
-                GlobalVariables.json.AllSettings.token = tokenText.Text;
-                GlobalVariables.SaveJson();
+                GlobalVariablesData.config.AllSettings.token = tokenText.Text;
+                GlobalVariablesData.SaveConfig();
                 _logger.Debug("GitHub Token已更新");
             }
         }
 
         private async void UpkButton_Click(object sender, RoutedEventArgs e)
         {
-            _logger.Information("用户点击更新按钮，开始更新到版本: {Version}", GlobalVariables.json.AllSettings.newVersion);
-            await Task.Run(() => UpdataFromGithubAsync(GlobalVariables.json.AllSettings.newVersion));
+            _logger.Information("用户点击更新按钮，开始更新到版本: {Version}", GlobalVariablesData.config.AllSettings.newVersion);
+            await Task.Run(() => UpdataFromGithubAsync(GlobalVariablesData.config.AllSettings.newVersion));
+        }
+
+
+        private void HyperlinkButton_Click_1(object sender, RoutedEventArgs e)
+        {
+            Process.Start("https://github.com/haaa4/NameCube/releases");
         }
     }
 }

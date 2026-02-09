@@ -49,12 +49,12 @@ namespace NameCube.Mode
 
                 this.Dispatcher.Invoke(new Action(() =>
                 {
-                    NowNumberText.Text = GlobalVariables.json.PrepareModeSetting.Name[now];
-                    Ready1.Text = GlobalVariables.json.AllSettings.Name[Random.StrictNext(GlobalVariables.json.AllSettings.Name.Count)];
-                    Ready2.Text = GlobalVariables.json.AllSettings.Name[Random.StrictNext(GlobalVariables.json.AllSettings.Name.Count)];
-                    Ready3.Text = GlobalVariables.json.AllSettings.Name[Random.StrictNext(GlobalVariables.json.AllSettings.Name.Count)];
-                    Ready4.Text = GlobalVariables.json.AllSettings.Name[Random.StrictNext(GlobalVariables.json.AllSettings.Name.Count)];
-                    Ready5.Text = GlobalVariables.json.AllSettings.Name[Random.StrictNext(GlobalVariables.json.AllSettings.Name.Count)];
+                    NowNumberText.Text = GlobalVariablesData.config.PrepareModeSetting.Name[now];
+                    Ready1.Text = GlobalVariablesData.config.AllSettings.Name[Random.StrictNext(GlobalVariablesData.config.AllSettings.Name.Count)];
+                    Ready2.Text = GlobalVariablesData.config.AllSettings.Name[Random.StrictNext(GlobalVariablesData.config.AllSettings.Name.Count)];
+                    Ready3.Text = GlobalVariablesData.config.AllSettings.Name[Random.StrictNext(GlobalVariablesData.config.AllSettings.Name.Count)];
+                    Ready4.Text = GlobalVariablesData.config.AllSettings.Name[Random.StrictNext(GlobalVariablesData.config.AllSettings.Name.Count)];
+                    Ready5.Text = GlobalVariablesData.config.AllSettings.Name[Random.StrictNext(GlobalVariablesData.config.AllSettings.Name.Count)];
                 }));
 
                 Log.Verbose("预备模式轮播，当前索引: {Index}", now);
@@ -71,8 +71,8 @@ namespace NameCube.Mode
             {
                 bool newValue = SpeakCheck.IsChecked.Value;
                 Log.Debug("语音播报开关: {Value}", newValue);
-                GlobalVariables.json.PrepareModeSetting.Speak = newValue;
-                GlobalVariables.SaveJson();
+                GlobalVariablesData.config.PrepareModeSetting.Speak = newValue;
+                GlobalVariablesData.SaveConfig();
             }
         }
 
@@ -80,6 +80,8 @@ namespace NameCube.Mode
         {
             try
             {
+                var flicker = FindResource("flicker") as Storyboard;
+                flicker.Begin();
                 _speechSynthesizer.SpeakAsyncCancelAll();
                 StartButton.IsEnabled = false;
                 var jumpStoryBoard = FindResource("JumpStoryBoard") as Storyboard;
@@ -87,21 +89,21 @@ namespace NameCube.Mode
                 if (StartButton.Content.ToString() == "开始")
                 {
                     Log.Information("开始预备模式");
-                    timer.Interval = GlobalVariables.json.PrepareModeSetting.Speed;
+                    timer.Interval = GlobalVariablesData.config.PrepareModeSetting.Speed;
 
                     // 显示预备名字
-                    BeforeReady1.Text = "(" + GlobalVariables.json.PrepareModeSetting.Name[0] + ")";
-                    BeforeReady2.Text = "(" + GlobalVariables.json.PrepareModeSetting.Name[1] + ")";
-                    BeforeReady3.Text = "(" + GlobalVariables.json.PrepareModeSetting.Name[2] + ")";
-                    BeforeReady4.Text = "(" + GlobalVariables.json.PrepareModeSetting.Name[3] + ")";
-                    BeforeReady5.Text = "(" + GlobalVariables.json.PrepareModeSetting.Name[4] + ")";
+                    BeforeReady1.Text = "(" + GlobalVariablesData.config.PrepareModeSetting.Name[0] + ")";
+                    BeforeReady2.Text = "(" + GlobalVariablesData.config.PrepareModeSetting.Name[1] + ")";
+                    BeforeReady3.Text = "(" + GlobalVariablesData.config.PrepareModeSetting.Name[2] + ")";
+                    BeforeReady4.Text = "(" + GlobalVariablesData.config.PrepareModeSetting.Name[3] + ")";
+                    BeforeReady5.Text = "(" + GlobalVariablesData.config.PrepareModeSetting.Name[4] + ")";
 
                     Log.Debug("预备名单: {Name1}, {Name2}, {Name3}, {Name4}, {Name5}",
-                        GlobalVariables.json.PrepareModeSetting.Name[0],
-                        GlobalVariables.json.PrepareModeSetting.Name[1],
-                        GlobalVariables.json.PrepareModeSetting.Name[2],
-                        GlobalVariables.json.PrepareModeSetting.Name[3],
-                        GlobalVariables.json.PrepareModeSetting.Name[4]);
+                        GlobalVariablesData.config.PrepareModeSetting.Name[0],
+                        GlobalVariablesData.config.PrepareModeSetting.Name[1],
+                        GlobalVariablesData.config.PrepareModeSetting.Name[2],
+                        GlobalVariablesData.config.PrepareModeSetting.Name[3],
+                        GlobalVariablesData.config.PrepareModeSetting.Name[4]);
 
                     BeforeReady1.Visibility = Visibility.Visible;
                     BeforeReady2.Visibility = Visibility.Visible;
@@ -160,10 +162,10 @@ namespace NameCube.Mode
                     FinishReady4.Visibility = Visibility.Visible;
                     FinishReady5.Visibility = Visibility.Visible;
 
-                    GlobalVariables.json.PrepareModeSetting.Name = new List<string> { get1, get2, get3, get4, get5 };
-                    GlobalVariables.json.PrepareModeSetting.LastName = get;
+                    GlobalVariablesData.config.PrepareModeSetting.Name = new List<string> { get1, get2, get3, get4, get5 };
+                    GlobalVariablesData.config.PrepareModeSetting.LastName = get;
 
-                    if (GlobalVariables.json.PrepareModeSetting.Speak)
+                    if (GlobalVariablesData.config.PrepareModeSetting.Speak)
                     {
                         Log.Debug("语音播报结果: {Name}", get);
                         _speechSynthesizer.SpeakAsync(get);
@@ -188,84 +190,84 @@ namespace NameCube.Mode
                 Log.Debug("PrepareMode页面加载");
 
                 CanChange = false;
-                SpeakCheck.IsChecked = GlobalVariables.json.PrepareModeSetting.Speak;
+                SpeakCheck.IsChecked = GlobalVariablesData.config.PrepareModeSetting.Speak;
                 CanChange = true;
                 timer.Elapsed += Timer_Elapsed;
 
-                if (GlobalVariables.json.PrepareModeSetting.Speed == 0)
+                if (GlobalVariablesData.config.PrepareModeSetting.Speed == 0)
                 {
                     Log.Debug("重置速度为默认值20");
-                    GlobalVariables.json.PrepareModeSetting.Speed = 20;
+                    GlobalVariablesData.config.PrepareModeSetting.Speed = 20;
                 }
 
-                if (!GlobalVariables.json.AllSettings.SystemSpeech)
+                if (!GlobalVariablesData.config.AllSettings.SystemSpeech)
                 {
                     _speechSynthesizer.SelectVoiceByHints(VoiceGender.Female, VoiceAge.Adult);
-                    _speechSynthesizer.Volume = GlobalVariables.json.AllSettings.Volume;
-                    _speechSynthesizer.Rate = GlobalVariables.json.AllSettings.Speed;
+                    _speechSynthesizer.Volume = GlobalVariablesData.config.AllSettings.Volume;
+                    _speechSynthesizer.Rate = GlobalVariablesData.config.AllSettings.Speed;
                     Log.Debug("配置语音合成器: 性别=Female, 音量={Volume}, 语速={Speed}",
-                        GlobalVariables.json.AllSettings.Volume,
-                        GlobalVariables.json.AllSettings.Speed);
+                        GlobalVariablesData.config.AllSettings.Volume,
+                        GlobalVariablesData.config.AllSettings.Speed);
                 }
 
-                if (GlobalVariables.json.PrepareModeSetting.Locked)
+                if (GlobalVariablesData.config.PrepareModeSetting.Locked)
                 {
                     Log.Debug("页面设置为锁定状态");
                     SpeakCheck.IsEnabled = false;
                 }
 
-                if (GlobalVariables.json.PrepareModeSetting.Name == null || GlobalVariables.json.PrepareModeSetting.Name.Count == 0)
+                if (GlobalVariablesData.config.PrepareModeSetting.Name == null || GlobalVariablesData.config.PrepareModeSetting.Name.Count == 0)
                 {
                     Log.Information("初始化预备名单");
-                    GlobalVariables.json.PrepareModeSetting.Name = new List<string>();
+                    GlobalVariablesData.config.PrepareModeSetting.Name = new List<string>();
                     Random random = new Random();
 
                     for (int i = 1; i <= 5; i++)
                     {
-                        string name = GlobalVariables.json.AllSettings.Name[random.StrictNext(GlobalVariables.json.AllSettings.Name.Count)];
-                        GlobalVariables.json.PrepareModeSetting.Name.Add(name);
+                        string name = GlobalVariablesData.config.AllSettings.Name[random.StrictNext(GlobalVariablesData.config.AllSettings.Name.Count)];
+                        GlobalVariablesData.config.PrepareModeSetting.Name.Add(name);
                         Log.Debug("添加预备名单 {Index}: {Name}", i, name);
                     }
 
-                    GlobalVariables.SaveJson();
+                    GlobalVariablesData.SaveConfig();
                 }
 
-                if (GlobalVariables.json.PrepareModeSetting.LastName != null)
+                if (GlobalVariablesData.config.PrepareModeSetting.LastName != null)
                 {
-                    NowNumberText.Text = GlobalVariables.json.PrepareModeSetting.LastName;
-                    Log.Debug("设置上次抽取结果: {LastName}", GlobalVariables.json.PrepareModeSetting.LastName);
+                    NowNumberText.Text = GlobalVariablesData.config.PrepareModeSetting.LastName;
+                    Log.Debug("设置上次抽取结果: {LastName}", GlobalVariablesData.config.PrepareModeSetting.LastName);
                 }
 
-                Ready1.Text = GlobalVariables.json.PrepareModeSetting.Name[0];
-                Ready2.Text = GlobalVariables.json.PrepareModeSetting.Name[1];
-                Ready3.Text = GlobalVariables.json.PrepareModeSetting.Name[2];
-                Ready4.Text = GlobalVariables.json.PrepareModeSetting.Name[3];
-                Ready5.Text = GlobalVariables.json.PrepareModeSetting.Name[4];
+                Ready1.Text = GlobalVariablesData.config.PrepareModeSetting.Name[0];
+                Ready2.Text = GlobalVariablesData.config.PrepareModeSetting.Name[1];
+                Ready3.Text = GlobalVariablesData.config.PrepareModeSetting.Name[2];
+                Ready4.Text = GlobalVariablesData.config.PrepareModeSetting.Name[3];
+                Ready5.Text = GlobalVariablesData.config.PrepareModeSetting.Name[4];
 
-                NowNumberText.Foreground = GlobalVariables.json.AllSettings.color;
-                FinishText.Foreground = GlobalVariables.json.AllSettings.color;
-                Ready1.Foreground = GlobalVariables.json.AllSettings.color;
-                Ready2.Foreground = GlobalVariables.json.AllSettings.color;
-                Ready3.Foreground = GlobalVariables.json.AllSettings.color;
-                Ready4.Foreground = GlobalVariables.json.AllSettings.color;
-                Ready5.Foreground = GlobalVariables.json.AllSettings.color;
-                FinishReady1.Foreground = GlobalVariables.json.AllSettings.color;
-                FinishReady2.Foreground = GlobalVariables.json.AllSettings.color;
-                FinishReady3.Foreground = GlobalVariables.json.AllSettings.color;
-                FinishReady4.Foreground = GlobalVariables.json.AllSettings.color;
-                FinishReady5.Foreground = GlobalVariables.json.AllSettings.color;
-                NowNumberText.FontFamily = GlobalVariables.json.AllSettings.Font;
-                FinishText.FontFamily = GlobalVariables.json.AllSettings.Font;
-                Ready1.FontFamily = GlobalVariables.json.AllSettings.Font;
-                Ready2.FontFamily = GlobalVariables.json.AllSettings.Font;
-                Ready3.FontFamily = GlobalVariables.json.AllSettings.Font;
-                Ready4.FontFamily = GlobalVariables.json.AllSettings.Font;
-                Ready5.FontFamily = GlobalVariables.json.AllSettings.Font;
-                FinishReady1.FontFamily = GlobalVariables.json.AllSettings.Font;
-                FinishReady2.FontFamily = GlobalVariables.json.AllSettings.Font;
-                FinishReady3.FontFamily = GlobalVariables.json.AllSettings.Font;
-                FinishReady4.FontFamily = GlobalVariables.json.AllSettings.Font;
-                FinishReady5.FontFamily = GlobalVariables.json.AllSettings.Font;
+                NowNumberText.Foreground = GlobalVariablesData.config.AllSettings.color;
+                FinishText.Foreground = GlobalVariablesData.config.AllSettings.color;
+                Ready1.Foreground = GlobalVariablesData.config.AllSettings.color;
+                Ready2.Foreground = GlobalVariablesData.config.AllSettings.color;
+                Ready3.Foreground = GlobalVariablesData.config.AllSettings.color;
+                Ready4.Foreground = GlobalVariablesData.config.AllSettings.color;
+                Ready5.Foreground = GlobalVariablesData.config.AllSettings.color;
+                FinishReady1.Foreground = GlobalVariablesData.config.AllSettings.color;
+                FinishReady2.Foreground = GlobalVariablesData.config.AllSettings.color;
+                FinishReady3.Foreground = GlobalVariablesData.config.AllSettings.color;
+                FinishReady4.Foreground = GlobalVariablesData.config.AllSettings.color;
+                FinishReady5.Foreground = GlobalVariablesData.config.AllSettings.color;
+                //NowNumberText.FontFamily = GlobalVariablesData.config.AllSettings.Font;
+                //FinishText.FontFamily = GlobalVariablesData.config.AllSettings.Font;
+                //Ready1.FontFamily = GlobalVariablesData.config.AllSettings.Font;
+                //Ready2.FontFamily = GlobalVariablesData.config.AllSettings.Font;
+                //Ready3.FontFamily = GlobalVariablesData.config.AllSettings.Font;
+                //Ready4.FontFamily = GlobalVariablesData.config.AllSettings.Font;
+                //Ready5.FontFamily = GlobalVariablesData.config.AllSettings.Font;
+                //FinishReady1.FontFamily = GlobalVariablesData.config.AllSettings.Font;
+                //FinishReady2.FontFamily = GlobalVariablesData.config.AllSettings.Font;
+                //FinishReady3.FontFamily = GlobalVariablesData.config.AllSettings.Font;
+                //FinishReady4.FontFamily = GlobalVariablesData.config.AllSettings.Font;
+                //FinishReady5.FontFamily = GlobalVariablesData.config.AllSettings.Font;
 
                 Log.Information("PrepareMode页面加载完成，预备名单已设置");
             }

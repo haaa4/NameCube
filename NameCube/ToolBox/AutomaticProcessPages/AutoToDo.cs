@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using Serilog;
+using NameCube.GlobalVariables.DataClass;
 
 namespace NameCube.ToolBox.AutomaticProcessPages
 {
@@ -31,17 +32,17 @@ namespace NameCube.ToolBox.AutomaticProcessPages
                     int hour = DateTime.Now.Hour, minute = DateTime.Now.Minute, second = DateTime.Now.Second;
                     int index = TimeToIndex(hour, minute, second);
 
-                    if (GlobalVariables.json.automaticProcess.processesSchedule.ContainsKey(index)
-                        && GlobalVariables.json.automaticProcess.processesSchedule[index].Count > 0)
+                    if (GlobalVariablesData.config.AutomaticProcess.processesSchedule.ContainsKey(index)
+                        && GlobalVariablesData.config.AutomaticProcess.processesSchedule[index].Count > 0)
                     {
                         Log.Information("检测到当前时间 {Hour:00}:{Minute:00}:{Second:00} 有 {Count} 个流程组需要执行",
-                            hour, minute, second, GlobalVariables.json.automaticProcess.processesSchedule[index].Count);
+                            hour, minute, second, GlobalVariablesData.config.AutomaticProcess.processesSchedule[index].Count);
 
-                        for (int i = 0; i < GlobalVariables.json.automaticProcess.processesSchedule[index].Count; i++)
+                        for (int i = 0; i < GlobalVariablesData.config.AutomaticProcess.processesSchedule[index].Count; i++)
                         {
                             Application.Current.Dispatcher.Invoke(() =>
                             {
-                                RunProcessesGroup(GlobalVariables.json.automaticProcess.processesSchedule[index][i]);
+                                RunProcessesGroup(GlobalVariablesData.config.AutomaticProcess.processesSchedule[index][i]);
                             });
                         }
                     }

@@ -8,6 +8,7 @@
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     Title="Speech"
     d:DesignHeight="450"
+    FontFamily="{StaticResource AppFont}"
     d:DesignWidth="800"
     mc:Ignorable="d">
 

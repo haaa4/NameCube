@@ -10,6 +10,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using NameCube.Function;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Serilog;

@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using NameCube.Function;
 using System.Configuration.Internal;
 using System.IO;
 using System.Linq;
@@ -81,28 +82,28 @@ namespace NameCube.Mode
         /// </summary>
         public ObservableCollection<ThisModeJson> thisModeJson { get; set; } =
             new ObservableCollection<ThisModeJson>();
-        public MemoryFactorModeSettingsJson memoryFactorModeSettingsJson= new MemoryFactorModeSettingsJson();
+        public MemoryFactorModeSettingsJson memoryFactorModeSettingsJson = new MemoryFactorModeSettingsJson();
         public System.Timers.Timer timer = new System.Timers.Timer();
         public SpeechSynthesizer _speechSynthesizer = new SpeechSynthesizer();
         public bool IsCanStop = false;
         public List<string> Trainings { get; set; } = new List<string>();
-        public List<int> incident=new List<int>();
+        public List<int> incident = new List<int>();
 
         public MemoryFactorMode()
         {
             InitializeComponent();
             DataContext = this;
 
-            if (GlobalVariables.json.MemoryFactorModeSettings.probabilityOfHappening == null || GlobalVariables.json.MemoryFactorModeSettings.probabilityOfHappening.Count < 10)
+            if (GlobalVariablesData.config.MemoryFactorModeSettings.probabilityOfHappening == null || GlobalVariablesData.config.MemoryFactorModeSettings.probabilityOfHappening.Count < 10)
             {
                 Log.Debug("初始化事件概率分布");
-                GlobalVariables.json.MemoryFactorModeSettings.probabilityOfHappening = new List<int> { 4, 2, 3, 4, 2, 2, 3, 1, 1, 2 };
+                GlobalVariablesData.config.MemoryFactorModeSettings.probabilityOfHappening = new List<int> { 4, 2, 3, 4, 2, 2, 3, 1, 1, 2 };
             }
 
             // 填充事件列表
             for (int i = 0; i <= 9; i++)
             {
-                for (int ii = 1; ii <= GlobalVariables.json.MemoryFactorModeSettings.probabilityOfHappening[i]; ii++)
+                for (int ii = 1; ii <= GlobalVariablesData.config.MemoryFactorModeSettings.probabilityOfHappening[i]; ii++)
                 {
                     incident.Add(i);
                 }
@@ -117,16 +118,16 @@ namespace NameCube.Mode
             {
                 Log.Debug("开始加载记忆因子数据");
                 string FilePath = System.IO.Path.Combine(
-                    GlobalVariables.configDir,
+                    GlobalVariablesData.userDataDir,
                     "Mode_data",
                     "MemoryFactoryMode"
                 );
 
                 if (!File.Exists(Path.Combine(FilePath, "Memory.json")))
                 {
-                    if (GlobalVariables.json.AllSettings.Name.Count <= 9)
+                    if (GlobalVariablesData.config.AllSettings.Name.Count <= 9)
                     {
-                        Log.Warning("学生名单数量不足: {Count} <= 9", GlobalVariables.json.AllSettings.Name.Count);
+                        Log.Warning("学生名单数量不足: {Count} <= 9", GlobalVariablesData.config.AllSettings.Name.Count);
                         this.Dispatcher.Invoke(
                             new Action(() =>
                             {
@@ -141,10 +142,10 @@ namespace NameCube.Mode
                         return;
                     }
 
-                    Log.Information("初始化新的记忆因子数据，学生数量: {Count}", GlobalVariables.json.AllSettings.Name.Count);
+                    Log.Information("初始化新的记忆因子数据，学生数量: {Count}", GlobalVariablesData.config.AllSettings.Name.Count);
 
                     thisModeJson.Clear();
-                    foreach (var name in GlobalVariables.json.AllSettings.Name)
+                    foreach (var name in GlobalVariablesData.config.AllSettings.Name)
                     {
                         thisModeJson.Add(new ThisModeJson { Name = name, Factor = 1 });
                     }
@@ -282,7 +283,7 @@ namespace NameCube.Mode
             {
                 Log.Information("保存记忆因子设置");
                 string configPath = Path.Combine(
-                    GlobalVariables.configDir,
+                    GlobalVariablesData.userDataDir,
                     "Mode_data",
                     "MemoryFactoryMode",
                     "Memory.json"
@@ -308,436 +309,442 @@ namespace NameCube.Mode
         {
             try
             {
+                var flicker = FindResource("flicker") as Storyboard;
+                flicker.Begin();
                 Log.Information("开始记忆因子抽取");
                 StartButton.IsEnabled = false;
                 _speechSynthesizer.SpeakAsyncCancelAll();
-                FinishNumberText.Foreground = GlobalVariables.json.AllSettings.color;
+                FinishNumberText.Foreground = GlobalVariablesData.config.AllSettings.color;
                 var jumpStoryBoard = FindResource("JumpStoryBoard") as Storyboard;
-                
+
                 if (StartButton.Content.ToString() == "开始")
                 {
-                   FinishNumberText.Visibility = Visibility.Hidden;
-NowNumberText.Visibility = Visibility.Visible;
-StartButton.Content = "结束";
-timer.Interval = GlobalVariables.json.MemoryFactorModeSettings.Speed;
-jumpStoryBoard.Begin();
-timer.Start();
-StartButton.IsEnabled = true;
+                    FinishNumberText.Visibility = Visibility.Hidden;
+                    NowNumberText.Visibility = Visibility.Visible;
+                    StartButton.Content = "结束";
+                    timer.Interval = GlobalVariablesData.config.MemoryFactorModeSettings.Speed;
+                    jumpStoryBoard.Begin();
+                    timer.Start();
+                    StartButton.IsEnabled = true;
                     Log.Debug("记忆因子开始轮播");
                 }
                 else
                 {
                     StartButton.Content = "开始";
-timer.Stop();
-List<ThisModeJson> lastThisModeJsons = new List<ThisModeJson>();
-for (int i = 0; i < thisModeJson.Count; i++)
-{
-    lastThisModeJsons.Add(
-        new ThisModeJson
-        {
-            Name = thisModeJson[i].Name,
-            Factor = thisModeJson[i].Factor,
-        }
-    );
-}
-jumpStoryBoard.Stop();
-jumpStoryBoard.Remove();
-Random random = new Random();
-IsCanStop = true;
-string SpecialOutcome = null;
-string NowNumberTextValue = NowNumberText.Text;
-if (memoryFactorModeSettingsJson.otherSettings.MaxTimes >= 10)
-{
-    int get = random.StrictNext(100);
-    if (get <= (memoryFactorModeSettingsJson.otherSettings.MaxTimes - 9) * 25)
-    {
-        NowNumberTextValue = memoryFactorModeSettingsJson.otherSettings.MaxName;
-        SpecialOutcome="保底";
-    }
-}
-if(memoryFactorModeSettingsJson.otherSettings.DeterminedByFate&&SpecialOutcome==null)
-{
-    int get=random.StrictNext(7);
-    if(get==0)
-    {
-        NowNumberTextValue=No1Name.Text;
-    }
-    else if(get==1)
-    {
-        NowNumberTextValue = No2Name.Text;
-    }
-    else if(get==2)
-    {
-        NowNumberTextValue= No3Name.Text;
-    }
-    else if(get==3)
-    {
-        NowNumberTextValue= No4Name.Text;
-    }
-    else if(get==4)
-    {
-        NowNumberTextValue= No5Name.Text;
-    }
-    else if(get==5)
-    {
-        NowNumberTextValue= No6Name.Text;
-    }
-    SpecialOutcome="命定";
-    memoryFactorModeSettingsJson.otherSettings.DeterminedByFate = false;
-}
-    FinishNumberText.Text = NowNumberTextValue;
-NowNumberText.Visibility = Visibility.Hidden;
-FinishNumberText.Visibility = Visibility.Visible;
-int
-    GetRandom,
-    lastfactor=-1;
-for (int i = 0; i < thisModeJson.Count; i++)
-{
-    GetRandom = random.StrictNext(6);
-    thisModeJson[i].Factor += GetRandom;
-    for (int j = 1; j <= GetRandom; j++)
-    {
-        Trainings.Add(thisModeJson[i].Name);
-    }
-    if (thisModeJson[i].Name == NowNumberTextValue)
-    {
-        lastfactor = thisModeJson[i].Factor;
-        thisModeJson[i].Factor = 0;
-    }
-}
+                    timer.Stop();
+                    List<ThisModeJson> lastThisModeJsons = new List<ThisModeJson>();
+                    for (int i = 0; i < thisModeJson.Count; i++)
+                    {
+                        lastThisModeJsons.Add(
+                            new ThisModeJson
+                            {
+                                Name = thisModeJson[i].Name,
+                                Factor = thisModeJson[i].Factor,
+                            }
+                        );
+                    }
+                    jumpStoryBoard.Stop();
+                    jumpStoryBoard.Remove();
+                    Random random = new Random();
+                    IsCanStop = true;
+                    string SpecialOutcome = null;
+                    string NowNumberTextValue = NowNumberText.Text;
+                    if (memoryFactorModeSettingsJson.otherSettings.MaxTimes >= 10)
+                    {
+                        int get = random.StrictNext(100);
+                        if (get <= (memoryFactorModeSettingsJson.otherSettings.MaxTimes - 9) * 25)
+                        {
+                            NowNumberTextValue = memoryFactorModeSettingsJson.otherSettings.MaxName;
+                            SpecialOutcome = "保底";
+                        }
+                    }
+                    if (memoryFactorModeSettingsJson.otherSettings.DeterminedByFate && SpecialOutcome == null)
+                    {
+                        int get = random.StrictNext(7);
+                        if (get == 0)
+                        {
+                            NowNumberTextValue = No1Name.Text;
+                        }
+                        else if (get == 1)
+                        {
+                            NowNumberTextValue = No2Name.Text;
+                        }
+                        else if (get == 2)
+                        {
+                            NowNumberTextValue = No3Name.Text;
+                        }
+                        else if (get == 3)
+                        {
+                            NowNumberTextValue = No4Name.Text;
+                        }
+                        else if (get == 4)
+                        {
+                            NowNumberTextValue = No5Name.Text;
+                        }
+                        else if (get == 5)
+                        {
+                            NowNumberTextValue = No6Name.Text;
+                        }
+                        SpecialOutcome = "命定";
+                        memoryFactorModeSettingsJson.otherSettings.DeterminedByFate = false;
+                    }
+                    FinishNumberText.Text = NowNumberTextValue;
+                    NowNumberText.Visibility = Visibility.Hidden;
+                    FinishNumberText.Visibility = Visibility.Visible;
+                    int
+                        GetRandom,
+                        lastfactor = -1;
+                    for (int i = 0; i < thisModeJson.Count; i++)
+                    {
+                        GetRandom = random.StrictNext(6);
+                        thisModeJson[i].Factor += GetRandom;
+                        for (int j = 1; j <= GetRandom; j++)
+                        {
+                            Trainings.Add(thisModeJson[i].Name);
+                        }
+                        if (thisModeJson[i].Name == NowNumberTextValue)
+                        {
+                            lastfactor = thisModeJson[i].Factor;
+                            thisModeJson[i].Factor = 0;
+                        }
+                    }
 
-Trainings.RemoveAll(s => s == NowNumberTextValue);
-//这里插入事件,以下是原来的双倍旧代码
-//GetRandom = random.StrictNext(thisModeJson.Count);
-//int Past = thisModeJson[GetRandom].Factor;
-//for (int i = 1; i <= thisModeJson[GetRandom].Factor; i++)
-//{
-//    Trainings.Add(thisModeJson[GetRandom].Name);
-//}
-//thisModeJson[GetRandom].Factor *= 2;
-//UpName.Text = thisModeJson[GetRandom].Name;
-//UpFactor.Text = Past.ToString() + "→" + thisModeJson[GetRandom].Factor.ToString();
-//if (thisModeJson[GetRandom].Factor - Past >= 120)
-//{
-//    ShowStoryBoard("TwoChangeRed");
-//}
-//else if (thisModeJson[GetRandom].Factor - Past >= 70)
-//{
-//    ShowStoryBoard("TwoChangeOrange");
-//}
-//UpRealProbability.Text =
-//    (
-//        Math.Round(
-//            (double)thisModeJson[GetRandom].Factor / Trainings.Count * 100,
-//            2
-//        )
-//    ).ToString() + "%";
-//if (thisModeJson[GetRandom].Factor > max)
-//{
-//    MaxIndex = GetRandom;
-//}
-DoubleMorePart.Visibility = Visibility.Collapsed;
-ExchangePart.Visibility = Visibility.Collapsed;
-GetFactorFromOtherPart.Visibility = Visibility.Collapsed;
-FloorAddPart.Visibility = Visibility.Collapsed;
-SkipPart.Visibility= Visibility.Collapsed;
-DeterminedByFatePart.Visibility= Visibility.Collapsed;
-int getIncident = incident[random.StrictNext(incident.Count)];
-if(getIncident==0)
-{
-    //二倍事件
-    int getRandomIndex=random.StrictNext(thisModeJson.Count);
-    int past = thisModeJson[getRandomIndex].Factor;
-    int newFactor = (int)(thisModeJson[getRandomIndex].Factor * 2);
-    thisModeJson[getRandomIndex].Factor = newFactor;
-    SetFactor(thisModeJson[getRandomIndex].Name, newFactor);
-    DoubleName.Text= thisModeJson[getRandomIndex].Name;
-    DoublePast.Text= past.ToString();
-    DoubleAdd.Text = "X2";
-    DoubleNow.Text= newFactor.ToString();
-    incidentName.Text="二倍事件";
-    DoubleMorePart.Visibility = Visibility.Visible;
-}
-else if (getIncident == 1)
-{
-    //三倍事件
-    int getRandomIndex = random.StrictNext(thisModeJson.Count);
-    int past = thisModeJson[getRandomIndex].Factor;
-    int newFactor = (int)(thisModeJson[getRandomIndex].Factor * 3);
-    thisModeJson[getRandomIndex].Factor = newFactor;
-    SetFactor(thisModeJson[getRandomIndex].Name, newFactor);
-    DoubleName.Text = thisModeJson[getRandomIndex].Name;
-    DoublePast.Text = past.ToString();
-    DoubleAdd.Text = "X3";
-    DoubleNow.Text = newFactor.ToString();
-    incidentName.Text = "三倍事件";
-    DoubleMorePart.Visibility = Visibility.Visible;
-}
-else if (getIncident == 2)
-{
-    //减半事件
-    int getRandomIndex = random.StrictNext(thisModeJson.Count);
-    int past = thisModeJson[getRandomIndex].Factor;
-    int newFactor = (int)(thisModeJson[getRandomIndex].Factor /2);
-    thisModeJson[getRandomIndex].Factor = newFactor;
-    SetFactor(thisModeJson[getRandomIndex].Name, newFactor);
-    DoubleName.Text = thisModeJson[getRandomIndex].Name;
-    DoublePast.Text = past.ToString();
-    DoubleAdd.Text = "X0.5";
-    DoubleNow.Text = newFactor.ToString();
-    incidentName.Text = "减半事件";
-    DoubleMorePart.Visibility = Visibility.Visible;
-}
-else if(getIncident == 3)
-{
-    //交换事件
-    int getRandomIndex1 = random.StrictNext(thisModeJson.Count);
-    int getRandomIndex2 = random.StrictNext(thisModeJson.Count);
-    string name1 = thisModeJson[getRandomIndex1].Name,
-        name2= thisModeJson[getRandomIndex2].Name;
-    int factor1 = thisModeJson[getRandomIndex1].Factor,
-        factor2 = thisModeJson[getRandomIndex2].Factor;
-    SetFactor(name1, factor2);
-    thisModeJson[getRandomIndex1].Factor = factor2;
-    SetFactor(name2, factor1);
-    thisModeJson[getRandomIndex2].Factor = factor1;
-    ExchangeLeftName.Text = name1;
-    ExchangeLeftFactor.Text = factor1.ToString();
-    ExchangeRightName.Text = name2;
-    ExchangeRightFactor.Text = factor2.ToString();
-    incidentName.Text = "交换事件";
-    ExchangePart.Visibility = Visibility.Visible;
-}
-else if(getIncident == 4)
-{
-    //复制事件
-    int getRandomIndex1 = random.StrictNext(thisModeJson.Count),
-    getRandomIndex2 = random.StrictNext(thisModeJson.Count);
-    int past = thisModeJson[getRandomIndex1].Factor;
-    int newFactor = thisModeJson[getRandomIndex2].Factor;
-    thisModeJson[getRandomIndex1].Factor = newFactor;
-    SetFactor(thisModeJson[getRandomIndex1].Name, newFactor);
-    DoubleName.Text = thisModeJson[getRandomIndex1].Name;
-    DoublePast.Text = past.ToString();
-    DoubleAdd.Text = thisModeJson[getRandomIndex2].Name;
-    DoubleNow.Text = newFactor.ToString();
-    incidentName.Text = "复制事件";
-    DoubleMorePart.Visibility = Visibility.Visible;
-}
-else if(getIncident == 5)
-{
-    //窃取事件
-    int getRandomIndex1 = random.StrictNext(thisModeJson.Count),
-        getRandomIndex2 = random.StrictNext(thisModeJson.Count);
-    int getRandomFactor = random.StrictNext(thisModeJson[getRandomIndex2].Factor);
-    int pastLeft = thisModeJson[getRandomIndex1].Factor;
-    int nowRight= thisModeJson[getRandomIndex2].Factor - getRandomFactor;
-    thisModeJson[getRandomIndex1].Factor+= getRandomFactor;
-    SetFactor(thisModeJson[getRandomIndex1].Name, thisModeJson[getRandomIndex1].Factor);
-    thisModeJson[getRandomIndex2].Factor = nowRight;
-    SetFactor(thisModeJson[getRandomIndex2].Name, nowRight);
-    GetFactorFromOtherName.Text = thisModeJson[getRandomIndex1].Name;
-    BeDeductedName.Text = thisModeJson[getRandomIndex2].Name;
-    BeforeGetOtherFactorFactor.Text=pastLeft.ToString();
-    ChangeFactor.Text = getRandomFactor.ToString();
-    NowBeDeductedFactor.Text = nowRight.ToString();
-    incidentName.Text = "窃取事件";
-    GetFactorFromOtherPart.Visibility = Visibility.Visible;
-}
-else if(getIncident == 6)
-{
-    //保底事件，于后面完成
-}
-else if(getIncident==7)
-{
-    //跳过事件
-    int getRandomIndex= random.StrictNext(thisModeJson.Count),findName;
-    string newName= thisModeJson[getRandomIndex].Name,
-        lastName= NowNumberTextValue;
-    for(findName=0;findName< thisModeJson.Count;findName++)
-    {
-        if(thisModeJson[findName].Name==NowNumberTextValue)
-        {
-            break;
-        }
-    }
-    thisModeJson[findName].Factor = thisModeJson[getRandomIndex].Factor;
-    thisModeJson[getRandomIndex].Factor = 0;
-    AfterSkipNowFactor.Text= thisModeJson[findName].Factor.ToString();
-    await Task.Delay(2000);
-    NowNumberTextValue= newName;
-    NowNumberText.Text= NowNumberTextValue;
-    FinishNumberText.Text= NowNumberTextValue;
-    FinishNumberText.Foreground = Brushes.Purple;
-    BeSkipedName.Text= lastName;
-    AfterNowName.Text= NowNumberTextValue;
-    SkipPart.Visibility= Visibility.Visible;
-    incidentName.Text = "跳过事件";
-}
-else if(getIncident==8)
-{
-    //平静事件
-    await Task.Delay(2000);
-    incidentName.Text = "平静无事";
-}
-else if(getIncident==9)
-{
-    DeterminedByFatePart.Visibility= Visibility.Visible;
-    memoryFactorModeSettingsJson.otherSettings.DeterminedByFate = true;
-    incidentName.Text = "命定事件";
-}
-    int Max = -1,
-        MaxIndex = -1;
-foreach(var item in thisModeJson)
-{
-    if (item.Factor > Max)
-    {
-        Max = item.Factor;
-        MaxIndex = thisModeJson.IndexOf(item);
-    }
-}
-if (GlobalVariables.json.MemoryFactorModeSettings.Speech)
-{
-    _speechSynthesizer.SpeakAsync(NowNumberTextValue);
-}
-if (MaxIndex != -1)
-{
-    MaxIndexRealProbability.Text =
-        (
-            Math.Round(
-                (double)thisModeJson[MaxIndex].Factor / Trainings.Count * 100,
-                2
-            )
-        ).ToString() + "%";
-}
-if (
-    thisModeJson[MaxIndex].Name
-    == memoryFactorModeSettingsJson.otherSettings.MaxName
-)
-{
-    memoryFactorModeSettingsJson.otherSettings.MaxTimes++;
-    if (memoryFactorModeSettingsJson.otherSettings.MaxTimes < 10)
-    {
+                    Trainings.RemoveAll(s => s == NowNumberTextValue);
+                    //这里插入事件,以下是原来的双倍旧代码
+                    //GetRandom = random.StrictNext(thisModeJson.Count);
+                    //int Past = thisModeJson[GetRandom].Factor;
+                    //for (int i = 1; i <= thisModeJson[GetRandom].Factor; i++)
+                    //{
+                    //    Trainings.Add(thisModeJson[GetRandom].Name);
+                    //}
+                    //thisModeJson[GetRandom].Factor *= 2;
+                    //UpName.Text = thisModeJson[GetRandom].Name;
+                    //UpFactor.Text = Past.ToString() + "→" + thisModeJson[GetRandom].Factor.ToString();
+                    //if (thisModeJson[GetRandom].Factor - Past >= 120)
+                    //{
+                    //    ShowStoryBoard("TwoChangeRed");
+                    //}
+                    //else if (thisModeJson[GetRandom].Factor - Past >= 70)
+                    //{
+                    //    ShowStoryBoard("TwoChangeOrange");
+                    //}
+                    //UpRealProbability.Text =
+                    //    (
+                    //        Math.Round(
+                    //            (double)thisModeJson[GetRandom].Factor / Trainings.Count * 100,
+                    //            2
+                    //        )
+                    //    ).ToString() + "%";
+                    //if (thisModeJson[GetRandom].Factor > max)
+                    //{
+                    //    MaxIndex = GetRandom;
+                    //}
+                    DoubleMorePart.Visibility = Visibility.Collapsed;
+                    ExchangePart.Visibility = Visibility.Collapsed;
+                    GetFactorFromOtherPart.Visibility = Visibility.Collapsed;
+                    FloorAddPart.Visibility = Visibility.Collapsed;
+                    SkipPart.Visibility = Visibility.Collapsed;
+                    DeterminedByFatePart.Visibility = Visibility.Collapsed;
+                    int getIncident = incident[random.StrictNext(incident.Count)];
+                    if (getIncident == 0)
+                    {
+                        //二倍事件
+                        int getRandomIndex = random.StrictNext(thisModeJson.Count);
+                        int past = thisModeJson[getRandomIndex].Factor;
+                        int newFactor = (int)(thisModeJson[getRandomIndex].Factor * 2);
+                        thisModeJson[getRandomIndex].Factor = newFactor;
+                        SetFactor(thisModeJson[getRandomIndex].Name, newFactor);
+                        DoubleName.Text = thisModeJson[getRandomIndex].Name;
+                        DoublePast.Text = past.ToString();
+                        DoubleAdd.Text = "X2";
+                        DoubleNow.Text = newFactor.ToString();
+                        incidentName.Text = "二倍事件";
+                        DoubleMorePart.Visibility = Visibility.Visible;
+                    }
+                    else if (getIncident == 1)
+                    {
+                        //三倍事件
+                        int getRandomIndex = random.StrictNext(thisModeJson.Count);
+                        int past = thisModeJson[getRandomIndex].Factor;
+                        int newFactor = (int)(thisModeJson[getRandomIndex].Factor * 3);
+                        thisModeJson[getRandomIndex].Factor = newFactor;
+                        SetFactor(thisModeJson[getRandomIndex].Name, newFactor);
+                        DoubleName.Text = thisModeJson[getRandomIndex].Name;
+                        DoublePast.Text = past.ToString();
+                        DoubleAdd.Text = "X3";
+                        DoubleNow.Text = newFactor.ToString();
+                        incidentName.Text = "三倍事件";
+                        DoubleMorePart.Visibility = Visibility.Visible;
+                    }
+                    else if (getIncident == 2)
+                    {
+                        //减半事件
+                        int getRandomIndex = random.StrictNext(thisModeJson.Count);
+                        int past = thisModeJson[getRandomIndex].Factor;
+                        int newFactor = (int)(thisModeJson[getRandomIndex].Factor / 2);
+                        thisModeJson[getRandomIndex].Factor = newFactor;
+                        SetFactor(thisModeJson[getRandomIndex].Name, newFactor);
+                        DoubleName.Text = thisModeJson[getRandomIndex].Name;
+                        DoublePast.Text = past.ToString();
+                        DoubleAdd.Text = "X0.5";
+                        DoubleNow.Text = newFactor.ToString();
+                        incidentName.Text = "减半事件";
+                        DoubleMorePart.Visibility = Visibility.Visible;
+                    }
+                    else if (getIncident == 3)
+                    {
+                        //交换事件
+                        int getRandomIndex1 = random.StrictNext(thisModeJson.Count);
+                        int getRandomIndex2 = random.StrictNext(thisModeJson.Count);
+                        string name1 = thisModeJson[getRandomIndex1].Name,
+                            name2 = thisModeJson[getRandomIndex2].Name;
+                        int factor1 = thisModeJson[getRandomIndex1].Factor,
+                            factor2 = thisModeJson[getRandomIndex2].Factor;
+                        SetFactor(name1, factor2);
+                        thisModeJson[getRandomIndex1].Factor = factor2;
+                        SetFactor(name2, factor1);
+                        thisModeJson[getRandomIndex2].Factor = factor1;
+                        ExchangeLeftName.Text = name1;
+                        ExchangeLeftFactor.Text = factor1.ToString();
+                        ExchangeRightName.Text = name2;
+                        ExchangeRightFactor.Text = factor2.ToString();
+                        incidentName.Text = "交换事件";
+                        ExchangePart.Visibility = Visibility.Visible;
+                    }
+                    else if (getIncident == 4)
+                    {
+                        //复制事件
+                        int getRandomIndex1 = random.StrictNext(thisModeJson.Count),
+                        getRandomIndex2 = random.StrictNext(thisModeJson.Count);
+                        int past = thisModeJson[getRandomIndex1].Factor;
+                        int newFactor = thisModeJson[getRandomIndex2].Factor;
+                        thisModeJson[getRandomIndex1].Factor = newFactor;
+                        SetFactor(thisModeJson[getRandomIndex1].Name, newFactor);
+                        DoubleName.Text = thisModeJson[getRandomIndex1].Name;
+                        DoublePast.Text = past.ToString();
+                        DoubleAdd.Text = thisModeJson[getRandomIndex2].Name;
+                        DoubleNow.Text = newFactor.ToString();
+                        incidentName.Text = "复制事件";
+                        DoubleMorePart.Visibility = Visibility.Visible;
+                    }
+                    else if (getIncident == 5)
+                    {
+                        //窃取事件
+                        int getRandomIndex1 = random.StrictNext(thisModeJson.Count),
+                            getRandomIndex2 = random.StrictNext(thisModeJson.Count);
+                        int getRandomFactor = random.StrictNext(thisModeJson[getRandomIndex2].Factor);
+                        int pastLeft = thisModeJson[getRandomIndex1].Factor;
+                        int nowRight = thisModeJson[getRandomIndex2].Factor - getRandomFactor;
+                        thisModeJson[getRandomIndex1].Factor += getRandomFactor;
+                        SetFactor(thisModeJson[getRandomIndex1].Name, thisModeJson[getRandomIndex1].Factor);
+                        thisModeJson[getRandomIndex2].Factor = nowRight;
+                        SetFactor(thisModeJson[getRandomIndex2].Name, nowRight);
+                        GetFactorFromOtherName.Text = thisModeJson[getRandomIndex1].Name;
+                        BeDeductedName.Text = thisModeJson[getRandomIndex2].Name;
+                        BeforeGetOtherFactorFactor.Text = pastLeft.ToString();
+                        ChangeFactor.Text = getRandomFactor.ToString();
+                        NowBeDeductedFactor.Text = nowRight.ToString();
+                        incidentName.Text = "窃取事件";
+                        GetFactorFromOtherPart.Visibility = Visibility.Visible;
+                    }
+                    else if (getIncident == 6)
+                    {
+                        //保底事件，于后面完成
+                    }
+                    else if (getIncident == 7)
+                    {
+                        //跳过事件
+                        int getRandomIndex = random.StrictNext(thisModeJson.Count), findName;
+                        string newName = thisModeJson[getRandomIndex].Name,
+                            lastName = NowNumberTextValue;
+                        for (findName = 0; findName < thisModeJson.Count; findName++)
+                        {
+                            if (thisModeJson[findName].Name == NowNumberTextValue)
+                            {
+                                break;
+                            }
+                        }
+                        thisModeJson[findName].Factor = thisModeJson[getRandomIndex].Factor;
+                        thisModeJson[getRandomIndex].Factor = 0;
+                        AfterSkipNowFactor.Text = thisModeJson[findName].Factor.ToString();
+                        await Task.Delay(2000);
+                        NowNumberTextValue = newName;
+                        NowNumberText.Text = NowNumberTextValue;
+                        FinishNumberText.Text = NowNumberTextValue;
+                        FinishNumberText.Foreground = Brushes.Purple;
+                        BeSkipedName.Text = lastName;
+                        AfterNowName.Text = NowNumberTextValue;
+                        SkipPart.Visibility = Visibility.Visible;
+                        incidentName.Text = "跳过事件";
+                    }
+                    else if (getIncident == 8)
+                    {
+                        //平静事件
+                        await Task.Delay(2000);
+                        incidentName.Text = "平静无事";
+                    }
+                    else if (getIncident == 9)
+                    {
+                        DeterminedByFatePart.Visibility = Visibility.Visible;
+                        memoryFactorModeSettingsJson.otherSettings.DeterminedByFate = true;
+                        incidentName.Text = "命定事件";
+                    }
+                    int Max = -1,
+                        MaxIndex = -1;
+                    foreach (var item in thisModeJson)
+                    {
+                        if (item.Factor > Max)
+                        {
+                            Max = item.Factor;
+                            MaxIndex = thisModeJson.IndexOf(item);
+                        }
+                    }
+                    if (GlobalVariablesData.config.MemoryFactorModeSettings.Speech)
+                    {
+                        _speechSynthesizer.SpeakAsync(NowNumberTextValue);
+                    }
+                    if (MaxIndex != -1)
+                    {
+                        MaxIndexRealProbability.Text =
+                            (
+                                Math.Round(
+                                    (double)thisModeJson[MaxIndex].Factor / Trainings.Count * 100,
+                                    2
+                                )
+                            ).ToString() + "%";
+                    }
+                    if (
+                        thisModeJson[MaxIndex].Name
+                        == memoryFactorModeSettingsJson.otherSettings.MaxName
+                    )
+                    {
+                        memoryFactorModeSettingsJson.otherSettings.MaxTimes++;
+                        if (memoryFactorModeSettingsJson.otherSettings.MaxTimes < 10)
+                        {
 
-        MaxIndexRealProbability.Text =
-            (
-                Math.Round(
-                    (double)thisModeJson[MaxIndex].Factor / Trainings.Count * 100,
-                    2
-                )
-            ).ToString() + "%";
-        NowMaxTimesState.Text = "等待保底";
-    }
-    else if (
-        memoryFactorModeSettingsJson.otherSettings.MaxTimes >= 10
-        && memoryFactorModeSettingsJson.otherSettings.MaxTimes <= 12
-    )
-    {
-        MaxIndexRealProbability.Text =
-            ((memoryFactorModeSettingsJson.otherSettings.MaxTimes - 9) * 25)
-            + "%";
-        ShowStoryBoard("ChangeYellow");
-        NowMaxTimesState.Text = "保底中";
-    }
-    else
-    {
-        MaxIndexRealProbability.Text = "100%";
-        ShowStoryBoard("ChangeRed");
-        NowMaxTimesState.Text = "保底中";
-    }
-}
-else
-{
-    memoryFactorModeSettingsJson.otherSettings.MaxName = thisModeJson[
-        MaxIndex
-    ].Name;
-    memoryFactorModeSettingsJson.otherSettings.MaxTimes = 1;
-    MaxIndexRealProbability.Text =
-        (
-            Math.Round(
-                (double)thisModeJson[MaxIndex].Factor / Trainings.Count * 100,
-                2
-            )
-        ).ToString() + "%";
+                            MaxIndexRealProbability.Text =
+                                (
+                                    Math.Round(
+                                        (double)thisModeJson[MaxIndex].Factor / Trainings.Count * 100,
+                                        2
+                                    )
+                                ).ToString() + "%";
+                            NowMaxTimesState.Text = "等待保底";
+                        }
+                        else if (
+                            memoryFactorModeSettingsJson.otherSettings.MaxTimes >= 10
+                            && memoryFactorModeSettingsJson.otherSettings.MaxTimes <= 12
+                        )
+                        {
+                            MaxIndexRealProbability.Text =
+                                ((memoryFactorModeSettingsJson.otherSettings.MaxTimes - 9) * 25)
+                                + "%";
+                            ShowStoryBoard("ChangeYellow");
+                            NowMaxTimesState.Text = "保底中";
+                        }
+                        else
+                        {
+                            MaxIndexRealProbability.Text = "100%";
+                            ShowStoryBoard("ChangeRed");
+                            NowMaxTimesState.Text = "保底中";
+                        }
+                    }
+                    else
+                    {
+                        memoryFactorModeSettingsJson.otherSettings.MaxName = thisModeJson[
+                            MaxIndex
+                        ].Name;
+                        memoryFactorModeSettingsJson.otherSettings.MaxTimes /=2;
+                        if(memoryFactorModeSettingsJson.otherSettings.MaxTimes<1)
+                        {
+                            memoryFactorModeSettingsJson.otherSettings.MaxTimes = 1;
+                        }
+                        MaxIndexRealProbability.Text =
+                            (
+                                Math.Round(
+                                    (double)thisModeJson[MaxIndex].Factor / Trainings.Count * 100,
+                                    2
+                                )
+                            ).ToString() + "%";
 
-    ShowStoryBoard("Changegreen");
-    NowMaxTimesState.Text = "等待保底";
-}
-if (SpecialOutcome!=null)
-{
-    LastFactorText.Text = SpecialOutcome;
-}
-else
-{
-    LastFactorText.Text = lastfactor.ToString();
-}
-//此处完成部分事件
-if (getIncident == 6)
-{
-    //保底事件
-    int getRandomAdd=random.StrictNext(3)+1;
-    memoryFactorModeSettingsJson.otherSettings.MaxTimes+=getRandomAdd;
-    FloorAdd.Text= getRandomAdd.ToString();
-    incidentName.Text = "保底事件";
-    FloorAddPart.Visibility = Visibility.Visible;
-    //重复上述对maxtimes进行的变化
-    if (memoryFactorModeSettingsJson.otherSettings.MaxTimes < 10)
-    {
+                        ShowStoryBoard("Changegreen");
+                        NowMaxTimesState.Text = "等待保底";
+                    }
+                    if (SpecialOutcome != null)
+                    {
+                        LastFactorText.Text = SpecialOutcome;
+                    }
+                    else
+                    {
+                        LastFactorText.Text = lastfactor.ToString();
+                    }
+                    //此处完成部分事件
+                    if (getIncident == 6)
+                    {
+                        //保底事件
+                        int getRandomAdd = random.StrictNext(3) + 1;
+                        memoryFactorModeSettingsJson.otherSettings.MaxTimes += getRandomAdd;
+                        FloorAdd.Text = getRandomAdd.ToString();
+                        incidentName.Text = "保底事件";
+                        FloorAddPart.Visibility = Visibility.Visible;
+                        //重复上述对maxtimes进行的变化
+                        if (memoryFactorModeSettingsJson.otherSettings.MaxTimes < 10)
+                        {
 
-        MaxIndexRealProbability.Text =
-            (
-                Math.Round(
-                    (double)thisModeJson[MaxIndex].Factor / Trainings.Count * 100,
-                    2
-                )
-            ).ToString() + "%";
-        NowMaxTimesState.Text = "等待保底";
-    }
-    else if (
-        memoryFactorModeSettingsJson.otherSettings.MaxTimes >= 10
-        && memoryFactorModeSettingsJson.otherSettings.MaxTimes <= 12
-    )
-    {
-        MaxIndexRealProbability.Text =
-            ((memoryFactorModeSettingsJson.otherSettings.MaxTimes - 9) * 25)
-            + "%";
-        ShowStoryBoard("ChangeYellow");
-        NowMaxTimesState.Text = "保底中";
-    }
-    else
-    {
-        MaxIndexRealProbability.Text = "100%";
-        ShowStoryBoard("ChangeRed");
-        NowMaxTimesState.Text = "保底中";
-    }
-}
+                            MaxIndexRealProbability.Text =
+                                (
+                                    Math.Round(
+                                        (double)thisModeJson[MaxIndex].Factor / Trainings.Count * 100,
+                                        2
+                                    )
+                                ).ToString() + "%";
+                            NowMaxTimesState.Text = "等待保底";
+                        }
+                        else if (
+                            memoryFactorModeSettingsJson.otherSettings.MaxTimes >= 10
+                            && memoryFactorModeSettingsJson.otherSettings.MaxTimes <= 12
+                        )
+                        {
+                            MaxIndexRealProbability.Text =
+                                ((memoryFactorModeSettingsJson.otherSettings.MaxTimes - 9) * 25)
+                                + "%";
+                            ShowStoryBoard("ChangeYellow");
+                            NowMaxTimesState.Text = "保底中";
+                        }
+                        else
+                        {
+                            MaxIndexRealProbability.Text = "100%";
+                            ShowStoryBoard("ChangeRed");
+                            NowMaxTimesState.Text = "保底中";
+                        }
+                    }
                     // 在关键位置添加日志
                     Log.Information("记忆因子抽取完成，结果: {Result}", NowNumberTextValue);
-                    
+
                     if (SpecialOutcome != null)
                     {
                         Log.Debug("特殊结果: {Outcome}", SpecialOutcome);
                     }
-                    
+
                     Log.Information("事件触发: {IncidentName}", incidentName.Text);
-                    
+
                     SaveThisJson();
                     if (!DebugCheck.IsChecked.Value)
                     {
-                        GlobalVariables.SaveJson();
+                        GlobalVariablesData.SaveConfig();
                     }
-                    
+
                     ShowFloor(memoryFactorModeSettingsJson.otherSettings.MaxTimes);
                     IsCanStop = false;
                     if (!DebugCheck.IsChecked.Value)
                     {
-                        GlobalVariables.json.MemoryFactorModeSettings.LastName = FinishNumberText.Text;
+                        GlobalVariablesData.config.MemoryFactorModeSettings.LastName = FinishNumberText.Text;
                     }
 
                     NowNumberText.Text = NowNumberTextValue;
                     Count.Text = Trainings.Count.ToString();
                     ChangeTheName(lastThisModeJsons);
-                    
+
                     Log.Information("记忆因子抽取处理完成，因子总数: {TrainingCount}", Trainings.Count);
                 }
             }
@@ -752,7 +759,7 @@ if (getIncident == 6)
         {
             bool newValue = SpeechButton.IsChecked.Value;
             Log.Debug("语音播报开关: {Value}", newValue);
-            GlobalVariables.json.MemoryFactorModeSettings.Speech = newValue;
+            GlobalVariablesData.config.MemoryFactorModeSettings.Speech = newValue;
         }
 
         private void ResetButton_Click(object sender, RoutedEventArgs e)
@@ -762,7 +769,7 @@ if (getIncident == 6)
                 Log.Warning("开始重置记忆因子数据");
                 Directory.CreateDirectory(
                     Path.Combine(
-                        GlobalVariables.configDir,
+                        GlobalVariablesData.userDataDir,
                         "Mode_data",
                         "MemoryFactoryMode",
                         "Backups"
@@ -770,13 +777,13 @@ if (getIncident == 6)
                 );
                 File.Copy(
                     Path.Combine(
-                        GlobalVariables.configDir,
+                        GlobalVariablesData.userDataDir,
                         "Mode_data",
                         "MemoryFactoryMode",
                         "Memory.json"
                     ),
                     Path.Combine(
-                        GlobalVariables.configDir,
+                        GlobalVariablesData.userDataDir,
                         "Mode_data",
                         "MemoryFactoryMode",
                         "Backups",
@@ -785,7 +792,7 @@ if (getIncident == 6)
                 );
                 File.Delete(
                     Path.Combine(
-                        GlobalVariables.configDir,
+                        GlobalVariablesData.userDataDir,
                         "Mode_data",
                         "MemoryFactoryMode",
                         "Memory.json"
@@ -815,7 +822,7 @@ if (getIncident == 6)
             {
                 Log.Debug("MemoryFactorMode页面加载");
 
-                if (!GlobalVariables.json.MemoryFactorModeSettings.debug)
+                if (!GlobalVariablesData.config.MemoryFactorModeSettings.debug)
                 {
                     QuitDebug.Visibility = Visibility.Collapsed;
                     GetTraning.Visibility = Visibility.Collapsed;
@@ -823,44 +830,44 @@ if (getIncident == 6)
                     Log.Debug("调试功能已隐藏");
                 }
 
-                if (!GlobalVariables.json.AllSettings.SystemSpeech)
+                if (!GlobalVariablesData.config.AllSettings.SystemSpeech)
                 {
                     _speechSynthesizer.SelectVoiceByHints(VoiceGender.Female, VoiceAge.Adult);
-                    _speechSynthesizer.Rate = GlobalVariables.json.AllSettings.Speed;
-                    _speechSynthesizer.Volume = GlobalVariables.json.AllSettings.Volume;
+                    _speechSynthesizer.Rate = GlobalVariablesData.config.AllSettings.Speed;
+                    _speechSynthesizer.Volume = GlobalVariablesData.config.AllSettings.Volume;
                     Log.Debug("配置语音合成器: 性别=Female, 音量={Volume}, 语速={Speed}",
-                        GlobalVariables.json.AllSettings.Volume,
-                        GlobalVariables.json.AllSettings.Speed);
+                        GlobalVariablesData.config.AllSettings.Volume,
+                        GlobalVariablesData.config.AllSettings.Speed);
                 }
 
                 timer.Elapsed += Timer_Elapsed;
-                SpeechButton.IsChecked = GlobalVariables.json.MemoryFactorModeSettings.Speech;
-                SpeechButton.IsEnabled = !GlobalVariables.json.MemoryFactorModeSettings.Locked;
-                ResetButton.IsEnabled = !GlobalVariables.json.MemoryFactorModeSettings.Locked;
+                SpeechButton.IsChecked = GlobalVariablesData.config.MemoryFactorModeSettings.Speech;
+                SpeechButton.IsEnabled = !GlobalVariablesData.config.MemoryFactorModeSettings.Locked;
+                ResetButton.IsEnabled = !GlobalVariablesData.config.MemoryFactorModeSettings.Locked;
 
                 string FilePath = System.IO.Path.Combine(
-                    GlobalVariables.configDir,
+                    GlobalVariablesData.userDataDir,
                     "Mode_data",
                     "MemoryFactoryMode"
                 );
                 Directory.CreateDirectory(FilePath);
 
-                if (GlobalVariables.json.MemoryFactorModeSettings.Speed == 0)
+                if (GlobalVariablesData.config.MemoryFactorModeSettings.Speed == 0)
                 {
                     Log.Debug("重置速度为默认值20");
-                    GlobalVariables.json.MemoryFactorModeSettings.Speed = 20;
+                    GlobalVariablesData.config.MemoryFactorModeSettings.Speed = 20;
                 }
 
                 StartLoad();
-                NowNumberText.Foreground = GlobalVariables.json.AllSettings.color;
-                FinishNumberText.Foreground = GlobalVariables.json.AllSettings.color;
-                NowNumberText.FontFamily = GlobalVariables.json.AllSettings.Font;
-                FinishNumberText.FontFamily = GlobalVariables.json.AllSettings.Font;
+                NowNumberText.Foreground = GlobalVariablesData.config.AllSettings.color;
+                FinishNumberText.Foreground = GlobalVariablesData.config.AllSettings.color;
+                //NowNumberText.FontFamily = GlobalVariablesData.config.AllSettings.Font;
+                //FinishNumberText.FontFamily = GlobalVariablesData.config.AllSettings.Font;
 
-                if (GlobalVariables.json.MemoryFactorModeSettings.LastName != null)
+                if (GlobalVariablesData.config.MemoryFactorModeSettings.LastName != null)
                 {
-                    NowNumberText.Text = GlobalVariables.json.MemoryFactorModeSettings.LastName;
-                    Log.Debug("设置上次抽取结果: {LastName}", GlobalVariables.json.MemoryFactorModeSettings.LastName);
+                    NowNumberText.Text = GlobalVariablesData.config.MemoryFactorModeSettings.LastName;
+                    Log.Debug("设置上次抽取结果: {LastName}", GlobalVariablesData.config.MemoryFactorModeSettings.LastName);
                 }
 
                 ChangeTheName(null);
@@ -875,7 +882,7 @@ if (getIncident == 6)
                 Log.Error(ex, "MemoryFactorMode页面加载时发生异常");
             }
         }
-        
+
 
         private int HaveTheSameName(string name, List<ThisModeJson> thisModeJsona)
         {
@@ -1271,12 +1278,12 @@ if (getIncident == 6)
         }
         private void ShowFloor(int index)
         {
-            if(index<=9)
+            if (index <= 9)
             {
                 GuaranteedProgressBar.Value = index;
-                RemainingGuaranteedAttempts.Text= (10 - index).ToString();
-                NotGuaranteed.Visibility= Visibility.Visible;
-                Guaranteed.Visibility= Visibility.Collapsed;
+                RemainingGuaranteedAttempts.Text = (10 - index).ToString();
+                NotGuaranteed.Visibility = Visibility.Visible;
+                Guaranteed.Visibility = Visibility.Collapsed;
             }
             else
             {
@@ -1296,10 +1303,10 @@ if (getIncident == 6)
         private void QuitDebug_Click(object sender, RoutedEventArgs e)
         {
             Log.Information("退出调试模式");
-            GlobalVariables.json.MemoryFactorModeSettings.debug = false;
+            GlobalVariablesData.config.MemoryFactorModeSettings.debug = false;
             if (!DebugCheck.IsChecked.Value)
             {
-                GlobalVariables.SaveJson();
+                GlobalVariablesData.SaveConfig();
             }
             QuitDebug.Visibility = Visibility.Collapsed;
             GetTraning.Visibility = Visibility.Collapsed;

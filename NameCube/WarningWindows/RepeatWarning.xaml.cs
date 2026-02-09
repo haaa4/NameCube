@@ -15,6 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 using Windows.UI.Xaml.Controls;
+using NameCube.Function;
 using Serilog;
 
 namespace NameCube
@@ -32,14 +33,14 @@ namespace NameCube
             try
             {
                 InitializeComponent();
-                if (GlobalVariables.json.AllSettings.NameCubeMode == 1)
+                if (GlobalVariablesData.config.AllSettings.NameCubeMode == 1)
                 {
                     Text.Text = "点鸣魔方已经启动，请勿再次启动";
                     Log.Information("点鸣魔方模式设置为1，显示对应警告消息");
                 }
                 else
                 {
-                    Log.Debug("点鸣魔方模式: {Mode}", GlobalVariables.json.AllSettings.NameCubeMode);
+                    Log.Debug("点鸣魔方模式: {Mode}", GlobalVariablesData.config.AllSettings.NameCubeMode);
                 }
             }
             catch (Exception ex)

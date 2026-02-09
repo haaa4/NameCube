@@ -44,68 +44,51 @@
                 <EasingDoubleKeyFrame KeyTime="00:00:00.4000000" Value="0" />
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
+        <Storyboard x:Key="flicker">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="ellipse" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="1.043"/>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="11.788"/>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="ellipse" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleY)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="1.076"/>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="12.161"/>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="ellipse" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="1.084"/>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="0.001"/>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="ellipse" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="1.898"/>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="0.292"/>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="ellipse" Storyboard.TargetProperty="(UIElement.Opacity)">
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0"/>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.1000000" Value="1"/>
+                <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="0"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
     </Page.Resources>
 
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="9*" />
-            <RowDefinition Height="1*" />
-        </Grid.RowDefinitions>
+    <ui:Grid>
+
         <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1*" />
-                <ColumnDefinition Width="1*" />
+            <Grid.RowDefinitions>
+                <RowDefinition Height="9*" />
+                <RowDefinition Height="1*" />
+            </Grid.RowDefinitions>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="1*" />
 
-            </Grid.ColumnDefinitions>
-            <TextBlock
-                x:Name="NowNumberText"
-                Grid.Column="2"
-                Margin="0,30,0,0"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Top"
-                FontSize="120"
-                Foreground="#30d7d7"
-                RenderTransformOrigin="0.5,0.5"
-                Text="XXX">
-                <TextBlock.RenderTransform>
-                    <TransformGroup>
-                        <ScaleTransform />
-                        <SkewTransform />
-                        <RotateTransform />
-                        <TranslateTransform />
-                    </TransformGroup>
-                </TextBlock.RenderTransform>
-            </TextBlock>
-            <TextBlock
-                x:Name="FinishText"
-                Grid.Column="2"
-                Margin="0,30,0,0"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Top"
-                FontSize="120"
-                Foreground="#30d7d7"
-                Text="XX"
-                Visibility="Hidden" />
-            <ui:Button
-                x:Name="StartButton"
-                Grid.Row="1"
-                Grid.Column="2"
-                Width="200"
-                Height="100"
-                Margin="0,40"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Bottom"
-                Click="StartButton_Click"
-                Content="开始"
-                FontFamily="Segoe UI"
-                FontSize="72"
-                FontWeight="Black" />
-            <TextBlock FontSize="30" Text="请以下同学做好准备:" />
-            <StackPanel Margin="0,40,0,0">
+                </Grid.ColumnDefinitions>
                 <TextBlock
-                    x:Name="Ready1"
-                    HorizontalAlignment="Left"
-                    FontSize="55"
+                    x:Name="NowNumberText"
+                    Grid.Column="2"
+                    Margin="0,30,0,0"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Top"
+                    FontSize="120"
                     Foreground="#30d7d7"
                     RenderTransformOrigin="0.5,0.5"
                     Text="XXX">
@@ -119,152 +102,206 @@
                     </TextBlock.RenderTransform>
                 </TextBlock>
                 <TextBlock
-                    x:Name="Ready2"
-                    HorizontalAlignment="Left"
-                    FontSize="55"
+                    x:Name="FinishText"
+                    Grid.Column="2"
+                    Margin="0,30,0,0"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Top"
+                    FontSize="120"
                     Foreground="#30d7d7"
-                    RenderTransformOrigin="0.5,0.5"
-                    Text="XXX">
-                    <TextBlock.RenderTransform>
-                        <TransformGroup>
-                            <ScaleTransform />
-                            <SkewTransform />
-                            <RotateTransform />
-                            <TranslateTransform />
-                        </TransformGroup>
-                    </TextBlock.RenderTransform>
-                </TextBlock>
-                <TextBlock
-                    x:Name="Ready3"
-                    HorizontalAlignment="Left"
-                    FontSize="55"
-                    Foreground="#30d7d7"
-                    RenderTransformOrigin="0.5,0.5"
-                    Text="XXX">
-                    <TextBlock.RenderTransform>
-                        <TransformGroup>
-                            <ScaleTransform />
-                            <SkewTransform />
-                            <RotateTransform />
-                            <TranslateTransform />
-                        </TransformGroup>
-                    </TextBlock.RenderTransform>
-                </TextBlock>
-                <TextBlock
-                    x:Name="Ready4"
-                    HorizontalAlignment="Left"
-                    FontSize="55"
-                    Foreground="#30d7d7"
-                    RenderTransformOrigin="0.5,0.5"
-                    Text="XXX">
-                    <TextBlock.RenderTransform>
-                        <TransformGroup>
-                            <ScaleTransform />
-                            <SkewTransform />
-                            <RotateTransform />
-                            <TranslateTransform />
-                        </TransformGroup>
-                    </TextBlock.RenderTransform>
-                </TextBlock>
-                <TextBlock
-                    x:Name="Ready5"
-                    HorizontalAlignment="Left"
-                    FontSize="55"
-                    Foreground="#30d7d7"
-                    RenderTransformOrigin="0.5,0.5"
-                    Text="XXX">
-                    <TextBlock.RenderTransform>
-                        <TransformGroup>
-                            <ScaleTransform />
-                            <SkewTransform />
-                            <RotateTransform />
-                            <TranslateTransform />
-                        </TransformGroup>
-                    </TextBlock.RenderTransform>
-                </TextBlock>
+                    Text="XX"
+                    Visibility="Hidden" />
+                <ui:Button
+                    x:Name="StartButton"
+                    Grid.Row="1"
+                    Grid.Column="2"
+                    Width="200"
+                    Height="100"
+                    Margin="0,40"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Bottom"
+                    Click="StartButton_Click"
+                    Content="开始"
+                    FontFamily="Segoe UI"
+                    FontSize="36"
+                    FontWeight="Black" />
+                <TextBlock FontSize="30" Text="请以下同学做好准备:" />
+                <StackPanel Margin="0,40,0,0">
+                    <TextBlock
+                        x:Name="Ready1"
+                        HorizontalAlignment="Left"
+                        FontSize="55"
+                        Foreground="#30d7d7"
+                        RenderTransformOrigin="0.5,0.5"
+                        Text="XXX">
+                        <TextBlock.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform />
+                                <SkewTransform />
+                                <RotateTransform />
+                                <TranslateTransform />
+                            </TransformGroup>
+                        </TextBlock.RenderTransform>
+                    </TextBlock>
+                    <TextBlock
+                        x:Name="Ready2"
+                        HorizontalAlignment="Left"
+                        FontSize="55"
+                        Foreground="#30d7d7"
+                        RenderTransformOrigin="0.5,0.5"
+                        Text="XXX">
+                        <TextBlock.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform />
+                                <SkewTransform />
+                                <RotateTransform />
+                                <TranslateTransform />
+                            </TransformGroup>
+                        </TextBlock.RenderTransform>
+                    </TextBlock>
+                    <TextBlock
+                        x:Name="Ready3"
+                        HorizontalAlignment="Left"
+                        FontSize="55"
+                        Foreground="#30d7d7"
+                        RenderTransformOrigin="0.5,0.5"
+                        Text="XXX">
+                        <TextBlock.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform />
+                                <SkewTransform />
+                                <RotateTransform />
+                                <TranslateTransform />
+                            </TransformGroup>
+                        </TextBlock.RenderTransform>
+                    </TextBlock>
+                    <TextBlock
+                        x:Name="Ready4"
+                        HorizontalAlignment="Left"
+                        FontSize="55"
+                        Foreground="#30d7d7"
+                        RenderTransformOrigin="0.5,0.5"
+                        Text="XXX">
+                        <TextBlock.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform />
+                                <SkewTransform />
+                                <RotateTransform />
+                                <TranslateTransform />
+                            </TransformGroup>
+                        </TextBlock.RenderTransform>
+                    </TextBlock>
+                    <TextBlock
+                        x:Name="Ready5"
+                        HorizontalAlignment="Left"
+                        FontSize="55"
+                        Foreground="#30d7d7"
+                        RenderTransformOrigin="0.5,0.5"
+                        Text="XXX">
+                        <TextBlock.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform />
+                                <SkewTransform />
+                                <RotateTransform />
+                                <TranslateTransform />
+                            </TransformGroup>
+                        </TextBlock.RenderTransform>
+                    </TextBlock>
+                </StackPanel>
+                <StackPanel Margin="0,40,0,0">
+                    <TextBlock
+                        x:Name="FinishReady1"
+                        HorizontalAlignment="Left"
+                        FontSize="55"
+                        Foreground="#30d7d7"
+                        Text="XXX"
+                        Visibility="Hidden" />
+                    <TextBlock
+                        x:Name="FinishReady2"
+                        HorizontalAlignment="Left"
+                        FontSize="55"
+                        Foreground="#30d7d7"
+                        Text="XXX"
+                        Visibility="Hidden" />
+                    <TextBlock
+                        x:Name="FinishReady3"
+                        HorizontalAlignment="Left"
+                        FontSize="55"
+                        Foreground="#30d7d7"
+                        Text="XXX"
+                        Visibility="Hidden" />
+                    <TextBlock
+                        x:Name="FinishReady4"
+                        HorizontalAlignment="Left"
+                        FontSize="55"
+                        Foreground="#30d7d7"
+                        Text="XXX"
+                        Visibility="Hidden" />
+                    <TextBlock
+                        x:Name="FinishReady5"
+                        HorizontalAlignment="Left"
+                        FontSize="55"
+                        Foreground="#30d7d7"
+                        Text="XXX"
+                        Visibility="Hidden" />
+                </StackPanel>
+                <StackPanel Margin="0,40,0,0">
+
+                    <TextBlock
+                        x:Name="BeforeReady1"
+                        HorizontalAlignment="Right"
+                        FontSize="55"
+                        Foreground="Black"
+                        Text="XXX"
+                        Visibility="Hidden" />
+                    <TextBlock
+                        x:Name="BeforeReady2"
+                        HorizontalAlignment="Right"
+                        FontSize="55"
+                        Foreground="Black"
+                        Text="XXX"
+                        Visibility="Hidden" />
+                    <TextBlock
+                        x:Name="BeforeReady3"
+                        HorizontalAlignment="Right"
+                        FontSize="55"
+                        Foreground="Black"
+                        Text="XXX"
+                        Visibility="Hidden" />
+                    <TextBlock
+                        x:Name="BeforeReady4"
+                        HorizontalAlignment="Right"
+                        FontSize="55"
+                        Foreground="Black"
+                        Text="XXX"
+                        Visibility="Hidden" />
+                    <TextBlock
+                        x:Name="BeforeReady5"
+                        HorizontalAlignment="Right"
+                        FontSize="55"
+                        Foreground="Black"
+                        Text="XXX"
+                        Visibility="Hidden" />
+                </StackPanel>
+            </Grid>
+            <StackPanel Grid.Row="2" Orientation="Horizontal">
+                <CheckBox
+                    x:Name="SpeakCheck"
+                    Click="SpeechCheck_Click"
+                    Content="启用语音"
+                    FontWeight="Black" />
             </StackPanel>
-            <StackPanel Margin="0,40,0,0">
-                <TextBlock
-                    x:Name="FinishReady1"
-                    HorizontalAlignment="Left"
-                    FontSize="55"
-                    Foreground="#30d7d7"
-                    Text="XXX"
-                    Visibility="Hidden" />
-                <TextBlock
-                    x:Name="FinishReady2"
-                    HorizontalAlignment="Left"
-                    FontSize="55"
-                    Foreground="#30d7d7"
-                    Text="XXX"
-                    Visibility="Hidden" />
-                <TextBlock
-                    x:Name="FinishReady3"
-                    HorizontalAlignment="Left"
-                    FontSize="55"
-                    Foreground="#30d7d7"
-                    Text="XXX"
-                    Visibility="Hidden" />
-                <TextBlock
-                    x:Name="FinishReady4"
-                    HorizontalAlignment="Left"
-                    FontSize="55"
-                    Foreground="#30d7d7"
-                    Text="XXX"
-                    Visibility="Hidden" />
-                <TextBlock
-                    x:Name="FinishReady5"
-                    HorizontalAlignment="Left"
-                    FontSize="55"
-                    Foreground="#30d7d7"
-                    Text="XXX"
-                    Visibility="Hidden" />
-            </StackPanel>
-            <StackPanel Margin="0,40,0,0">
-                <TextBlock
-                    x:Name="BeforeReady1"
-                    HorizontalAlignment="Right"
-                    FontSize="55"
-                    Foreground="Black"
-                    Text="XXX"
-                    Visibility="Hidden" />
-                <TextBlock
-                    x:Name="BeforeReady2"
-                    HorizontalAlignment="Right"
-                    FontSize="55"
-                    Foreground="Black"
-                    Text="XXX"
-                    Visibility="Hidden" />
-                <TextBlock
-                    x:Name="BeforeReady3"
-                    HorizontalAlignment="Right"
-                    FontSize="55"
-                    Foreground="Black"
-                    Text="XXX"
-                    Visibility="Hidden" />
-                <TextBlock
-                    x:Name="BeforeReady4"
-                    HorizontalAlignment="Right"
-                    FontSize="55"
-                    Foreground="Black"
-                    Text="XXX"
-                    Visibility="Hidden" />
-                <TextBlock
-                    x:Name="BeforeReady5"
-                    HorizontalAlignment="Right"
-                    FontSize="55"
-                    Foreground="Black"
-                    Text="XXX"
-                    Visibility="Hidden" />
-            </StackPanel>
+
         </Grid>
-        <StackPanel Grid.Row="2" Orientation="Horizontal">
-            <CheckBox
-                x:Name="SpeakCheck"
-                Click="SpeechCheck_Click"
-                Content="启用语音"
-                FontWeight="Black" />
-        </StackPanel>
-
-    </Grid>
+        <Ellipse x:Name="ellipse" Fill="{Binding Foreground, ElementName=NowNumberText}" Panel.ZIndex="-2" Opacity="0.005" RenderTransformOrigin="0.5,0.5" Margin="650,332,100,70" Height="48" Width="50">
+            <Ellipse.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Ellipse.RenderTransform>
+        </Ellipse>
+    </ui:Grid>
 </Page>
