@@ -30,8 +30,8 @@ namespace NameCube.Setting
 
                 if (GlobalVariablesData.config.AllSettings.color == null)
                 {
-                    Log.Debug("颜色设置为空，初始化为默认颜色 #30d7d7");
-                    GlobalVariablesData.config.AllSettings.color = (Brush)new BrushConverter().ConvertFromInvariantString("#30d7d7");
+                    Log.Debug("颜色设置为空，初始化为默认颜色 #FF005493");
+                    GlobalVariablesData.config.AllSettings.color = (Brush)new BrushConverter().ConvertFromInvariantString("#FF005493");
                 }
 
                 //DarkLight.IsChecked = GlobalVariablesData.config.AllSettings.Dark;

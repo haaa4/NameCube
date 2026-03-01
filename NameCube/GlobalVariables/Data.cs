@@ -22,6 +22,7 @@ using Brush = System.Windows.Media.Brush;
 using FontFamily = System.Windows.Media.FontFamily;
 using Path = System.IO.Path;
 using BirdSettings = NameCube.GlobalVariables.DataClass.BirdSettingsData;
+using Serilog;
 
 
 namespace NameCube
@@ -130,10 +131,8 @@ namespace NameCube
         /// </summary>
         public static void SaveConfig()
         {
-            LogManager.Info("保存设置");
-
+            Log.Debug("正在保存配置文件到: {ConfigPath}", Path.Combine(configDir, "config.json"));
             string configPath = Path.Combine(configDir, "config.json");
-
             try
             {
                 // 确保目录存在

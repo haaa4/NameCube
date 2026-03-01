@@ -38,7 +38,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\输出\Debug\</OutputPath>
+    <OutputPath>..\..\OutPut\NameCube\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -47,7 +47,7 @@
     <PlatformTarget>x64</PlatformTarget>
     <DebugType>none</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\输出\Release\</OutputPath>
+    <OutputPath>..\..\OutPut\NameCube\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -218,8 +218,8 @@
     <Compile Include="Setting\Speech.xaml.cs">
       <DependentUpon>Speech.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Setting\Updata.xaml.cs">
-      <DependentUpon>Updata.xaml</DependentUpon>
+    <Compile Include="Setting\Update.xaml.cs">
+      <DependentUpon>Update.xaml</DependentUpon>
     </Compile>
     <Compile Include="Setting\Document.xaml.cs">
       <DependentUpon>Document.xaml</DependentUpon>
@@ -446,7 +446,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Setting\Updata.xaml">
+    <Page Include="Setting\Update.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
