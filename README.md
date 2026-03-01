@@ -1,3 +1,14 @@
+> [!IMPORTANT]
+> **你需要知道的**
+>
+> **You should be aware**
+> 
+> 该项目为新手独立创作，会遇见一些难以理解的问题和代码逻辑，请见谅
+>
+>  This project is independently created by a beginner and may present some challenging issues and code logic that are difficult to understand. Your understanding is appreciated. Additionally, please note that this project currently does not support English.
+
+
+
 <div align="center">
 
 # 点鸣魔方 
@@ -37,7 +48,6 @@
 - [ ] 条件模式
 ## 制作人员
 - [哈阿斯(haaa4)](https://github.com/haaa4)
-> 期待您的加入...
 ## 开始
 **请保证您的电脑满足以下要求**
 - Windows 10及以上
@@ -46,9 +56,11 @@
 ## 调试
 在**关于**界面上，重复点击上方图片可输入调试密码，打开对应的调试功能。**请注意：调试所造成的任何后果作者均不负责，同时调试引起的各种Bug不在修复范围内**
 ### 调试密码
-- **自动流程调试**:`0d612c12d2ac33625bf3e0351b6f5e4f73829fa8`
-- **崩溃调试**:`c53d2f1a9a8499bcb477be56c31caa5c76ae60f5`
-- **因子模式调试**:`7a7bc4496e501462270ce7f6f8023c96d32098d8`
+| 项目 | 密码 |
+| :------: | :------------------------: |
+| **自动流程调试** | `0d612c12d2ac33625bf3e0351b6f5e4f73829fa8` |
+| **崩溃调试**     | `c53d2f1a9a8499bcb477be56c31caa5c76ae60f5` |
+| **因子模式调试** | `7a7bc4496e501462270ce7f6f8023c96d32098d8` |
 ## 遇到问题&需要反馈
 你可以通过以下方式
 
@@ -66,3 +78,4 @@
 - 本软件不定时更新
 - 作者还是**初中生**，请不要施压
 - 作者写该程序只为锻炼自己，不为别的
+- 该项目暂无计划支持32位系统
