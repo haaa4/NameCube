@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using NameCube.FirstUse;
+using NameCube.Setting.Debug;
 using Serilog; // 添加Serilog引用
 
 namespace NameCube.Setting
@@ -232,8 +233,8 @@ namespace NameCube.Setting
 
         private void Button_Click_7(object sender, RoutedEventArgs e)
         {
-            NewVersionWindow newVersionWindow = new NewVersionWindow();
-            newVersionWindow.Show();
+            Whell whell= new Whell();
+            whell.ShowDialog();
         }
     }
 }

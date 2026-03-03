@@ -54,6 +54,6 @@
         <ui:Button
     Margin="10,0,0,0"
     Click="Button_Click_7"  
-    Content="打开新版本介绍" />
+    Content="Open whell" />
     </StackPanel>
 </Page>

@@ -136,6 +136,10 @@
     <Compile Include="Mode\Home.xaml.cs">
       <DependentUpon>Home.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Mode\MemoryFactorChildrenPage\CircularPanel.cs" />
+    <Compile Include="Mode\MemoryFactorChildrenPage\Wheel.xaml.cs">
+      <DependentUpon>Wheel.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Mode\MemoryMode.xaml.cs">
       <DependentUpon>MemoryMode.xaml</DependentUpon>
     </Compile>
@@ -150,6 +154,10 @@
     </Compile>
     <Compile Include="Setting\DebugPage.xaml.cs">
       <DependentUpon>DebugPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Setting\Debug\CircularPanel.cs" />
+    <Compile Include="Setting\Debug\Whell.xaml.cs">
+      <DependentUpon>Whell.xaml</DependentUpon>
     </Compile>
     <Compile Include="Setting\LogSetting.xaml.cs">
       <DependentUpon>LogSetting.xaml</DependentUpon>
@@ -329,6 +337,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Mode\MemoryFactorChildrenPage\Wheel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Mode\MemoryMode.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -346,6 +358,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Setting\DebugPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Setting\Debug\Whell.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

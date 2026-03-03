@@ -105,7 +105,6 @@ namespace NameCube.Setting
             {
                 // 处理异常（如权限不足）
                 _logger.Error(ex, "启用自启动失败");
-                Debug.WriteLine($"启用自启动失败: {ex.Message}");
             }
         }
 
@@ -128,7 +127,6 @@ namespace NameCube.Setting
             catch (Exception ex)
             {
                 _logger.Error(ex, "禁用自启动失败");
-                Debug.WriteLine($"禁用自启动失败: {ex.Message}");
             }
         }
 
