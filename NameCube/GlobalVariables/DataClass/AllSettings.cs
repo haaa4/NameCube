@@ -120,5 +120,6 @@ namespace NameCube.GlobalVariables.DataClass
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
         public int LogLevel { get; set; } = 1;
+        //画一下新版本导览图
     }
 }

@@ -1,13 +1,14 @@
 ﻿using Masuit.Tools.Logging;
 using Microsoft.Toolkit.Uwp.Notifications;
 using NameCube.ToolBox.AutomaticProcessPages;
+using Serilog;  // 添加Serilog命名空间
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
-using Serilog;  // 添加Serilog命名空间
 
 namespace NameCube
 {
@@ -30,7 +31,7 @@ namespace NameCube
                         Log.Information("获取到最新版本: {LatestVersion}，检查时间: {CheckTime}",
                             GetVersion, DateTime.Now.ToString("s"));
 
-                        if (GetVersion != GlobalVariablesData.VERSION)
+                        if (ExtractVersionCode(GetVersion) > GlobalVariablesData.VERSIONCODE)
                         {
                             Log.Information("发现新版本: {LatestVersion}，当前版本: {CurrentVersion}，显示通知",
                                 GetVersion, GlobalVariablesData.VERSION);
@@ -40,11 +41,13 @@ namespace NameCube
                                     .AddText("点鸣魔方")
                                     .AddText("检测到最新版本:" + GetVersion + "。请前往设置->更新处查看")
                                     .Show();
+                            GlobalVariablesData.config.AllSettings.newVersion = GetVersion;
                         }
                         else
                         {
                             Log.Debug("当前已是最新版本: {CurrentVersion}", GlobalVariablesData.VERSION);
                         }
+                        GlobalVariablesData.config.AllSettings.UpdataTime = DateTime.Now.ToString("f");
                     }
                     catch (Exception ex)
                     {
@@ -78,6 +81,28 @@ namespace NameCube
             {
                 Log.Error(ex, "运行自动进程时发生错误");
             }
+        }
+        public static int ExtractVersionCode(string input)
+        {
+            if (string.IsNullOrEmpty(input))
+                throw new ArgumentException("输入字符串不能为空。");
+
+            // 正则表达式解释：
+            // \( 匹配左括号
+            // # 匹配井号
+            // [^#]* 匹配任意非#字符（如p或r）
+            // (\d+) 捕获一组数字
+            // # 匹配井号
+            // \) 匹配右括号
+            string pattern = @"\(#[^#]*(\d+)#\)";
+            Match match = Regex.Match(input, pattern);
+
+            if (match.Success)
+            {
+                return int.Parse(match.Groups[1].Value);
+            }
+
+            throw new ArgumentException("输入字符串中未找到有效的版本代码格式。");
         }
     }
 }

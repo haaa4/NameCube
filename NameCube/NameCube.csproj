@@ -154,6 +154,9 @@
     <Compile Include="Setting\LogSetting.xaml.cs">
       <DependentUpon>LogSetting.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Setting\UpdateGuide\UpdateGuideWindow.xaml.cs">
+      <DependentUpon>UpdateGuideWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WarningWindows\ErrorWindow.xaml.cs">
       <DependentUpon>ErrorWindow.xaml</DependentUpon>
     </Compile>
@@ -347,6 +350,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Setting\LogSetting.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Setting\UpdateGuide\UpdateGuideWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -576,6 +583,7 @@
     <None Include="app.manifest" />
     <None Include="attention.md" />
     <Resource Include="Fonts\MiSans-Medium.ttf" />
+    <EmbeddedResource Include="MarkDown\NewVersion.md" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -731,10 +739,18 @@
     <None Include="Image\V1.3 Beta-1.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Image\fKiaOuWUr.png" />
+    <None Include="Image\V1.3 Beta-2.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Image\V1.3 Beta-2.png" />
+    <Resource Include="Image\SerialNumber\1st.png" />
+    <Resource Include="Image\SerialNumber\2nd.png" />
+    <Resource Include="Image\SerialNumber\3rd.png" />
+    <Resource Include="Image\SerialNumber\4th.png" />
+    <Resource Include="Image\SerialNumber\5th.png" />
+    <Resource Include="Image\SerialNumber\finish.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\V1.3 Beta-3.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

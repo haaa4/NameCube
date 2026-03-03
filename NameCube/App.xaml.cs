@@ -36,7 +36,7 @@ namespace NameCube
             }
             base.OnStartup(e);
         }
-        
+
         Mutex mutex;
 
         public App()
@@ -231,6 +231,24 @@ namespace NameCube
                 {
                     Log.Debug("NameCube模式不为0，显示主窗口");
                     mainWindow.ShowThisWindow();
+                }
+                if(File.Exists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory,"Update", "START")))
+                {
+                    // 如果存在START文件，说明更新过程中发生了错误，显示更新错误窗口
+                    File.Delete(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Update", "START"));
+                    Log.Debug("删除START标记文件,并报错");
+                    NameCube.Setting.UpdateGuide.UpdateGuideWindow updateGuideWindow = new NameCube.Setting.UpdateGuide.UpdateGuideWindow("Error");
+                    updateGuideWindow.Show();
+                    updateGuideWindow.Activate();
+                }
+                if (File.Exists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Update", "FINISH")))
+                {
+                    // 如果存在FINISH文件，说明更新过程中发生了错误，显示更新错误窗口
+                    File.Delete(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Update", "FINISH"));
+                    Log.Debug("删除FINISH标记文件,并处理多余文件");
+                    NameCube.Setting.UpdateGuide.UpdateGuideWindow updateGuideWindow = new NameCube.Setting.UpdateGuide.UpdateGuideWindow("Finish");
+                    updateGuideWindow.Show();
+                    updateGuideWindow.Activate();
                 }
                 InitializeSerilogAgain();
                 Notify notify = new Notify();

@@ -1,36 +1,37 @@
 ﻿using Masuit.Tools.Files;
+using Masuit.Tools.Net;
+using Microsoft.Toolkit.Uwp.Notifications;
 using Microsoft.Win32;
+using NameCube.Function;
+using Serilog; // 添加Serilog引用
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Net.NetworkInformation;
+using System.Reflection;
 using System.Runtime.Remoting.Contexts;
 using System.Text;
-using NameCube.Function;
+using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Path = System.IO.Path;
-using File = System.IO.File;
-using System.Reflection;
-using System.Diagnostics;
-using Microsoft.Toolkit.Uwp.Notifications;
-using System.Threading;
-using Masuit.Tools.Net;
-using System.Net.Http;
-using System.Net;
-using System.Windows.Forms;
 using Application = System.Windows.Application;
+using File = System.IO.File;
 using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
-using Serilog; // 添加Serilog引用
+using Path = System.IO.Path;
 
 namespace NameCube.Setting
 {
@@ -109,7 +110,7 @@ namespace NameCube.Setting
 
                 GlobalVariablesData.config.AllSettings.UpdataTime = DateTime.Now.ToString("f");
 
-                if (GetVersion != GlobalVariablesData.VERSION)
+                if (ExtractVersionCode(GetVersion) > GlobalVariablesData.VERSIONCODE)
                 {
                     NowProgressBar.IsIndeterminate = false;
                     NowProgressBar.Value = NowProgressBar.Maximum;
@@ -137,16 +138,16 @@ namespace NameCube.Setting
             catch (Exception ex)
             {
                 _logger.Error(ex, "检查更新时发生异常");
-                SnackBarFunction.ShowSnackBarInSettingWindow(ex.Message,Wpf.Ui.Controls.ControlAppearance.Caution);
+                SnackBarFunction.ShowSnackBarInSettingWindow(ex.Message, Wpf.Ui.Controls.ControlAppearance.Caution);
                 NowProgressBar.IsIndeterminate = false;
                 CheckButton.IsEnabled = true;
                 CaseText.Text = "检查更新失败";
             }
         }
 
-       
 
-        
+
+
         private void UpdataWayComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (Canchange)
@@ -206,26 +207,15 @@ namespace NameCube.Setting
 
                 GlobalVariablesData.config.AllSettings.UpdataTime = DateTime.Now.ToString("f");
 
-                if (GetVersion != GlobalVariablesData.VERSION)
-                {
-                    NowProgressBar.IsIndeterminate = false;
-                    NowProgressBar.Value = NowProgressBar.Maximum;
-                    CaseText.Text = "检测到新的版本：" + GetVersion;
-                    GlobalVariablesData.config.AllSettings.newVersion = GetVersion;
-                    GlobalVariablesData.SaveConfig();
-                    UpkButton.IsEnabled = true;
-                    CheckText.Text = "上次检查时间:" + GlobalVariablesData.config.AllSettings.UpdataTime;
+                NowProgressBar.IsIndeterminate = false;
+                NowProgressBar.Value = NowProgressBar.Maximum;
+                CaseText.Text = "检测到新的版本：" + GetVersion;
+                GlobalVariablesData.config.AllSettings.newVersion = GetVersion;
+                GlobalVariablesData.SaveConfig();
+                UpkButton.IsEnabled = true;
+                CheckText.Text = "上次检查时间:" + GlobalVariablesData.config.AllSettings.UpdataTime;
 
-                    _logger.Information("发现新版本: {NewVersion}, 当前版本: {CurrentVersion}", GetVersion, GlobalVariablesData.VERSION);
-                }
-                else
-                {
-                    GlobalVariablesData.config.AllSettings.newVersion = null;
-                    GlobalVariablesData.SaveConfig();
-                    CaseText.Text = "已是最新版本";
-                    CheckText.Text = "上次检查时间:" + GlobalVariablesData.config.AllSettings.UpdataTime;
-                    _logger.Information("已是最新版本: {CurrentVersion}", GlobalVariablesData.VERSION);
-                }
+                _logger.Information("发现新版本: {NewVersion}, 当前版本: {CurrentVersion}", GetVersion, GlobalVariablesData.VERSION);
 
                 NowProgressBar.IsIndeterminate = false;
                 CheckButton.IsEnabled = true;
@@ -240,5 +230,93 @@ namespace NameCube.Setting
                 CaseText.Text = "检查更新失败";
             }
         }
+
+        private async void CardAction_Click(object sender, RoutedEventArgs e)
+        {
+            _logger.Information("开始强制更新");
+            CaseText.Text = "获取最新版本中...";
+            NowProgressBar.IsIndeterminate = true;
+            CheckButton.IsEnabled = false;
+            UpkButton.IsEnabled = false;
+
+            string GetVersion = "";
+            try
+            {
+                if (GlobalVariablesData.config.AllSettings.token == "" || GlobalVariablesData.config.AllSettings.token == null)
+                {
+                    _logger.Debug("使用匿名方式检查更新");
+                    GetVersion = await GithubData.GetLatestReleaseVersionAsync("haaa4", "NameCube");
+                }
+                else
+                {
+                    _logger.Debug("使用Token方式检查更新");
+                    GetVersion = await GithubData.GetLatestReleaseVersionAsync("haaa4", "NameCube", GlobalVariablesData.config.AllSettings.token);
+                }
+
+                GlobalVariablesData.config.AllSettings.UpdataTime = DateTime.Now.ToString("f");
+
+
+                NowProgressBar.IsIndeterminate = false;
+                NowProgressBar.Value = NowProgressBar.Maximum;
+                CaseText.Text = "检测到新的版本：" + GetVersion;
+                GlobalVariablesData.config.AllSettings.newVersion = GetVersion;
+                GlobalVariablesData.SaveConfig();
+                UpkButton.IsEnabled = true;
+                CheckText.Text = "上次检查时间:" + GlobalVariablesData.config.AllSettings.UpdataTime;
+
+                _logger.Information("发现版本: {NewVersion}, 当前版本: {CurrentVersion}", GetVersion, GlobalVariablesData.VERSION);
+
+                NowProgressBar.IsIndeterminate = false;
+                CheckButton.IsEnabled = true;
+
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex, "检查更新时发生异常");
+                SnackBarFunction.ShowSnackBarInSettingWindow(ex.Message, Wpf.Ui.Controls.ControlAppearance.Caution);
+                NowProgressBar.IsIndeterminate = false;
+                CheckButton.IsEnabled = true;
+                CaseText.Text = "检查更新失败";
+            }
+        }
+
+        private void UpkButton_Click(object sender, RoutedEventArgs e)
+        {
+            var updataGuideWindow = Application.Current.Windows.OfType<UpdateGuide.UpdateGuideWindow>().FirstOrDefault();
+            if (updataGuideWindow == null)
+            {
+                updataGuideWindow = new UpdateGuide.UpdateGuideWindow(GlobalVariablesData.config.AllSettings.newVersion);
+                updataGuideWindow.Show();
+                updataGuideWindow.Activate();
+            }
+            else
+            {
+                MessageBoxFunction.ShowMessageBoxWarning("更新向导已经打开了哦");
+            }
+
+        }
+        public static int ExtractVersionCode(string input)
+        {
+            if (string.IsNullOrEmpty(input))
+                throw new ArgumentException("输入字符串不能为空。");
+
+            // 正则表达式解释：
+            // \( 匹配左括号
+            // # 匹配井号
+            // [^#]* 匹配任意非#字符（如p或r）
+            // (\d+) 捕获一组数字
+            // # 匹配井号
+            // \) 匹配右括号
+            string pattern = @"\(#[^#]*(\d+)#\)";
+            Match match = Regex.Match(input, pattern);
+
+            if (match.Success)
+            {
+                return int.Parse(match.Groups[1].Value);
+            }
+
+            throw new ArgumentException("输入字符串中未找到有效的版本代码格式。");
+        }
+
     }
 }

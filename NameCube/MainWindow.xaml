@@ -126,7 +126,7 @@
             <TextBlock 
                 x:Name="VersionTextBlock"
                 FontSize="12"
-                Text="{Binding verson}"
+                Text="{Binding version}"
                 ToolTip="当前软件版本"/>
         </Border>
 
@@ -228,7 +228,7 @@
                         <TextBlock 
                             x:Name="AppVersionTextBlock"
                             FontSize="12"
-                            Text="{Binding verson}"
+                            Text="{Binding version}"
                             ToolTip="点击查看更新信息"/>
                     </StackPanel>
                 </StackPanel>
@@ -343,7 +343,7 @@
                         FontSize="12"
                         Foreground="White"
                         Opacity="0.6"
-                        Text="{Binding verson}"
+                        Text="{Binding version}"
                         HorizontalAlignment="Center"
                         Margin="0,20,0,0"/>
                 </StackPanel>

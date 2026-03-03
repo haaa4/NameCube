@@ -209,7 +209,7 @@ namespace NameCube.Setting
                 shortcut.TargetPath = appPath;
                 shortcut.WorkingDirectory = Path.GetDirectoryName(appPath);
                 shortcut.IconLocation = $"{appPath},0";
-                shortcut.Description = "抽学号，点名器";
+                shortcut.Description = "抽名字，点名器";
                 shortcut.Save();
 
                 SnackBarFunction.ShowSnackBarInSettingWindow("创建成功", Wpf.Ui.Controls.ControlAppearance.Success);

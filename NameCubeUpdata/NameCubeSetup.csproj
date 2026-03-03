@@ -7,7 +7,7 @@
     <ProjectGuid>{BC2134DD-155B-41B3-A257-E307F64EF267}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>NameCubeSetup</RootNamespace>
-    <AssemblyName>点鸣魔方 安装程序</AssemblyName>
+    <AssemblyName>NameCubeSetupX64</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -53,7 +53,18 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'X64|AnyCPU'">
     <OutputPath>bin\X64\</OutputPath>
   </PropertyGroup>
+  <PropertyGroup />
+  <PropertyGroup>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Interop.IWshRuntimeLibrary">
+      <HintPath>..\NameCube\obj\Release\Interop.IWshRuntimeLibrary.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.IO.Compression, Version=4.1.2.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
@@ -82,6 +93,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Settings.cs" />
+    <Compile Include="UpdateGuideWindow.xaml.cs">
+      <DependentUpon>UpdateGuideWindow.xaml</DependentUpon>
+    </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -94,6 +108,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="UpdateGuideWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -114,6 +132,7 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Packet\Packet.zip" />
+    <None Include="app.manifest" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -137,6 +156,27 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Image\icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\SerialNumber\1st.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\SerialNumber\2nd.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\SerialNumber\3rd.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\SerialNumber\4th.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\SerialNumber\5th.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\SerialNumber\finish.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="icon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

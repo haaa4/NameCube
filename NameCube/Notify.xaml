@@ -61,7 +61,7 @@
                 Grid.ColumnSpan="2"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
-                FontSize="20"
+                FontSize="15"
                 Text="Unkown" />
         </Grid>
         <ui:Button

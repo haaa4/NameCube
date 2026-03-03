@@ -13,7 +13,7 @@
     mc:Ignorable="d">
 
     <Grid>
-        <StackPanel Margin="0,0,0,-182">
+        <StackPanel>
             <TextBlock
         HorizontalAlignment="Center"
         FontSize="30"
@@ -46,15 +46,15 @@
         Appearance="Primary"
         Click="CheckButton_Click"
         Content="检查更新"
-        FontWeight="Black" 
-                IsEnabled="False"/>
+        FontWeight="Black" />
             <ui:Button
 x:Name="UpkButton"
 Margin="10,0,0,10"
 Appearance="Primary"
 Content="启动更新引导"
         IsEnabled="False"
-FontWeight="Black" />
+FontWeight="Black" 
+                Click="UpkButton_Click"/>
             <ui:CardControl
         Margin="4"
         Padding="20,10,20,10"

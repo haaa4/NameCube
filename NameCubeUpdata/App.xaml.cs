@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NameCubeSetup;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -15,7 +16,18 @@ namespace NameCubeUpdata
     {
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-          
+            if (e.Args.Length > 0 && e.Args[0] == "UpdateMode")
+            {
+                // 如果启动参数包含 "UpdateMode"，则直接打开更新窗口
+                UpdateGuideWindow updateWindow = new UpdateGuideWindow();
+                updateWindow.Show();
+            }
+            else
+            {
+                // 否则正常启动应用程序
+                MainWindow mainWindow = new MainWindow();
+                mainWindow.Show();
+            }
         }
     }
 }

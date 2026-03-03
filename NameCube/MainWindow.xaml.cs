@@ -39,7 +39,7 @@ namespace NameCube
         private const int WM_KEYDOWN = 0x0100;
         private const int WM_SYSKEYDOWN = 0x0104;
         public bool CanUseShortCutKey = true;
-        public string verson { get; set; }
+        public string version { get; set; }
         [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         private static extern IntPtr SetWindowsHookEx(
             int idHook,
@@ -203,12 +203,12 @@ namespace NameCube
                 this.DataContext= this;
                 if(GlobalVariablesData.ISBETA)
                 {
-                    verson = "测试版:" + GlobalVariablesData.VERSION;
+                    version = "测试版:" + GlobalVariablesData.VERSION;
                 }
                 else
                 {
 #pragma warning disable CS0162 // 检测到无法访问的代码
-                    verson = "正式版:" + GlobalVariablesData.VERSION;
+                    version = "正式版:" + GlobalVariablesData.VERSION;
 #pragma warning restore CS0162 // 检测到无法访问的代码
                 }
                     Log.Information("主窗口初始化完成");
@@ -688,23 +688,6 @@ namespace NameCube
             catch (Exception ex)
             {
                 Log.Error(ex, "显示主窗口时发生错误");
-            }
-        }
-
-        private void CleanupEventHandlers(Storyboard storyboard)
-        {
-            try
-            {
-                if (storyboard != null)
-                {
-                    storyboard.Stop();
-                    storyboard.Remove();
-                    Log.Debug("清理故事板事件处理器");
-                }
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex, "清理故事板事件处理器时发生错误");
             }
         }
 

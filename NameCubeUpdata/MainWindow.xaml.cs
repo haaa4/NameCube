@@ -1,10 +1,12 @@
-﻿using System;
+﻿using IWshRuntimeLibrary;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -21,6 +23,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Application = System.Windows.Application;
+using File = System.IO.File;
 using Path = System.IO.Path;
 using Timer = System.Timers.Timer;
 
@@ -278,6 +281,12 @@ namespace NameCubeUpdata
                         progressBar.Value = (int)(percent * 100);
                     }));
                     File.Delete(file + "\\NameCube.zip");
+                    if(updateMode==1)
+                    {
+                        //快速安装模式创建桌面快捷方式
+                        CreateDesktopShortcut(file + "\\点鸣魔方.exe");
+
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -319,6 +328,55 @@ namespace NameCubeUpdata
                 Process.Start(file + "\\点鸣魔方.exe");
             }
             Application.Current.Shutdown();
+        }
+        public static bool CreateDesktopShortcut(string app)
+        {
+            WshShell shell = null;
+            try
+            {
+                string desktop = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
+                string shortcutPath = Path.Combine(desktop, "点鸣魔方.lnk");
+                string appPath = app;
+                string startMenuFolder = Environment.GetFolderPath(Environment.SpecialFolder.StartMenu);
+                string shortcutStartPath = System.IO.Path.Combine(startMenuFolder, "Programs", "点鸣魔方" + ".lnk");
+
+                if (!System.IO.File.Exists(appPath))
+                {
+                    throw new FileNotFoundException("应用程序路径无效");
+                }
+
+                shell = new WshShell();
+                IWshShortcut shortcut = (IWshShortcut)shell.CreateShortcut(shortcutPath);
+                IWshShortcut shortcutStart = (IWshShortcut)shell.CreateShortcut(shortcutStartPath);
+                shortcut.TargetPath = appPath;
+                shortcutStart.TargetPath = appPath;
+                shortcut.WorkingDirectory = Path.GetDirectoryName(appPath);
+                shortcutStart.WorkingDirectory = Path.GetDirectoryName(appPath);
+                shortcut.IconLocation = $"{appPath},0";
+                shortcut.Description = "抽名字，点名器";
+                shortcut.Save();
+                shortcutStart.IconLocation = $"{appPath},0";
+                shortcutStart.Description = "抽名字，点名器";
+                shortcutStart.Save();
+
+
+                return true;
+            }
+            catch (COMException comEx)
+            {
+
+                return false;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+            finally
+            {
+                // 可选：手动释放 COM 对象
+                if (shell != null)
+                    Marshal.ReleaseComObject(shell);
+            }
         }
     }
 }
