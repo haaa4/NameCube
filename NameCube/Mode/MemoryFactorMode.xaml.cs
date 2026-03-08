@@ -628,7 +628,7 @@ namespace NameCube.Mode
                         int getRandomAdd = random.StrictNext(10) + 1;
                         memoryFactorModeSettingsJson.otherSettings.MaxTimes += getRandomAdd;
                         FloorAdd.Text = getRandomAdd.ToString();
-                        incidentName.Text = "保底事件";
+                        incidentName.Text = "激活事件";
                         FloorAddPart.Visibility = Visibility.Visible;
                     }
                     // 在关键位置添加日志
@@ -1293,6 +1293,7 @@ namespace NameCube.Mode
                         }
                     }
                     memoryFactorModeSettingsJson.thisModeJson[index].Factor = 0;
+                    SetFactor(data, 0);
                     if(data==memoryFactorModeSettingsJson.otherSettings.MaxName)
                     {
                         var hideStoryBoard = FindResource("FrameHide") as Storyboard;

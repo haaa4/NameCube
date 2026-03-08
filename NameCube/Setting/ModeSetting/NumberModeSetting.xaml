@@ -8,7 +8,7 @@
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     Title="NumberModeSetting"
     d:DesignHeight="450"
-    d:DesignWidth="800"
+    d:DesignWidth="800"     FontFamily="{StaticResource AppFont}"
     mc:Ignorable="d">
 
     <StackPanel>

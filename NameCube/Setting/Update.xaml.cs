@@ -76,7 +76,7 @@ namespace NameCube.Setting
                 UpkButton.IsEnabled = true;
                 _logger.Information("检测到新版本: {NewVersion}", GlobalVariablesData.config.AllSettings.newVersion);
             }
-
+            UpdataWayGetComboBox.SelectedIndex = GlobalVariablesData.config.AllSettings.DownloadWay;
             _logger.Information("更新设置加载完成，当前版本: {Version}, 自动更新: {AutoUpdate}, 更新方式: {UpdateWay}",
                 GlobalVariablesData.VERSION,
                 GlobalVariablesData.config.StartToDo.AutoUpdata,
@@ -100,12 +100,26 @@ namespace NameCube.Setting
                 if (GlobalVariablesData.config.AllSettings.token == "" || GlobalVariablesData.config.AllSettings.token == null)
                 {
                     _logger.Debug("使用匿名方式检查更新");
-                    GetVersion = await GithubData.GetLatestReleaseVersionAsync("haaa4", "NameCube");
+                    if(GlobalVariablesData.config.AllSettings.DownloadWay==0)
+                    {
+                        GetVersion = await GithubData.GetLatestReleaseVersionAsync("haaa4", "NameCube");
+                    }
+                    else
+                    {
+                        GetVersion = await GiteeData.GerVersion();
+                    }
                 }
                 else
                 {
                     _logger.Debug("使用Token方式检查更新");
-                    GetVersion = await GithubData.GetLatestReleaseVersionAsync("haaa4", "NameCube", GlobalVariablesData.config.AllSettings.token);
+                    if (GlobalVariablesData.config.AllSettings.DownloadWay == 0)
+                    {
+                        GetVersion = await GithubData.GetLatestReleaseVersionAsync("haaa4", "NameCube", GlobalVariablesData.config.AllSettings.token);
+                    }
+                    else
+                    {
+                        GetVersion = await GiteeData.GerVersion();
+                    }
                 }
 
                 GlobalVariablesData.config.AllSettings.UpdataTime = DateTime.Now.ToString("f");
@@ -245,17 +259,30 @@ namespace NameCube.Setting
                 if (GlobalVariablesData.config.AllSettings.token == "" || GlobalVariablesData.config.AllSettings.token == null)
                 {
                     _logger.Debug("使用匿名方式检查更新");
-                    GetVersion = await GithubData.GetLatestReleaseVersionAsync("haaa4", "NameCube");
+                    if (GlobalVariablesData.config.AllSettings.DownloadWay == 0)
+                    {
+                        GetVersion = await GithubData.GetLatestReleaseVersionAsync("haaa4", "NameCube");
+                    }
+                    else
+                    {
+                        GetVersion = await GiteeData.GerVersion();
+                    }
                 }
                 else
                 {
                     _logger.Debug("使用Token方式检查更新");
-                    GetVersion = await GithubData.GetLatestReleaseVersionAsync("haaa4", "NameCube", GlobalVariablesData.config.AllSettings.token);
+                    if (GlobalVariablesData.config.AllSettings.DownloadWay == 0)
+                    {
+                        GetVersion = await GithubData.GetLatestReleaseVersionAsync("haaa4", "NameCube", GlobalVariablesData.config.AllSettings.token);
+                    }
+                    else
+                    {
+                        GetVersion = await GiteeData.GerVersion();
+                    }
+
+                    GlobalVariablesData.config.AllSettings.UpdataTime = DateTime.Now.ToString("f");
+
                 }
-
-                GlobalVariablesData.config.AllSettings.UpdataTime = DateTime.Now.ToString("f");
-
-
                 NowProgressBar.IsIndeterminate = false;
                 NowProgressBar.Value = NowProgressBar.Maximum;
                 CaseText.Text = "检测到新的版本：" + GetVersion;
@@ -318,5 +345,13 @@ namespace NameCube.Setting
             throw new ArgumentException("输入字符串中未找到有效的版本代码格式。");
         }
 
+        private void UpdataWayGetComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if(Canchange)
+            {
+                GlobalVariablesData.config.AllSettings.DownloadWay=UpdataWayGetComboBox.SelectedIndex ;
+                GlobalVariablesData.SaveConfig();
+            }
+        }
     }
 }

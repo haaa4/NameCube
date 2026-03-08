@@ -11,7 +11,7 @@ using System.Windows;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("哈阿斯")]
 [assembly: AssemblyProduct("NameCube")]
-[assembly: AssemblyCopyright("None")]
+[assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -47,6 +47,6 @@ using System.Windows;
 //      生成号
 //      修订号
 //
-[assembly: AssemblyVersion("1.2.3.0")]
-[assembly: AssemblyFileVersion("1.2.3.0")]
+[assembly: AssemblyVersion("1.2.4.0")]
+[assembly: AssemblyFileVersion("1.2.4.0")]
 [assembly: NeutralResourcesLanguage("zh")]

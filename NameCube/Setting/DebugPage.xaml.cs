@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using NameCube.FirstUse;
+using NameCube.Function;
 using NameCube.Setting.Debug;
 using Serilog; // 添加Serilog引用
 
@@ -233,8 +234,14 @@ namespace NameCube.Setting
 
         private void Button_Click_7(object sender, RoutedEventArgs e)
         {
-            Whell whell= new Whell();
-            whell.ShowDialog();
+            Whell wheel= new Whell();
+            wheel.ShowDialog();
+        }
+
+        private void Button_Click_8(object sender, RoutedEventArgs e)
+        {
+            string[] get = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceNames();
+            MessageBoxFunction.ShowMessageBoxInfo("OK");
         }
     }
 }

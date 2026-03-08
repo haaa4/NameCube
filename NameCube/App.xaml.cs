@@ -250,6 +250,10 @@ namespace NameCube
                     updateGuideWindow.Show();
                     updateGuideWindow.Activate();
                 }
+                if(GlobalVariablesData.config.AllSettings.newVersion==GlobalVariablesData.VERSION)
+                {
+                    GlobalVariablesData.config.AllSettings.newVersion = null;
+                }
                 InitializeSerilogAgain();
                 Notify notify = new Notify();
                 Log.Information("应用程序启动完成");
@@ -402,11 +406,12 @@ namespace NameCube
         {
             try
             {
-                Directory.CreateDirectory("user\\Bird_data\\Image");
-                Directory.CreateDirectory("user\\Mode_data\\MemoryFactoryMode");
-                Directory.CreateDirectory("user\\Mode_data\\MemoryMode\\permanent");
-                Directory.CreateDirectory("user\\Mode_data\\MemoryMode\\temporary");
-                Directory.CreateDirectory("user\\Music");
+                string baseDir = AppDomain.CurrentDomain.BaseDirectory;
+                Directory.CreateDirectory(baseDir+"\\user\\Bird_data\\Image");
+                Directory.CreateDirectory(baseDir+"\\user\\Mode_data\\MemoryFactoryMode");
+                Directory.CreateDirectory(baseDir+"\\user\\Mode_data\\MemoryMode\\permanent");
+                Directory.CreateDirectory(baseDir+"\\user\\Mode_data\\MemoryMode\\temporary");
+                Directory.CreateDirectory(baseDir+"\\user\\Music");
                 Log.Debug("用户数据文件夹初始化完成");
             }
             catch (Exception ex)

@@ -105,6 +105,7 @@
       <DependentUpon>NewVersionWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Function\AppFunction.cs" />
+    <Compile Include="Function\GiteeData.cs" />
     <Compile Include="Function\MessageBoxFunction.cs" />
     <Compile Include="GlobalVariables\Data.cs" />
     <Compile Include="FirstUse\BirdSettings.xaml.cs">
@@ -135,6 +136,9 @@
     <Compile Include="GlobalVariables\DataClass\StartToDo.cs" />
     <Compile Include="Mode\Home.xaml.cs">
       <DependentUpon>Home.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Mode\HomeChildrenPage\Photos.xaml.cs">
+      <DependentUpon>Photos.xaml</DependentUpon>
     </Compile>
     <Compile Include="Mode\MemoryFactorChildrenPage\CircularPanel.cs" />
     <Compile Include="Mode\MemoryFactorChildrenPage\Wheel.xaml.cs">
@@ -334,6 +338,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Mode\Home.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Mode\HomeChildrenPage\Photos.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -766,7 +774,12 @@
     <Resource Include="Image\SerialNumber\finish.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Image\V1.3 Beta-3.png" />
+    <None Include="Image\V1.3 Beta-3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Image\HeadMap\Photo1.png" />
+    <EmbeddedResource Include="Image\HeadMap\Photo2.png" />
+    <EmbeddedResource Include="Image\HeadMap\Photo3.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

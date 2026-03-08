@@ -45,6 +45,7 @@ namespace NameCube.Mode.MemoryFactorChildrenPage
             {
                 this.speechSynthesizer = speechSynthesizer;
             }
+            ResultTextBlock.Foreground = GlobalVariablesData.config.AllSettings.color;
         }
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)

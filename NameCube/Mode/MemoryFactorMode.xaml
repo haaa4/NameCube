@@ -721,7 +721,7 @@
                                     VerticalAlignment="Center"
                                     Cursor=""
                                     FontSize="36"
-                                    Text="保底次数额外增加"
+                                    Text="激活程度额外增加"
                                     TextWrapping="Wrap" />
                                 <TextBlock
                                     x:Name="FloorAdd"

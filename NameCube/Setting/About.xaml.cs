@@ -80,10 +80,10 @@ namespace NameCube.Setting
                                     SnackBarFunction.ShowSnackBarInSettingWindow("自动流程Debug模式已开启", ControlAppearance.Success);
                                     break;
                                 case "c53d2f1a9a8499bcb477be56c31caa5c76ae60f5":
-                                    Log.Information("开启崩溃调试模式");
+                                    Log.Information("开启开发者调试");
                                     GlobalVariablesData.config.AllSettings.debug = true;
                                     GlobalVariablesData.SaveConfig();
-                                    SnackBarFunction.ShowSnackBarInSettingWindow("崩溃调试已开启", ControlAppearance.Success);
+                                    SnackBarFunction.ShowSnackBarInSettingWindow("开发者调试已开启", ControlAppearance.Success);
                                     break;
                                 case "7a7bc4496e501462270ce7f6f8023c96d32098d8":
                                     Log.Information("开启因子模式调试模式");

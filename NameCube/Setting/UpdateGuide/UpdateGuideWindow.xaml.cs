@@ -97,7 +97,15 @@ namespace NameCube.Setting.UpdateGuide
             try
             {
                 Directory.CreateDirectory(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Update"));
-                await DownloadFileAsync("https://github.com/haaa4/NameCube/releases/download/" + url + "/NameCubeSetupX64.exe", localPath);
+                if(GlobalVariablesData.config.AllSettings.DownloadWay==0)
+                {
+                    await DownloadFileAsync("https://github.com/haaa4/NameCube/releases/download/" + url + "/NameCubeSetupX64.exe", localPath);
+                }
+                else
+                {
+                    await DownloadFileAsync("https://gitee.com/haaa4/NameCube/releases/download/" + url + "/NameCubeSetupX64.exe", localPath);
+                }
+
             }
             catch (Exception ex)
             {

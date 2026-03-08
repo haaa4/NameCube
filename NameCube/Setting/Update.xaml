@@ -78,6 +78,30 @@ FontWeight="Black"
                 </ComboBox>
 
             </ui:CardControl>
+            <ui:CardControl
+Margin="4"
+Padding="20,10,20,10"
+Icon="{ui:SymbolIcon Symbol=ChevronCircleDown24}">
+                <ui:CardControl.Header>
+                    <StackPanel>
+                        <ui:TextBlock
+            Margin="0"
+            FontTypography="BodyStrong"
+            Text="更新通道"
+            TextWrapping="WrapWithOverflow" />
+                        <ui:TextBlock
+            Appearance="Secondary"
+            Text="Github版本较新，但连接不稳定，Gitee连接稳定，但版本较旧"
+            TextWrapping="WrapWithOverflow" />
+                    </StackPanel>
+                </ui:CardControl.Header>
+                <ComboBox x:Name="UpdataWayGetComboBox" SelectionChanged="UpdataWayGetComboBox_SelectionChanged">
+                    <ComboBoxItem Content="Github" />
+                    <ComboBoxItem Content="Gitee" />
+                </ComboBox>
+
+            </ui:CardControl>
+
             <ui:InfoBar
         x:Name="WarningInfo"
         Title="注意"

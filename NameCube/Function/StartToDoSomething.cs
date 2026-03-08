@@ -1,5 +1,6 @@
 ﻿using Masuit.Tools.Logging;
 using Microsoft.Toolkit.Uwp.Notifications;
+using NameCube.Function;
 using NameCube.ToolBox.AutomaticProcessPages;
 using Serilog;  // 添加Serilog命名空间
 using System;
@@ -26,9 +27,34 @@ namespace NameCube
                     string GetVersion = "";
                     try
                     {
-                        GetVersion = await GithubData.GetLatestReleaseVersionAsync("haaa4", "NameCube");
-                        GlobalVariablesData.config.AllSettings.UpdataTime = DateTime.Now.ToString("s");
-                        Log.Information("获取到最新版本: {LatestVersion}，检查时间: {CheckTime}",
+                            if (GlobalVariablesData.config.AllSettings.token == "" || GlobalVariablesData.config.AllSettings.token == null)
+                            {
+                                Log.Debug("使用匿名方式检查更新");
+                                if (GlobalVariablesData.config.AllSettings.DownloadWay == 0)
+                                {
+                                    GetVersion = await GithubData.GetLatestReleaseVersionAsync("haaa4", "NameCube");
+                                }
+                                else
+                                {
+                                    GetVersion = await GiteeData.GerVersion();
+                                }
+                            }
+                            else
+                            {
+                                Log.Debug("使用Token方式检查更新");
+                                if (GlobalVariablesData.config.AllSettings.DownloadWay == 0)
+                                {
+                                    GetVersion = await GithubData.GetLatestReleaseVersionAsync("haaa4", "NameCube", GlobalVariablesData.config.AllSettings.token);
+                                }
+                                else
+                                {
+                                    GetVersion = await GiteeData.GerVersion();
+                                }
+
+                                GlobalVariablesData.config.AllSettings.UpdataTime = DateTime.Now.ToString("f");
+
+                            }
+                            Log.Information("获取到最新版本: {LatestVersion}，检查时间: {CheckTime}",
                             GetVersion, DateTime.Now.ToString("s"));
 
                         if (ExtractVersionCode(GetVersion) > GlobalVariablesData.VERSIONCODE)

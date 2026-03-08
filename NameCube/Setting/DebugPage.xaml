@@ -55,5 +55,9 @@
     Margin="10,0,0,0"
     Click="Button_Click_7"  
     Content="Open whell" />
+        <ui:Button
+Margin="10,0,0,0"
+Click="Button_Click_8"  
+Content="获取资源" />
     </StackPanel>
 </Page>
