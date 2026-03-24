@@ -219,7 +219,11 @@ namespace NameCube
                 throw;
             }
         }
-
+        /// <summary>
+        /// 检查窗口置顶状态以及更新状态的定时器事件处理程序，确保窗口保持置顶状态（如果配置要求）
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Timer_Tick(object sender, System.EventArgs e)
         {
             try
@@ -233,6 +237,14 @@ namespace NameCube
             catch (Exception ex)
             {
                 Log.Error(ex, "窗口置顶检查定时器处理时发生错误");
+            }
+            if(GlobalVariablesData.config.AllSettings.newVersion==null)
+            {
+                UpdateWarn.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                UpdateWarn.Visibility = Visibility.Visible;
             }
         }
 

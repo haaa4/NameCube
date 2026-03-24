@@ -153,8 +153,8 @@ namespace NameCube
         /// 当前版本
         /// </summary>
         //Bro为什么这样写！！？
-        public const string VERSION = "V1.3_Beta-4(#p2#)";
-        public const int VERSIONCODE = 2;
+        public const string VERSION = "V1.3_Beta-5(#p3#)";
+        public const int VERSIONCODE = 3;
         public const bool ISBETA = true;
         public static bool ret = false;
     }

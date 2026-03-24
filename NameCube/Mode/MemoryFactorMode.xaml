@@ -1330,6 +1330,16 @@
                                     </ui:Flyout>
                                 </ui:FlyoutService.Flyout>
                             </ui:Button>
+                            <ui:Button
+                                x:Name="SynchronizationButton"
+                                Canvas.Left="17.162"
+                                Canvas.Top="426.386"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Top"
+                                Content="同步名单"
+                                Click="SynchronizationButton_Click"
+                                FontSize="12">
+                            </ui:Button>
                             <CheckBox
                                 x:Name="SpeechButton"
                                 VerticalAlignment="Top"
@@ -1358,7 +1368,11 @@
                     </ui:Flyout>
                 </ui:FlyoutService.Flyout>
             </ui:Button>
+            <ContentPresenter
+            x:Name="RootContentDialogPresenter" Width="1049" Height="595" Canvas.Left="0" Canvas.Top="0"
+ />
         </Canvas>
+
     </Viewbox>
 
 </Page>

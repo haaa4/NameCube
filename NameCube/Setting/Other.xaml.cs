@@ -33,15 +33,6 @@ namespace NameCube.Setting
             DisabledAnimationCheck.IsChecked = GlobalVariablesData.config.AllSettings.DisableTheDisplayAnimationOfTheMainWindow;
             MaxSizeCheck.IsChecked = GlobalVariablesData.config.AllSettings.DefaultToMaximumSize;
 
-            if (MaxSizeCheck.IsChecked.Value)
-            {
-                DisabledAnimationCardContorl.IsEnabled = false;
-            }
-            else
-            {
-                DisabledAnimationCardContorl.IsEnabled = true;
-            }
-
             if (GlobalVariablesData.config.AllSettings.Recommend == "None")
             {
                 RecommendCheck.IsChecked = true;
@@ -269,18 +260,8 @@ namespace NameCube.Setting
                 GlobalVariablesData.config.AllSettings.DefaultToMaximumSize = MaxSizeCheck.IsChecked.Value;
                 GlobalVariablesData.SaveConfig();
 
-                if (MaxSizeCheck.IsChecked.Value)
-                {
-                    DisabledAnimationCardContorl.IsEnabled = false;
-                    DisabledAnimationCheck.IsChecked = true;
-                    DisabledAnimationCheck_Click(null, null);
-                    _logger.Information("默认最大化已启用，同时禁用显示动画");
-                }
-                else
-                {
-                    DisabledAnimationCardContorl.IsEnabled = true;
-                    _logger.Information("默认最大化已禁用");
-                }
+                _logger.Information("默认最大化已改为{value}",MaxSizeCheck.IsChecked.Value);
+
             }
         }
     }

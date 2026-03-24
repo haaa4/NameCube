@@ -192,7 +192,7 @@ namespace NameCube.ToolBox.AutomaticProcessPages
             Log.Information("用户点击打开音频文件夹按钮");
             try
             {
-                Process.Start(musicPath);
+                Process.Start("explorer.exe", musicPath);
                 Log.Debug("已打开音频文件夹: {MusicPath}", musicPath);
             }
             catch (Exception ex)

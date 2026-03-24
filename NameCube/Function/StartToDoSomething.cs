@@ -1,5 +1,4 @@
 ﻿using Masuit.Tools.Logging;
-using Microsoft.Toolkit.Uwp.Notifications;
 using NameCube.Function;
 using NameCube.ToolBox.AutomaticProcessPages;
 using Serilog;  // 添加Serilog命名空间
@@ -61,17 +60,12 @@ namespace NameCube
                         {
                             Log.Information("发现新版本: {LatestVersion}，当前版本: {CurrentVersion}，显示通知",
                                 GetVersion, GlobalVariablesData.VERSION);
-                            new ToastContentBuilder()
-                                    .AddArgument("action", "viewConversation")
-                                    .AddArgument("conversationId", 9813)
-                                    .AddText("点鸣魔方")
-                                    .AddText("检测到最新版本:" + GetVersion + "。请前往设置->更新处查看")
-                                    .Show();
                             GlobalVariablesData.config.AllSettings.newVersion = GetVersion;
                         }
                         else
                         {
                             Log.Debug("当前已是最新版本: {CurrentVersion}", GlobalVariablesData.VERSION);
+                            GlobalVariablesData.config.AllSettings.newVersion = null;
                         }
                         GlobalVariablesData.config.AllSettings.UpdataTime = DateTime.Now.ToString("f");
                     }

@@ -24,7 +24,8 @@ using NameCube.Setting;
 using NameCube.FirstUse;
 using Application = System.Windows.Application;
 using Masuit.Tools.Logging;
-using Serilog;  
+using Serilog;
+using Path = System.IO.Path;
 
 namespace NameCube.FirstUse
 {
@@ -112,51 +113,40 @@ namespace NameCube.FirstUse
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            try
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Title = "从数据备份包导入";
+            openFileDialog.Filter = "数据备份包(*.dataBackup)|*.dataBackup|压缩包（<v1.3)(*.zip)|*.zip|所有文件 (*.*)|*.*";
+
+            if (openFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                Log.Information("开始从压缩包导入配置");
-                OpenFileDialog openFileDialog = new OpenFileDialog();
-                openFileDialog.Title = "从压缩包导入";
-                openFileDialog.Filter = "压缩包 (*.zip)|*.zip|所有文件 (*.*)|*.*";
+                Log.Information("开始从压缩包恢复配置: {FilePath}", openFileDialog.FileName);
+                SnackBarFunction.ShowSnackBarInSettingWindow("正在保存，请稍等", ControlAppearance.Primary, null, 1);
 
-                if (openFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                Task.Run(() =>
                 {
-                    Log.Information("用户选择了压缩包: {FileName}", openFileDialog.FileName);
-
                     try
                     {
-                        if (Directory.Exists(GlobalVariablesData.configDir))
-                        {
-                            Log.Information("删除现有配置目录: {ConfigDir}", GlobalVariablesData.configDir);
-                            Directory.Delete(GlobalVariablesData.configDir, true);
-                        }
-
-                        Directory.CreateDirectory(GlobalVariablesData.configDir);
-                        Log.Information("创建新的配置目录");
-
+                        Directory.Delete(GlobalVariablesData.userDataDir, true);
+                        Directory.CreateDirectory(GlobalVariablesData.userDataDir);
                         var SevenZipCompressor = new SevenZipCompressor(null);
-                        Log.Information("开始解压压缩包");
-                        SevenZipCompressor.Decompress(openFileDialog.FileName, GlobalVariablesData.configDir);
+                        SevenZipCompressor.Decompress(openFileDialog.FileName, GlobalVariablesData.userDataDir);
+                        File.Copy(Path.Combine(GlobalVariablesData.userDataDir, "config_backup.json"), Path.Combine(GlobalVariablesData.configDir, "config.json"), true);
+                        File.Delete(Path.Combine(GlobalVariablesData.userDataDir, "config_backup.json"));
+                        MessageBoxFunction.ShowMessageBoxInfo("覆盖成功，请自行启动软件");
+                        Log.Information("配置恢复成功，程序即将重启");
 
-                        MessageBoxFunction.ShowMessageBoxInfo("添加成功，请自行启动软件");
-                        Log.Information("压缩包导入成功，准备退出应用");
-
-                        System.Windows.Application.Current.Shutdown();
+                        this.Dispatcher.Invoke(new Action(() =>
+                        {
+                            Log.Information("程序退出");
+                            Application.Current.Shutdown();
+                        }));
                     }
                     catch (Exception ex)
                     {
-                        Log.Error(ex, "解压压缩包时发生错误");
+                        Log.Error(ex, "从压缩包恢复配置时发生异常");
                         MessageBoxFunction.ShowMessageBoxError(ex.Message);
                     }
-                }
-                else
-                {
-                    Log.Information("用户取消了压缩包选择");
-                }
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex, "压缩包导入过程中发生错误");
+                });
             }
         }
 

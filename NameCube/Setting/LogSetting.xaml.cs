@@ -33,7 +33,7 @@ namespace NameCube.Setting
         private void CardAction_Click(object sender, RoutedEventArgs e)
         {
             _logger.Information("打开日志文件夹");
-            Process.Start(System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "logs"));
+            Process.Start("explorer.exe", System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "logs"));
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)

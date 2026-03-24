@@ -18,7 +18,6 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Masuit.Tools;
 using Masuit.Tools.DateTimeExt;
-using Windows.ApplicationModel.ConversationalAgent;
 using Application = System.Windows.Application;
 using Serilog;
 using NameCube.GlobalVariables.DataClass;

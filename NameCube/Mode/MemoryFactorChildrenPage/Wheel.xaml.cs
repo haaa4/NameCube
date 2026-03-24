@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Serilog;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Speech.Synthesis;
@@ -51,6 +52,7 @@ namespace NameCube.Mode.MemoryFactorChildrenPage
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
             // 绑定数据源
+            Log.Information("加载转盘");
             WheelItemsControl.ItemsSource = _items;
             var startStoryboard = FindResource("StartStoryboard") as Storyboard;
             startStoryboard.Begin();
@@ -101,6 +103,7 @@ namespace NameCube.Mode.MemoryFactorChildrenPage
                     string selectedItem = DetermineSelectedItem(finalAngle);
                     ResultTextBlock.Text = selectedItem;
                     speechSynthesizer.SpeakAsync(selectedItem);
+                    Log.Information("抽取结果: {Result}", selectedItem);
                     DataSubmitted?.Invoke(this, selectedItem);
                     UpdateItems(names);
                     _isSpinning = false;

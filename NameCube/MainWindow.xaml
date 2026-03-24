@@ -272,8 +272,10 @@
                         <TextBlock 
                             x:Name="AppVersionTextBlock"
                             FontSize="12"
-                            Text="{Binding version}"
-                            ToolTip="点击查看更新信息"/>
+                            Text="{Binding version}"/>
+                        <ui:Border Background="Orange" x:Name="UpdateWarn" Visibility="Collapsed">
+                            <TextBlock Text="可更新！" ToolTip="请前往更新页面查看"/>
+                        </ui:Border>
                     </StackPanel>
                 </StackPanel>
             </ui:NavigationView.PaneFooter>

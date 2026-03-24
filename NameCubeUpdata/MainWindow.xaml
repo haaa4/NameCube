@@ -588,7 +588,7 @@
                 <TextBlock TextWrapping="Wrap" Canvas.Left="215.997" Canvas.Top="37.14" FontSize="36" HorizontalAlignment="Left" VerticalAlignment="Top" FontWeight="Bold"><Run Language="zh-cn" Text="点鸣魔方"/></TextBlock>
                 <TextBlock TextWrapping="Wrap" Canvas.Left="359.997" Canvas.Top="49.33" FontSize="24" HorizontalAlignment="Left" VerticalAlignment="Top"><Run Language="zh-cn" Text="安装程序"/></TextBlock>
                 <TextBlock TextWrapping="Wrap" Canvas.Top="102.22" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Center" Canvas.Left="10"><Run Text="引导程序版本："/><Run Language="zh-cn" Text="V0.2"/></TextBlock>
-                <TextBlock TextWrapping="Wrap" Canvas.Top="102.22" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Center" Canvas.Left="331" TextAlignment="Right" Width="259"><Run Language="zh-cn" Text="携带软件版本：V1.3_Beta-4"/></TextBlock>
+                <TextBlock TextWrapping="Wrap" Canvas.Top="102.22" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Center" Canvas.Left="331" TextAlignment="Right" Width="259"><Run Text="携带软件版本：V1.3_Beta-"/><Run Language="zh-cn" Text="5"/></TextBlock>
             </Canvas>
         </Border>
         <Canvas Height="280">

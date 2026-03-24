@@ -43,7 +43,7 @@ namespace NameCube.Setting
         private void CardAction_Click(object sender, RoutedEventArgs e)
         {
             _logger.Information("打开配置目录: {ConfigDir}", GlobalVariablesData.configDir);
-            Process.Start(GlobalVariablesData.configDir);
+            Process.Start("explorer.exe",GlobalVariablesData.configDir);
         }
 
         private void CardAction_Click_1(object sender, RoutedEventArgs e)
@@ -186,7 +186,7 @@ namespace NameCube.Setting
         private void CardAction_Click_5(object sender, RoutedEventArgs e)
         {
             _logger.Information("打开数据目录: {ConfigDir}", GlobalVariablesData.userDataDir);
-            Process.Start(GlobalVariablesData.userDataDir);
+            Process.Start("explorer.exe", GlobalVariablesData.userDataDir);
         }
     }
 }

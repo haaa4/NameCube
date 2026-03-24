@@ -1,22 +1,10 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{710DCBE6-2310-445D-88E0-CE43D37DDABD}</ProjectGuid>
+	  <DisableWinMdReference>true</DisableWinMdReference>
+	  <TargetFramework>net8.0-windows10.0.17763.0</TargetFramework>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>NameCube</RootNamespace>
     <AssemblyName>点鸣魔方</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <WarningLevel>4</WarningLevel>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <Deterministic>true</Deterministic>
     <IsWebBootstrapper>false</IsWebBootstrapper>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
     <PublishUrl>D:\C#\NameCube-git\输出\Publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -32,589 +20,58 @@
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <UseWindowsForms>true</UseWindowsForms>
+    <UseWPF>true</UseWPF>
+    <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ManifestCertificateThumbprint>E5F3AADEFEEEFB83790AB25EF4754A34C681E1B9</ManifestCertificateThumbprint>
+    <ManifestKeyFile>NameCube_TemporaryKey.pfx</ManifestKeyFile>
+    <GenerateManifests>false</GenerateManifests>
+    <SignManifests>false</SignManifests>
+    <TargetZone>LocalIntranet</TargetZone>
+    <SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>x64</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
     <OutputPath>..\..\OutPut\NameCube\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>x64</PlatformTarget>
     <DebugType>none</DebugType>
-    <Optimize>true</Optimize>
     <OutputPath>..\..\OutPut\NameCube\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
     <DocumentationFile>
     </DocumentationFile>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup>
-    <ApplicationIcon>icon.ico</ApplicationIcon>
-  </PropertyGroup>
-  <PropertyGroup>
-    <ApplicationManifest>app.manifest</ApplicationManifest>
-  </PropertyGroup>
-  <PropertyGroup>
-    <ManifestCertificateThumbprint>E5F3AADEFEEEFB83790AB25EF4754A34C681E1B9</ManifestCertificateThumbprint>
-  </PropertyGroup>
-  <PropertyGroup>
-    <ManifestKeyFile>NameCube_TemporaryKey.pfx</ManifestKeyFile>
-  </PropertyGroup>
-  <PropertyGroup>
-    <GenerateManifests>false</GenerateManifests>
-  </PropertyGroup>
-  <PropertyGroup>
-    <SignManifests>false</SignManifests>
-  </PropertyGroup>
-  <PropertyGroup>
-    <TargetZone>LocalIntranet</TargetZone>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.ComponentModel.Composition" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Numerics" />
     <Reference Include="System.Speech" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Xaml">
-      <RequiredTargetFramework>4.0</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="WindowsBase" />
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
+    <PackageReference Include="Costura.Fody">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Masuit.Tools.Abstractions" />
+    <PackageReference Include="Masuit.Tools.Core" />
+    <PackageReference Include="Microsoft.CSharp" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
+    <PackageReference Include="NAudio" />
+    <PackageReference Include="Newtonsoft.Json" />
+    <PackageReference Include="Serilog" />
+    <PackageReference Include="Serilog.Sinks.Async" />
+    <PackageReference Include="Serilog.Sinks.Console" />
+    <PackageReference Include="Serilog.Sinks.File" />
+    <PackageReference Include="SharpCompress" />
+    <PackageReference Include="StackExchange.Redis" />
+    <PackageReference Include="System.ComponentModel.Composition" />
+    <PackageReference Include="System.Data.DataSetExtensions" />
+    <PackageReference Include="System.IO.Pipelines" />
+    <PackageReference Include="System.Speech" />
+    <PackageReference Include="WPF-UI.Markdown" />
+    <PackageReference Include="WPF-UI.Tray" />
+    <PackageReference Include="WPF-UI.Violeta" />
   </ItemGroup>
   <ItemGroup>
-    <ApplicationDefinition Include="App.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </ApplicationDefinition>
-    <Compile Include="FirstUse\NewVersionWindow.xaml.cs">
-      <DependentUpon>NewVersionWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Function\AppFunction.cs" />
-    <Compile Include="Function\GiteeData.cs" />
-    <Compile Include="Function\MessageBoxFunction.cs" />
-    <Compile Include="GlobalVariables\Data.cs" />
-    <Compile Include="FirstUse\BirdSettings.xaml.cs">
-      <DependentUpon>BirdSettings.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="FirstUse\FirstUseWindow.xaml.cs">
-      <DependentUpon>FirstUseWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="FirstUse\NameCubeMode.xaml.cs">
-      <DependentUpon>NameCubeMode.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="FirstUse\Other.xaml.cs">
-      <DependentUpon>Other.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Function\FolderMover.cs" />
-    <Compile Include="Function\GithubData.cs" />
-    <Compile Include="GlobalVariables\DataClass\AllSettings.cs" />
-    <Compile Include="GlobalVariables\DataClass\AutomaticProcess.cs" />
-    <Compile Include="GlobalVariables\DataClass\BatchModeSettings.cs" />
-    <Compile Include="GlobalVariables\DataClass\BirdSettings.cs" />
-    <Compile Include="GlobalVariables\DataClass\MemoryFactorModeSettings.cs" />
-    <Compile Include="GlobalVariables\DataClass\MemoryModeSettings.cs" />
-    <Compile Include="GlobalVariables\DataClass\NumberModeSettings.cs" />
-    <Compile Include="GlobalVariables\DataClass\OnePeopleModeSettings.cs" />
-    <Compile Include="GlobalVariables\DataClass\PrepareModeSetting.cs" />
-    <Compile Include="GlobalVariables\DataClass\ShortCut.cs" />
-    <Compile Include="GlobalVariables\InitializationAll.cs" />
-    <Compile Include="GlobalVariables\DataClass\StartToDo.cs" />
-    <Compile Include="Mode\Home.xaml.cs">
-      <DependentUpon>Home.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Mode\HomeChildrenPage\Photos.xaml.cs">
-      <DependentUpon>Photos.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Mode\MemoryFactorChildrenPage\CircularPanel.cs" />
-    <Compile Include="Mode\MemoryFactorChildrenPage\Wheel.xaml.cs">
-      <DependentUpon>Wheel.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Mode\MemoryMode.xaml.cs">
-      <DependentUpon>MemoryMode.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Mode\NumberMode.xaml.cs">
-      <DependentUpon>NumberMode.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Mode\PrepareMode.xaml.cs">
-      <DependentUpon>PrepareMode.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Notify.xaml.cs">
-      <DependentUpon>Notify.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Setting\DebugPage.xaml.cs">
-      <DependentUpon>DebugPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Setting\Debug\CircularPanel.cs" />
-    <Compile Include="Setting\Debug\Whell.xaml.cs">
-      <DependentUpon>Whell.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Setting\LogSetting.xaml.cs">
-      <DependentUpon>LogSetting.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Setting\UpdateGuide\UpdateGuideWindow.xaml.cs">
-      <DependentUpon>UpdateGuideWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="WarningWindows\ErrorWindow.xaml.cs">
-      <DependentUpon>ErrorWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="WarningWindows\GlobalExceptionHandler.cs" />
-    <Compile Include="WarningWindows\RepeatWarning.xaml.cs">
-      <DependentUpon>RepeatWarning.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Setting\About.xaml.cs">
-      <DependentUpon>About.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Setting\Archives.xaml.cs">
-      <DependentUpon>Archives.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Mode\BatchMode.xaml.cs">
-      <DependentUpon>BatchMode.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Bird.xaml.cs">
-      <DependentUpon>Bird.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Mode\MemoryFactorMode.xaml.cs">
-      <DependentUpon>MemoryFactorMode.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Setting\Appearance.xaml.cs">
-      <DependentUpon>Appearance.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Setting\BirdSettings.xaml.cs">
-      <DependentUpon>BirdSettings.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Setting\ModeSetting\BatchModeSetting.xaml.cs">
-      <DependentUpon>BatchModeSetting.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Setting\ModeSetting\MemoryFactorModeSettings.xaml.cs">
-      <DependentUpon>MemoryFactorModeSettings.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Setting\ModeSettings.xaml.cs">
-      <DependentUpon>ModeSettings.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Setting\ModeSetting\MemoryModeSetting.xaml.cs">
-      <DependentUpon>MemoryModeSetting.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Setting\ModeSetting\NumberModeSetting.xaml.cs">
-      <DependentUpon>NumberModeSetting.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Setting\ModeSetting\OnePeopleModeSetting.xaml.cs">
-      <DependentUpon>OnePeopleModeSetting.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Setting\ModeSetting\PrepareModeSetting.xaml.cs">
-      <DependentUpon>PrepareModeSetting.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Setting\Other.xaml.cs">
-      <DependentUpon>Other.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Setting\SettingsWindow.xaml.cs">
-      <DependentUpon>SettingsWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Mode\OnePeopleMode.xaml.cs">
-      <DependentUpon>OnePeopleMode.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Setting\ShortcutKeySetting.xaml.cs">
-      <DependentUpon>ShortcutKeySetting.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Setting\Speech.xaml.cs">
-      <DependentUpon>Speech.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Setting\Update.xaml.cs">
-      <DependentUpon>Update.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Setting\Document.xaml.cs">
-      <DependentUpon>Document.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Function\SnackBarFunction.cs" />
-    <Compile Include="Function\StartToDoSomething.cs" />
-    <Compile Include="ToolBox\AutomaticProcess.xaml.cs">
-      <DependentUpon>AutomaticProcess.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ToolBox\AutomaticProcessPages\Audio.xaml.cs">
-      <DependentUpon>Audio.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ToolBox\AutomaticProcessPages\AutomaticProcessSetting.xaml.cs">
-      <DependentUpon>AutomaticProcessSetting.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ToolBox\AutomaticProcessPages\AutoToDo.cs" />
-    <Compile Include="ToolBox\AutomaticProcessPages\Debug.xaml.cs">
-      <DependentUpon>Debug.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ToolBox\AutomaticProcessPages\DebugWindows.xaml.cs">
-      <DependentUpon>DebugWindows.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ToolBox\AutomaticProcessPages\ProcessesRunningWindow.xaml.cs">
-      <DependentUpon>ProcessesRunningWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ToolBox\AutomaticProcessPages\ProcessPages\AudioPage.xaml.cs">
-      <DependentUpon>AudioPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ToolBox\AutomaticProcessPages\ProcessPages\ClearPage.xaml.cs">
-      <DependentUpon>ClearPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ToolBox\AutomaticProcessPages\ProcessPages\CmdPage.xaml.cs">
-      <DependentUpon>CmdPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ToolBox\AutomaticProcessPages\ProcessPages\PowerOffPage.xaml.cs">
-      <DependentUpon>PowerOffPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ToolBox\AutomaticProcessPages\ProcessPages\ReadPage.xaml.cs">
-      <DependentUpon>ReadPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ToolBox\AutomaticProcessPages\ProcessPages\ReadyPage.xaml.cs">
-      <DependentUpon>ReadyPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ToolBox\AutomaticProcessPages\ProcessPages\StartFiles.xaml.cs">
-      <DependentUpon>StartFiles.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ToolBox\AutomaticProcessPages\ProcessPages\WaitPage.xaml.cs">
-      <DependentUpon>WaitPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ToolBox\AutomaticProcessPages\ProcessSettingPages\AudioSettingPage.xaml.cs">
-      <DependentUpon>AudioSettingPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ToolBox\AutomaticProcessPages\ProcessSettingPages\CmdSettingPage.xaml.cs">
-      <DependentUpon>CmdSettingPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ToolBox\AutomaticProcessPages\ProcessSettingPages\ReadSettingPage.xaml.cs">
-      <DependentUpon>ReadSettingPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ToolBox\AutomaticProcessPages\ProcessSettingPages\ShutDownSettingPage.xaml.cs">
-      <DependentUpon>ShutDownSettingPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ToolBox\AutomaticProcessPages\ProcessSettingPages\StartSettingPage.xaml.cs">
-      <DependentUpon>StartSettingPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ToolBox\AutomaticProcessPages\ProcessSettingPages\WaitTimeSettingPage.xaml.cs">
-      <DependentUpon>WaitTimeSettingPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ToolBox\AutomaticProcessPages\SchedulePage.xaml.cs">
-      <DependentUpon>SchedulePage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ToolBox\MemoryToolbox.xaml.cs">
-      <DependentUpon>MemoryToolbox.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ToolBox\ShutDown.xaml.cs">
-      <DependentUpon>ShutDown.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ToolBox\SpeechToolbox.xaml.cs">
-      <DependentUpon>SpeechToolbox.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ToolBox\ToolboxWindow.xaml.cs">
-      <DependentUpon>ToolboxWindow.xaml</DependentUpon>
-    </Compile>
-    <Page Include="FirstUse\BirdSettings.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="FirstUse\FirstUseWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="FirstUse\NameCubeMode.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="FirstUse\NewVersionWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="FirstUse\Other.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Mode\Home.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Mode\HomeChildrenPage\Photos.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Mode\MemoryFactorChildrenPage\Wheel.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Mode\MemoryMode.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Mode\NumberMode.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Mode\PrepareMode.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Notify.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Setting\DebugPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Setting\Debug\Whell.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Setting\LogSetting.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Setting\UpdateGuide\UpdateGuideWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="WarningWindows\ErrorWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="WarningWindows\RepeatWarning.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Setting\About.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Setting\Archives.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Mode\BatchMode.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Bird.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Compile Include="App.xaml.cs">
-      <DependentUpon>App.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Page Include="Mode\MemoryFactorMode.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Setting\Appearance.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Setting\BirdSettings.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Setting\ModeSetting\BatchModeSetting.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Setting\ModeSetting\MemoryFactorModeSettings.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Setting\ModeSettings.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Setting\ModeSetting\MemoryModeSetting.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Setting\ModeSetting\NumberModeSetting.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Setting\ModeSetting\OnePeopleModeSetting.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Setting\ModeSetting\PrepareModeSetting.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Setting\Other.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Setting\SettingsWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Mode\OnePeopleMode.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Setting\ShortcutKeySetting.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Setting\Speech.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Setting\Update.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Setting\Document.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ToolBox\AutomaticProcess.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ToolBox\AutomaticProcessPages\Audio.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ToolBox\AutomaticProcessPages\AutomaticProcessSetting.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ToolBox\AutomaticProcessPages\Debug.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ToolBox\AutomaticProcessPages\DebugWindows.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ToolBox\AutomaticProcessPages\ProcessesRunningWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ToolBox\AutomaticProcessPages\ProcessPages\AudioPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ToolBox\AutomaticProcessPages\ProcessPages\ClearPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ToolBox\AutomaticProcessPages\ProcessPages\CmdPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ToolBox\AutomaticProcessPages\ProcessPages\PowerOffPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ToolBox\AutomaticProcessPages\ProcessPages\ReadPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ToolBox\AutomaticProcessPages\ProcessPages\ReadyPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ToolBox\AutomaticProcessPages\ProcessPages\StartFiles.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ToolBox\AutomaticProcessPages\ProcessPages\WaitPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ToolBox\AutomaticProcessPages\ProcessSettingPages\AudioSettingPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ToolBox\AutomaticProcessPages\ProcessSettingPages\CmdSettingPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ToolBox\AutomaticProcessPages\ProcessSettingPages\ReadSettingPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ToolBox\AutomaticProcessPages\ProcessSettingPages\ShutDownSettingPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ToolBox\AutomaticProcessPages\ProcessSettingPages\StartSettingPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ToolBox\AutomaticProcessPages\ProcessSettingPages\WaitTimeSettingPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ToolBox\AutomaticProcessPages\SchedulePage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ToolBox\MemoryToolbox.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ToolBox\ShutDown.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ToolBox\SpeechToolbox.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ToolBox\ToolboxWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Properties\AssemblyInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <None Include="app.manifest" />
-    <None Include="attention.md" />
     <Resource Include="Fonts\MiSans-Medium.ttf" />
     <EmbeddedResource Include="MarkDown\NewVersion.md" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="icon.ico" />
@@ -644,75 +101,6 @@
     <Resource Include="Image\RepeatWarning.png" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Costura.Fody">
-      <Version>6.0.0</Version>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
-    <PackageReference Include="Masuit.Tools.Abstractions">
-      <Version>2025.2.0</Version>
-    </PackageReference>
-    <PackageReference Include="Masuit.Tools.Net">
-      <Version>2025.2.0</Version>
-    </PackageReference>
-    <PackageReference Include="Microsoft.AspNet.Mvc">
-      <Version>5.3.0</Version>
-    </PackageReference>
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection">
-      <Version>10.0.2</Version>
-    </PackageReference>
-    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies">
-      <Version>1.0.3</Version>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
-    <PackageReference Include="Microsoft.Toolkit.Uwp.Notifications">
-      <Version>7.1.3</Version>
-    </PackageReference>
-    <PackageReference Include="Microsoft.Windows.SDK.Contracts">
-      <Version>10.0.26100.7463</Version>
-    </PackageReference>
-    <PackageReference Include="NAudio">
-      <Version>2.2.1</Version>
-    </PackageReference>
-    <PackageReference Include="Newtonsoft.Json">
-      <Version>13.0.4</Version>
-    </PackageReference>
-    <PackageReference Include="Serilog">
-      <Version>4.3.0</Version>
-    </PackageReference>
-    <PackageReference Include="Serilog.Sinks.Async">
-      <Version>2.1.0</Version>
-    </PackageReference>
-    <PackageReference Include="Serilog.Sinks.Console">
-      <Version>6.1.1</Version>
-    </PackageReference>
-    <PackageReference Include="Serilog.Sinks.File">
-      <Version>7.0.0</Version>
-    </PackageReference>
-    <PackageReference Include="SharpCompress">
-      <Version>0.39.0</Version>
-    </PackageReference>
-    <PackageReference Include="StackExchange.Redis">
-      <Version>2.8.37</Version>
-    </PackageReference>
-    <PackageReference Include="System.IO.Pipelines">
-      <Version>9.0.5</Version>
-    </PackageReference>
-    <PackageReference Include="System.ValueTuple">
-      <Version>4.5.0</Version>
-    </PackageReference>
-    <PackageReference Include="WPF-UI.Markdown">
-      <Version>4.0.2</Version>
-    </PackageReference>
-    <PackageReference Include="WPF-UI.Tray">
-      <Version>4.0.2</Version>
-    </PackageReference>
-    <PackageReference Include="WPF-UI.Violeta">
-      <Version>4.0.2.3</Version>
-    </PackageReference>
-  </ItemGroup>
-  <ItemGroup>
     <COMReference Include="IWshRuntimeLibrary">
       <Guid>{F935DC20-1CF0-11D0-ADB9-00C04FD58A0B}</Guid>
       <VersionMajor>1</VersionMajor>
@@ -724,46 +112,7 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Image\V1.0.0.0.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Image\V1.0.1.0.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Image\V1.1_Beta-2.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Image\V1.1_Beta-3.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Image\V1.1.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Image\V1.2_Beta-1.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Image\V1.2_Beta-2.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Image\V1.2_Beta-3.png" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Video\RepeatWarningVideo.mp4" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Image\V1.2_Beta-4.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Image\V1.2_Beta-5.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Image\V1.2.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Image\V1.3 Beta-1.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Image\V1.3 Beta-2.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Image\SerialNumber\1st.png" />
@@ -774,12 +123,8 @@
     <Resource Include="Image\SerialNumber\finish.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Image\V1.3 Beta-3.png" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Image\HeadMap\Photo1.png" />
     <EmbeddedResource Include="Image\HeadMap\Photo2.png" />
     <EmbeddedResource Include="Image\HeadMap\Photo3.png" />
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

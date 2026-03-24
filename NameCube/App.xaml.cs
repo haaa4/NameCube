@@ -1,21 +1,22 @@
-﻿using Microsoft.Toolkit.Uwp.Notifications;
+﻿
+using NameCube.Function;
 using NameCube.Setting;
 using NameCube.WarningWindows;
 using Newtonsoft.Json;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlTypes;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
-using NameCube.Function;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Media;
 using Application = System.Windows.Application;
-using Serilog;
 
 namespace NameCube
 {
@@ -100,22 +101,11 @@ namespace NameCube
                         string username = System.Security.Principal.WindowsIdentity.GetCurrent().Name;
                         Log.Information("更新成功，显示欢迎通知。用户: {Username}, 版本: {Version}", username, GlobalVariablesData.VERSION);
                         
-                        new ToastContentBuilder()
-                            .AddArgument("action", "viewConversation")
-                            .AddArgument("conversationId", 9813)
-                            .AddText("点鸣魔方")
-                            .AddText("点鸣魔方已经升级到" + GlobalVariablesData.VERSION + "。" + username + "，欢迎")
-                            .Show();
+
                     }
                     else
                     {
-                        Log.Warning("更新未成功完成，显示错误通知");
-                        new ToastContentBuilder()
-                            .AddArgument("action", "viewConversation")
-                            .AddArgument("conversationId", 9813)
-                            .AddText("点鸣魔方")
-                            .AddText("当前版本是：" + GlobalVariablesData.VERSION + "。升级遇到问题？尝试去Github项目询问")
-                            .Show();
+
                     }
                     
                     try
@@ -131,7 +121,10 @@ namespace NameCube
                 }
 
                 string configPath = Path.Combine(GlobalVariablesData.configDir, "config.json");
-                
+                if(GlobalVariablesData.config.AllSettings.newVersion!=null&&ExtractVersionCode(GlobalVariablesData.config.AllSettings.newVersion)<=GlobalVariablesData.VERSIONCODE)
+                {
+                    GlobalVariablesData.config.AllSettings.newVersion = null;
+                }
 
                 if (File.Exists(Path.Combine(GlobalVariablesData.configDir, "START")))
                 {
@@ -418,6 +411,28 @@ namespace NameCube
             {
                 throw ex;
             }
+        }
+        public static int ExtractVersionCode(string input)
+        {
+            if (string.IsNullOrEmpty(input))
+                throw new ArgumentException("输入字符串不能为空。");
+
+            // 正则表达式解释：
+            // \( 匹配左括号
+            // # 匹配井号
+            // [^#]* 匹配任意非#字符（如p或r）
+            // (\d+) 捕获一组数字
+            // # 匹配井号
+            // \) 匹配右括号
+            string pattern = @"\(#[^#]*(\d+)#\)";
+            Match match = Regex.Match(input, pattern);
+
+            if (match.Success)
+            {
+                return int.Parse(match.Groups[1].Value);
+            }
+
+            throw new ArgumentException("输入字符串中未找到有效的版本代码格式。");
         }
 
     }

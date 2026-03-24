@@ -1,4 +1,5 @@
-﻿using Serilog;
+﻿using NameCube.Setting.EasterEgg;
+using Serilog;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -90,6 +91,17 @@ namespace NameCube.Setting
                                     GlobalVariablesData.config.MemoryFactorModeSettings.debug = true;
                                     GlobalVariablesData.SaveConfig();
                                     SnackBarFunction.ShowSnackBarInSettingWindow("因子模式调试已开启", ControlAppearance.Success);
+                                    break;
+                                //以下是彩蛋部分
+                                case "philia093":
+                                    Log.Information("触发彩蛋：philia093");
+                                    Media media=new Media("https://launcher-webstatic.mihoyo.com/launcher-public/2025/10/31/49fab36b3317cbe36b673e9183ed22c3_4733825790845625523.webm");
+                                    media.ShowDialog();
+                                    break;
+                                case "Columbina":
+                                    Log.Information("触发彩蛋：Columbina");
+                                    Media media2 = new Media("https://launcher-webstatic.mihoyo.com/launcher-public/2026/01/08/f3c44cd72c6214ed680afe5fe90b26fc_6413191254498564796.webm");
+                                    media2.ShowDialog();
                                     break;
                                 default:
                                     Log.Warning("Debug密码错误: {Password}", enteredPassword);

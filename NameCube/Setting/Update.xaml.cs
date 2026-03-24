@@ -1,6 +1,5 @@
 ﻿using Masuit.Tools.Files;
 using Masuit.Tools.Net;
-using Microsoft.Toolkit.Uwp.Notifications;
 using Microsoft.Win32;
 using NameCube.Function;
 using Serilog; // 添加Serilog引用
@@ -13,7 +12,6 @@ using System.Net;
 using System.Net.Http;
 using System.Net.NetworkInformation;
 using System.Reflection;
-using System.Runtime.Remoting.Contexts;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;

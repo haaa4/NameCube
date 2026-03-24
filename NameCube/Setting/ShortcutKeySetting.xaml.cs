@@ -17,7 +17,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Masuit.Tools;
 using Windows.UI.Text;
-using Windows.UI.Xaml.Controls;
+
 using Wpf.Ui.Controls;
 using ComboBox = System.Windows.Controls.ComboBox;
 using FontWeights = System.Windows.FontWeights;
