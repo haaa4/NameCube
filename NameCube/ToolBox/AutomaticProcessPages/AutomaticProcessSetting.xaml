@@ -51,7 +51,6 @@
                         </ContextMenu>
                     </ui:ListView.ContextMenu>
                 </ui:ListView>
-
             </StackPanel>
             <Rectangle
                 Grid.Row="1"

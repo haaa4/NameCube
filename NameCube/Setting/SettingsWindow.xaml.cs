@@ -1,8 +1,6 @@
-﻿using System;
-using System.Windows.Media.Animation;
-using Wpf.Ui;
-using NameCube.Function;
+﻿using NameCube.Function;
 using Serilog; // 添加Serilog引用
+using System.Windows.Media.Animation;
 
 namespace NameCube.Setting
 {
@@ -22,12 +20,6 @@ namespace NameCube.Setting
             {
                 BallSetting.Visibility = System.Windows.Visibility.Collapsed;
                 _logger.Debug("当前为模式1，隐藏悬浮球设置");
-            }
-
-            if (GlobalVariablesData.config.AllSettings.Top)
-            {
-                Topmost = true;
-                _logger.Debug("启用窗口置顶");
             }
 
             _logger.Information("设置窗口创建完成");

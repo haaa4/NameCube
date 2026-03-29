@@ -1,13 +1,9 @@
 ﻿using Serilog;
 using System;
-using System.Drawing;
-using System.Linq;
-using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using Brush = System.Windows.Media.Brush;
-using FontFamily = System.Windows.Media.FontFamily;
 
 namespace NameCube.Setting
 {
@@ -16,7 +12,7 @@ namespace NameCube.Setting
     /// </summary>
     public partial class Appearance : Page
     {
-        bool CanChange;
+        private bool CanChange;
 
         public Appearance()
         {
@@ -162,7 +158,7 @@ namespace NameCube.Setting
                         PreviewText.Foreground = newColor;
                         ColorTextBox.Foreground = newColor;
                     }
-                    catch 
+                    catch
                     {
                         Log.Verbose("颜色解析失败，可能正在输入中: {Color}", ColorTextBox.Text);
                     }

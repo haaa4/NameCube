@@ -337,7 +337,6 @@
                         </TransformGroup>
                     </vio:AnimatedImage.RenderTransform>
                 </vio:AnimatedImage>
-
             </Canvas>
         </Border>
         <Border
@@ -388,5 +387,4 @@
             </Canvas>
         </Border>
     </Grid>
-
 </ui:FluentWindow>

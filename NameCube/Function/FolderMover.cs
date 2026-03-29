@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Serilog;  // 添加Serilog命名空间
+using System;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Serilog;  // 添加Serilog命名空间
 
 namespace NameCube
 {

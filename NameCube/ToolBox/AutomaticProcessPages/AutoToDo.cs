@@ -1,17 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using NameCube.GlobalVariables.DataClass;
+using Serilog;
+using System;
 using System.Threading.Tasks;
 using System.Windows;
-using Serilog;
-using NameCube.GlobalVariables.DataClass;
 
 namespace NameCube.ToolBox.AutomaticProcessPages
 {
     internal class AutoToDo
     {
-        public async static void StartRunAutomaticProcesses()
+        public static async void StartRunAutomaticProcesses()
         {
             Log.Information("开始自动流程调度任务");
             int loopCount = 0;

@@ -1,12 +1,9 @@
-﻿using Masuit.Tools.Logging;
-using Serilog;
+﻿using Serilog;
 using System;
-using System.Drawing;
 using System.Speech.Synthesis;
 using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
 using System.Windows.Media.Animation;
 
 namespace NameCube.Mode
@@ -22,13 +19,10 @@ namespace NameCube.Mode
             public string Name { get; set; }
         }
 
-
         public System.Timers.Timer timer;
-        int NowIndex = 0;
-        bool IsReadyToStop;
+        private int NowIndex = 0;
+        private bool IsReadyToStop;
         private SpeechSynthesizer _speechSynthesizer = new SpeechSynthesizer();
-
-
 
         public OnePeopleMode()
         {

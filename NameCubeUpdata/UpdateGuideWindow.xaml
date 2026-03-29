@@ -1,50 +1,157 @@
-﻿<Window x:Class="NameCubeSetup.UpdateGuideWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d"
-        Loaded="Window_Loaded"
-        Closing="Window_Closing"
-        Title="安装引导程序" Height="700" Width="800" Topmost="True">
-    <Grid Margin="50 20">
+﻿<Window
+    x:Class="NameCubeSetup.UpdateGuideWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="安装引导程序"
+    Width="800"
+    Height="700"
+    Closing="Window_Closing"
+    Loaded="Window_Loaded"
+    Topmost="True"
+    mc:Ignorable="d">
+    <Grid Margin="50,20">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="70"/>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="70" />
+            <ColumnDefinition />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="60*"/>
-            <RowDefinition Height="40*"/>
-            <RowDefinition Height="60*"/>
-            <RowDefinition Height="40*"/>
-            <RowDefinition Height="60*"/>
-            <RowDefinition Height="60*"/>
-            <RowDefinition Height="40*"/>
-            <RowDefinition Height="60*"/>
-            <RowDefinition Height="60*"/>
+            <RowDefinition Height="60*" />
+            <RowDefinition Height="40*" />
+            <RowDefinition Height="60*" />
+            <RowDefinition Height="40*" />
+            <RowDefinition Height="60*" />
+            <RowDefinition Height="60*" />
+            <RowDefinition Height="40*" />
+            <RowDefinition Height="60*" />
+            <RowDefinition Height="60*" />
         </Grid.RowDefinitions>
-        <Image Source="/Image/SerialNumber/finish.png" Width="40" Height="70" Grid.Row="0" x:Name="Image1st"/>
-        <TextBlock Text="下载更新文件" Grid.Column="1" FontFamily="Segoe UI" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="30" x:Name="Text1st" Foreground="Green"/>
+        <Image
+            x:Name="Image1st"
+            Grid.Row="0"
+            Width="40"
+            Height="70"
+            Source="/Image/SerialNumber/finish.png" />
+        <TextBlock
+            x:Name="Text1st"
+            Grid.Column="1"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Center"
+            FontFamily="Segoe UI"
+            FontSize="30"
+            Foreground="Green"
+            Text="下载更新文件" />
         <Grid Grid.Row="1" Grid.Column="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="100"/>
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="100" />
+                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <TextBlock Text="XXMB/s" FontFamily="Segoe UI" HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="SpeedTextBlock"/>
-            <ProgressBar Grid.Column="1" Margin="5" x:Name="DownloadProgressBar" Value="100"/>
+            <TextBlock
+                x:Name="SpeedTextBlock"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                FontFamily="Segoe UI"
+                Text="XXMB/s" />
+            <ProgressBar
+                x:Name="DownloadProgressBar"
+                Grid.Column="1"
+                Margin="5"
+                Value="100" />
         </Grid>
-        <Image Source="/Image/SerialNumber/finish.png" Width="40" Height="70" Grid.Row="2" x:Name="Image2nd"/>
-        <TextBlock Text="启动引导程序" Grid.Column="1" Grid.Row="2" FontFamily="Segoe UI" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="30" x:Name="Text2nd" Foreground="Green"/>
-        <Button Grid.Column="1" Grid.Row="3" Width="150" Height="40" Content="启动" IsEnabled="False" x:Name="StartButton"/>
-        <Image Source="/Image/SerialNumber/3rd.png" Width="40" Height="70" Grid.Row="4" x:Name="Image3rd"/>
-        <TextBlock Text="等待进程退出" Grid.Column="1" Grid.Row="4" FontFamily="Segoe UI" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="30" x:Name="Text3rd"/>
-        <Image Source="/Image/SerialNumber/4th.png" Width="40" Height="70" Grid.Row="5" x:Name="Image4th"/>
-        <TextBlock Text="安装更新文件" Grid.Column="1" Grid.Row="5" FontFamily="Segoe UI" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="30" x:Name="Text4th"/>
-        <TextBlock Text="正在替换文件" Grid.Column="1" Grid.Row="6" FontFamily="Segoe UI" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="30" Visibility="Hidden"/>
-        <ProgressBar Grid.Column="1" Grid.Row="6" Margin="5" x:Name="progressBar"/>
-        <Image Source="/Image/SerialNumber/5th.png" Width="40" Height="70" Grid.Row="7" x:Name="Image5th"/>
-        <TextBlock Text="清理文件" Grid.Column="1" Grid.Row="7" FontFamily="Segoe UI" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="30" x:Name="Text5th"/>
-        <TextBlock Text="目前一切正常" FontSize="20" x:Name="ErrorAttention" TextWrapping="WrapWithOverflow" Grid.Column="1" Grid.Row="8"/>
-        <Image Source="/Image/SerialNumber/finish.png" Visibility="Collapsed" x:Name="FinishExampleImage"/>
+        <Image
+            x:Name="Image2nd"
+            Grid.Row="2"
+            Width="40"
+            Height="70"
+            Source="/Image/SerialNumber/finish.png" />
+        <TextBlock
+            x:Name="Text2nd"
+            Grid.Row="2"
+            Grid.Column="1"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Center"
+            FontFamily="Segoe UI"
+            FontSize="30"
+            Foreground="Green"
+            Text="启动引导程序" />
+        <Button
+            x:Name="StartButton"
+            Grid.Row="3"
+            Grid.Column="1"
+            Width="150"
+            Height="40"
+            Content="启动"
+            IsEnabled="False" />
+        <Image
+            x:Name="Image3rd"
+            Grid.Row="4"
+            Width="40"
+            Height="70"
+            Source="/Image/SerialNumber/3rd.png" />
+        <TextBlock
+            x:Name="Text3rd"
+            Grid.Row="4"
+            Grid.Column="1"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Center"
+            FontFamily="Segoe UI"
+            FontSize="30"
+            Text="等待进程退出" />
+        <Image
+            x:Name="Image4th"
+            Grid.Row="5"
+            Width="40"
+            Height="70"
+            Source="/Image/SerialNumber/4th.png" />
+        <TextBlock
+            x:Name="Text4th"
+            Grid.Row="5"
+            Grid.Column="1"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Center"
+            FontFamily="Segoe UI"
+            FontSize="30"
+            Text="安装更新文件" />
+        <TextBlock
+            Grid.Row="6"
+            Grid.Column="1"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            FontFamily="Segoe UI"
+            FontSize="30"
+            Text="正在替换文件"
+            Visibility="Hidden" />
+        <ProgressBar
+            x:Name="progressBar"
+            Grid.Row="6"
+            Grid.Column="1"
+            Margin="5" />
+        <Image
+            x:Name="Image5th"
+            Grid.Row="7"
+            Width="40"
+            Height="70"
+            Source="/Image/SerialNumber/5th.png" />
+        <TextBlock
+            x:Name="Text5th"
+            Grid.Row="7"
+            Grid.Column="1"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Center"
+            FontFamily="Segoe UI"
+            FontSize="30"
+            Text="清理文件" />
+        <TextBlock
+            x:Name="ErrorAttention"
+            Grid.Row="8"
+            Grid.Column="1"
+            FontSize="20"
+            Text="目前一切正常"
+            TextWrapping="WrapWithOverflow" />
+        <Image
+            x:Name="FinishExampleImage"
+            Source="/Image/SerialNumber/finish.png"
+            Visibility="Collapsed" />
     </Grid>
 </Window>

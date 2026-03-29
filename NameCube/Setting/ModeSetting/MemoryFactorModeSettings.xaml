@@ -9,7 +9,8 @@
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     Title="MemoryFactorModeSettings"
     d:DesignHeight="450"
-    d:DesignWidth="800"     FontFamily="{StaticResource AppFont}"
+    d:DesignWidth="800"
+    FontFamily="{StaticResource AppFont}"
     mc:Ignorable="d">
     <StackPanel>
         <ui:CardControl
@@ -155,12 +156,12 @@
                     ValueChanged="Random_ValueChanged" />
                 <ui:TextBlock Margin="10,10,0,0" Text="命定事件：" />
                 <ui:NumberBox
-    x:Name="Random10"
-    Width="300"
-    Maximum="100"
-    Minimum="0"
-    PreviewTextInput="NumberBox_PreviewTextInput"
-    ValueChanged="Random_ValueChanged" />
+                    x:Name="Random10"
+                    Width="300"
+                    Maximum="100"
+                    Minimum="0"
+                    PreviewTextInput="NumberBox_PreviewTextInput"
+                    ValueChanged="Random_ValueChanged" />
                 <ui:Button
                     Click="Button_Click"
                     Content="还原默认状态"

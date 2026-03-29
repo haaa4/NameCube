@@ -1,21 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using NameCube.GlobalVariables.DataClass;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using Windows.ApplicationModel.Chat;
-using Wpf.Ui.Controls;
+﻿using NameCube.GlobalVariables.DataClass;
 using Serilog;
+using System;
+using System.Windows;
+using Wpf.Ui.Controls;
 
 namespace NameCube.ToolBox.AutomaticProcessPages
 {
@@ -24,9 +11,10 @@ namespace NameCube.ToolBox.AutomaticProcessPages
     /// </summary>
     public partial class ProcessesRunningWindow : FluentWindow
     {
-        int allProcessesCount, index = -1;
-        bool show;
-        ProcessGroup getProcessGroup;
+        private int allProcessesCount, index = -1;
+        private bool show;
+        private ProcessGroup getProcessGroup;
+
         public ProcessesRunningWindow(ProcessGroup processGroup)
         {
             Log.Information("创建流程运行窗口，流程组: {ProcessGroupName}, UID: {Uid}",
@@ -109,6 +97,7 @@ namespace NameCube.ToolBox.AutomaticProcessPages
                             MainFrame.Navigate(page1);
                             Log.Debug("加载启动文件页面，路径: {Path}", currentProcess.stringData1);
                             break;
+
                         case ProcessState.audio:
                             ProcessPages.AudioPage page2 = new ProcessPages.AudioPage(
                                 currentProcess.stringData1,
@@ -120,6 +109,7 @@ namespace NameCube.ToolBox.AutomaticProcessPages
                             Log.Debug("加载音频页面，URL: {Url}, 等待时间: {WaitTime}",
                                 currentProcess.stringData1, currentProcess.doubleData);
                             break;
+
                         case ProcessState.read:
                             ProcessPages.ReadPage page3 = new ProcessPages.ReadPage(
                                 currentProcess.stringData1,
@@ -134,6 +124,7 @@ namespace NameCube.ToolBox.AutomaticProcessPages
                                 currentProcess.doubleData,
                                 currentProcess.boolData);
                             break;
+
                         case ProcessState.cmd:
                             ProcessPages.CmdPage page4 = new ProcessPages.CmdPage(
                                 currentProcess.stringData1,
@@ -145,6 +136,7 @@ namespace NameCube.ToolBox.AutomaticProcessPages
                             Log.Debug("加载CMD页面，命令: {Cmd}, 可见性: {Visibility}",
                                 currentProcess.stringData1, currentProcess.boolData);
                             break;
+
                         case ProcessState.wait:
                             ProcessPages.WaitPage page5 = new ProcessPages.WaitPage(
                                 (int)currentProcess.doubleData,
@@ -154,12 +146,14 @@ namespace NameCube.ToolBox.AutomaticProcessPages
                             MainFrame.Navigate(page5);
                             Log.Debug("加载等待页面，等待时间: {WaitTime}", currentProcess.doubleData);
                             break;
+
                         case ProcessState.clear:
                             ProcessPages.ClearPage page6 = new ProcessPages.ClearPage(false, show);
                             page6.EndThePageAction += CallNextPage;
                             MainFrame.Navigate(page6);
                             Log.Debug("加载清理内存页面");
                             break;
+
                         case ProcessState.shutDown:
                             ProcessPages.PowerOffPage page7 = new ProcessPages.PowerOffPage(
                                 (int)currentProcess.doubleData,
@@ -170,6 +164,7 @@ namespace NameCube.ToolBox.AutomaticProcessPages
                             this.Show();
                             Log.Debug("加载关机页面，关机方式: {ShutDownWay}", currentProcess.doubleData);
                             break;
+
                         default:
                             Log.Warning("未知的流程状态: {ProcessState}", currentProcess.state);
                             this.Close();

@@ -1,31 +1,17 @@
 ﻿using IWshRuntimeLibrary;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
-using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
-using System.Timers;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Forms;
-using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Animation;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using Application = System.Windows.Application;
 using File = System.IO.File;
 using Path = System.IO.Path;
-using Timer = System.Timers.Timer;
 
 namespace NameCubeUpdata
 {
@@ -38,7 +24,9 @@ namespace NameCubeUpdata
         {
             InitializeComponent();
         }
-        int updateMode = 1;
+
+        private int updateMode = 1;
+
         private void button_Click(object sender, RoutedEventArgs e)
         {
             var StartStoryBoard = FindResource("QuickInstallationStart") as Storyboard;
@@ -68,7 +56,6 @@ namespace NameCubeUpdata
             {
                 BackStoryBoard = FindResource("ManualUpdateBack") as Storyboard;
             }
-
 
             button4.IsEnabled = false;
             BackStoryBoard.Completed += (s, en) =>
@@ -126,7 +113,6 @@ namespace NameCubeUpdata
                         textBox.Text += "\\NameCube";
                     }
                 }
-
             }
             else
             {
@@ -143,6 +129,7 @@ namespace NameCubeUpdata
                 }
             }
         }
+
         /// <summary>
         /// 提取软件包
         /// </summary>
@@ -164,6 +151,7 @@ namespace NameCubeUpdata
                 }
             }
         }
+
         /// <summary>
         /// 获取指定路径的父目录路径。
         /// </summary>
@@ -180,6 +168,7 @@ namespace NameCubeUpdata
             // Path.GetDirectoryName 对于根目录返回 null，对于顶级相对路径（如 "folder"）返回空字符串
             return string.IsNullOrEmpty(parent) ? null : parent;
         }
+
         /// <summary>
         /// 异步解压ZIP文件，并更新进度条。
         /// </summary>
@@ -248,6 +237,7 @@ namespace NameCubeUpdata
                 }
             }
         }
+
         private void button3_Click(object sender, RoutedEventArgs e)
         {
             var startStoryBoard = FindResource("ShowProcessRing") as Storyboard;
@@ -264,14 +254,30 @@ namespace NameCubeUpdata
                 try
                 {
                     string file = textBox.Text;
-                    if(updateMode==2)
+                    if (updateMode == 2)
                     {
                         //手动更新模式需要删除原程序
-                        File.Delete(file);
                         file = GetParentPath(file);
-                        if(File.Exists(file+ "\\NameCubeUpdata.exe"))
+                        string targetDir = file; // 假设 file 是目录路径
+
+                        foreach (string entry in Directory.GetFileSystemEntries(targetDir))
                         {
-                            File.Delete(file + "\\NameCubeUpdata.exe");
+                            string name = Path.GetFileName(entry);
+
+                            // 跳过需要保留的 logs 和 user 文件夹
+                            if (name == "logs" || name == "user")
+                                continue;
+
+                            // 删除文件
+                            if (File.Exists(entry))
+                            {
+                                File.Delete(entry);
+                            }
+                            // 删除文件夹（递归删除内部所有内容）
+                            else if (Directory.Exists(entry))
+                            {
+                                Directory.Delete(entry, true);
+                            }
                         }
                     }
                     Directory.CreateDirectory(file);
@@ -281,11 +287,10 @@ namespace NameCubeUpdata
                         progressBar.Value = (int)(percent * 100);
                     }));
                     File.Delete(file + "\\NameCube.zip");
-                    if(updateMode==1)
+                    if (updateMode == 1)
                     {
                         //快速安装模式创建桌面快捷方式
                         CreateDesktopShortcut(file + "\\点鸣魔方.exe");
-
                     }
                 }
                 catch (Exception ex)
@@ -303,32 +308,31 @@ namespace NameCubeUpdata
                     textBlock3.Visibility = Visibility.Collapsed;
                 };
                 ShowFinishStoryBoard.Begin();
-
             };
-            if(updateMode==2)
+            if (updateMode == 2)
             {
                 //手动更新模式与快速安装模式不同的提示语
                 textBlock3.Text = "正在更新中";
                 textBlock4.Text = "更新完成";
             }
             startStoryBoard.Begin();
-
         }
 
         private void button5_Click(object sender, RoutedEventArgs e)
         {
             if (checkBox.IsChecked == true)
             {
-                string file= textBox.Text;
-                if (updateMode==2)
+                string file = textBox.Text;
+                if (updateMode == 2)
                 {
-                    file=GetParentPath(file);
+                    file = GetParentPath(file);
                 }
                 //运行点鸣魔方
                 Process.Start(file + "\\点鸣魔方.exe");
             }
             Application.Current.Shutdown();
         }
+
         public static bool CreateDesktopShortcut(string app)
         {
             WshShell shell = null;
@@ -359,12 +363,10 @@ namespace NameCubeUpdata
                 shortcutStart.Description = "抽名字，点名器";
                 shortcutStart.Save();
 
-
                 return true;
             }
             catch (COMException comEx)
             {
-
                 return false;
             }
             catch (Exception ex)

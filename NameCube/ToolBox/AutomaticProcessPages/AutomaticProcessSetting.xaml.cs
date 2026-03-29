@@ -1,26 +1,15 @@
-﻿using System;
+﻿using Masuit.Tools;
+using Masuit.Tools.DateTimeExt;
+using NameCube.GlobalVariables.DataClass;
+using Serilog;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Forms;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using Masuit.Tools;
-using Masuit.Tools.DateTimeExt;
 using Application = System.Windows.Application;
-using Serilog;
-using NameCube.GlobalVariables.DataClass;
 
 namespace NameCube.ToolBox.AutomaticProcessPages
 {
@@ -119,12 +108,16 @@ namespace NameCube.ToolBox.AutomaticProcessPages
                         }
                     case ProcessState.read:
                         return "展示文字:" + GetMaxName(processData.stringData1);
+
                     case ProcessState.cmd:
                         return "执行命令:" + GetMaxName(processData.stringData1);
+
                     case ProcessState.wait:
                         return "等待" + processData.doubleData + "秒";
+
                     case ProcessState.clear:
                         return "清理内存";
+
                     case ProcessState.shutDown:
                         if (processData.doubleData == 0)
                             return "立即关机";
@@ -134,6 +127,7 @@ namespace NameCube.ToolBox.AutomaticProcessPages
                             return "强制关机";
                         else
                             return "?";
+
                     default:
                         return "?";
                 }
@@ -505,18 +499,25 @@ namespace NameCube.ToolBox.AutomaticProcessPages
                 {
                     case 0:
                         return ProcessState.start;
+
                     case 1:
                         return ProcessState.audio;
+
                     case 2:
                         return ProcessState.read;
+
                     case 3:
                         return ProcessState.cmd;
+
                     case 4:
                         return ProcessState.wait;
+
                     case 5:
                         return ProcessState.clear;
+
                     case 6:
                         return ProcessState.shutDown;
+
                     default:
                         throw new NotImplementedException("找不到属性");
                 }
@@ -596,24 +597,31 @@ namespace NameCube.ToolBox.AutomaticProcessPages
                         case ProcessState.start:
                             ProcessKindComboBox.SelectedIndex = 0;
                             break;
+
                         case ProcessState.audio:
                             ProcessKindComboBox.SelectedIndex = 1;
                             break;
+
                         case ProcessState.read:
                             ProcessKindComboBox.SelectedIndex = 2;
                             break;
+
                         case ProcessState.cmd:
                             ProcessKindComboBox.SelectedIndex = 3;
                             break;
+
                         case ProcessState.wait:
                             ProcessKindComboBox.SelectedIndex = 4;
                             break;
+
                         case ProcessState.clear:
                             ProcessKindComboBox.SelectedIndex = 5;
                             break;
+
                         case ProcessState.shutDown:
                             ProcessKindComboBox.SelectedIndex = 6;
                             break;
+
                         default:
                             Log.Warning("未知的流程状态: {ProcessState}", selectedProcessData.state);
                             break;
@@ -649,30 +657,37 @@ namespace NameCube.ToolBox.AutomaticProcessPages
                     page = new ProcessSettingPages.StartSettingPage(selectedProcessData);
                     Log.Debug("创建启动设置页面");
                     break;
+
                 case 1:
                     page = new ProcessSettingPages.AudioSettingPage(selectedProcessData);
                     Log.Debug("创建音频设置页面");
                     break;
+
                 case 2:
                     page = new ProcessSettingPages.ReadSettingPage(selectedProcessData);
                     Log.Debug("创建阅读设置页面");
                     break;
+
                 case 3:
                     page = new ProcessSettingPages.CmdSettingPage(selectedProcessData);
                     Log.Debug("创建CMD设置页面");
                     break;
+
                 case 4:
                     page = new ProcessSettingPages.WaitTimeSettingPage(selectedProcessData);
                     Log.Debug("创建等待时间设置页面");
                     break;
+
                 case 5:
                     page = null;
                     Log.Debug("清理内存页面不需要设置");
                     break;
+
                 case 6:
                     page = new ProcessSettingPages.ShutDownSettingPage(selectedProcessData);
                     Log.Debug("创建关机设置页面");
                     break;
+
                 default:
                     page = null;
                     Log.Warning("未知的流程类型索引: {Index}", ProcessKindComboBox.SelectedIndex);
@@ -855,6 +870,5 @@ namespace NameCube.ToolBox.AutomaticProcessPages
                 processGroup
             );
         }
-
     }
 }

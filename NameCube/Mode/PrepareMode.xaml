@@ -46,25 +46,25 @@
         </Storyboard>
         <Storyboard x:Key="flicker">
             <DoubleAnimationUsingKeyFrames Storyboard.TargetName="ellipse" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)">
-                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="1.043"/>
-                <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="11.788"/>
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="1.043" />
+                <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="11.788" />
             </DoubleAnimationUsingKeyFrames>
             <DoubleAnimationUsingKeyFrames Storyboard.TargetName="ellipse" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleY)">
-                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="1.076"/>
-                <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="12.161"/>
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="1.076" />
+                <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="12.161" />
             </DoubleAnimationUsingKeyFrames>
             <DoubleAnimationUsingKeyFrames Storyboard.TargetName="ellipse" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)">
-                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="1.084"/>
-                <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="0.001"/>
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="1.084" />
+                <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="0.001" />
             </DoubleAnimationUsingKeyFrames>
             <DoubleAnimationUsingKeyFrames Storyboard.TargetName="ellipse" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)">
-                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="1.898"/>
-                <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="0.292"/>
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="1.898" />
+                <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="0.292" />
             </DoubleAnimationUsingKeyFrames>
             <DoubleAnimationUsingKeyFrames Storyboard.TargetName="ellipse" Storyboard.TargetProperty="(UIElement.Opacity)">
-                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0"/>
-                <EasingDoubleKeyFrame KeyTime="00:00:00.1000000" Value="1"/>
-                <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="0"/>
+                <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0" />
+                <EasingDoubleKeyFrame KeyTime="00:00:00.1000000" Value="1" />
+                <EasingDoubleKeyFrame KeyTime="00:00:00.3000000" Value="0" />
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
     </Page.Resources>
@@ -80,7 +80,6 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1*" />
                     <ColumnDefinition Width="1*" />
-
                 </Grid.ColumnDefinitions>
                 <TextBlock
                     x:Name="NowNumberText"
@@ -291,15 +290,22 @@
                     Content="启用语音"
                     FontWeight="Black" />
             </StackPanel>
-
         </Grid>
-        <Ellipse x:Name="ellipse" Fill="{Binding Foreground, ElementName=NowNumberText}" Panel.ZIndex="-2" Opacity="0.005" RenderTransformOrigin="0.5,0.5" Margin="650,332,100,70" Height="48" Width="50">
+        <Ellipse
+            x:Name="ellipse"
+            Width="50"
+            Height="48"
+            Margin="650,332,100,70"
+            Panel.ZIndex="-2"
+            Fill="{Binding Foreground, ElementName=NowNumberText}"
+            Opacity="0.005"
+            RenderTransformOrigin="0.5,0.5">
             <Ellipse.RenderTransform>
                 <TransformGroup>
-                    <ScaleTransform/>
-                    <SkewTransform/>
-                    <RotateTransform/>
-                    <TranslateTransform/>
+                    <ScaleTransform />
+                    <SkewTransform />
+                    <RotateTransform />
+                    <TranslateTransform />
                 </TransformGroup>
             </Ellipse.RenderTransform>
         </Ellipse>

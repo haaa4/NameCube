@@ -1,16 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace NameCube.Setting.EasterEgg
 {
@@ -21,26 +10,23 @@ namespace NameCube.Setting.EasterEgg
     {
         // 视频 URL（可根据需要修改）
         private string VideoUrl;
+
         public Media(string url)
         {
             InitializeComponent();
-            VideoUrl= url;
+            VideoUrl = url;
             Loaded += MainWindow_Loaded;
         }
+
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            // 设置视频源
-            VideoPlayer.Source = new Uri(VideoUrl);
+
         }
 
         // 视频成功打开时触发
         private void VideoPlayer_MediaOpened(object sender, RoutedEventArgs e)
         {
-             if (VideoPlayer.NaturalVideoWidth > 0 && VideoPlayer.NaturalVideoHeight > 0)
-            {
-                this.Width = VideoPlayer.NaturalVideoWidth;
-                this.Height = VideoPlayer.NaturalVideoHeight;
-            }
+
         }
 
         // 视频播放失败时触发
@@ -53,12 +39,16 @@ namespace NameCube.Setting.EasterEgg
         private void Window_Closed(object sender, EventArgs e)
         {
             VideoPlayer.Source = null;
-
         }
 
         private void VideoPlayer_MediaEnded(object sender, RoutedEventArgs e)
         {
+        }
 
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            StartButton.Visibility = Visibility.Collapsed;
+            VideoPlayer.Source = new Uri(VideoUrl);
         }
     }
 }

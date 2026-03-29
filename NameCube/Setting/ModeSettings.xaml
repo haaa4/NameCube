@@ -8,25 +8,25 @@
     xmlns:mode="clr-namespace:NameCube.Setting.ModeSetting"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     Title="ModeSettings"
-    FontFamily="{StaticResource AppFont}"
     d:DesignHeight="400"
     d:DesignWidth="800"
+    FontFamily="{StaticResource AppFont}"
     mc:Ignorable="d">
 
     <Grid>
         <ui:NavigationView
             x:Name="NavigationMenu"
+            Height="600"
             VerticalAlignment="Center"
             FontSize="40"
             IsBackButtonVisible="Auto"
             IsPaneToggleVisible="True"
-            PaneDisplayMode="Top" Height="600">
+            PaneDisplayMode="Top">
             <ui:NavigationView.MenuItems>
                 <ui:NavigationViewItem
                     Content="单人模式"
                     Icon="{ui:SymbolIcon Symbol=Accessibility16}"
-                    TargetPageType="{x:Type mode:OnePeopleModeSetting}" 
-                    />
+                    TargetPageType="{x:Type mode:OnePeopleModeSetting}" />
                 <ui:NavigationViewItem
                     Content="因子模式"
                     Icon="{ui:SymbolIcon Symbol=PeopleSettings24}"

@@ -1,5 +1,5 @@
-﻿using System.Windows.Controls;
-using Serilog; // 添加Serilog引用
+﻿using Serilog; // 添加Serilog引用
+using System.Windows.Controls;
 
 namespace NameCube.Setting
 {

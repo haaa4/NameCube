@@ -1,21 +1,12 @@
-﻿
-using NameCube.Function;
-using NameCube.Setting;
+﻿using NameCube.Function;
 using NameCube.WarningWindows;
 using Newtonsoft.Json;
 using Serilog;
 using System;
-using System.Collections.Generic;
-using System.Data.SqlTypes;
-using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Forms;
-using System.Windows.Media;
 using Application = System.Windows.Application;
 
 namespace NameCube
@@ -38,7 +29,7 @@ namespace NameCube
             base.OnStartup(e);
         }
 
-        Mutex mutex;
+        private Mutex mutex;
 
         public App()
         {
@@ -51,26 +42,26 @@ namespace NameCube
             {
                 // 初始化Serilog日志
                 InitializeSerilog();
-                
+
                 Log.Information("应用程序启动开始");
                 Log.Debug("启动参数: {@Args}", e.Args);
 
                 GlobalExceptionHandler.Initialize();
-                
+
                 System.Threading.Tasks.TaskScheduler.UnobservedTaskException += (sende, args) =>
                 {
-                    args.SetObserved(); 
+                    args.SetObserved();
                     Log.Error(args.Exception, "未观察到的任务异常");
                     Application.Current.Dispatcher.Invoke(() =>
                     {
                         new ErrorWindow(args.Exception).ShowDialog();
                     });
                 };
-                
+
                 bool ret;
                 mutex = new Mutex(true, "NameCube", out ret);
                 GlobalVariablesData.ret = ret;
-                
+
                 Log.Debug("Mutex创建结果: {Result}, 是否为首次实例: {IsFirstInstance}", ret, ret);
                 GlobalVariablesData.configDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "NameCube");
                 Log.Information("使用AppData配置目录: {ConfigDir}", GlobalVariablesData.configDir);
@@ -84,36 +75,33 @@ namespace NameCube
                     repeat.WindowState = WindowState.Normal;
                     return;
                 }
-                
+
                 // 处理更新目录
-                if(Directory.Exists(Path.Combine(GlobalVariablesData.userDataDir, "Updata")))
+                if (Directory.Exists(Path.Combine(GlobalVariablesData.userDataDir, "Updata")))
                 {
                     Log.Information("检测到更新目录，处理更新后清理");
-                    
-                    if(File.Exists(Path.Combine(GlobalVariablesData.userDataDir, "UpdataZip.zip")))
+
+                    if (File.Exists(Path.Combine(GlobalVariablesData.userDataDir, "UpdataZip.zip")))
                     {
                         File.Delete(Path.Combine(GlobalVariablesData.userDataDir, "UpdataZip.zip"));
                         Log.Debug("删除旧的更新压缩包");
                     }
-                    
-                    if(File.Exists(Path.Combine(GlobalVariablesData.userDataDir, "Updata", "Success")))
+
+                    if (File.Exists(Path.Combine(GlobalVariablesData.userDataDir, "Updata", "Success")))
                     {
                         string username = System.Security.Principal.WindowsIdentity.GetCurrent().Name;
                         Log.Information("更新成功，显示欢迎通知。用户: {Username}, 版本: {Version}", username, GlobalVariablesData.VERSION);
-                        
-
                     }
                     else
                     {
-
                     }
-                    
+
                     try
                     {
                         Directory.Delete(Path.Combine(GlobalVariablesData.userDataDir, "Updata"), true);
                         Log.Information("清理更新目录成功");
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
                         Log.Error(ex, "清理更新目录失败");
                         MessageBoxFunction.ShowMessageBoxError(ex.Message);
@@ -121,7 +109,7 @@ namespace NameCube
                 }
 
                 string configPath = Path.Combine(GlobalVariablesData.configDir, "config.json");
-                if(GlobalVariablesData.config.AllSettings.newVersion!=null&&ExtractVersionCode(GlobalVariablesData.config.AllSettings.newVersion)<=GlobalVariablesData.VERSIONCODE)
+                if (GlobalVariablesData.config.AllSettings.newVersion != null && ExtractVersionCode(GlobalVariablesData.config.AllSettings.newVersion) <= GlobalVariablesData.VERSIONCODE)
                 {
                     GlobalVariablesData.config.AllSettings.newVersion = null;
                 }
@@ -131,20 +119,20 @@ namespace NameCube
                     File.Delete(Path.Combine(GlobalVariablesData.configDir, "START"));
                     Log.Debug("删除START标记文件");
                 }
-                
+
                 try
                 {
                     // 确保目录存在
                     Directory.CreateDirectory(GlobalVariablesData.configDir);
                     Log.Debug("确保配置目录存在: {ConfigDir}", GlobalVariablesData.configDir);
-                    
+
                     GlobalVariables.InitializationAll.InitializeData();
-                    
+
                     if (!File.Exists(configPath))
                     {
                         Log.Warning("找不到配置文件，启动首次使用向导");
                         GlobalVariablesData.ret = false;
-                        
+
                         // 初始化默认配置
                         FirstUse.FirstUseWindow firstUseWindow = new FirstUse.FirstUseWindow();
                         firstUseWindow.Show();
@@ -158,14 +146,14 @@ namespace NameCube
                     {
                         Log.Debug("加载配置文件: {ConfigPath}", configPath);
                         var jsonString = File.ReadAllText(configPath);
-                        
+
                         JsonConvert.DefaultSettings = () => new JsonSerializerSettings
                         {
                             NullValueHandling = NullValueHandling.Ignore,
                             ObjectCreationHandling = ObjectCreationHandling.Replace,
                             DefaultValueHandling = DefaultValueHandling.Populate
                         };
-                        
+
                         GlobalVariablesData.config = JsonConvert.DeserializeObject<Json>(jsonString);
                         GlobalVariables.InitializationAll.KeepDataNotNull();
                         Log.Information("配置文件加载成功");
@@ -183,7 +171,7 @@ namespace NameCube
                     MessageBoxFunction.ShowMessageBoxError($"启动失败: {ex.Message}");
                     Environment.Exit(1);
                 }
-                
+
                 try
                 {
                     string tempDir = Path.Combine(GlobalVariablesData.userDataDir, "Mode_data", "MemoryMode", "temporary");
@@ -197,13 +185,13 @@ namespace NameCube
                 {
                     Log.Error(ex, "清理临时目录失败");
                 }
-                
+
                 StartToDoSomething.GetUpdata();
                 Log.Debug("执行GetUpdata完成");
-                
+
                 StartToDoSomething.RunAutomaticProcesses();
                 Log.Debug("执行RunAutomaticProcesses完成");
-                
+
                 // 记录系统信息
                 Log.Information("应用程序启动信息:" +
                     $"\n操作系统版本: {Environment.OSVersion}" +
@@ -218,14 +206,14 @@ namespace NameCube
                     $"\n当前目录: {Environment.CurrentDirectory}" +
                     $"\n进程工作集内存: {Environment.WorkingSet}" +
                     $"\n应用版本: {GlobalVariablesData.VERSION}");
-                
+
                 MainWindow mainWindow = new MainWindow();
                 if (GlobalVariablesData.config.AllSettings.NameCubeMode != 0)
                 {
                     Log.Debug("NameCube模式不为0，显示主窗口");
                     mainWindow.ShowThisWindow();
                 }
-                if(File.Exists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory,"Update", "START")))
+                if (File.Exists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Update", "START")))
                 {
                     // 如果存在START文件，说明更新过程中发生了错误，显示更新错误窗口
                     File.Delete(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Update", "START"));
@@ -243,7 +231,7 @@ namespace NameCube
                     updateGuideWindow.Show();
                     updateGuideWindow.Activate();
                 }
-                if(GlobalVariablesData.config.AllSettings.newVersion==GlobalVariablesData.VERSION)
+                if (GlobalVariablesData.config.AllSettings.newVersion == GlobalVariablesData.VERSION)
                 {
                     GlobalVariablesData.config.AllSettings.newVersion = null;
                 }
@@ -302,11 +290,12 @@ namespace NameCube
         protected override void OnExit(ExitEventArgs e)
         {
             Log.Information("应用程序退出，退出代码: {ExitCode}", e.ApplicationExitCode);
-            
+
             // 确保日志被刷新
             Log.CloseAndFlush();
             base.OnExit(e);
         }
+
         /// <summary>
         /// 重新按照用户配置初始化Serilog日志配置
         /// </summary>
@@ -333,6 +322,7 @@ namespace NameCube
                        outputTemplate: "{Timestamp:HH:mm:ss} [{Level:u3}] {Message:lj}{NewLine}")
                    .CreateLogger();
                     break;
+
                 case 1://调试级别
                     Log.Logger = new LoggerConfiguration()
                    .MinimumLevel.Information()
@@ -351,6 +341,7 @@ namespace NameCube
                        outputTemplate: "{Timestamp:HH:mm:ss} [{Level:u3}] {Message:lj}{NewLine}")
                    .CreateLogger();
                     break;
+
                 case 2://警告级别
                     Log.Logger = new LoggerConfiguration()
                    .MinimumLevel.Warning()
@@ -369,6 +360,7 @@ namespace NameCube
                        outputTemplate: "{Timestamp:HH:mm:ss} [{Level:u3}] {Message:lj}{NewLine}")
                    .CreateLogger();
                     break;
+
                 case 3://错误级别
                     Log.Logger = new LoggerConfiguration()
                    .MinimumLevel.Error()
@@ -386,12 +378,14 @@ namespace NameCube
                        outputTemplate: "{Timestamp:HH:mm:ss} [{Level:u3}] {Message:lj}{NewLine}")
                    .CreateLogger();
                     break;
+
                 default:
                     //什么也不做
                     break;
             }
             Log.Debug("Serilog二次初始化成功");
         }
+
         /// <summary>
         /// 初始化用户数据文件夹
         /// </summary>
@@ -400,11 +394,11 @@ namespace NameCube
             try
             {
                 string baseDir = AppDomain.CurrentDomain.BaseDirectory;
-                Directory.CreateDirectory(baseDir+"\\user\\Bird_data\\Image");
-                Directory.CreateDirectory(baseDir+"\\user\\Mode_data\\MemoryFactoryMode");
-                Directory.CreateDirectory(baseDir+"\\user\\Mode_data\\MemoryMode\\permanent");
-                Directory.CreateDirectory(baseDir+"\\user\\Mode_data\\MemoryMode\\temporary");
-                Directory.CreateDirectory(baseDir+"\\user\\Music");
+                Directory.CreateDirectory(baseDir + "\\user\\Bird_data\\Image");
+                Directory.CreateDirectory(baseDir + "\\user\\Mode_data\\MemoryFactoryMode");
+                Directory.CreateDirectory(baseDir + "\\user\\Mode_data\\MemoryMode\\permanent");
+                Directory.CreateDirectory(baseDir + "\\user\\Mode_data\\MemoryMode\\temporary");
+                Directory.CreateDirectory(baseDir + "\\user\\Music");
                 Log.Debug("用户数据文件夹初始化完成");
             }
             catch (Exception ex)
@@ -412,6 +406,7 @@ namespace NameCube
                 throw ex;
             }
         }
+
         public static int ExtractVersionCode(string input)
         {
             if (string.IsNullOrEmpty(input))
@@ -434,6 +429,5 @@ namespace NameCube
 
             throw new ArgumentException("输入字符串中未找到有效的版本代码格式。");
         }
-
     }
 }

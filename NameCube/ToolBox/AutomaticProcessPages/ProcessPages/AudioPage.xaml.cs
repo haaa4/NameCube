@@ -1,13 +1,12 @@
-﻿using System;
+﻿using NameCube.Function;
+using Serilog;
+using System;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using NameCube.Function;
 using System.Windows.Media;
 using System.Windows.Threading;
-using System.Windows.Interop; // 添加这个命名空间
-using Serilog;
 
 namespace NameCube.ToolBox.AutomaticProcessPages.ProcessPages
 {
@@ -16,7 +15,9 @@ namespace NameCube.ToolBox.AutomaticProcessPages.ProcessPages
         private DispatcherTimer _progressTimer;
         private bool _isUserDragging = false;
         private int waitTimeInThisPage = 0;
+
         public event Action<string> RequestParentAction;
+
         private bool isDebug = false;
         private MediaPlayer _mediaPlayer; // 使用 MediaPlayer 替代 MediaElement
 
@@ -26,7 +27,8 @@ namespace NameCube.ToolBox.AutomaticProcessPages.ProcessPages
             Playing,
             Paused,
         }
-        string musicPath = Path.Combine(GlobalVariablesData.userDataDir, "Music");
+
+        private string musicPath = Path.Combine(GlobalVariablesData.userDataDir, "Music");
         private PlayerState _currentState = PlayerState.Stopped;
 
         public AudioPage(string url, int waitTime, bool debug = false, bool show = true)
@@ -105,6 +107,7 @@ namespace NameCube.ToolBox.AutomaticProcessPages.ProcessPages
         }
 
         public event Action<int> EndThePageAction;
+
         private void CallEndThePage(int ret = 0)
         {
             Log.Information("调用结束页面，返回码: {ReturnCode}", ret);
@@ -237,12 +240,15 @@ namespace NameCube.ToolBox.AutomaticProcessPages.ProcessPages
                 case 0:
                     _mediaPlayer.SpeedRatio = 0.5;
                     break;
+
                 case 1:
                     _mediaPlayer.SpeedRatio = 1.0;
                     break;
+
                 case 2:
                     _mediaPlayer.SpeedRatio = 1.5;
                     break;
+
                 case 3:
                     _mediaPlayer.SpeedRatio = 2.0;
                     break;

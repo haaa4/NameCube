@@ -1,13 +1,8 @@
-﻿using Masuit.Tools.Logging;
-using NameCube.Function;
+﻿using NameCube.Function;
 using NameCube.ToolBox.AutomaticProcessPages;
 using Serilog;  // 添加Serilog命名空间
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace NameCube
@@ -15,7 +10,7 @@ namespace NameCube
     //傻逼名字
     internal class StartToDoSomething
     {
-        public async static void GetUpdata()
+        public static async void GetUpdata()
         {
             try
             {
@@ -26,35 +21,34 @@ namespace NameCube
                     string GetVersion = "";
                     try
                     {
-                            if (GlobalVariablesData.config.AllSettings.token == "" || GlobalVariablesData.config.AllSettings.token == null)
+                        if (GlobalVariablesData.config.AllSettings.token == "" || GlobalVariablesData.config.AllSettings.token == null)
+                        {
+                            Log.Debug("使用匿名方式检查更新");
+                            if (GlobalVariablesData.config.AllSettings.DownloadWay == 0)
                             {
-                                Log.Debug("使用匿名方式检查更新");
-                                if (GlobalVariablesData.config.AllSettings.DownloadWay == 0)
-                                {
-                                    GetVersion = await GithubData.GetLatestReleaseVersionAsync("haaa4", "NameCube");
-                                }
-                                else
-                                {
-                                    GetVersion = await GiteeData.GerVersion();
-                                }
+                                GetVersion = await GithubData.GetLatestReleaseVersionAsync("haaa4", "NameCube");
                             }
                             else
                             {
-                                Log.Debug("使用Token方式检查更新");
-                                if (GlobalVariablesData.config.AllSettings.DownloadWay == 0)
-                                {
-                                    GetVersion = await GithubData.GetLatestReleaseVersionAsync("haaa4", "NameCube", GlobalVariablesData.config.AllSettings.token);
-                                }
-                                else
-                                {
-                                    GetVersion = await GiteeData.GerVersion();
-                                }
-
-                                GlobalVariablesData.config.AllSettings.UpdataTime = DateTime.Now.ToString("f");
-
+                                GetVersion = await GiteeData.GerVersion();
                             }
-                            Log.Information("获取到最新版本: {LatestVersion}，检查时间: {CheckTime}",
-                            GetVersion, DateTime.Now.ToString("s"));
+                        }
+                        else
+                        {
+                            Log.Debug("使用Token方式检查更新");
+                            if (GlobalVariablesData.config.AllSettings.DownloadWay == 0)
+                            {
+                                GetVersion = await GithubData.GetLatestReleaseVersionAsync("haaa4", "NameCube", GlobalVariablesData.config.AllSettings.token);
+                            }
+                            else
+                            {
+                                GetVersion = await GiteeData.GerVersion();
+                            }
+
+                            GlobalVariablesData.config.AllSettings.UpdataTime = DateTime.Now.ToString("f");
+                        }
+                        Log.Information("获取到最新版本: {LatestVersion}，检查时间: {CheckTime}",
+                        GetVersion, DateTime.Now.ToString("s"));
 
                         if (ExtractVersionCode(GetVersion) > GlobalVariablesData.VERSIONCODE)
                         {
@@ -102,6 +96,7 @@ namespace NameCube
                 Log.Error(ex, "运行自动进程时发生错误");
             }
         }
+
         public static int ExtractVersionCode(string input)
         {
             if (string.IsNullOrEmpty(input))

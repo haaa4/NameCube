@@ -1,26 +1,15 @@
-﻿using NameCube.Setting;
+﻿using NameCube.Function;
+using NameCube.Setting;
+using Serilog;  // 添加Serilog命名空间
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using NameCube.Function;
-using System.Windows.Forms;
-using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using Wpf.Ui.Controls;
-using Wpf.Ui.Tray.Controls;
 using Application = System.Windows.Application;
 using NotifyIcon = System.Windows.Forms.NotifyIcon;
-using Serilog;  // 添加Serilog命名空间
 
 namespace NameCube
 {

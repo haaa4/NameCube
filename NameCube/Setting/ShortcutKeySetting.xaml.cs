@@ -1,29 +1,17 @@
-﻿using System;
+﻿using Masuit.Tools;
+using NameCube.GlobalVariables.DataClass;
+using Serilog; // 添加Serilog引用
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using NameCube.GlobalVariables.DataClass;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using Masuit.Tools;
-using Windows.UI.Text;
-
 using Wpf.Ui.Controls;
 using ComboBox = System.Windows.Controls.ComboBox;
 using FontWeights = System.Windows.FontWeights;
 using StackPanel = System.Windows.Controls.StackPanel;
 using TextBlock = Wpf.Ui.Controls.TextBlock;
-using Serilog; // 添加Serilog引用
 
 namespace NameCube.Setting
 {

@@ -1,21 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
-using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using System.Diagnostics;
-using System.Threading;
 using Path = System.IO.Path;
 
 namespace NameCubeSetup
@@ -32,12 +22,13 @@ namespace NameCubeSetup
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            if(!isError)
+            if (!isError)
             {
                 MessageBox.Show("请勿关闭此窗口，安装程序正在运行中！", "警告", MessageBoxButton.OK, MessageBoxImage.Warning);
                 e.Cancel = true;
             }
         }
+
         /// <summary>
         /// 提取软件包
         /// </summary>
@@ -59,6 +50,7 @@ namespace NameCubeSetup
                 }
             }
         }
+
         /// <summary>
         /// 获取指定路径的父目录路径。
         /// </summary>
@@ -75,6 +67,7 @@ namespace NameCubeSetup
             // Path.GetDirectoryName 对于根目录返回 null，对于顶级相对路径（如 "folder"）返回空字符串
             return string.IsNullOrEmpty(parent) ? null : parent;
         }
+
         /// <summary>
         /// 异步解压ZIP文件，并更新进度条。
         /// </summary>
@@ -143,6 +136,7 @@ namespace NameCubeSetup
                 }
             }
         }
+
         /// <summary>
         /// 判断指定名称的进程是否正在运行。
         ///  注意：processName 通常不需要包含 ".exe" 后缀
@@ -154,7 +148,9 @@ namespace NameCubeSetup
             Process[] processes = Process.GetProcessesByName(processName);
             return processes.Length > 0;
         }
-        bool isError = false;
+
+        private bool isError = false;
+
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
             Text3rd.Foreground = Brushes.Blue;
@@ -205,7 +201,6 @@ namespace NameCubeSetup
                     if (Directory.Exists(destDir))
                         Directory.Delete(destDir, true);
                     Directory.Move(dir, destDir);
-
                 }
                 foreach (string file in Directory.GetFiles(tempDir))
                 {

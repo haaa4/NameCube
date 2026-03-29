@@ -1,20 +1,12 @@
 ﻿using Serilog;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Speech.Synthesis;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace NameCube.Mode.MemoryFactorChildrenPage
 {
@@ -32,7 +24,7 @@ namespace NameCube.Mode.MemoryFactorChildrenPage
         public event EventHandler<string> DataSubmitted;
         private Random _random = new Random();
         private bool _isSpinning = false;
-        private bool isRotate=false;
+        private bool isRotate = false;
         SpeechSynthesizer speechSynthesizer;
         private List<string> names;
         public Wheel(List<string> names, SpeechSynthesizer speechSynthesizer)
@@ -40,9 +32,9 @@ namespace NameCube.Mode.MemoryFactorChildrenPage
             InitializeComponent();
             Loaded += MainWindow_Loaded;
             this.names = names;
-            GodChooesName.Text=names[0];
+            GodChooesName.Text = names[0];
             UpdateItems(names);
-            if(speechSynthesizer!=null)
+            if (speechSynthesizer != null)
             {
                 this.speechSynthesizer = speechSynthesizer;
             }
@@ -65,7 +57,7 @@ namespace NameCube.Mode.MemoryFactorChildrenPage
             {
                 if (!_isSpinning) return;
                 StopButton.IsEnabled = false;
-                isRotate= false;
+                isRotate = false;
                 // 停止当前无限动画
                 WheelRotate.BeginAnimation(RotateTransform.AngleProperty, null);
 
@@ -139,7 +131,6 @@ namespace NameCube.Mode.MemoryFactorChildrenPage
                 ResultTextBlock.Text = "旋转中...";
                 isRotate = true;
             }
-           
         }
 
         // 随机选择一种缓动函数，模拟不同的减速感觉

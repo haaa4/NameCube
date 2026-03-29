@@ -1,11 +1,11 @@
 ﻿using Microsoft.Win32;
+using NameCube.Function;
 using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Windows;
-using NameCube.Function;
 using System.Windows.Controls;
 using System.Windows.Input;
 

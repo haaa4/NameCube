@@ -1,5 +1,8 @@
-﻿using Masuit.Tools;
-using Masuit.Tools.Logging;
+﻿/*
+ * 注意！
+ * 此处的代码使用了AI进行重构，部分逻辑可能存在问题，尤其是事件处理部分的细节。请务必仔细测试每个功能点，确保逻辑正确且没有遗漏。
+ */
+using Masuit.Tools;
 using NameCube.Function;
 using Newtonsoft.Json;
 using Serilog;
@@ -13,7 +16,6 @@ using System.Speech.Synthesis;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Navigation;
@@ -143,9 +145,9 @@ namespace NameCube.Mode
                     NowNumberText.Text = GlobalVariablesData.config.MemoryFactorModeSettings.LastName;
 
                 // 加载排行榜动画
-                //ShowStoryboard("FlickerFloorRec");
-                //ShowStoryboard("ExchangeStoryboard");
-                //ShowStoryboard("GetFromOtherStoryboard");
+                ShowStoryboard("FlickerFloorRec");
+                ShowStoryboard("ExchangeStoryBoard");
+                ShowStoryboard("GetFromOtherStoryBoard");
 
                 Log.Information("MemoryFactorMode 页面加载完成");
             }
@@ -339,6 +341,7 @@ namespace NameCube.Mode
                 }
                 else if (StartButton.Content.ToString() == "结束")
                 {
+                    StartButton.IsEnabled = false;
                     // 停止并抽取
                     StartButton.Content = "开始";
                     _timer.Stop();
@@ -421,11 +424,6 @@ namespace NameCube.Mode
                         });
                     }
 
-                    // 保底事件后处理（incident == 6 已在 ApplyIncident 中修改了 MaxTimes）
-                    if (incidentIndex == 6)
-                    {
-                        // 保底事件已经增加了 MaxTimes，这里只需更新UI
-                    }
 
                     // 最终 UI 更新
                     Dispatcher.Invoke(() =>
@@ -438,7 +436,7 @@ namespace NameCube.Mode
 
                     // 语音播报
                     if (GlobalVariablesData.config.MemoryFactorModeSettings.Speech)
-                        _speechSynthesizer.SpeakAsync(selectedName);
+                        _speechSynthesizer.SpeakAsync(FinishNumberText.Text);
 
                     // 保存设置
                     SaveSettings();
@@ -458,6 +456,7 @@ namespace NameCube.Mode
                     {
                         StartButton.Content = "继续";
                     }
+
                 }
                 else
                 {
@@ -650,66 +649,56 @@ namespace NameCube.Mode
             originalTops[No6Name] = Canvas.GetTop(No6Name);
             originalTops[No6Factor] = Canvas.GetTop(No6Factor);
         }
-        // 应用随机事件（incident 0-9）
-        private Task ApplyIncident(int incident, string selectedName, Random rnd)
+        private async Task ApplyIncident(int incident, string selectedName, Random rnd)
         {
-            return Task.Run(() =>
+            // 隐藏所有事件面板（UI 操作，已在 UI 线程）
+            DoubleMorePart.Visibility = Visibility.Collapsed;
+            ExchangePart.Visibility = Visibility.Collapsed;
+            GetFactorFromOtherPart.Visibility = Visibility.Collapsed;
+            FloorAddPart.Visibility = Visibility.Collapsed;
+            SkipPart.Visibility = Visibility.Collapsed;
+            DeterminedByFatePart.Visibility = Visibility.Collapsed;
+
+            switch (incident)
             {
-                Dispatcher.Invoke(() =>
-                {
-                    // 隐藏所有事件面板
-                    DoubleMorePart.Visibility = Visibility.Collapsed;
-                    ExchangePart.Visibility = Visibility.Collapsed;
-                    GetFactorFromOtherPart.Visibility = Visibility.Collapsed;
-                    FloorAddPart.Visibility = Visibility.Collapsed;
-                    SkipPart.Visibility = Visibility.Collapsed;
-                    DeterminedByFatePart.Visibility = Visibility.Collapsed;
-
-                    var items = _settings.thisModeJson;
-                    int count = items.Count;
-
-                    switch (incident)
-                    {
-                        case 0: // 二倍
-                            ApplyDoubleEvent(2);
-                            break;
-                        case 1: // 三倍
-                            ApplyDoubleEvent(3);
-                            break;
-                        case 2: // 减半
-                            ApplyHalfEvent();
-                            break;
-                        case 3: // 交换
-                            ApplyExchangeEvent();
-                            break;
-                        case 4: // 复制
-                            ApplyCopyEvent();
-                            break;
-                        case 5: // 窃取
-                            ApplyStealEvent(rnd);
-                            break;
-                        case 6: // 保底事件（增加保底次数）
-                            int add = rnd.Next(10) + 1;
-                            _settings.otherSettings.MaxTimes += add;
-                            if (_settings.otherSettings.MaxTimes > 20) _settings.otherSettings.MaxTimes = 20;
-                            FloorAdd.Text = add.ToString();
-                            incidentName.Text = "激活事件";
-                            FloorAddPart.Visibility = Visibility.Visible;
-                            break;
-                        case 7: // 跳过事件
-                            ApplySkipEvent(selectedName, rnd);
-                            break;
-                        case 8: // 平静事件
-                            incidentName.Text = "平静无事";
-                            break;
-                        case 9: // 命定事件
-                            _settings.otherSettings.DeterminedByFate = true;
-                            incidentName.Text = "命定事件";
-                            DeterminedByFatePart.Visibility = Visibility.Visible;
-                            break;
-                    }
-                });
-            });
+                case 0: // 二倍
+                    ApplyDoubleEvent(2);
+                    break;
+                case 1: // 三倍
+                    ApplyDoubleEvent(3);
+                    break;
+                case 2: // 减半
+                    ApplyHalfEvent();
+                    break;
+                case 3: // 交换
+                    ApplyExchangeEvent();
+                    break;
+                case 4: // 复制
+                    ApplyCopyEvent();
+                    break;
+                case 5: // 窃取
+                    ApplyStealEvent(rnd);
+                    break;
+                case 6: // 保底事件
+                    int add = rnd.Next(10) + 1;
+                    _settings.otherSettings.MaxTimes += add;
+                    if (_settings.otherSettings.MaxTimes > 20) _settings.otherSettings.MaxTimes = 20;
+                    FloorAdd.Text = add.ToString();
+                    incidentName.Text = "激活事件";
+                    FloorAddPart.Visibility = Visibility.Visible;
+                    break;
+                case 7: // 跳过事件 - 需要等待
+                    await ApplySkipEvent(selectedName, rnd);
+                    break;
+                case 8: // 平静事件
+                    incidentName.Text = "平静无事";
+                    break;
+                case 9: // 命定事件
+                    _settings.otherSettings.DeterminedByFate = true;
+                    incidentName.Text = "命定事件";
+                    DeterminedByFatePart.Visibility = Visibility.Visible;
+                    break;
+            }
         }
 
         private void ApplyDoubleEvent(int multiplier)
@@ -804,7 +793,7 @@ namespace NameCube.Mode
             GetFactorFromOtherPart.Visibility = Visibility.Visible;
         }
 
-        private async void ApplySkipEvent(string selectedName, Random rnd)
+        private async Task ApplySkipEvent(string selectedName, Random rnd)
         {
             int newIdx = rnd.Next(_settings.thisModeJson.Count);
             var newItem = _settings.thisModeJson[newIdx];
@@ -826,6 +815,7 @@ namespace NameCube.Mode
                     BeSkipedName.Text = selectedName;
                     AfterNowName.Text = newItem.Name;
                 });
+                selectedName = newItem.Name;
             }
             incidentName.Text = "跳过事件";
             SkipPart.Visibility = Visibility.Visible;
@@ -863,22 +853,9 @@ namespace NameCube.Mode
                     story?.Begin();
                 }
 
-                // 启动排行动画（原 ChangeTheName 中的动画）
-                AnimateRankings(sorted);
             });
         }
 
-        private void AnimateRankings(List<ThisModeJson> sorted)
-        {
-            // 简化动画逻辑：直接更新位置（原动画太复杂，此处简化为直接定位，保持功能）
-            // 原动画是通过 Canvas.Top 移动，且动态添加/删除 TextBlock，这里保留原始思路但简化实现
-            // 为了性能，我们只更新文本，放弃复杂的移动动画（原动画极其耗费资源）
-            // 如果必须保留动画，需参照原代码实现。此处为性能考虑，仅做直接更新。
-            // 注意：原代码有大量动画，但实际效果并不关键，此处选择直接刷新。
-            // 如需保留动画，可恢复原逻辑，但性能会下降。
-            // 我们选择直接刷新排行榜，不再移动位置，因为用户更关注数值变化而非位置移动。
-            // 原有动画代码已移除，改为简单的 TextBlock 内容更新。
-        }
 
         // ---------- 辅助方法 ----------
         private void NavigateToWheel()
@@ -1027,74 +1004,74 @@ namespace NameCube.Mode
         {
             //需要被删除的名字索引
             List<int> NeedDelName = new List<int>();
-            foreach(ThisModeJson name in _settings.thisModeJson)
+            foreach (ThisModeJson name in _settings.thisModeJson)
             {
                 bool needDel = true;
-                foreach(string GetName in GlobalVariablesData.config.AllSettings.Name)
+                foreach (string GetName in GlobalVariablesData.config.AllSettings.Name)
                 {
-                    if(name.Name == GetName)
+                    if (name.Name == GetName)
                     {
                         needDel = false;
                         break;
                     }
                 }
-                if(needDel)
+                if (needDel)
                 {
                     NeedDelName.Add(_settings.thisModeJson.IndexOf(name));
                 }
             }
             //需要被添加的名字索引
-            List<int> NeedAddName=new List<int>();
-            foreach(string GetName in GlobalVariablesData.config.AllSettings.Name)
+            List<int> NeedAddName = new List<int>();
+            foreach (string GetName in GlobalVariablesData.config.AllSettings.Name)
             {
                 bool needAdd = true;
-                foreach(ThisModeJson name in _settings.thisModeJson)
+                foreach (ThisModeJson name in _settings.thisModeJson)
                 {
-                    if(name.Name == GetName)
+                    if (name.Name == GetName)
                     {
                         needAdd = false;
                         break;
                     }
                 }
-                if(needAdd)
+                if (needAdd)
                 {
                     NeedAddName.Add(GlobalVariablesData.config.AllSettings.Name.IndexOf(GetName));
                 }
             }
-            if(NeedAddName.Count==0&&NeedDelName.Count==0)
+            if (NeedAddName.Count == 0 && NeedDelName.Count == 0)
             {
                 SnackBarFunction.ShowSnackBarInMainWindow("无需同步", ControlAppearance.Info);
                 return;
             }
-            if(GlobalVariablesData.config.AllSettings.Name.Count<10)
+            if (GlobalVariablesData.config.AllSettings.Name.Count < 10)
             {
                 SnackBarFunction.ShowSnackBarInMainWindow("名字总数不能少于10个", ControlAppearance.Caution);
             }
             string text = "需要被删除的名字：";
-            foreach(int index in NeedDelName)
+            foreach (int index in NeedDelName)
             {
-                text=text+"\n"+_settings.thisModeJson[index].Name+" - " + _settings.thisModeJson[index].Factor.ToString();
+                text = text + "\n" + _settings.thisModeJson[index].Name + " - " + _settings.thisModeJson[index].Factor.ToString();
             }
             text += "\n需要被添加的名字：";
-            foreach(int index in NeedAddName)
+            foreach (int index in NeedAddName)
             {
-                text=text+"\n"+GlobalVariablesData.config.AllSettings.Name[index];
+                text = text + "\n" + GlobalVariablesData.config.AllSettings.Name[index];
             }
-            text+= "\n请确认是否进行同步";
+            text += "\n请确认是否进行同步";
             var dialog = new Wpf.Ui.Controls.ContentDialog
             {
                 Title = "同步确认",
                 Content = text,
                 PrimaryButtonText = "确定",
                 IsSecondaryButtonEnabled = false,
-                CloseButtonText="取消"
+                CloseButtonText = "取消"
             };
 
-            dialog.DialogHost= RootContentDialogPresenter;
+            dialog.DialogHost = RootContentDialogPresenter;
             ContentDialogResult contentDialogResult = await dialog.ShowAsync();
-            if(contentDialogResult==ContentDialogResult.Primary)
+            if (contentDialogResult == ContentDialogResult.Primary)
             {
-                for(int i=NeedDelName.Count-1;i>=0;i--)
+                for (int i = NeedDelName.Count - 1; i >= 0; i--)
                 {
                     _settings.thisModeJson.RemoveAt(NeedDelName[i]);
                 }

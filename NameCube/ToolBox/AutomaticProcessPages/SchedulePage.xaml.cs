@@ -1,24 +1,10 @@
-﻿using System;
+﻿using NameCube.GlobalVariables.DataClass;
+using Serilog;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Drawing;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using NameCube.GlobalVariables.DataClass;
-using System.Windows.Forms;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using Brushes = System.Windows.Media.Brushes;
-using Serilog;
 
 namespace NameCube.ToolBox.AutomaticProcessPages
 {
@@ -29,14 +15,18 @@ namespace NameCube.ToolBox.AutomaticProcessPages
     {
         //命名规则冲突，之后把他改了
         public ObservableCollection<string> picker1 { get; } = new ObservableCollection<string>();
+
         public ObservableCollection<string> picker2 { get; } = new ObservableCollection<string>();
         public ObservableCollection<string> picker3 { get; } = new ObservableCollection<string>();
+
         public ObservableCollection<string> processesGroupList { get; } =
             new ObservableCollection<string>();
+
         private List<ProcessGroup> processGroups { get; } = new List<ProcessGroup>();
         private List<ProcessGroup> ToChooseProcessGroup = new List<ProcessGroup>();
         private List<int> keyList = new List<int>();
         public List<int> indexList = new List<int>();
+
         public ObservableCollection<string> processesChooseList { get; } =
             new ObservableCollection<string>();
 

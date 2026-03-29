@@ -1,20 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using NameCube.Function;
+using Serilog;
+using System;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using NameCube.Function;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using Serilog;
 
 namespace NameCube.ToolBox.AutomaticProcessPages.ProcessPages
 {
@@ -25,7 +14,9 @@ namespace NameCube.ToolBox.AutomaticProcessPages.ProcessPages
     {
         private string pathToStart;
         private bool debug;
+
         public event Action<string> RequestParentAction;
+
         public event Action<int> EndThePageAction;
 
         private void CallEndThePage(int ret = 0)
@@ -59,7 +50,12 @@ namespace NameCube.ToolBox.AutomaticProcessPages.ProcessPages
             Log.Information("开始启动文件: {Path}", pathToStart);
             try
             {
-                Process.Start(pathToStart);
+                var psi = new ProcessStartInfo
+                {
+                    FileName = pathToStart,
+                    UseShellExecute = true 
+                };
+                Process.Start(psi);
                 Log.Information("文件启动成功");
                 if (debug)
                 {

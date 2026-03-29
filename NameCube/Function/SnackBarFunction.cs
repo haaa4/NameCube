@@ -1,13 +1,10 @@
 ﻿using NameCube.Setting;
 using NameCube.ToolBox;
+using Serilog;  // 添加Serilog命名空间
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using Wpf.Ui.Controls;
-using Serilog;  // 添加Serilog命名空间
 
 namespace NameCube
 {
@@ -24,21 +21,27 @@ namespace NameCube
                         case ControlAppearance.Primary:
                             title = "提示";
                             break;
+
                         case ControlAppearance.Secondary:
                             title = "提示";
                             break;
+
                         case ControlAppearance.Info:
                             title = "信息";
                             break;
+
                         case ControlAppearance.Success:
                             title = "成功";
                             break;
+
                         case ControlAppearance.Caution:
                             title = "警告";
                             break;
+
                         case ControlAppearance.Danger:
                             title = "错误";
                             break;
+
                         default:
                             title = "信息";
                             break;
@@ -89,21 +92,27 @@ namespace NameCube
                         case ControlAppearance.Primary:
                             title = "提示";
                             break;
+
                         case ControlAppearance.Secondary:
                             title = "提示";
                             break;
+
                         case ControlAppearance.Info:
                             title = "信息";
                             break;
+
                         case ControlAppearance.Success:
                             title = "成功";
                             break;
+
                         case ControlAppearance.Caution:
                             title = "警告";
                             break;
+
                         case ControlAppearance.Danger:
                             title = "错误";
                             break;
+
                         default:
                             title = "信息";
                             break;
@@ -155,21 +164,27 @@ namespace NameCube
                         case ControlAppearance.Primary:
                             title = "提示";
                             break;
+
                         case ControlAppearance.Secondary:
                             title = "提示";
                             break;
+
                         case ControlAppearance.Info:
                             title = "信息";
                             break;
+
                         case ControlAppearance.Success:
                             title = "成功";
                             break;
+
                         case ControlAppearance.Caution:
                             title = "警告";
                             break;
+
                         case ControlAppearance.Danger:
                             title = "错误";
                             break;
+
                         default:
                             title = "信息";
                             break;

@@ -1,18 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using Serilog;
+using System;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using Serilog;
 
 namespace NameCube.ToolBox.AutomaticProcessPages.ProcessPages
 {
@@ -81,7 +71,9 @@ namespace NameCube.ToolBox.AutomaticProcessPages.ProcessPages
         public int Time { get; set; } = 5;
         public string Info { get; set; } = "即将执行";
         public bool debug = false;
+
         public event Action<string> RequestParentAction;
+
         public event Action<int> EndThePageAction;
 
         private void CallEndThePage(int ret = 0)

@@ -1,20 +1,32 @@
-﻿<Window x:Class="NameCube.Setting.EasterEgg.Media"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:NameCube.Setting.EasterEgg"
-        mc:Ignorable="d"
-        Closed="Window_Closed"
-        Title="Media" Height="1920" Width="1080" Topmost="True">
+﻿<Window
+    x:Class="NameCube.Setting.EasterEgg.Media"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:NameCube.Setting.EasterEgg"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="Media"
+    Width="960"
+    Height="540"
+    Closed="Window_Closed"
+    Topmost="True"
+    mc:Ignorable="d">
     <Grid>
-        <!-- MediaElement 负责播放视频 -->
-        <MediaElement x:Name="VideoPlayer"
-                      LoadedBehavior="Play"
-                      UnloadedBehavior="Stop"
-                      Stretch="Uniform"
-                      MediaOpened="VideoPlayer_MediaOpened"
-                      MediaFailed="VideoPlayer_MediaFailed" 
-                      MediaEnded="VideoPlayer_MediaEnded"/>
+        <!--  MediaElement 负责播放视频  -->
+        <MediaElement
+            x:Name="VideoPlayer"
+            LoadedBehavior="Play"
+            MediaEnded="VideoPlayer_MediaEnded"
+            MediaFailed="VideoPlayer_MediaFailed"
+            MediaOpened="VideoPlayer_MediaOpened"
+            Stretch="Uniform"
+            UnloadedBehavior="Stop" />
+        <Button
+            x:Name="StartButton"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Click="Button_Click"
+            Content="你确定继续吗，接下来的内容可能不适合在学习环境播放"
+            FontSize="30" />
     </Grid>
 </Window>

@@ -1,19 +1,8 @@
 ﻿using Serilog;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using Path = System.IO.Path;
 
 namespace NameCube.Setting
@@ -47,11 +36,11 @@ namespace NameCube.Setting
 
         private void LogLevelComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if(!canChange) return;
-            GlobalVariablesData.config.AllSettings.LogLevel=LogLevelComboBox.SelectedIndex;
+            if (!canChange) return;
+            GlobalVariablesData.config.AllSettings.LogLevel = LogLevelComboBox.SelectedIndex;
             InitializeSerilogAgain();
             GlobalVariablesData.SaveConfig();
-            _logger.Information("日志级别已修改：{level}",GlobalVariablesData.config.AllSettings.LogLevel);
+            _logger.Information("日志级别已修改：{level}", GlobalVariablesData.config.AllSettings.LogLevel);
         }
         /// <summary>
         /// 重新按照用户配置初始化Serilog日志配置
@@ -80,6 +69,7 @@ namespace NameCube.Setting
                        outputTemplate: "{Timestamp:HH:mm:ss} [{Level:u3}] {Message:lj}{NewLine}")
                    .CreateLogger();
                     break;
+
                 case 1://调试级别
                     Log.Logger = new LoggerConfiguration()
                    .MinimumLevel.Information()
@@ -98,6 +88,7 @@ namespace NameCube.Setting
                        outputTemplate: "{Timestamp:HH:mm:ss} [{Level:u3}] {Message:lj}{NewLine}")
                    .CreateLogger();
                     break;
+
                 case 2://警告级别
                     Log.Logger = new LoggerConfiguration()
                    .MinimumLevel.Warning()
@@ -115,6 +106,7 @@ namespace NameCube.Setting
                        outputTemplate: "{Timestamp:HH:mm:ss} [{Level:u3}] {Message:lj}{NewLine}")
                    .CreateLogger();
                     break;
+
                 case 3://错误级别
                     Log.Logger = new LoggerConfiguration()
                    .MinimumLevel.Error()
@@ -132,6 +124,7 @@ namespace NameCube.Setting
                        outputTemplate: "{Timestamp:HH:mm:ss} [{Level:u3}] {Message:lj}{NewLine}")
                    .CreateLogger();
                     break;
+
                 default:
                     //什么也不做
                     break;

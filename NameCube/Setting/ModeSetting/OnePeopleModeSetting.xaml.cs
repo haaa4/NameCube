@@ -1,6 +1,6 @@
-﻿using System.Windows;
+﻿using Serilog;
+using System.Windows;
 using System.Windows.Controls;
-using Serilog;
 
 namespace NameCube.Setting.ModeSetting
 {
@@ -11,7 +11,8 @@ namespace NameCube.Setting.ModeSetting
     {
         private static readonly ILogger _logger = Log.ForContext<OnePeopleModeSetting>();
 
-        bool CanChange;
+        private bool CanChange;
+
         public OnePeopleModeSetting()
         {
             InitializeComponent();

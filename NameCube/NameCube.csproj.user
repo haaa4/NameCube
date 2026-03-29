@@ -17,5 +17,8 @@
     <Compile Update="Setting\EasterEgg\Media.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Setting\ThanksWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
 </Project>

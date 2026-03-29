@@ -6,10 +6,11 @@
     xmlns:local="clr-namespace:NameCube"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    Loaded="Page_Loaded"
     Title="About"
-    FontFamily="{StaticResource AppFont}"
     d:DesignHeight="800"
     d:DesignWidth="800"
+    FontFamily="{StaticResource AppFont}"
     mc:Ignorable="d">
 
     <Grid>
@@ -31,18 +32,59 @@
                     </StackPanel>
                 </Expander.Header>
                 <StackPanel>
-                    <TextBlock Text="版本:V1.3_Beta-5(#p3#)" />
+                    <TextBlock x:Name="VersionTextBlock"/>
                     <TextBlock Text="作者:哈阿斯" />
-                    <TextBlock Text="依赖库- WPF UI" />
                     <TextBlock Text="默认名单所有名字均为Ai生成，如侵请联系作者，立刻删除" />
+                </StackPanel>
+            </Expander>
+            <Expander Margin="12 0">
+                <Expander.Header>
+                    <TextBlock>
+                        <Run Text="关于作者" FontSize="30"/>
+                    </TextBlock>
+                </Expander.Header>
+                <Grid Margin="10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="3*"/>
+                    </Grid.ColumnDefinitions>
+                    <ui:Image Width="100" Height="100" Margin="20" x:Name="HeadImage"/>
+                    <StackPanel Grid.Column="1">
+                        <TextBlock TextWrapping="Wrap">
+                            <Run Text="哈阿斯（haaa4)" FontSize="30"/>
+                            <Run Text="   偶尔写写代码，给班级写写软件，每日日常如此。正在备战中考，更新频率有所下降。同时是.NET初学者，请大家原谅一下代码中难以理解的逻辑" FontSize="20"/>
+                        </TextBlock>
+                        <ui:HyperlinkButton
+                        Content="作者B站"
+                        Icon="{ui:SymbolIcon Link24}"
+                        NavigateUri="https://space.bilibili.com/1440486452" />
+                        <ui:HyperlinkButton
+Content="作者Github"
+Icon="{ui:SymbolIcon Link24}"
+NavigateUri="https://github.com/haaa4"/>
+                    </StackPanel>
+                </Grid>
+            </Expander>
+            <Expander Margin="12 0">
+                <Expander.Header>
+                    <TextBlock>
+                        <Run Text="支持库" FontSize="30"/>
+                    </TextBlock>
+                </Expander.Header>
+                <ui:Button Content="点击查看详细信息" FontSize="20" Click="Button_Click"/>
+            </Expander>
+            <Expander Margin="12 0">
+                <Expander.Header>
+                    <TextBlock>
+            <Run Text="其他链接" FontSize="30"/>
+                    </TextBlock>
+                </Expander.Header>
+                <StackPanel>
                     <ui:HyperlinkButton
                         Content="Github主页"
                         Icon="{ui:SymbolIcon Link24}"
                         NavigateUri="https://github.com/haaa4/NameCube" />
-                    <ui:HyperlinkButton
-    Content="作者B站"
-    Icon="{ui:SymbolIcon Link24}"
-    NavigateUri="https://space.bilibili.com/1440486452" />
+
                     <ui:HyperlinkButton
                         Content="NameCube Wiki"
                         Icon="{ui:SymbolIcon Link24}"
@@ -51,9 +93,9 @@
                         Content="WPF UI"
                         Icon="{ui:SymbolIcon Link24}"
                         NavigateUri="https://github.com/lepoco/wpfui/tree/main" />
-
                 </StackPanel>
             </Expander>
+            
         </StackPanel>
         <ContentPresenter x:Name="Host" />
     </Grid>

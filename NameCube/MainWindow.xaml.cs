@@ -1,28 +1,23 @@
-﻿using System;
+﻿using NameCube.GlobalVariables.DataClass;
+using NameCube.Mode;
+using NameCube.Setting;
+using NameCube.ToolBox;
+using NameCube.ToolBox.AutomaticProcessPages;
+using NAudio.CoreAudioApi;
+using Serilog;  // 添加Serilog命名空间
+using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
-using NameCube.GlobalVariables.DataClass;
 using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
-using Masuit.Tools.Logging;
-using NameCube.Mode;
-using NameCube.Setting;
-using NameCube.ToolBox.AutomaticProcessPages;
-using NAudio.CoreAudioApi;
-using Wpf.Ui.Controls;
 using Application = System.Windows.Application;
 using Timer = System.Windows.Forms.Timer;
-using Serilog;  // 添加Serilog命名空间
 
 namespace NameCube
 {
@@ -200,8 +195,8 @@ namespace NameCube
                     NavigationMenu.Navigate(typeof(Mode.Home));
                     Log.Debug("主窗口加载完成，导航到主页");
                 };
-                this.DataContext= this;
-                if(GlobalVariablesData.ISBETA)
+                this.DataContext = this;
+                if (GlobalVariablesData.ISBETA)
                 {
                     version = "测试版:" + GlobalVariablesData.VERSION;
                 }
@@ -211,7 +206,7 @@ namespace NameCube
                     version = "正式版:" + GlobalVariablesData.VERSION;
 #pragma warning restore CS0162 // 检测到无法访问的代码
                 }
-                    Log.Information("主窗口初始化完成");
+                Log.Information("主窗口初始化完成");
             }
             catch (Exception ex)
             {
@@ -228,17 +223,28 @@ namespace NameCube
         {
             try
             {
-                this.Topmost = GlobalVariablesData.config.AllSettings.Top;
-                if (GlobalVariablesData.config.AllSettings.Top)
+                var SettingWindow = Application.Current.Windows.OfType<SettingsWindow>().FirstOrDefault();
+                var ToolBoxWindow = Application.Current.Windows.OfType<ToolboxWindow>().FirstOrDefault();
+                if((SettingWindow!=null&&SettingWindow.Visibility==Visibility.Visible)||(ToolBoxWindow!=null&&ToolBoxWindow.Visibility==Visibility.Visible))
                 {
-                    Log.Debug("窗口置顶状态检查: 已置顶");
+                    this.Topmost = false;
+                    Log.Debug("检测到其他窗口，MainWindow不进行窗口置顶");
                 }
+                else
+                {
+                    this.Topmost = GlobalVariablesData.config.AllSettings.Top;
+                    if (GlobalVariablesData.config.AllSettings.Top)
+                    {
+                        Log.Debug("窗口置顶状态检查: 已置顶");
+                    }
+                }
+
             }
             catch (Exception ex)
             {
                 Log.Error(ex, "窗口置顶检查定时器处理时发生错误");
             }
-            if(GlobalVariablesData.config.AllSettings.newVersion==null)
+            if (GlobalVariablesData.config.AllSettings.newVersion == null||GlobalVariablesData.config.AllSettings.newVersion==GlobalVariablesData.VERSION)
             {
                 UpdateWarn.Visibility = Visibility.Collapsed;
             }
@@ -285,7 +291,7 @@ namespace NameCube
                     // 创建新实例
                     settingsWindow = new SettingsWindow();
                 }
-
+                this.Topmost = false;
                 // 确保窗口可见并激活
                 settingsWindow.Show();
                 settingsWindow.Activate();
@@ -313,7 +319,7 @@ namespace NameCube
                     // 创建新实例
                     toolboxWindow = new ToolBox.ToolboxWindow();
                 }
-
+                this.Topmost = false;
                 // 确保窗口可见并激活
                 toolboxWindow.Show();
                 toolboxWindow.Activate();
@@ -476,30 +482,37 @@ namespace NameCube
                             NavigationMenu.Navigate(typeof(Mode.OnePeopleMode));
                             Log.Information("导航到单人模式");
                             break;
+
                         case 2:
                             NavigationMenu.Navigate(typeof(Mode.MemoryFactorMode));
                             Log.Information("导航到记忆因子模式");
                             break;
+
                         case 3:
                             NavigationMenu.Navigate(typeof(Mode.BatchMode));
                             Log.Information("导航到批量模式");
                             break;
+
                         case 4:
                             NavigationMenu.Navigate(typeof(Mode.NumberMode));
                             Log.Information("导航到数字模式");
                             break;
+
                         case 5:
                             NavigationMenu.Navigate(typeof(Mode.PrepareMode));
                             Log.Information("导航到准备模式");
                             break;
+
                         case 6:
                             NavigationMenu.Navigate(typeof(Mode.MemoryMode));
                             Log.Information("导航到记忆模式");
                             break;
+
                         case 7:
                             NavigationMenu.Navigate(typeof(Mode.Home));
                             Log.Information("导航到主页");
                             break;
+
                         default:
                             if (shortCut.ProcessGroup == null)
                             {

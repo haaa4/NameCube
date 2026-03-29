@@ -1,10 +1,9 @@
-﻿using Masuit.Tools.Logging;
-using Microsoft.Win32;
+﻿using Microsoft.Win32;
+using Serilog;  // 添加Serilog命名空间
 using System;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
-using Serilog;  // 添加Serilog命名空间
 
 namespace NameCube.FirstUse
 {
@@ -13,7 +12,8 @@ namespace NameCube.FirstUse
     /// </summary>
     public partial class Other : Page
     {
-        bool CanChange;
+        private bool CanChange;
+
         public Other()
         {
             InitializeComponent();
@@ -132,7 +132,7 @@ namespace NameCube.FirstUse
             }
         }
 
-        static bool IsStartupApplication(string appName)
+        private static bool IsStartupApplication(string appName)
         {
             try
             {

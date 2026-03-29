@@ -63,7 +63,6 @@
                     <ComboBoxItem Content="左键+右键" />
                     <ComboBoxItem Content="长按+右键" />
                 </ComboBox>
-
             </ui:CardControl>
             <ui:CardControl
                 Margin="4"
@@ -100,7 +99,6 @@
                         Click="Button_Click_1"
                         Content="恢复默认" />
                 </StackPanel>
-
             </ui:CardControl>
             <ui:CardControl
                 Margin="4"
@@ -124,7 +122,6 @@
                     Maximum="120"
                     Minimum="0"
                     ValueChanged="ABSlider_ValueChanged" />
-
             </ui:CardControl>
             <ui:CardControl
                 Margin="4"
@@ -150,7 +147,6 @@
                     IsEnabled="True"
                     OffContent="关"
                     OnContent="开" />
-
             </ui:CardControl>
 
             <ui:CardControl
@@ -175,7 +171,6 @@
                     Maximum="100"
                     Minimum="10"
                     ValueChanged="Diaphaneity_ValueChanged" />
-
             </ui:CardControl>
             <ui:CardControl
                 Margin="4"
@@ -249,8 +244,6 @@
                     Minimum="10"
                     ValueChanged="BallWidthHeight_ValueChanged" />
             </ui:CardControl>
-
         </StackPanel>
     </Grid>
-
 </Page>

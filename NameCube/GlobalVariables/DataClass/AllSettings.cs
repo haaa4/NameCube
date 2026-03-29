@@ -1,9 +1,5 @@
 ﻿using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Media;
 
 namespace NameCube.GlobalVariables.DataClass
@@ -93,6 +89,7 @@ namespace NameCube.GlobalVariables.DataClass
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
         public string token { get; set; }
+
         /// <summary>
         /// 新版本号
         /// </summary>
@@ -110,16 +107,19 @@ namespace NameCube.GlobalVariables.DataClass
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
         public bool DisableTheDisplayAnimationOfTheMainWindow { get; set; }
+
         /// <summary>
         /// 默认最大化窗口
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
         public bool DefaultToMaximumSize { get; set; }
+
         /// <summary>
         /// log等级
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
         public int LogLevel { get; set; } = 1;
+
         /// <summary>
         /// 更新获取方式
         /// （0=Github，1=Gitee）

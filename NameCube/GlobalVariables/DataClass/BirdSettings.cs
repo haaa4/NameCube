@@ -1,9 +1,4 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NameCube.GlobalVariables.DataClass
 {
@@ -26,11 +21,13 @@ namespace NameCube.GlobalVariables.DataClass
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
         public int AdsorbValue { get; set; } = 60;
+
         /// <summary>
         /// 长按误判阈值
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
         public int LongPressMisjudgment { get; set; } = 30;
+
         /// <summary>
         /// 无反应后自动吸附
         /// </summary>

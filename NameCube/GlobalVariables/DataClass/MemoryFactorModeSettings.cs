@@ -1,9 +1,5 @@
 ﻿using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NameCube.GlobalVariables.DataClass
 {
@@ -31,10 +27,12 @@ namespace NameCube.GlobalVariables.DataClass
         /// 上一次抽取的姓名
         /// </summary>
         public string LastName { get; set; }
+
         /// <summary>
         /// debug模式
         /// </summary>
         public bool debug = false;
+
         /// <summary>
         /// 每一种事件的发生概率
         /// </summary>

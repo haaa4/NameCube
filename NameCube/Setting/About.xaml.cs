@@ -1,13 +1,15 @@
 ﻿using NameCube.Setting.EasterEgg;
 using Serilog;
 using System;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Windows;
+using System.Net.Http;
+using System.Threading.Tasks;
 using System.Windows.Controls;
-using System.Windows.Forms;
+using System.Windows.Media.Imaging;
+using Windows.Media.Protection.PlayReady;
 using Wpf.Ui.Controls;
+using Image = Wpf.Ui.Controls.Image;
 using StackPanel = System.Windows.Controls.StackPanel;
 
 namespace NameCube.Setting
@@ -17,7 +19,7 @@ namespace NameCube.Setting
     /// </summary>
     public partial class About : Page
     {
-        int clickTimes = 0;
+        private int clickTimes = 0;
 
         public About()
         {
@@ -80,12 +82,14 @@ namespace NameCube.Setting
                                     GlobalVariablesData.SaveConfig();
                                     SnackBarFunction.ShowSnackBarInSettingWindow("自动流程Debug模式已开启", ControlAppearance.Success);
                                     break;
+
                                 case "c53d2f1a9a8499bcb477be56c31caa5c76ae60f5":
                                     Log.Information("开启开发者调试");
                                     GlobalVariablesData.config.AllSettings.debug = true;
                                     GlobalVariablesData.SaveConfig();
                                     SnackBarFunction.ShowSnackBarInSettingWindow("开发者调试已开启", ControlAppearance.Success);
                                     break;
+
                                 case "7a7bc4496e501462270ce7f6f8023c96d32098d8":
                                     Log.Information("开启因子模式调试模式");
                                     GlobalVariablesData.config.MemoryFactorModeSettings.debug = true;
@@ -95,14 +99,16 @@ namespace NameCube.Setting
                                 //以下是彩蛋部分
                                 case "philia093":
                                     Log.Information("触发彩蛋：philia093");
-                                    Media media=new Media("https://launcher-webstatic.mihoyo.com/launcher-public/2025/10/31/49fab36b3317cbe36b673e9183ed22c3_4733825790845625523.webm");
+                                    Media media = new Media("https://launcher-webstatic.mihoyo.com/launcher-public/2025/10/31/49fab36b3317cbe36b673e9183ed22c3_4733825790845625523.webm");
                                     media.ShowDialog();
                                     break;
+
                                 case "Columbina":
                                     Log.Information("触发彩蛋：Columbina");
                                     Media media2 = new Media("https://launcher-webstatic.mihoyo.com/launcher-public/2026/01/08/f3c44cd72c6214ed680afe5fe90b26fc_6413191254498564796.webm");
                                     media2.ShowDialog();
                                     break;
+
                                 default:
                                     Log.Warning("Debug密码错误: {Password}", enteredPassword);
                                     SnackBarFunction.ShowSnackBarInSettingWindow("密码错误", Wpf.Ui.Controls.ControlAppearance.Caution);
@@ -121,6 +127,50 @@ namespace NameCube.Setting
             {
                 Log.Error(ex, "处理Debug模式入口时发生异常");
             }
+        }
+
+        private async Task LoadImageFromWebAsync(string imageUrl, Image targetImage)
+        {
+            try
+            {
+                using (HttpClient client = new HttpClient())
+                {
+                    // 异步获取图片字节流
+                    byte[] imageData = await client.GetByteArrayAsync(imageUrl);
+
+                    // 在内存流中创建图片
+                    using (MemoryStream ms = new MemoryStream(imageData))
+                    {
+                        BitmapImage bitmapImage = new BitmapImage();
+                        bitmapImage.BeginInit();
+                        // 设置源为内存流
+                        bitmapImage.StreamSource = ms;
+                        bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                        bitmapImage.DecodePixelWidth = 400;
+                        bitmapImage.EndInit();
+                        // 图片解码后，通过Dispatcher切换到UI线程更新控件
+                        this.Dispatcher.Invoke(() => {
+                            targetImage.Source = bitmapImage;
+                        });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Warning("加载头像失败：{Error}", ex);
+            }
+        }
+
+        private async void Page_Loaded(object sender, System.Windows.RoutedEventArgs e)
+        {
+            VersionTextBlock.Text = GlobalVariablesData.VERSION;
+            await LoadImageFromWebAsync("https://avatars.githubusercontent.com/u/172395030?s=96&v=4", HeadImage);
+        }
+
+        private void Button_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            ThanksWindow thanksWindow = new ThanksWindow();
+            thanksWindow.ShowDialog();
         }
     }
 }

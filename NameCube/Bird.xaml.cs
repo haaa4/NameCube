@@ -1,24 +1,16 @@
 ﻿using Masuit.Tools;
-using Masuit.Tools.Logging;
-using Masuit.Tools.Win32;
-using NameCube.Setting;
+using Serilog;  // 添加Serilog命名空间
 using System;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Net.NetworkInformation;
 using System.Runtime.InteropServices;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
-using Wpf.Ui.Controls;
 using Application = System.Windows.Application;
 using WinForms = System.Windows.Forms;
-using Serilog;  // 添加Serilog命名空间
 
 namespace NameCube
 {
@@ -29,26 +21,33 @@ namespace NameCube
     {
         //private NotifyIcon _notifyIcon;
         private double SnapThreshold = 60; // 吸附阈值
+
         private DispatcherTimer _longPressTimer;
         private Point _dragOffset;
         private bool _isDragging;
         private Storyboard LongPressAnimation;
         private POINT LastPosition;
-        System.Timers.Timer Hidetimer = new System.Timers.Timer();
-        System.Timers.Timer Ab = new System.Timers.Timer();
+        private System.Timers.Timer Hidetimer = new System.Timers.Timer();
+        private System.Timers.Timer Ab = new System.Timers.Timer();
 
         [DllImport("user32.dll")]
         private static extern bool GetCursorPos(out POINT lpPoint);
+
         [DllImport("user32.dll")]
         private static extern uint GetDpiForWindow(IntPtr hwnd);
+
         [DllImport("user32.dll")]
         private static extern IntPtr GetDesktopWindow();
+
         [DllImport("user32.dll")]
         private static extern IntPtr GetWindowDpiAwarenessContext(IntPtr hwnd);
+
         [DllImport("user32.dll")]
         private static extern int GetDpiForSystem();
+
         [DllImport("user32.dll")]
         private static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
+
         [DllImport("user32.dll")]
         private static extern int GetWindowLong(IntPtr hWnd, int nIndex);
 
@@ -223,6 +222,7 @@ namespace NameCube
         }
 
         private DispatcherTimer _timer;
+
         private void ExitApp()
         {
             Log.Information("退出应用");

@@ -1,4 +1,5 @@
 ﻿using Masuit.Tools;
+using Serilog; // 添加Serilog引用
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -8,9 +9,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Media.Imaging;
-using Wpf.Ui.Controls;
 using Application = System.Windows.Application;
-using Serilog; // 添加Serilog引用
 
 namespace NameCube.Setting
 {

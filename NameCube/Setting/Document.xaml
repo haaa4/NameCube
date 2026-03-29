@@ -25,23 +25,25 @@
             Content="打开配置文件文件夹"
             Icon="{ui:SymbolIcon Symbol=WindowSettings20}" />
         <ui:CardAction
-    Margin="5,0"
-    Click="CardAction_Click_5"
-    Content="打开用户数据文件夹"
-    Icon="{ui:SymbolIcon Symbol=WindowSettings20}" />
-        
-        <ui:CardControl
-            Margin="5 5 5 5"   >
-            <StackPanel HorizontalAlignment="Left" Width="745">
-                <ui:TextBlock Text="配置操作" Margin="10"  HorizontalAlignment="Left"/>
-                <DockPanel VerticalAlignment="Center" HorizontalAlignment="Left" >
-                   
+            Margin="5,0"
+            Click="CardAction_Click_5"
+            Content="打开用户数据文件夹"
+            Icon="{ui:SymbolIcon Symbol=WindowSettings20}" />
+
+        <ui:CardControl Margin="5,5,5,5">
+            <StackPanel Width="745" HorizontalAlignment="Left">
+                <ui:TextBlock
+                    Margin="10"
+                    HorizontalAlignment="Left"
+                    Text="配置操作" />
+                <DockPanel HorizontalAlignment="Left" VerticalAlignment="Center">
+
                     <ui:Button
-Margin="5,0"
-HorizontalAlignment="Center"
-Content="清空数据"
-Foreground="Red"
-Icon="{ui:SymbolIcon Symbol=Delete12}">
+                        Margin="5,0"
+                        HorizontalAlignment="Center"
+                        Content="清空数据"
+                        Foreground="Red"
+                        Icon="{ui:SymbolIcon Symbol=Delete12}">
                         <ui:FlyoutService.Flyout>
                             <ui:Flyout Placement="Bottom">
                                 <StackPanel>
@@ -52,17 +54,17 @@ Icon="{ui:SymbolIcon Symbol=Delete12}">
                         </ui:FlyoutService.Flyout>
                     </ui:Button>
                     <ui:Button
-Margin="5,0"
-HorizontalAlignment="Center"
-Click="CardAction_Click_3"
-Content="备份数据"
-Icon="{ui:SymbolIcon Symbol=DocumentArrowUp20}" />
+                        Margin="5,0"
+                        HorizontalAlignment="Center"
+                        Click="CardAction_Click_3"
+                        Content="备份数据"
+                        Icon="{ui:SymbolIcon Symbol=DocumentArrowUp20}" />
                     <ui:Button
-Margin="5,0"
-HorizontalAlignment="Center"
-Content="从备份文件还原"
-Foreground="Red"
-Icon="{ui:SymbolIcon Symbol=DocumentArrowDown20}">
+                        Margin="5,0"
+                        HorizontalAlignment="Center"
+                        Content="从备份文件还原"
+                        Foreground="Red"
+                        Icon="{ui:SymbolIcon Symbol=DocumentArrowDown20}">
                         <ui:FlyoutService.Flyout>
                             <ui:Flyout Placement="Bottom">
                                 <StackPanel>
@@ -73,9 +75,7 @@ Icon="{ui:SymbolIcon Symbol=DocumentArrowDown20}">
                         </ui:FlyoutService.Flyout>
                     </ui:Button>
                 </DockPanel>
-
             </StackPanel>
-            
         </ui:CardControl>
     </StackPanel>
 </Page>

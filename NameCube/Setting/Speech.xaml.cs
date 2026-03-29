@@ -1,8 +1,8 @@
-﻿using System.Diagnostics;
+﻿using Serilog; // 添加Serilog引用
 using System;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
-using Serilog; // 添加Serilog引用
 
 namespace NameCube.Setting
 {
@@ -12,7 +12,7 @@ namespace NameCube.Setting
     public partial class Speech : Page
     {
         private static readonly ILogger _logger = Log.ForContext<Speech>(); // 添加Serilog日志实例
-        bool CanChange;
+        private bool CanChange;
 
         public Speech()
         {

@@ -1,15 +1,9 @@
 ﻿using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace NameCube.GlobalVariables.DataClass
 {
-
-
     public class ShortCut
     {
         /// <summary>
@@ -36,6 +30,7 @@ namespace NameCube.GlobalVariables.DataClass
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
         public string LastChangeTime { get; set; } = "-1";
     }
+
     public class ShortCutKey
     {
         /// <summary>

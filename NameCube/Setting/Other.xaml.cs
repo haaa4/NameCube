@@ -1,15 +1,15 @@
 ﻿using IWshRuntimeLibrary;
 using Microsoft.Win32;
+using NameCube.Function;
+using Serilog; // 添加Serilog引用
 using System;
 using System.Diagnostics;
-using NameCube.Function;
 using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
 using File = System.IO.File;
-using Serilog; // 添加Serilog引用
 
 namespace NameCube.Setting
 {
@@ -20,7 +20,8 @@ namespace NameCube.Setting
     {
         private static readonly ILogger _logger = Log.ForContext<Other>(); // 添加Serilog日志实例
 
-        bool CanChange;
+        private bool CanChange;
+
         public Other()
         {
             InitializeComponent();
@@ -142,7 +143,7 @@ namespace NameCube.Setting
             }
         }
 
-        static bool IsStartupApplication(string appName)
+        private static bool IsStartupApplication(string appName)
         {
             try
             {
@@ -260,8 +261,7 @@ namespace NameCube.Setting
                 GlobalVariablesData.config.AllSettings.DefaultToMaximumSize = MaxSizeCheck.IsChecked.Value;
                 GlobalVariablesData.SaveConfig();
 
-                _logger.Information("默认最大化已改为{value}",MaxSizeCheck.IsChecked.Value);
-
+                _logger.Information("默认最大化已改为{value}", MaxSizeCheck.IsChecked.Value);
             }
         }
     }

@@ -1,22 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using NameCube.FirstUse;
-using NameCube.Function;
+﻿using NameCube.Function;
 using NameCube.Setting.Debug;
 using Serilog; // 添加Serilog引用
+using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Windows;
+using System.Windows.Controls;
 
 namespace NameCube.Setting
 {
@@ -234,7 +223,7 @@ namespace NameCube.Setting
 
         private void Button_Click_7(object sender, RoutedEventArgs e)
         {
-            Whell wheel= new Whell();
+            Whell wheel = new Whell();
             wheel.ShowDialog();
         }
 
@@ -242,6 +231,12 @@ namespace NameCube.Setting
         {
             string[] get = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceNames();
             MessageBoxFunction.ShowMessageBoxInfo("OK");
+        }
+
+        private void Button_Click_9(object sender, RoutedEventArgs e)
+        {
+            NameCube.Setting.UpdateGuide.UpdateGuideWindow updateGuideWindow= new(GuideTag.Text);
+            updateGuideWindow.Show();
         }
     }
 }

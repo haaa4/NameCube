@@ -1,35 +1,13 @@
-﻿using Masuit.Tools.Files;
-using Masuit.Tools.Net;
-using Microsoft.Win32;
-using NameCube.Function;
+﻿using NameCube.Function;
 using Serilog; // 添加Serilog引用
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Net.NetworkInformation;
-using System.Reflection;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Forms;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using Application = System.Windows.Application;
-using File = System.IO.File;
-using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
-using Path = System.IO.Path;
 
 namespace NameCube.Setting
 {
@@ -68,7 +46,7 @@ namespace NameCube.Setting
                 _logger.Warning("当前运行的是Beta版本");
             }
 
-            if (GlobalVariablesData.config.AllSettings.newVersion != null)
+            if (GlobalVariablesData.config.AllSettings.newVersion != null&& GlobalVariablesData.config.AllSettings.newVersion != GlobalVariablesData.VERSION)
             {
                 CaseText.Text = "检测到新的版本：" + GlobalVariablesData.config.AllSettings.newVersion;
                 UpkButton.IsEnabled = true;
@@ -82,7 +60,6 @@ namespace NameCube.Setting
         }
 
         bool Canchange;
-
 
         private async void CheckButton_Click(object sender, RoutedEventArgs e)
         {
@@ -98,7 +75,7 @@ namespace NameCube.Setting
                 if (GlobalVariablesData.config.AllSettings.token == "" || GlobalVariablesData.config.AllSettings.token == null)
                 {
                     _logger.Debug("使用匿名方式检查更新");
-                    if(GlobalVariablesData.config.AllSettings.DownloadWay==0)
+                    if (GlobalVariablesData.config.AllSettings.DownloadWay == 0)
                     {
                         GetVersion = await GithubData.GetLatestReleaseVersionAsync("haaa4", "NameCube");
                     }
@@ -145,7 +122,6 @@ namespace NameCube.Setting
 
                 NowProgressBar.IsIndeterminate = false;
                 CheckButton.IsEnabled = true;
-
             }
             catch (Exception ex)
             {
@@ -156,9 +132,6 @@ namespace NameCube.Setting
                 CaseText.Text = "检查更新失败";
             }
         }
-
-
-
 
         private void UpdataWayComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -231,7 +204,6 @@ namespace NameCube.Setting
 
                 NowProgressBar.IsIndeterminate = false;
                 CheckButton.IsEnabled = true;
-
             }
             catch (Exception ex)
             {
@@ -279,7 +251,6 @@ namespace NameCube.Setting
                     }
 
                     GlobalVariablesData.config.AllSettings.UpdataTime = DateTime.Now.ToString("f");
-
                 }
                 NowProgressBar.IsIndeterminate = false;
                 NowProgressBar.Value = NowProgressBar.Maximum;
@@ -293,7 +264,6 @@ namespace NameCube.Setting
 
                 NowProgressBar.IsIndeterminate = false;
                 CheckButton.IsEnabled = true;
-
             }
             catch (Exception ex)
             {
@@ -318,7 +288,6 @@ namespace NameCube.Setting
             {
                 MessageBoxFunction.ShowMessageBoxWarning("更新向导已经打开了哦");
             }
-
         }
         public static int ExtractVersionCode(string input)
         {
@@ -345,9 +314,9 @@ namespace NameCube.Setting
 
         private void UpdataWayGetComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if(Canchange)
+            if (Canchange)
             {
-                GlobalVariablesData.config.AllSettings.DownloadWay=UpdataWayGetComboBox.SelectedIndex ;
+                GlobalVariablesData.config.AllSettings.DownloadWay = UpdataWayGetComboBox.SelectedIndex;
                 GlobalVariablesData.SaveConfig();
             }
         }

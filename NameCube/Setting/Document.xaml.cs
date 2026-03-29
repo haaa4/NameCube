@@ -1,26 +1,17 @@
 ﻿using Masuit.Tools.Files;
+using NameCube.Function;
+using Serilog; // 添加Serilog引用
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using NameCube.Function;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Forms;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using Wpf.Ui.Controls;
-using Path = System.IO.Path;
-using Serilog; // 添加Serilog引用
 using Application = System.Windows.Application;
+using Path = System.IO.Path;
 
 namespace NameCube.Setting
 {
@@ -36,14 +27,12 @@ namespace NameCube.Setting
             InitializeComponent();
             _logger.Debug("Document 页面初始化开始");
             string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Namecube");
-
         }
-
 
         private void CardAction_Click(object sender, RoutedEventArgs e)
         {
             _logger.Information("打开配置目录: {ConfigDir}", GlobalVariablesData.configDir);
-            Process.Start("explorer.exe",GlobalVariablesData.configDir);
+            Process.Start("explorer.exe", GlobalVariablesData.configDir);
         }
 
         private void CardAction_Click_1(object sender, RoutedEventArgs e)
@@ -128,7 +117,7 @@ namespace NameCube.Setting
                         try
                         {
                             var SevenZipCompressor = new SevenZipCompressor(null);
-                            File.Copy(Path.Combine(GlobalVariablesData.configDir, "config.json"), Path.Combine(GlobalVariablesData.userDataDir, "config_backup.json"),true);
+                            File.Copy(Path.Combine(GlobalVariablesData.configDir, "config.json"), Path.Combine(GlobalVariablesData.userDataDir, "config_backup.json"), true);
                             SevenZipCompressor.Zip(new List<string>() { GlobalVariablesData.userDataDir }, saveFileDialog.FileName);
                             File.Delete(Path.Combine(GlobalVariablesData.userDataDir, "config_backup.json"));
                             MessageBoxFunction.ShowMessageBoxInfo("保存成功");

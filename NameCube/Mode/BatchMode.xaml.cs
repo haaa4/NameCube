@@ -1,10 +1,10 @@
 ﻿using Masuit.Tools;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
-using Serilog;
 
 namespace NameCube.Mode
 {
@@ -14,6 +14,7 @@ namespace NameCube.Mode
     public partial class BatchMode : Page
     {
         public ObservableCollection<AllName> AllNames { get; set; } = new ObservableCollection<AllName>();
+
         public class AllName
         {
             public string Name { get; set; }

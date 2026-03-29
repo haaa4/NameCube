@@ -1,22 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using NameCube.Function;
+using Serilog;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
-using NameCube.Function;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Forms;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Path = System.IO.Path;
-using Serilog;
 
 namespace NameCube.ToolBox.AutomaticProcessPages
 {
@@ -24,8 +17,6 @@ namespace NameCube.ToolBox.AutomaticProcessPages
     using System.Drawing;
     using System.Globalization;
     using System.Runtime.InteropServices;
-    using System.Windows.Interop;
-    using Wpf.Ui.Input;
 
     public class IconToImageSourceConverter : IValueConverter
     {

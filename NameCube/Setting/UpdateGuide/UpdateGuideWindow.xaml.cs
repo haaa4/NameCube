@@ -1,22 +1,12 @@
 ﻿using NameCube.Function;
 using Serilog;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Net.Http;
 using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using Brushes = System.Windows.Media.Brushes;
 using Path = System.IO.Path;
 
@@ -27,27 +17,29 @@ namespace NameCube.Setting.UpdateGuide
     /// </summary>
     public partial class UpdateGuideWindow : Window
     {
-        string version;
-        bool isError = false;
+        private string version;
+        private bool isError = false;
+
         public UpdateGuideWindow(string version)
         {
             InitializeComponent();
             this.version = version;
         }
+
         //example:https://github.com/haaa4/NameCube/releases/download/V1.3-Beta-2.1(%23p0%23)/NameCubeSetupX64.exe
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            if(version=="Error")
+            if (version == "Error")
             {
                 //这里是B端未正常启动而触发的逻辑
                 Image1st.Source = FinishExampleImage.Source;
-                Text1st.Foreground= Brushes.Green;
+                Text1st.Foreground = Brushes.Green;
                 Text2nd.Foreground = Brushes.Red;
                 ErrorAttention.Text = "未能如期启动更新程序，请检查你的操作，或者前往Github进行手动更新";
                 isError = true;
                 return;
             }
-            if(version=="Finish")
+            if (version == "Finish")
             {
                 //这里是B端已完成更新而触发的逻辑
                 Image1st.Source = FinishExampleImage.Source;
@@ -61,14 +53,14 @@ namespace NameCube.Setting.UpdateGuide
                 Text5th.Foreground = Brushes.Blue;
                 try
                 {
-                    Directory.Delete(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Update"),true);
-                    ErrorAttention.Text= "更新完成，引导将在5秒后自动退出";
+                    Directory.Delete(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Update"), true);
+                    ErrorAttention.Text = "更新完成，引导将在5秒后自动退出";
                     Text5th.Foreground = Brushes.Green;
                     Image5th.Source = FinishExampleImage.Source;
                 }
                 catch (Exception ex)
                 {
-                    ErrorAttention.Text = ex.Message+"(不影响新版本软件继续使用，引导将在5秒后自动退出)";
+                    ErrorAttention.Text = ex.Message + "(不影响新版本软件继续使用，引导将在5秒后自动退出)";
                     Text5th.Foreground = Brushes.Orange;
                 }
                 await Task.Delay(5000);
@@ -84,7 +76,12 @@ namespace NameCube.Setting.UpdateGuide
                         stream.CopyTo(fileStream);
                     }
                 }
-                Process.Start(AppDomain.CurrentDomain.BaseDirectory + "\\新版本介绍.md");
+                var psi = new ProcessStartInfo
+                {
+                    FileName = AppDomain.CurrentDomain.BaseDirectory + "\\新版本介绍.md",
+                    UseShellExecute = true 
+                };
+                Process.Start(psi);
                 //防止被阻止
                 isError = true;
                 this.Close();
@@ -93,11 +90,11 @@ namespace NameCube.Setting.UpdateGuide
             //尝试下载更新文件，并实时更新进度条和下载速度
             Text1st.Foreground = Brushes.Blue;
             string url = version.Replace("#", "%23");
-            string localPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Update","NameCubeSetupX64.exe");
+            string localPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Update", "NameCubeSetupX64.exe");
             try
             {
                 Directory.CreateDirectory(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Update"));
-                if(GlobalVariablesData.config.AllSettings.DownloadWay==0)
+                if (GlobalVariablesData.config.AllSettings.DownloadWay == 0)
                 {
                     await DownloadFileAsync("https://github.com/haaa4/NameCube/releases/download/" + url + "/NameCubeSetupX64.exe", localPath);
                 }
@@ -105,7 +102,6 @@ namespace NameCube.Setting.UpdateGuide
                 {
                     await DownloadFileAsync("https://gitee.com/haaa4/NameCube/releases/download/" + url + "/NameCubeSetupX64.exe", localPath);
                 }
-
             }
             catch (Exception ex)
             {
@@ -132,6 +128,7 @@ namespace NameCube.Setting.UpdateGuide
             StartButton.IsEnabled = true;
             //接下来的内容由更新B端完成
         }
+
         /// <summary>
         /// 异步下载文件，并实时更新进度条和下载速度。
         /// </summary>
@@ -248,17 +245,16 @@ namespace NameCube.Setting.UpdateGuide
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             //在不报错的情况下，就不允许用户关闭窗口
-            if(!isError)
+            if (!isError)
             {
                 MessageBoxFunction.ShowMessageBoxWarning("在完成更新前，请勿关闭此窗口！");
                 e.Cancel = true; // 取消关闭事件，防止窗口被关闭
             }
-
         }
 
         private void StartButton_Click(object sender, RoutedEventArgs e)
         {
-            Process.Start(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Update", "NameCubeSetupX64.exe"),"UpdateMode");
+            Process.Start(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Update", "NameCubeSetupX64.exe"), "UpdateMode");
             Log.Information("用户已点击开始安装，正在启动安装程序...应用将退出");
             Application.Current.Shutdown(); // 关闭当前应用程序
         }

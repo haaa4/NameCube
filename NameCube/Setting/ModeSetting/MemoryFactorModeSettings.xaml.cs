@@ -1,8 +1,7 @@
-﻿using Masuit.Tools;
+﻿using Serilog;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
-using Serilog;
 
 namespace NameCube.Setting.ModeSetting
 {
@@ -13,7 +12,8 @@ namespace NameCube.Setting.ModeSetting
     {
         private static readonly ILogger _logger = Log.ForContext<MemoryFactorModeSettings>();
 
-        bool CanChange;
+        private bool CanChange;
+
         public MemoryFactorModeSettings()
         {
             InitializeComponent();

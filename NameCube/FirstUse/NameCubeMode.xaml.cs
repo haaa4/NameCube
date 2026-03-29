@@ -1,19 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using NameCube.Function;
+using Serilog;  // 添加Serilog命名空间
+using System;
 using System.Windows;
 using System.Windows.Controls;
-using NameCube.Function;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using Serilog;  // 添加Serilog命名空间
 
 namespace NameCube.FirstUse
 {

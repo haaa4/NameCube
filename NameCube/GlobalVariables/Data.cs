@@ -1,34 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Shapes;
-using Masuit.Tools.Logging;
+﻿using Masuit.Tools.Logging;
 using NameCube.Function;
-using NameCube.Mode;
 using NameCube.GlobalVariables.DataClass;
-using NameCube.Setting;
 using Newtonsoft.Json;
-using Wpf.Ui.Controls;
-using Brush = System.Windows.Media.Brush;
-using FontFamily = System.Windows.Media.FontFamily;
-using Path = System.IO.Path;
-using BirdSettings = NameCube.GlobalVariables.DataClass.BirdSettingsData;
 using Serilog;
-
+using System;
+using System.IO;
+using BirdSettings = NameCube.GlobalVariables.DataClass.BirdSettingsData;
+using Path = System.IO.Path;
 
 namespace NameCube
 {
-   
-
     public class Json
     {
         /// <summary>
@@ -62,6 +43,7 @@ namespace NameCube
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
         public MemoryFactorModeSettings MemoryFactorModeSettings { get; set; } =
             new MemoryFactorModeSettings();
+
         /// <summary>
         /// 批量模式设置
         /// </summary>
@@ -97,6 +79,7 @@ namespace NameCube
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
         public AutomaticProcess AutomaticProcess { get; set; } = new AutomaticProcess();
+
         /// <summary>
         /// 配置文件的上一次运行所在点鸣魔方的版本
         /// </summary>
@@ -120,6 +103,7 @@ namespace NameCube
             Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
             "NameCube"
         );
+
         /// <summary>
         /// 用户数据文件夹
         /// </summary>
@@ -153,12 +137,10 @@ namespace NameCube
         /// 当前版本
         /// </summary>
         //Bro为什么这样写！！？
-        public const string VERSION = "V1.3_Beta-5(#p3#)";
-        public const int VERSIONCODE = 3;
+        public const string VERSION = "V1.3-Beta-6(#p4#)";
+
+        public const int VERSIONCODE = 4;
         public const bool ISBETA = true;
         public static bool ret = false;
     }
-
-    
-
 }

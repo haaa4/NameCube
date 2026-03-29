@@ -55,7 +55,6 @@
                     Content="自动流程"
                     Icon="{ui:SymbolIcon Symbol=ArrowWrap20}"
                     TargetPageType="{x:Type Toolbox:AutomaticProcess}" />
-
             </ui:NavigationView.MenuItems>
             <ui:NavigationView.PaneHeader>
                 <ui:Button Icon="{ui:SymbolIcon Symbol=ArrowClockwise24}">

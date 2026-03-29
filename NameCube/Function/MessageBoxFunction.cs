@@ -1,9 +1,5 @@
 ﻿using Serilog;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace NameCube.Function
@@ -11,6 +7,7 @@ namespace NameCube.Function
     internal class MessageBoxFunction
     {
         private static readonly ILogger _logger = Log.ForContext<MessageBoxFunction>();
+
         /// <summary>
         /// 创建一个提示信息框
         /// </summary>

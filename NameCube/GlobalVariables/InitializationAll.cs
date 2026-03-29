@@ -1,10 +1,6 @@
-﻿using System;
+﻿using NameCube.GlobalVariables.DataClass;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Media;
-using NameCube.GlobalVariables.DataClass;
 
 namespace NameCube.GlobalVariables
 {

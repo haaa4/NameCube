@@ -1,19 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Serilog;
+using System;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using Serilog;
 
 namespace NameCube.ToolBox.AutomaticProcessPages.ProcessPages
 {
@@ -22,11 +11,13 @@ namespace NameCube.ToolBox.AutomaticProcessPages.ProcessPages
     /// </summary>
     public partial class PowerOffPage : Page
     {
-        int time = 30;
-        System.Timers.Timer timer = new System.Timers.Timer();
+        private int time = 30;
+        private System.Timers.Timer timer = new System.Timers.Timer();
         private int shutDown = 0;
         private bool debug = false;
+
         public event Action<string> RequestParentAction;
+
         public event Action<int> EndThePageAction;
 
         private void CallEnd(string debugText, bool debug, int ret = 0)
@@ -56,7 +47,7 @@ namespace NameCube.ToolBox.AutomaticProcessPages.ProcessPages
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="shutDownWay">(0:立刻关机,1:一般关机，2:强制关机)</param>
         /// <param name="isDebug"></param>
