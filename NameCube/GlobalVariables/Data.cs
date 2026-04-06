@@ -128,7 +128,7 @@ namespace NameCube
                 // 确保目录存在
                 Directory.CreateDirectory(configDir);
 
-                string jsonString = JsonConvert.SerializeObject(config);
+                string jsonString = JsonConvert.SerializeObject(config, Formatting.Indented);
                 File.WriteAllText(configPath, jsonString);
             }
             catch (Exception ex)
@@ -142,10 +142,14 @@ namespace NameCube
         /// <summary>
         /// 当前版本
         /// </summary>
-        //Bro为什么这样写！！？
-        public const string VERSION = "V1.3-Beta-6(#p4#)";
-
-        public const int VERSIONCODE = 4;
+        public const string VERSION = "V1.3-Beta-7(#p5#)";
+        /// <summary>
+        /// 当前版本代码
+        /// </summary>
+        public const int VERSIONCODE = 5;
+        /// <summary>
+        /// 当前是否为测试版本
+        /// </summary>
         public const bool ISBETA = true;
         public static bool ret = false;
     }

@@ -27,7 +27,7 @@ namespace NameCube.ToolBox
         {
             _logger.Debug("工具箱窗口加载完成，开始显示动画");
 
-            NavigationMenu.Navigate(typeof(ToolBox.SpeechToolbox));
+            NavigationMenu.Navigate(typeof(ToolBox.Welcome));
             _logger.Debug("导航到语音工具箱页面");
 
             var showStoryBoard = FindResource("ShowStoryBoard") as Storyboard;

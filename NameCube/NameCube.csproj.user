@@ -20,5 +20,11 @@
     <Compile Update="Setting\ThanksWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Setting\Welcome.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="ToolBox\Welcome.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
 </Project>

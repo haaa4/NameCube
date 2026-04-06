@@ -340,7 +340,7 @@ namespace NameCube
                     {
                         mainWindow.ShowThisWindow();
                         mainWindow.WindowState = WindowState.Normal;
-                        mainWindow.NavigationMenu.Navigate(typeof(Mode.Home));
+                        mainWindow.OnShowAfterLongPress();
                         Log.Information("主窗口已显示并导航到主页");
                     }
                     else

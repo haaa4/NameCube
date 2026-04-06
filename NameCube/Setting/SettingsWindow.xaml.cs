@@ -27,7 +27,7 @@ namespace NameCube.Setting
 
         private void NavigationMenu_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
-            NavigationMenu.Navigate(typeof(Setting.Appearance));
+            NavigationMenu.Navigate(typeof(Setting.Welcome));
             DebugItem.Visibility = GlobalVariablesData.config.AllSettings.debug ? System.Windows.Visibility.Visible : System.Windows.Visibility.Collapsed;
 
             _logger.Information("导航菜单加载完成，调试项可见性: {DebugVisible}", GlobalVariablesData.config.AllSettings.debug);

@@ -32,6 +32,8 @@
     <TargetZone>LocalIntranet</TargetZone>
     <SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
     <StartupObject></StartupObject>
+    <FileVersion>1.2.7.0</FileVersion>
+    <AssemblyVersion>1.2.7.0</AssemblyVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>x64</PlatformTarget>

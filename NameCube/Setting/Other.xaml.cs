@@ -33,6 +33,7 @@ namespace NameCube.Setting
             ModeCombox.SelectedIndex = GlobalVariablesData.config.AllSettings.NameCubeMode;
             UpdataWayGetComboBox.SelectedIndex = GlobalVariablesData.config.AllSettings.DownloadWay;
             DisabledAnimationCheck.IsChecked = GlobalVariablesData.config.AllSettings.DisableTheDisplayAnimationOfTheMainWindow;
+            DefalultPageComboBox.SelectedIndex = GlobalVariablesData.config.AllSettings.DefaultPage;
             MaxSizeCheck.IsChecked = GlobalVariablesData.config.AllSettings.DefaultToMaximumSize;
 
             if (GlobalVariablesData.config.AllSettings.Recommend == "None")
@@ -271,6 +272,15 @@ namespace NameCube.Setting
             if (CanChange)
             {
                 GlobalVariablesData.config.AllSettings.DownloadWay = UpdataWayGetComboBox.SelectedIndex;
+                GlobalVariablesData.SaveConfig();
+            }
+        }
+
+        private void DefalultPageComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if(CanChange)
+            {
+                GlobalVariablesData.config.AllSettings.DefaultPage= DefalultPageComboBox.SelectedIndex;
                 GlobalVariablesData.SaveConfig();
             }
         }

@@ -620,7 +620,7 @@
                     VerticalAlignment="Center"
                     FontSize="14"
                     TextAlignment="Right"
-                    TextWrapping="Wrap"><Run Text="携带软件版本：V1.3_Beta-" /><Run Language="zh-cn" Text="6" /></TextBlock>
+                    TextWrapping="Wrap"><Run Text="携带软件版本：V1.3_Beta-" /><Run Language="zh-cn" Text="7" /></TextBlock>
             </Canvas>
         </Border>
         <Canvas Height="280">

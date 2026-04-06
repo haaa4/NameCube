@@ -346,7 +346,7 @@ namespace NameCube.ToolBox.AutomaticProcessPages
             {
                 Title = "确认删除",
                 Content =
-                    $"确定要删除流程组 '{itemToDelete}' 吗？此操作不可恢复。(时间表与快捷键内的流程组不会改变）",
+                    $"确定要删除流程组 '{itemToDelete}' 吗？此操作不可恢复。",
                 PrimaryButtonText = "删除",
                 CloseButtonText = "取消",
                 DialogHost = Host,

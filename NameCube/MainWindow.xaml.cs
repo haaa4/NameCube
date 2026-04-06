@@ -71,8 +71,45 @@ namespace NameCube
         {
             try
             {
-                Log.Information("长按后显示主窗口，导航到主页");
-                NavigationMenu.Navigate(typeof(Mode.Home));
+                switch (GlobalVariablesData.config.AllSettings.DefaultPage)
+                {
+                    case 0:
+                        NavigationMenu.Navigate(typeof(Mode.Home));
+                        Log.Information("默认页面加载: 主页");
+                        break;
+                    case 1:
+                        NavigationMenu.Navigate(typeof(Mode.OnePeopleMode));
+                        Log.Information("默认页面加载:单人模式 ");
+                        break;
+                    case 2:
+                        NavigationMenu.Navigate(typeof(Mode.MemoryFactorMode));
+                        Log.Information("默认页面加载:因子模式 ");
+                        break;
+                    case 3:
+                        NavigationMenu.Navigate(typeof(Mode.BatchMode));
+                        Log.Information("默认页面加载:批量模式 ");
+                        break;
+                    case 4:
+                        NavigationMenu.Navigate(typeof(Mode.NumberMode));
+                        Log.Information("默认页面加载:数字模式");
+                        break;
+                    case 5:
+                        NavigationMenu.Navigate(typeof(Mode.PrepareMode));
+                        Log.Information("默认页面加载:预备模式");
+                        break;
+                    case 6:
+                        NavigationMenu.Navigate(typeof(Mode.MemoryMode));
+                        Log.Information("默认页面加载:记忆模式");
+                        break;
+                    default:
+                        Log.Warning("默认页面配置无效，导航到主页");
+                        NavigationMenu.Navigate(typeof(Mode.Home));
+                        GlobalVariablesData.config.AllSettings.DefaultPage = 0;
+                        GlobalVariablesData.SaveConfig();
+                        break;
+
+                }
+
             }
             catch (Exception ex)
             {
@@ -192,7 +229,44 @@ namespace NameCube
                 Loaded += (sender, args) =>
                 {
                     // 导航到第一个菜单项
-                    NavigationMenu.Navigate(typeof(Mode.Home));
+                    switch (GlobalVariablesData.config.AllSettings.DefaultPage)
+                    {
+                        case 0:
+                            NavigationMenu.Navigate(typeof(Mode.Home));
+                            Log.Information("默认页面加载: 主页");
+                            break;
+                        case 1:
+                            NavigationMenu.Navigate(typeof(Mode.OnePeopleMode));
+                            Log.Information("默认页面加载:单人模式 ");
+                            break;
+                        case 2:
+                            NavigationMenu.Navigate(typeof(Mode.MemoryFactorMode));
+                            Log.Information("默认页面加载:因子模式 ");
+                            break;
+                        case 3:
+                            NavigationMenu.Navigate(typeof(Mode.BatchMode));
+                            Log.Information("默认页面加载:批量模式 ");
+                            break;
+                        case 4:
+                            NavigationMenu.Navigate(typeof(Mode.NumberMode));
+                            Log.Information("默认页面加载:数字模式");
+                            break;
+                        case 5:
+                            NavigationMenu.Navigate(typeof(Mode.PrepareMode));
+                            Log.Information("默认页面加载:预备模式");
+                            break;
+                        case 6:
+                            NavigationMenu.Navigate(typeof(Mode.MemoryMode));
+                            Log.Information("默认页面加载:记忆模式");
+                            break;
+                        default:
+                            Log.Warning("默认页面配置无效，导航到主页");
+                            NavigationMenu.Navigate(typeof(Mode.Home));
+                            GlobalVariablesData.config.AllSettings.DefaultPage = 0;
+                            GlobalVariablesData.SaveConfig();
+                            break;
+
+                    }
                     Log.Debug("主窗口加载完成，导航到主页");
                 };
                 this.DataContext = this;

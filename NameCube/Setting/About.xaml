@@ -52,7 +52,7 @@
                     <StackPanel Grid.Column="1">
                         <TextBlock TextWrapping="Wrap">
                             <Run Text="哈阿斯（haaa4)" FontSize="30"/>
-                            <Run Text="   偶尔写写代码，给班级写写软件，每日日常如此。正在备战中考，更新频率有所下降。同时是.NET初学者，请大家原谅一下代码中难以理解的逻辑" FontSize="20"/>
+                            <Run Text="   偶尔写写代码，以软件开发为喜好。正在备战中考，更新频率有所下降。同时因为是.NET初学者，请大家原谅一下代码中难以理解的逻辑" FontSize="20"/>
                         </TextBlock>
                         <ui:HyperlinkButton
                         Content="作者B站"
@@ -84,7 +84,10 @@ NavigateUri="https://github.com/haaa4"/>
                         Content="Github主页"
                         Icon="{ui:SymbolIcon Link24}"
                         NavigateUri="https://github.com/haaa4/NameCube" />
-
+                    <ui:HyperlinkButton
+                        Content="Gitee主页"
+                        Icon="{ui:SymbolIcon Link24}"
+                        NavigateUri="https://gitee.com/haaa4/NameCube" />
                     <ui:HyperlinkButton
                         Content="NameCube Wiki"
                         Icon="{ui:SymbolIcon Link24}"
@@ -97,6 +100,6 @@ NavigateUri="https://github.com/haaa4"/>
             </Expander>
             
         </StackPanel>
-        <ContentPresenter x:Name="Host" />
+        <ContentPresenter x:Name="Host" d:Visibility="Collapsed"/>
     </Grid>
 </Page>
