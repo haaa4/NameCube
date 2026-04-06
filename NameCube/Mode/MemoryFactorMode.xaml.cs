@@ -97,7 +97,7 @@ namespace NameCube.Mode
                 return;
             }
             // 初始化事件概率分布
-            if (GlobalVariablesData.config.MemoryFactorModeSettings.probabilityOfHappening?.Count < 10)
+            if (GlobalVariablesData.config.MemoryFactorModeSettings.probabilityOfHappening==null||GlobalVariablesData.config.MemoryFactorModeSettings.probabilityOfHappening.Count < 10)
             {
                 Log.Debug("初始化事件概率分布");
                 GlobalVariablesData.config.MemoryFactorModeSettings.probabilityOfHappening = new List<int> { 4, 2, 3, 4, 2, 2, 3, 1, 1, 2 };
