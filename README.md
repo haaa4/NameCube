@@ -12,7 +12,7 @@
 <div align="center">
 
 # 点鸣魔方 
-# <image src="https://github.com/user-attachments/assets/2b48f65f-8eb2-4b91-b29e-78a1b0f9d52c" height="120"/>
+# <image src="https://github.com/haaa4/NameCube/blob/1.3/NameCube/icon.png?raw=true" height="120"/>
 
 点鸣魔方有多种抽取模式，概率或者命中注定？同时，本应用的悬浮球功能也能随时在各种环境中快速开启应用。小工具可能也能满足一些需求
 
