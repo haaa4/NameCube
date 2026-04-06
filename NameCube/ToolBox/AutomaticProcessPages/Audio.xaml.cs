@@ -151,11 +151,15 @@ namespace NameCube.ToolBox.AutomaticProcessPages
 
                 foreach (string filename in filenames)
                 {
+                    //受支持的音频文件|*.MP3;*.WAV;*.WMA;*.AAC;*.FLAC;*.M4A
                     FileInfo fileInfo = new FileInfo(filename);
                     if (
                         fileInfo.Extension == ".mp3"
                         || fileInfo.Extension == ".wma"
                         || fileInfo.Extension == ".wav"
+                        || fileInfo.Extension == ".aac"
+                        || fileInfo.Extension == ".flac"
+                        || fileInfo.Extension==".m4a"
                     )
                     {
                         AudioSave audioSave = new AudioSave()
@@ -256,7 +260,7 @@ namespace NameCube.ToolBox.AutomaticProcessPages
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.Title = "导入音频";
             openFileDialog.Filter =
-                "mp3音频 (*.mp3)|*.mp3|wma音频 (*.wma)|*.wma|wav音频 (*.wav)|*.wav|所有文件 (*.*)|*.*";
+                "受支持的音频文件|*.MP3;*.WAV;*.WMA;*.AAC;*.FLAC;*.M4A";
             openFileDialog.Multiselect = true;
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {

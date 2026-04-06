@@ -79,7 +79,7 @@ namespace NameCube.Setting
                 {
                     openFileDialog.InitialDirectory = "c:\\";
                     openFileDialog.Title = "选择图片";
-                    openFileDialog.Filter = "png (*.png)|*.png|所有文件 (*.*)|*.*";
+                    openFileDialog.Filter = "png图片 (*.png)|*.png";
                     openFileDialog.FilterIndex = 2;
                     openFileDialog.RestoreDirectory = true;
 

@@ -66,6 +66,7 @@ namespace NameCube
                 GlobalVariablesData.configDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "NameCube");
                 Log.Information("使用AppData配置目录: {ConfigDir}", GlobalVariablesData.configDir);
                 InitializationUserData();
+                // 如果存在START文件，说明此次启动仅为重启
                 if (!ret && !File.Exists(Path.Combine(GlobalVariablesData.configDir, "START")))
                 {
                     Log.Warning("应用程序重复启动且无START文件，显示重复警告窗口");
@@ -215,7 +216,7 @@ namespace NameCube
                 }
                 if (File.Exists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Update", "START")))
                 {
-                    // 如果存在START文件，说明更新过程中发生了错误，显示更新错误窗口
+                    // 如果update存在START文件，说明更新过程中发生了错误，显示更新错误窗口
                     File.Delete(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Update", "START"));
                     Log.Debug("删除START标记文件,并报错");
                     NameCube.Setting.UpdateGuide.UpdateGuideWindow updateGuideWindow = new NameCube.Setting.UpdateGuide.UpdateGuideWindow("Error");

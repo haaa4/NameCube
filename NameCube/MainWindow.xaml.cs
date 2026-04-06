@@ -525,7 +525,7 @@ namespace NameCube
                             else
                             {
                                 Log.Information("执行进程组操作: {ProcessGroup}", shortCut.ProcessGroup);
-                                RunProcessesGroup(shortCut.ProcessGroup);
+                                RunProcessesGroup(shortCut.ProcessGroup.GetProcessGroup());
                             }
                             break;
                     }

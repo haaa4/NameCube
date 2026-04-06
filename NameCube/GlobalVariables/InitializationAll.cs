@@ -25,7 +25,7 @@ namespace NameCube.GlobalVariables
                     SystemSpeech = false,
                     Top = true,
                     NameCubeMode = 0,
-                    color = (Brush)new BrushConverter().ConvertFromInvariantString("#30d7d7"),
+                    color = (Brush)new BrushConverter().ConvertFromInvariantString("#FF005493"),
                     UpdataGet = 0,
                 },
                 StartToDo = new StartToDo
@@ -92,6 +92,12 @@ namespace NameCube.GlobalVariables
                     AutoAddFile = true,
                 },
                 ShortCutKey = new ShortCutKey { keysGrounp = new List<ShortCut>() },
+                ImformationData = new ImformationData
+                {
+                    UsedBetterColor = false,
+                },
+
+
             };
         }
 
@@ -100,6 +106,7 @@ namespace NameCube.GlobalVariables
         /// </summary>
         public static void KeepDataNotNull()
         {
+            //这一块代码有点糟
             if (GlobalVariablesData.config.AllSettings == null)
             {
                 GlobalVariablesData.config.AllSettings = new AllSettings();
@@ -139,7 +146,11 @@ namespace NameCube.GlobalVariables
             if (GlobalVariablesData.config.AllSettings.color == null)
             {
                 GlobalVariablesData.config.AllSettings.color = (Brush)
-                    new BrushConverter().ConvertFromInvariantString("#30d7d7");
+                    new BrushConverter().ConvertFromInvariantString("#FF005493");
+            }
+            if(GlobalVariablesData.config.ImformationData==null)
+            {
+                GlobalVariablesData.config.ImformationData = new();
             }
             if (GlobalVariablesData.config.BirdSettings.diaphaneity == 0)
             {

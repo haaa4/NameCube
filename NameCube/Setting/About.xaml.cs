@@ -164,7 +164,10 @@ namespace NameCube.Setting
         private async void Page_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
             VersionTextBlock.Text = GlobalVariablesData.VERSION;
-            await LoadImageFromWebAsync("https://avatars.githubusercontent.com/u/172395030?s=96&v=4", HeadImage);
+            if(GlobalVariablesData.config.AllSettings.DownloadWay == 0)
+                await LoadImageFromWebAsync("https://avatars.githubusercontent.com/u/172395030?v=4", HeadImage);
+            else
+                await LoadImageFromWebAsync("https://foruda.gitee.com/avatar/1774776926077586438/15207534_haaa4_1774776926.png!avatar200", HeadImage);
         }
 
         private void Button_Click(object sender, System.Windows.RoutedEventArgs e)

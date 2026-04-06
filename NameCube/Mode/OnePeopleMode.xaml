@@ -68,7 +68,7 @@
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
             FontSize="200"
-            Foreground="#30d7d7"
+            Foreground="#FF005493"
             RenderTransformOrigin="0.5,0.5"
             Text="XXX">
             <TextBlock.RenderTransform>
@@ -85,7 +85,7 @@
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
             FontSize="200"
-            Foreground="#30d7d7"
+            Foreground="#FF005493"
             Text="XXX"
             Visibility="Hidden" />
         <ui:Button

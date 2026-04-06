@@ -208,7 +208,7 @@ namespace NameCube.ToolBox.AutomaticProcessPages
                     {
                         if (dialog.Content is Wpf.Ui.Controls.TextBox textBox)
                         {
-                            if (textBox.Text != "" && textBox.Text[0] != '*')
+                            if (textBox.Text != "" && textBox.Text[0] != '*'&&textBox.Text!= "新建流程组...")
                             {
                                 ProcessGroup newGroup = new ProcessGroup()
                                 {
@@ -455,18 +455,28 @@ namespace NameCube.ToolBox.AutomaticProcessPages
                             Log.Debug("更新关机设置，关机方式: {ShutDownWay}",
                                 (int)shutDownSettingPage.shutDownWay);
                         }
-                        selectedProcessGroup.processDatas[ProcessesListView.SelectedIndex] =
-                            selectedProcessData;
-                        GlobalVariablesData.config.AutomaticProcess.processGroups[findGroup] =
-                            selectedProcessGroup;
+                        try
+                        {
+                            selectedProcessGroup.processDatas[ProcessesListView.SelectedIndex] =
+                                selectedProcessData;
+                            GlobalVariablesData.config.AutomaticProcess.processGroups[findGroup] =
+                                selectedProcessGroup;
+                        }
+                        catch (Exception ex)
+                        {
+                            if (ex == new System.ArgumentOutOfRangeException())
+                            {
+                                Log.Warning("发现流程数据索引超出范围，可能是因为流程被删除但未刷新列表，忽视该处错误");
+                            }
+                        }
+                        GlobalVariablesData.SaveConfig();
+                        Log.Information("成功保存流程组: {GroupName}", selectedProcessGroup.name);
+                        RefreshProcessKinds(selectedProcessGroup, false, ProcessesListView.SelectedIndex);
                     }
-                    GlobalVariablesData.SaveConfig();
-                    Log.Information("成功保存流程组: {GroupName}", selectedProcessGroup.name);
-                    RefreshProcessKinds(selectedProcessGroup, false, ProcessesListView.SelectedIndex);
-                }
-                else
-                {
-                    Log.Warning("未找到要保存的流程组");
+                    else
+                    {
+                        Log.Warning("未找到要保存的流程组");
+                    }
                 }
             }
             catch (Exception ex)

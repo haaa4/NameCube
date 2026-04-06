@@ -1,4 +1,5 @@
 ﻿using Masuit.Tools;
+using NameCube.Function;
 using Serilog;  // 添加Serilog命名空间
 using System;
 using System.Diagnostics;
@@ -125,7 +126,8 @@ namespace NameCube
                 {
                     Log.Information("配置为不显示悬浮球或使用传统模式，隐藏Bird窗口");
                     this.Hide();
-                    ShowMainWindowAsync();
+                    if(GlobalVariablesData.config.AllSettings.NameCubeMode == 1)
+                        ShowMainWindowAsync();
                 }
 
                 if (GlobalVariablesData.config.AllSettings.Dark)
@@ -630,13 +632,26 @@ namespace NameCube
 
                     if (File.Exists(imagePath))
                     {
-                        BitmapImage bitmap = new BitmapImage();
-                        bitmap.BeginInit();
-                        bitmap.UriSource = new Uri(imagePath);
-                        bitmap.CacheOption = BitmapCacheOption.OnLoad;
-                        bitmap.EndInit();
-                        ImageBox.Source = bitmap;
-                        Log.Debug("自定义图片加载成功: {ImagePath}", imagePath);
+                        try
+                        {
+
+                            BitmapImage bitmap = new BitmapImage();
+                            bitmap.BeginInit();
+                            bitmap.UriSource = new Uri(imagePath);
+                            bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                            bitmap.EndInit();
+                            ImageBox.Source = bitmap;
+                            Log.Debug("自定义图片加载成功: {ImagePath}", imagePath);
+                        }
+                        catch(Exception ex)
+                        {
+                            MessageBoxFunction.ShowMessageBoxError("加载自定义图片时发生错误，已自动切换到默认图片", true, ex);
+                            Log.Debug("使用默认图片");
+                            ImageBox.Source = new BitmapImage(new Uri("pack://application:,,,/BallPicture.png"));
+                            GlobalVariablesData.config.BirdSettings.UseDefinedImage = false;
+                            GlobalVariablesData.SaveConfig();
+                        }
+
                     }
                     else
                     {

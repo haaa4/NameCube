@@ -22,7 +22,7 @@ namespace NameCube.GlobalVariables.DataClass
         /// 触发的自动流程(为null时则以openway为准)
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
-        public ProcessGroup ProcessGroup { get; set; } = null;
+        public ProcessGroupUid ProcessGroup { get; set; } = null;
 
         /// <summary>
         /// 上一次修改时间

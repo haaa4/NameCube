@@ -159,7 +159,7 @@ namespace NameCube.ToolBox.AutomaticProcessPages.ProcessPages
             }
         }
 
-        private void MediaPlayer_MediaOpened(object sender, EventArgs e)
+        private async void MediaPlayer_MediaOpened(object sender, EventArgs e)
         {
             Log.Debug("媒体文件打开成功");
             if (_mediaPlayer.NaturalDuration.HasTimeSpan)
@@ -179,6 +179,19 @@ namespace NameCube.ToolBox.AutomaticProcessPages.ProcessPages
             {
                 TotalTimeText.Text = "N/A";
                 Log.Warning("无法获取音频总时长");
+            }
+            if (waitTimeInThisPage != 0)
+            {
+                Log.Information("开始等待 {WaitTime} 秒", waitTimeInThisPage);
+                await Task.Delay(waitTimeInThisPage * 1000);
+                if (isDebug)
+                {
+                    CallParentMethodDebug("等待时间已到");
+                }
+                else
+                {
+                    CallEndThePage();
+                }
             }
         }
 
@@ -329,19 +342,7 @@ namespace NameCube.ToolBox.AutomaticProcessPages.ProcessPages
         private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
             Log.Debug("音频页面加载完成");
-            if (waitTimeInThisPage != 0)
-            {
-                Log.Information("开始等待 {WaitTime} 秒", waitTimeInThisPage);
-                await Task.Delay(waitTimeInThisPage * 1000);
-                if (isDebug)
-                {
-                    CallParentMethodDebug("等待时间已到");
-                }
-                else
-                {
-                    CallEndThePage();
-                }
-            }
+
         }
 
         private void PositionSlider_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)

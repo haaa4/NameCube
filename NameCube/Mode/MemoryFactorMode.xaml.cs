@@ -83,7 +83,19 @@ namespace NameCube.Mode
         {
             InitializeComponent();
             DataContext = this;
-
+            // 初始化新数据
+            if (GlobalVariablesData.config.AllSettings.Name.Count <= 9)
+            {
+                Dispatcher.Invoke(() =>
+                {
+                    StartButton.IsEnabled = false;
+                    ResetButton.IsEnabled = false;
+                });
+                SnackBarFunction.ShowSnackBarInMainWindow(
+                    "学生名单少于10位，无法初始化",
+                    ControlAppearance.Caution);
+                return;
+            }
             // 初始化事件概率分布
             if (GlobalVariablesData.config.MemoryFactorModeSettings.probabilityOfHappening?.Count < 10)
             {
@@ -124,10 +136,16 @@ namespace NameCube.Mode
                     _speechSynthesizer.Volume = GlobalVariablesData.config.AllSettings.Volume;
                 }
 
+
+                if (GlobalVariablesData.config.AllSettings.Name.Count <= 9)
+                {
+                    return;
+                }
                 _timer.Elapsed += Timer_Elapsed;
                 SpeechButton.IsChecked = GlobalVariablesData.config.MemoryFactorModeSettings.Speech;
                 SpeechButton.IsEnabled = !GlobalVariablesData.config.MemoryFactorModeSettings.Locked;
                 ResetButton.IsEnabled = !GlobalVariablesData.config.MemoryFactorModeSettings.Locked;
+                SynchronizationButton.IsEnabled = !GlobalVariablesData.config.MemoryFactorModeSettings.Locked;
 
                 // 确保目录存在
                 string dir = Path.Combine(GlobalVariablesData.userDataDir, "Mode_data", "MemoryFactoryMode");
@@ -155,6 +173,7 @@ namespace NameCube.Mode
             {
                 Log.Error(ex, "页面加载异常");
             }
+
             // 加载排行榜动画（首次显示）
             ChangeTheName(null);
         }
@@ -165,19 +184,7 @@ namespace NameCube.Mode
             string filePath = Path.Combine(GlobalVariablesData.userDataDir, "Mode_data", "MemoryFactoryMode", "Memory.json");
             if (!File.Exists(filePath))
             {
-                // 初始化新数据
-                if (GlobalVariablesData.config.AllSettings.Name.Count <= 9)
-                {
-                    Dispatcher.Invoke(() =>
-                    {
-                        StartButton.IsEnabled = false;
-                        ResetButton.IsEnabled = false;
-                    });
-                    SnackBarFunction.ShowSnackBarInMainWindow(
-                        "学生名单少于10位，无法初始化",
-                        ControlAppearance.Caution);
-                    return;
-                }
+
 
                 _settings.thisModeJson.Clear();
                 foreach (var name in GlobalVariablesData.config.AllSettings.Name)

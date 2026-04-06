@@ -155,6 +155,7 @@ namespace NameCube.Setting
                     {
                         Brush newColor = (Brush)new BrushConverter().ConvertFromString(ColorTextBox.Text);
                         GlobalVariablesData.config.AllSettings.color = newColor;
+                        GlobalVariablesData.SaveConfig();
                         PreviewText.Foreground = newColor;
                         ColorTextBox.Foreground = newColor;
                     }

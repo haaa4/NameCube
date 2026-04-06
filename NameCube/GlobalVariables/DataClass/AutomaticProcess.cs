@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 
 namespace NameCube.GlobalVariables.DataClass
@@ -22,8 +23,23 @@ namespace NameCube.GlobalVariables.DataClass
         /// 自动运行流程组的时间表
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
-        public Dictionary<int, List<ProcessGroup>> processesSchedule { get; set; } =
-            new Dictionary<int, List<ProcessGroup>>();
+        public Dictionary<int, List<ProcessGroupUid>> processesSchedule { get; set; } =
+            new Dictionary<int, List<ProcessGroupUid>>();
+    }
+    public class ProcessGroupUid
+    {
+        public int uid { get; set; }
+        public ProcessGroup GetProcessGroup()
+        {
+            foreach(var group in GlobalVariablesData.config.AutomaticProcess.processGroups)
+            {
+                if (group.uid == uid)
+                {
+                    return group;
+                }
+            }
+            return null;    
+        }
     }
 
     public class ProcessGroup

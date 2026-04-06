@@ -1,6 +1,7 @@
 ﻿using Serilog;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace NameCube.Mode
 {
@@ -81,6 +82,18 @@ namespace NameCube.Mode
             else
             {
                 Log.Debug("显示推荐内容");
+            }
+            if (!GlobalVariablesData.config.ImformationData.UsedBetterColor)
+            {
+                if (GlobalVariablesData.config.AllSettings.color.ToString() == "#FF30D7D7")
+                {
+                    GlobalVariablesData.config.AllSettings.color = (Brush)
+    new BrushConverter().ConvertFromInvariantString("#FF005493");
+                    SnackBarFunction.ShowSnackBarInMainWindow("检测到您使用的是过去的推荐色，已自动切换到新的推荐色", Wpf.Ui.Controls.ControlAppearance.Info);
+                    Log.Information("检测到用户使用的是过去的推荐色，已自动切换到新的推荐色");
+                }
+                GlobalVariablesData.config.ImformationData.UsedBetterColor = true;
+                GlobalVariablesData.SaveConfig();
             }
             Log.Information("Home页面加载完成");
         }

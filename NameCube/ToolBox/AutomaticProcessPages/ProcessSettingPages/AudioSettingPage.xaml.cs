@@ -68,6 +68,9 @@ namespace NameCube.ToolBox.AutomaticProcessPages.ProcessSettingPages
                         fileInfo.Extension == ".mp3"
                         || fileInfo.Extension == ".wma"
                         || fileInfo.Extension == ".wav"
+                        || fileInfo.Extension == ".aac"
+                        || fileInfo.Extension == ".flac"
+                        || fileInfo.Extension == ".m4a"
                     )
                     {
                         AudioFamily.Add(fileInfo.Name);

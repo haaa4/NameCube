@@ -169,6 +169,7 @@ namespace NameCube.FirstUse
         {
             try
             {
+                GoOnButton.IsEnabled = false;
                 Log.Debug("开始加载页面: {Title}", title);
                 var loadStoryBoard = FindResource("LoadStoryBoard") as Storyboard;
                 LoadBoard.Visibility = Visibility.Visible;
@@ -223,6 +224,7 @@ namespace NameCube.FirstUse
         private void LoadedPage()
         {
             Log.Debug("页面加载完成");
+            GoOnButton.IsEnabled = true;
             LoadBoard.Visibility = Visibility.Collapsed;
         }
     }

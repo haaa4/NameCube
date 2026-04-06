@@ -121,7 +121,7 @@ namespace NameCube.GlobalVariables.DataClass
         public int LogLevel { get; set; } = 1;
 
         /// <summary>
-        /// 更新获取方式
+        /// 数据获取方式
         /// （0=Github，1=Gitee）
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]

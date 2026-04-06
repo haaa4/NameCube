@@ -59,7 +59,7 @@
 | 项目 | 密码 |
 | :------: | :------------------------: |
 | **自动流程调试** | `0d612c12d2ac33625bf3e0351b6f5e4f73829fa8` |
-| **崩溃调试**     | `c53d2f1a9a8499bcb477be56c31caa5c76ae60f5` |
+| **开发者调试**     | `c53d2f1a9a8499bcb477be56c31caa5c76ae60f5` |
 | **因子模式调试** | `7a7bc4496e501462270ce7f6f8023c96d32098d8` |
 ## 遇到问题&需要反馈
 你可以通过以下方式
@@ -70,8 +70,7 @@
 ## 许可证
 [![许可证](https://img.shields.io/badge/license-MIT-blue.svg)]([https://github.com/ldqk/Masuit.Tools/blob/master/LICENSE](https://github.com/haaa4/NameCube/blob/main/LICENSE))
 ## 主要依赖库
-- [Wpfui](https://github.com/lepoco/wpfui)
-- [Masuit.Tools](https://github.com/ldqk/Masuit.Tools)
+- 见应用设置-关于-支持库
 ## 你需要知道的
 - 作者是第一次写此类程序，程序可能不稳定
 - 作者作为初学者，代码可能有难懂的部分，请谅解

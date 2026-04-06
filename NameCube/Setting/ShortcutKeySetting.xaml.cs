@@ -1,6 +1,6 @@
 ﻿using Masuit.Tools;
 using NameCube.GlobalVariables.DataClass;
-using Serilog; // 添加Serilog引用
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +20,7 @@ namespace NameCube.Setting
     /// </summary>
     public partial class ShortcutKeySetting : System.Windows.Controls.Page
     {
-        private static readonly ILogger _logger = Log.ForContext<ShortcutKeySetting>(); // 添加Serilog日志实例
+        private static readonly ILogger _logger = Log.ForContext<ShortcutKeySetting>();
 
         public ShortcutKeySetting()
         {
@@ -34,18 +34,33 @@ namespace NameCube.Setting
         private void Choosing(bool isChossing)
         {
             var mainWindow = Application.Current.MainWindow as MainWindow;
-            mainWindow.isChoosing = isChossing;
+            if (mainWindow != null) mainWindow.isChoosing = isChossing;
         }
 
         public void InitializeShortCutKey()
         {
             _logger.Information("开始初始化快捷键设置");
 
-            if (GlobalVariablesData.config.ShortCutKey.keysGrounp.Count <= 0)
+           
+            for (int i = GlobalVariablesData.config.ShortCutKey.keysGrounp.Count - 1; i >= 0; i--)
             {
-                ShortCutHost.Children.Clear();
-                _logger.Debug("快捷键分组为空，清空界面");
+                var sc = GlobalVariablesData.config.ShortCutKey.keysGrounp[i];
+                if (sc.ProcessGroup != null)
+                {
+                    var pg = sc.ProcessGroup.GetProcessGroup();
+                    if (pg == null)
+                    {
+                        _logger.Warning("快捷键组 {Index} 关联的流程组已删除 (UID: {Uid})，自动删除该快捷键组", i, sc.ProcessGroup.uid);
+                        GlobalVariablesData.config.ShortCutKey.keysGrounp.RemoveAt(i);
+                        SnackBarFunction.ShowSnackBarInSettingWindow("未找到" + sc.ProcessGroup.uid + "对应的流程组，已自动删除该时间表项", Wpf.Ui.Controls.ControlAppearance.Caution);
+                        // 若需要用户确认或执行其他操作，可在此处添加代码
+                    }
+                }
             }
+            // 如果有删除操作，保存配置
+            GlobalVariablesData.SaveConfig();
+
+            // 清空界面并准备刷新
             Application.Current.Dispatcher.InvokeAsync(() =>
             {
                 ShortCutHost.Children.Clear();
@@ -55,58 +70,51 @@ namespace NameCube.Setting
 
             List<string> items = new List<string>
             {
-                "无",
-                "单人模式",
-                "因子模式",
-                "批量模式",
-                "数字模式",
-                "预备模式",
-                "记忆模式",
-                "主页",
+                "无", "单人模式", "因子模式", "批量模式", "数字模式", "预备模式", "记忆模式", "主页"
             };
 
             for (int i = 0; i < GlobalVariablesData.config.ShortCutKey.keysGrounp.Count; i++)
             {
-                string shortCut = "";
-                if (GlobalVariablesData.config.ShortCutKey.keysGrounp[i].keys.Count <= 0)
+                var shortCut = GlobalVariablesData.config.ShortCutKey.keysGrounp[i];
+
+                // 构建快捷键显示字符串
+                string shortCutStr = "";
+                if (shortCut.keys.Count == 0)
                 {
-                    shortCut = "Unknow";
+                    shortCutStr = "Unknow";
                     _logger.Warning("第 {Index} 个快捷键组没有按键", i);
                 }
                 else
                 {
-                    foreach (Key key in GlobalVariablesData.config.ShortCutKey.keysGrounp[i].keys)
-                    {
-                        shortCut = shortCut + key.ToString() + " ";
-                    }
+                    shortCutStr = string.Join(" ", shortCut.keys);
                 }
 
-                Thickness thickness = new Thickness
+                // 确定显示文本（打开的页面或流程组名称）
+                string displayText;
+                if (shortCut.ProcessGroup == null)
                 {
-                    Left = 5,
-                    Top = 5,
-                    Right = 5,
-                    Bottom = 5,
-                };
-
-                string Text;
-                if (GlobalVariablesData.config.ShortCutKey.keysGrounp[i].ProcessGroup == null)
-                {
-                    if (GlobalVariablesData.config.ShortCutKey.keysGrounp[i].openWay <= 7 && GlobalVariablesData.config.ShortCutKey.keysGrounp[i].openWay >= 0)
-                    {
-                        Text = items[GlobalVariablesData.config.ShortCutKey.keysGrounp[i].openWay];
-                    }
+                    if (shortCut.openWay >= 0 && shortCut.openWay <= 7)
+                        displayText = items[shortCut.openWay];
                     else
                     {
-                        Text = "???";
-                        _logger.Warning("未知的打开方式: {OpenWay}", GlobalVariablesData.config.ShortCutKey.keysGrounp[i].openWay);
+                        displayText = "???";
+                        _logger.Warning("未知的打开方式: {OpenWay}", shortCut.openWay);
                     }
                 }
                 else
                 {
-                    Text = GlobalVariablesData.config.ShortCutKey.keysGrounp[i].ProcessGroup.name;
+                    // 通过 ProcessGroupUid 获取实际流程组，若已删除则显示“已删除”
+                    var pg = shortCut.ProcessGroup.GetProcessGroup();
+                    if (pg != null)
+                        displayText = pg.name;
+                    else
+                    {
+                        displayText = $"已删除的流程组(UID:{shortCut.ProcessGroup.uid})";
+                        _logger.Warning("快捷键组 {Index} 关联的流程组已删除 (UID: {Uid})", i, shortCut.ProcessGroup.uid);
+                    }
                 }
 
+                Thickness thickness = new Thickness(5);
                 CardAction action = new CardAction()
                 {
                     Uid = i.ToString(),
@@ -116,16 +124,12 @@ namespace NameCube.Setting
                         {
                             new TextBlock()
                             {
-                                Text =
-                                    Text
-                                    + "("
-                                    + GlobalVariablesData.config.ShortCutKey.keysGrounp[i].LastChangeTime
-                                    + ")",
+                                Text = $"{displayText} ({shortCut.LastChangeTime})",
                                 FontSize = 20,
                                 FontWeight = FontWeights.Black,
                             },
-                            new TextBlock() { Text = shortCut, FontSize = 20 },
-                        },
+                            new TextBlock() { Text = shortCutStr, FontSize = 20 },
+                        }
                     },
                     Margin = thickness,
                 };
@@ -136,15 +140,16 @@ namespace NameCube.Setting
                     ShortCut newShortCut = await ChangeData(action.Uid.ToInt32(0));
                     if (newShortCut != null && newShortCut.ProcessGroup == null && newShortCut.openWay == -2)
                     {
-                        GlobalVariablesData.config.ShortCutKey.keysGrounp[action.Uid.ToInt32(0)].keys = newShortCut.keys;
-                        GlobalVariablesData.config.ShortCutKey.keysGrounp[action.Uid.ToInt32(0)].LastChangeTime = newShortCut.LastChangeTime;
+                        // 仅更新按键和修改时间
+                        var target = GlobalVariablesData.config.ShortCutKey.keysGrounp[action.Uid.ToInt32(0)];
+                        target.keys = newShortCut.keys;
+                        target.LastChangeTime = newShortCut.LastChangeTime;
                         GlobalVariablesData.SaveConfig();
                         InitializeShortCutKey();
                     }
                     else if (newShortCut != null && newShortCut.LastChangeTime != "Delete")
                     {
-                        GlobalVariablesData.config.ShortCutKey.keysGrounp[action.Uid.ToInt32(0)] =
-                            newShortCut;
+                        GlobalVariablesData.config.ShortCutKey.keysGrounp[action.Uid.ToInt32(0)] = newShortCut;
                         GlobalVariablesData.SaveConfig();
                         InitializeShortCutKey();
                     }
@@ -157,10 +162,7 @@ namespace NameCube.Setting
                     }
                 };
 
-                Application.Current.Dispatcher.InvokeAsync(() =>
-                {
-                    ShortCutHost.Children.Add(action);
-                });
+                Application.Current.Dispatcher.InvokeAsync(() => ShortCutHost.Children.Add(action));
             }
 
             Application.Current.Dispatcher.InvokeAsync(() =>
@@ -181,9 +183,7 @@ namespace NameCube.Setting
             for (int i = 0; i < GlobalVariablesData.config.AutomaticProcess.processGroups.Count; i++)
             {
                 if (processGroup.uid == GlobalVariablesData.config.AutomaticProcess.processGroups[i].uid)
-                {
                     return i;
-                }
             }
             return -1;
         }
@@ -195,40 +195,32 @@ namespace NameCube.Setting
             try
             {
                 ShortCut shortCut = GlobalVariablesData.config.ShortCutKey.keysGrounp[uid];
-                List<Key> keys = new List<Key>();
+                List<Key> keys = new List<Key>(shortCut.keys);
                 var dialog = new Wpf.Ui.Controls.ContentDialog();
-                var button = new Wpf.Ui.Controls.Button()
-                {
-                    Name = "KeyChooseButton",
-                    Content = "编辑",
-                };
+                var button = new Wpf.Ui.Controls.Button() { Name = "KeyChooseButton", Content = "编辑" };
 
                 button.Click += (seder, args) =>
                 {
                     if (dialog.Content is Wpf.Ui.Controls.StackPanel panel)
                     {
-                        var KeyChooseButton = panel
-                            .Children.OfType<Wpf.Ui.Controls.Button>()
-                            .FirstOrDefault();
-                        var KeyText = panel
-                            .Children.OfType<Wpf.Ui.Controls.TextBlock>()
-                            .FirstOrDefault();
+                        var keyChooseButton = panel.Children.OfType<Wpf.Ui.Controls.Button>().FirstOrDefault();
+                        var keyTextBlock = panel.Children.OfType<Wpf.Ui.Controls.TextBlock>().FirstOrDefault();
                         if (IsChoosing)
                         {
-                            KeyChooseButton.Content = "编辑";
+                            keyChooseButton.Content = "编辑";
                             var mainWindow = Application.Current.MainWindow as MainWindow;
-                            mainWindow.CanUseShortCutKey = true;
+                            if (mainWindow != null) mainWindow.CanUseShortCutKey = true;
                             IsChoosing = false;
                             Choosing(false);
                             _logger.Debug("结束快捷键编辑");
                         }
                         else
                         {
-                            keys = new List<Key>();
-                            KeyText.Text = "";
-                            KeyChooseButton.Content = "完成";
+                            keys.Clear();
+                            keyTextBlock.Text = "";
+                            keyChooseButton.Content = "完成";
                             var mainWindow = Application.Current.MainWindow as MainWindow;
-                            mainWindow.CanUseShortCutKey = false;
+                            if (mainWindow != null) mainWindow.CanUseShortCutKey = false;
                             IsChoosing = true;
                             Choosing(true);
                             _logger.Debug("开始快捷键编辑");
@@ -240,71 +232,53 @@ namespace NameCube.Setting
                 {
                     if (dialog.Content is Wpf.Ui.Controls.StackPanel panel)
                     {
-                        var KeyText = panel
-                            .Children.OfType<Wpf.Ui.Controls.TextBlock>()
-                            .FirstOrDefault();
+                        var keyTextBlock = panel.Children.OfType<Wpf.Ui.Controls.TextBlock>().FirstOrDefault();
                         if (IsChoosing && keys.Count <= 4)
                         {
                             Key key = args.Key;
-                            foreach (Key key1 in keys)
+                            if (!keys.Contains(key))
                             {
-                                if (key1 == key)
-                                {
-                                    _logger.Debug("检测到重复按键: {Key}", key);
-                                    return;
-                                }
+                                keys.Add(key);
+                                keyTextBlock.Text = string.Join(" ", keys);
+                                _logger.Debug("添加按键: {Key}，当前按键数: {Count}", key, keys.Count);
                             }
-                            keys.Add(key);
-                            KeyText.Text = "";
-                            foreach (Key key2 in keys)
+                            else
                             {
-                                KeyText.Text = KeyText.Text + key2.ToString() + " ";
+                                _logger.Debug("检测到重复按键: {Key}", key);
                             }
-                            KeyText.Text.Remove(KeyText.Text.Length - 1);
-                            _logger.Debug("添加按键: {Key}，当前按键数: {Count}", key, keys.Count);
                         }
                     }
                 };
 
-                string keyText = "";
-                foreach (Key key3 in shortCut.keys)
-                {
-                    keyText = keyText + key3.ToString() + " ";
-                }
-                keys = GlobalVariablesData.config.ShortCutKey.keysGrounp[uid].keys;
-
+                // 构建下拉列表项
                 List<string> itemsource = new List<string>()
                 {
-                    "无",
-                    "单人模式",
-                    "因子模式",
-                    "批量模式",
-                    "数字模式",
-                    "预备模式",
-                    "记忆模式",
+                    "无", "单人模式", "因子模式", "批量模式", "数字模式", "预备模式", "记忆模式"
                 };
 
-                int selected;
-                for (int i = 0; i < GlobalVariablesData.config.AutomaticProcess.processGroups.Count; i++)
-                {
-                    itemsource.Add(GlobalVariablesData.config.AutomaticProcess.processGroups[i].name);
-                }
+                foreach (var pg in GlobalVariablesData.config.AutomaticProcess.processGroups)
+                    itemsource.Add(pg.name);
+
+                int selectedIndex;
+                ProcessGroup actualProcessGroup = null;
+                if (shortCut.ProcessGroup != null)
+                    actualProcessGroup = shortCut.ProcessGroup.GetProcessGroup();
 
                 if (shortCut.ProcessGroup == null)
                 {
-                    selected = shortCut.openWay;
+                    selectedIndex = shortCut.openWay;
                 }
                 else
                 {
-                    if (HaveTheSame(shortCut.ProcessGroup) != -1)
+                    if (actualProcessGroup != null)
                     {
-                        selected = HaveTheSame(shortCut.ProcessGroup) + 7;
+                        selectedIndex = HaveTheSame(actualProcessGroup) + 7;
                     }
                     else
                     {
-                        itemsource.Add("*" + shortCut.ProcessGroup.name + "(已删除)");
-                        selected = itemsource.Count - 1;
-                        _logger.Warning("快捷键组 {Uid} 关联的处理组已删除", uid);
+                        itemsource.Add($"*{shortCut.ProcessGroup.uid}(已删除)");
+                        selectedIndex = itemsource.Count - 1;
+                        _logger.Warning("快捷键组 {Uid} 关联的流程组已删除 (UID: {Uid})", uid, shortCut.ProcessGroup.uid);
                     }
                 }
 
@@ -320,35 +294,26 @@ namespace NameCube.Setting
                         Children =
                         {
                             button,
-                            new Wpf.Ui.Controls.TextBlock()
-                            {
-                                Name = "KeyText",
-                                FontSize = 20,
-                                Text = keyText,
-                            },
-                            new ComboBox() { ItemsSource = itemsource, SelectedIndex = selected },
-                        },
+                            new Wpf.Ui.Controls.TextBlock() { Name = "KeyText", FontSize = 20, Text = string.Join(" ", keys) },
+                            new ComboBox() { ItemsSource = itemsource, SelectedIndex = selectedIndex }
+                        }
                     },
                     DialogHost = Host,
                 };
 
-                Wpf.Ui.Controls.ContentDialogResult contentDialogResult = await dialog.ShowAsync();
+                Wpf.Ui.Controls.ContentDialogResult result = await dialog.ShowAsync();
                 Choosing(false);
 
-                if (contentDialogResult == Wpf.Ui.Controls.ContentDialogResult.None)
+                if (result == Wpf.Ui.Controls.ContentDialogResult.None)
                 {
                     _logger.Information("用户取消修改快捷键组 {Uid}", uid);
                     dialog.Hide();
                     return null;
                 }
-                else if (contentDialogResult == Wpf.Ui.Controls.ContentDialogResult.Secondary)
+                else if (result == Wpf.Ui.Controls.ContentDialogResult.Secondary)
                 {
-                    ShortCut throwShortCut = new ShortCut()
-                    {
-                        LastChangeTime = "Delete",
-                    };
                     _logger.Information("用户选择删除快捷键组 {Uid}", uid);
-                    return throwShortCut;
+                    return new ShortCut { LastChangeTime = "Delete" };
                 }
                 else
                 {
@@ -363,41 +328,49 @@ namespace NameCube.Setting
                         }
                         else if (HaveSameKeys(GlobalVariablesData.config.ShortCutKey.keysGrounp, keys) > 1)
                         {
-                            SnackBarFunction.ShowSnackBarInSettingWindow("快捷键不得重复", Wpf.Ui.Controls.ControlAppearance.Caution);
+                            SnackBarFunction.ShowSnackBarInSettingWindow("快捷键不得重复", ControlAppearance.Caution);
                             _logger.Warning("快捷键组 {Uid} 的快捷键重复", uid);
                             return null;
                         }
                         else
                         {
-                            ShortCut throwShortCut;
+                            ShortCut newShortCut;
                             if (combox.SelectedIndex <= 6)
                             {
-                                throwShortCut = new ShortCut()
+                                newShortCut = new ShortCut()
                                 {
                                     keys = keys,
                                     openWay = combox.SelectedIndex,
                                     LastChangeTime = DateTime.Now.ToString("F"),
+                                    ProcessGroup = null
                                 };
                                 _logger.Information("快捷键组 {Uid} 更新为打开方式: {OpenWay}", uid, combox.SelectedIndex);
                             }
                             else if (combox.SelectedItem.ToString()[0] != '*')
                             {
-                                throwShortCut = new ShortCut()
+                                var selectedGroup = GlobalVariablesData.config.AutomaticProcess.processGroups[combox.SelectedIndex - 7];
+                                newShortCut = new ShortCut()
                                 {
                                     keys = keys,
-                                    ProcessGroup = GlobalVariablesData.config.AutomaticProcess.processGroups[
-                                        combox.SelectedIndex - 7
-                                    ],
+                                    ProcessGroup = new ProcessGroupUid { uid = selectedGroup.uid },
                                     LastChangeTime = DateTime.Now.ToString("F"),
+                                    openWay = -1
                                 };
-                                _logger.Information("快捷键组 {Uid} 更新为处理组: {ProcessGroup}", uid, combox.SelectedItem);
+                                _logger.Information("快捷键组 {Uid} 更新为处理组: {ProcessGroup}", uid, selectedGroup.name);
                             }
                             else
                             {
-                                throwShortCut = new ShortCut() { keys = keys, LastChangeTime = DateTime.Now.ToString("F"), openWay = -2 };
+                                // 选中的是已删除项，只更新按键，不清除原 ProcessGroup 引用（可保留或置 null）
+                                newShortCut = new ShortCut()
+                                {
+                                    keys = keys,
+                                    LastChangeTime = DateTime.Now.ToString("F"),
+                                    openWay = -2,   // 标记为仅按键更新
+                                    ProcessGroup = null
+                                };
                                 _logger.Warning("快捷键组 {Uid} 关联的处理组已删除，仅更新按键", uid);
                             }
-                            return throwShortCut;
+                            return newShortCut;
                         }
                     }
                     return null;
@@ -418,38 +391,30 @@ namespace NameCube.Setting
             {
                 List<Key> keys = new List<Key>();
                 var dialog = new Wpf.Ui.Controls.ContentDialog();
-                var button = new Wpf.Ui.Controls.Button()
-                {
-                    Name = "KeyChooseButton",
-                    Content = "编辑",
-                };
+                var button = new Wpf.Ui.Controls.Button() { Name = "KeyChooseButton", Content = "编辑" };
 
                 button.Click += (seder, args) =>
                 {
                     if (dialog.Content is Wpf.Ui.Controls.StackPanel panel)
                     {
-                        var KeyChooseButton = panel
-                            .Children.OfType<Wpf.Ui.Controls.Button>()
-                            .FirstOrDefault();
-                        var KeyText = panel
-                            .Children.OfType<Wpf.Ui.Controls.TextBlock>()
-                            .FirstOrDefault();
+                        var keyChooseButton = panel.Children.OfType<Wpf.Ui.Controls.Button>().FirstOrDefault();
+                        var keyTextBlock = panel.Children.OfType<Wpf.Ui.Controls.TextBlock>().FirstOrDefault();
                         if (IsChoosing)
                         {
-                            KeyChooseButton.Content = "编辑";
+                            keyChooseButton.Content = "编辑";
                             var mainWindow = Application.Current.MainWindow as MainWindow;
-                            mainWindow.CanUseShortCutKey = true;
+                            if (mainWindow != null) mainWindow.CanUseShortCutKey = true;
                             IsChoosing = false;
                             Choosing(false);
                             _logger.Debug("结束快捷键编辑");
                         }
                         else
                         {
-                            keys = new List<Key>();
-                            KeyText.Text = "";
-                            KeyChooseButton.Content = "完成";
+                            keys.Clear();
+                            keyTextBlock.Text = "";
+                            keyChooseButton.Content = "完成";
                             var mainWindow = Application.Current.MainWindow as MainWindow;
-                            mainWindow.CanUseShortCutKey = false;
+                            if (mainWindow != null) mainWindow.CanUseShortCutKey = false;
                             IsChoosing = true;
                             Choosing(true);
                             _logger.Debug("开始快捷键编辑");
@@ -461,48 +426,30 @@ namespace NameCube.Setting
                 {
                     if (dialog.Content is Wpf.Ui.Controls.StackPanel panel)
                     {
-                        var KeyText = panel
-                            .Children.OfType<Wpf.Ui.Controls.TextBlock>()
-                            .FirstOrDefault();
+                        var keyTextBlock = panel.Children.OfType<Wpf.Ui.Controls.TextBlock>().FirstOrDefault();
                         if (IsChoosing && keys.Count <= 4)
                         {
                             Key key = args.Key;
-                            foreach (Key key1 in keys)
+                            if (!keys.Contains(key))
                             {
-                                if (key1 == key)
-                                {
-                                    _logger.Debug("检测到重复按键: {Key}", key);
-                                    return;
-                                }
+                                keys.Add(key);
+                                keyTextBlock.Text = string.Join(" ", keys);
+                                _logger.Debug("添加按键: {Key}，当前按键数: {Count}", key, keys.Count);
                             }
-                            keys.Add(key);
-                            KeyText.Text = "";
-                            foreach (Key key2 in keys)
+                            else
                             {
-                                KeyText.Text = KeyText.Text + key2.ToString() + " ";
+                                _logger.Debug("检测到重复按键: {Key}", key);
                             }
-                            KeyText.Text.Remove(KeyText.Text.Length - 1);
-                            GlobalVariablesData.SaveConfig();
-                            _logger.Debug("添加按键: {Key}，当前按键数: {Count}", key, keys.Count);
                         }
                     }
                 };
 
                 List<string> itemsSource = new List<string>()
                 {
-                    "无",
-                    "单人模式",
-                    "因子模式",
-                    "批量模式",
-                    "数字模式",
-                    "预备模式",
-                    "记忆模式",
+                    "无", "单人模式", "因子模式", "批量模式", "数字模式", "预备模式", "记忆模式"
                 };
-
-                for (int i = 0; i < GlobalVariablesData.config.AutomaticProcess.processGroups.Count; i++)
-                {
-                    itemsSource.Add(GlobalVariablesData.config.AutomaticProcess.processGroups[i].name);
-                }
+                foreach (var pg in GlobalVariablesData.config.AutomaticProcess.processGroups)
+                    itemsSource.Add(pg.name);
 
                 dialog = new Wpf.Ui.Controls.ContentDialog()
                 {
@@ -515,20 +462,16 @@ namespace NameCube.Setting
                         {
                             button,
                             new Wpf.Ui.Controls.TextBlock() { Name = "KeyText", FontSize = 20 },
-                            new ComboBox()
-                            {
-                                ItemsSource =itemsSource,
-                                SelectedIndex = 0,
-                            },
-                        },
+                            new ComboBox() { ItemsSource = itemsSource, SelectedIndex = 0 }
+                        }
                     },
                     DialogHost = Host,
                 };
 
-                Wpf.Ui.Controls.ContentDialogResult contentDialogResult = await dialog.ShowAsync();
+                Wpf.Ui.Controls.ContentDialogResult result = await dialog.ShowAsync();
                 Choosing(false);
 
-                if (contentDialogResult == Wpf.Ui.Controls.ContentDialogResult.None)
+                if (result == Wpf.Ui.Controls.ContentDialogResult.None)
                 {
                     _logger.Information("用户取消创建新快捷键组");
                     dialog.Hide();
@@ -540,39 +483,42 @@ namespace NameCube.Setting
                         var combox = panel.Children.OfType<ComboBox>().FirstOrDefault();
                         if (keys.Count == 0)
                         {
-                            SnackBarFunction.ShowSnackBarInSettingWindow("快捷键为空", Wpf.Ui.Controls.ControlAppearance.Caution);
+                            SnackBarFunction.ShowSnackBarInSettingWindow("快捷键为空", ControlAppearance.Caution);
                             _logger.Warning("新建快捷键组的快捷键为空");
                         }
                         else if (HaveSameKeys(GlobalVariablesData.config.ShortCutKey.keysGrounp, keys) > 0)
                         {
-                            SnackBarFunction.ShowSnackBarInSettingWindow("快捷键不得重复", Wpf.Ui.Controls.ControlAppearance.Caution);
+                            SnackBarFunction.ShowSnackBarInSettingWindow("快捷键不得重复", ControlAppearance.Caution);
                             _logger.Warning("新建快捷键组的快捷键重复");
                         }
                         else
                         {
-                            ShortCut shortCut;
+                            ShortCut newShortCut;
                             if (combox.SelectedIndex <= 6)
                             {
-                                shortCut = new ShortCut()
+                                newShortCut = new ShortCut()
                                 {
                                     keys = keys,
                                     openWay = combox.SelectedIndex,
                                     LastChangeTime = DateTime.Now.ToString("F"),
+                                    ProcessGroup = null
                                 };
                                 _logger.Information("创建新的快捷键组，打开方式: {OpenWay}", combox.SelectedIndex);
                             }
                             else
                             {
-                                shortCut = new ShortCut()
+                                var selectedGroup = GlobalVariablesData.config.AutomaticProcess.processGroups[combox.SelectedIndex - 7];
+                                newShortCut = new ShortCut()
                                 {
                                     keys = keys,
-                                    ProcessGroup = GlobalVariablesData.config.AutomaticProcess.processGroups[combox.SelectedIndex - 7],
+                                    ProcessGroup = new ProcessGroupUid { uid = selectedGroup.uid },
                                     LastChangeTime = DateTime.Now.ToString("F"),
+                                    openWay = -1
                                 };
-                                _logger.Information("创建新的快捷键组，处理组: {ProcessGroup}", combox.SelectedItem);
+                                _logger.Information("创建新的快捷键组，处理组: {ProcessGroup}", selectedGroup.name);
                             }
 
-                            GlobalVariablesData.config.ShortCutKey.keysGrounp.Add(shortCut);
+                            GlobalVariablesData.config.ShortCutKey.keysGrounp.Add(newShortCut);
                             GlobalVariablesData.SaveConfig();
                             InitializeShortCutKey();
                             _logger.Information("新快捷键组创建成功，当前总数: {Count}", GlobalVariablesData.config.ShortCutKey.keysGrounp.Count);
@@ -589,37 +535,13 @@ namespace NameCube.Setting
 
         private bool IsTheSameKey(List<Key> keys1, List<Key> keys2)
         {
-            if (keys1.Count == keys2.Count)
-            {
-                bool SameAs = true;
-                foreach (Key key in keys1)
-                {
-                    if (!keys2.Contains(key))
-                    {
-                        SameAs = false;
-                        break;
-                    }
-                }
-                return SameAs;
-            }
-            else
-            {
-                return false;
-            }
+            if (keys1.Count != keys2.Count) return false;
+            return !keys1.Except(keys2).Any();
         }
 
         private int HaveSameKeys(List<ShortCut> shortCuts, List<Key> keys)
         {
-            int haveSame = 0;
-            foreach (ShortCut shortCut in shortCuts)
-            {
-                if (IsTheSameKey(keys, shortCut.keys))
-                {
-                    haveSame++;
-                    break;
-                }
-            }
-            return haveSame;
+            return shortCuts.Count(sc => IsTheSameKey(keys, sc.keys));
         }
     }
 }

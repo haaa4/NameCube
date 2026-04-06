@@ -3,72 +3,20 @@
   "WorkspaceRootPath": "D:\\C#\\NameCube-git\\NameCube\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{710DCBE6-2310-445D-88E0-CE43D37DDABD}|NameCube\\NameCube.csproj|d:\\c#\\namecube-git\\namecube\\namecube\\namecube.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|",
-      "RelativeMoniker": "D:0:0:{710DCBE6-2310-445D-88E0-CE43D37DDABD}|NameCube\\NameCube.csproj|solutionrelative:namecube\\namecube.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|"
+      "AbsoluteMoniker": "D:0:0:{710DCBE6-2310-445D-88E0-CE43D37DDABD}|NameCube\\NameCube.csproj|d:\\c#\\namecube-git\\namecube\\namecube\\setting\\other.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{710DCBE6-2310-445D-88E0-CE43D37DDABD}|NameCube\\NameCube.csproj|solutionrelative:namecube\\setting\\other.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{BC2134DD-155B-41B3-A257-E307F64EF267}|NameCubeUpdata\\NameCubeSetup.csproj|D:\\C#\\NameCube-git\\NameCube\\namecubeupdata\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
-      "RelativeMoniker": "D:0:0:{BC2134DD-155B-41B3-A257-E307F64EF267}|NameCubeUpdata\\NameCubeSetup.csproj|solutionrelative:namecubeupdata\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+      "AbsoluteMoniker": "D:0:0:{710DCBE6-2310-445D-88E0-CE43D37DDABD}|NameCube\\NameCube.csproj|d:\\c#\\namecube-git\\namecube\\namecube\\setting\\other.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{710DCBE6-2310-445D-88E0-CE43D37DDABD}|NameCube\\NameCube.csproj|solutionrelative:namecube\\setting\\other.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{BC2134DD-155B-41B3-A257-E307F64EF267}|NameCubeUpdata\\NameCubeSetup.csproj|d:\\c#\\namecube-git\\namecube\\namecubeupdata\\icon.ico||{177559E0-D141-11D0-92DF-00A0C9138C45}",
-      "RelativeMoniker": "D:0:0:{BC2134DD-155B-41B3-A257-E307F64EF267}|NameCubeUpdata\\NameCubeSetup.csproj|solutionrelative:namecubeupdata\\icon.ico||{177559E0-D141-11D0-92DF-00A0C9138C45}"
+      "AbsoluteMoniker": "D:0:0:{710DCBE6-2310-445D-88E0-CE43D37DDABD}|NameCube\\NameCube.csproj|d:\\c#\\namecube-git\\namecube\\namecube\\globalvariables\\dataclass\\allsettings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{710DCBE6-2310-445D-88E0-CE43D37DDABD}|NameCube\\NameCube.csproj|solutionrelative:namecube\\globalvariables\\dataclass\\allsettings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{710DCBE6-2310-445D-88E0-CE43D37DDABD}|NameCube\\NameCube.csproj|d:\\c#\\namecube-git\\namecube\\namecube\\setting\\about.xaml.cs||{8B382828-6202-11D1-8870-0000F87579D2}|",
-      "RelativeMoniker": "D:0:0:{710DCBE6-2310-445D-88E0-CE43D37DDABD}|NameCube\\NameCube.csproj|solutionrelative:namecube\\setting\\about.xaml.cs||{8B382828-6202-11D1-8870-0000F87579D2}|"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{710DCBE6-2310-445D-88E0-CE43D37DDABD}|NameCube\\NameCube.csproj|d:\\c#\\namecube-git\\namecube\\namecube\\globalvariables\\data.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{710DCBE6-2310-445D-88E0-CE43D37DDABD}|NameCube\\NameCube.csproj|solutionrelative:namecube\\globalvariables\\data.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{710DCBE6-2310-445D-88E0-CE43D37DDABD}|NameCube\\NameCube.csproj|d:\\c#\\namecube-git\\namecube\\namecube\\markdown\\newversion.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}",
-      "RelativeMoniker": "D:0:0:{710DCBE6-2310-445D-88E0-CE43D37DDABD}|NameCube\\NameCube.csproj|solutionrelative:namecube\\markdown\\newversion.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{710DCBE6-2310-445D-88E0-CE43D37DDABD}|NameCube\\NameCube.csproj|d:\\c#\\namecube-git\\namecube\\namecube\\mode\\homechildrenpage\\photos.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{710DCBE6-2310-445D-88E0-CE43D37DDABD}|NameCube\\NameCube.csproj|solutionrelative:namecube\\mode\\homechildrenpage\\photos.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{710DCBE6-2310-445D-88E0-CE43D37DDABD}|NameCube\\NameCube.csproj|d:\\c#\\namecube-git\\namecube\\namecube\\mode\\homechildrenpage\\photos.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
-      "RelativeMoniker": "D:0:0:{710DCBE6-2310-445D-88E0-CE43D37DDABD}|NameCube\\NameCube.csproj|solutionrelative:namecube\\mode\\homechildrenpage\\photos.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{710DCBE6-2310-445D-88E0-CE43D37DDABD}|NameCube\\NameCube.csproj|d:\\c#\\namecube-git\\namecube\\namecube\\mode\\home.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{710DCBE6-2310-445D-88E0-CE43D37DDABD}|NameCube\\NameCube.csproj|solutionrelative:namecube\\mode\\home.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{710DCBE6-2310-445D-88E0-CE43D37DDABD}|NameCube\\NameCube.csproj|d:\\c#\\namecube-git\\namecube\\namecube\\mode\\memoryfactormode.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
-      "RelativeMoniker": "D:0:0:{710DCBE6-2310-445D-88E0-CE43D37DDABD}|NameCube\\NameCube.csproj|solutionrelative:namecube\\mode\\memoryfactormode.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{BC2134DD-155B-41B3-A257-E307F64EF267}|NameCubeUpdata\\NameCubeSetup.csproj|D:\\C#\\NameCube-git\\NameCube\\namecubeupdata\\updateguidewindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{BC2134DD-155B-41B3-A257-E307F64EF267}|NameCubeUpdata\\NameCubeSetup.csproj|solutionrelative:namecubeupdata\\updateguidewindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{BC2134DD-155B-41B3-A257-E307F64EF267}|NameCubeUpdata\\NameCubeSetup.csproj|D:\\C#\\NameCube-git\\NameCube\\namecubeupdata\\updateguidewindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
-      "RelativeMoniker": "D:0:0:{BC2134DD-155B-41B3-A257-E307F64EF267}|NameCubeUpdata\\NameCubeSetup.csproj|solutionrelative:namecubeupdata\\updateguidewindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{BC2134DD-155B-41B3-A257-E307F64EF267}|NameCubeUpdata\\NameCubeSetup.csproj|D:\\C#\\NameCube-git\\NameCube\\namecubeupdata\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{BC2134DD-155B-41B3-A257-E307F64EF267}|NameCubeUpdata\\NameCubeSetup.csproj|solutionrelative:namecubeupdata\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{710DCBE6-2310-445D-88E0-CE43D37DDABD}|NameCube\\NameCube.csproj|d:\\c#\\namecube-git\\namecube\\namecube\\setting\\thankswindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
-      "RelativeMoniker": "D:0:0:{710DCBE6-2310-445D-88E0-CE43D37DDABD}|NameCube\\NameCube.csproj|solutionrelative:namecube\\setting\\thankswindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{710DCBE6-2310-445D-88E0-CE43D37DDABD}|NameCube\\NameCube.csproj|d:\\c#\\namecube-git\\namecube\\namecube\\setting\\thankswindow.xaml.cs||{8B382828-6202-11D1-8870-0000F87579D2}|",
-      "RelativeMoniker": "D:0:0:{710DCBE6-2310-445D-88E0-CE43D37DDABD}|NameCube\\NameCube.csproj|solutionrelative:namecube\\setting\\thankswindow.xaml.cs||{8B382828-6202-11D1-8870-0000F87579D2}|"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{710DCBE6-2310-445D-88E0-CE43D37DDABD}|NameCube\\NameCube.csproj|d:\\c#\\namecube-git\\namecube\\namecube\\setting\\about.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
-      "RelativeMoniker": "D:0:0:{710DCBE6-2310-445D-88E0-CE43D37DDABD}|NameCube\\NameCube.csproj|solutionrelative:namecube\\setting\\about.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{710DCBE6-2310-445D-88E0-CE43D37DDABD}|NameCube\\NameCube.csproj|d:\\c#\\namecube-git\\namecube\\namecube\\namecube.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
-      "RelativeMoniker": "D:0:0:{710DCBE6-2310-445D-88E0-CE43D37DDABD}|NameCube\\NameCube.csproj|solutionrelative:namecube\\namecube.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+      "AbsoluteMoniker": "D:0:0:{710DCBE6-2310-445D-88E0-CE43D37DDABD}|NameCube\\NameCube.csproj|d:\\c#\\namecube-git\\namecube\\namecube\\setting\\about.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{710DCBE6-2310-445D-88E0-CE43D37DDABD}|NameCube\\NameCube.csproj|solutionrelative:namecube\\setting\\about.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -95,179 +43,40 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "NameCube",
-              "DocumentMoniker": "D:\\C#\\NameCube-git\\NameCube\\NameCube\\NameCube.csproj",
-              "RelativeDocumentMoniker": "NameCube\\NameCube.csproj",
-              "ToolTip": "D:\\C#\\NameCube-git\\NameCube\\NameCube\\NameCube.csproj",
-              "RelativeToolTip": "NameCube\\NameCube.csproj",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2026-03-29T09:24:25.347Z",
+              "Title": "Other.xaml",
+              "DocumentMoniker": "D:\\C#\\NameCube-git\\NameCube\\NameCube\\Setting\\Other.xaml",
+              "RelativeDocumentMoniker": "NameCube\\Setting\\Other.xaml",
+              "ToolTip": "D:\\C#\\NameCube-git\\NameCube\\NameCube\\Setting\\Other.xaml",
+              "RelativeToolTip": "NameCube\\Setting\\Other.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2026-04-06T07:50:19.716Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Other.xaml.cs",
+              "DocumentMoniker": "D:\\C#\\NameCube-git\\NameCube\\NameCube\\Setting\\Other.xaml.cs",
+              "RelativeDocumentMoniker": "NameCube\\Setting\\Other.xaml.cs",
+              "ToolTip": "D:\\C#\\NameCube-git\\NameCube\\NameCube\\Setting\\Other.xaml.cs",
+              "RelativeToolTip": "NameCube\\Setting\\Other.xaml.cs",
+              "ViewState": "AgIAAGkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-06T07:50:04.729Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 2,
-              "Title": "icon.ico - Icon [768x768, 32 \u4F4D, PNG]",
-              "DocumentMoniker": "D:\\C#\\NameCube-git\\NameCube\\NameCubeUpdata\\icon.ico",
-              "RelativeDocumentMoniker": "NameCubeUpdata\\icon.ico",
-              "ToolTip": "D:\\C#\\NameCube-git\\NameCube\\NameCubeUpdata\\icon.ico - Icon [768x768, 32 \u4F4D, PNG]",
-              "RelativeToolTip": "NameCubeUpdata\\icon.ico - Icon [768x768, 32 \u4F4D, PNG]",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001525|",
-              "WhenOpened": "2026-03-29T09:24:11.299Z",
-              "EditorCaption": " - Icon [768x768, 32 \u4F4D, PNG]"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "Data.cs",
-              "DocumentMoniker": "D:\\C#\\NameCube-git\\NameCube\\NameCube\\GlobalVariables\\Data.cs",
-              "RelativeDocumentMoniker": "NameCube\\GlobalVariables\\Data.cs",
-              "ToolTip": "D:\\C#\\NameCube-git\\NameCube\\NameCube\\GlobalVariables\\Data.cs",
-              "RelativeToolTip": "NameCube\\GlobalVariables\\Data.cs",
-              "ViewState": "AgIAAHIAAAAAAAAAAADwv40AAAAoAAAAAAAAAA==",
+              "Title": "AllSettings.cs",
+              "DocumentMoniker": "D:\\C#\\NameCube-git\\NameCube\\NameCube\\GlobalVariables\\DataClass\\AllSettings.cs",
+              "RelativeDocumentMoniker": "NameCube\\GlobalVariables\\DataClass\\AllSettings.cs",
+              "ToolTip": "D:\\C#\\NameCube-git\\NameCube\\NameCube\\GlobalVariables\\DataClass\\AllSettings.cs",
+              "RelativeToolTip": "NameCube\\GlobalVariables\\DataClass\\AllSettings.cs",
+              "ViewState": "AgIAAFYAAAAAAAAAAAApwHsAAAAOAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-29T09:05:10.818Z",
+              "WhenOpened": "2026-04-06T07:46:19.863Z",
               "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "NewVersion.md",
-              "DocumentMoniker": "D:\\C#\\NameCube-git\\NameCube\\NameCube\\MarkDown\\NewVersion.md",
-              "RelativeDocumentMoniker": "NameCube\\MarkDown\\NewVersion.md",
-              "ToolTip": "D:\\C#\\NameCube-git\\NameCube\\NameCube\\MarkDown\\NewVersion.md",
-              "RelativeToolTip": "NameCube\\MarkDown\\NewVersion.md",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAARAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
-              "WhenOpened": "2026-03-29T09:02:48.817Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "Photos.xaml.cs",
-              "DocumentMoniker": "D:\\C#\\NameCube-git\\NameCube\\NameCube\\Mode\\HomeChildrenPage\\Photos.xaml.cs",
-              "RelativeDocumentMoniker": "NameCube\\Mode\\HomeChildrenPage\\Photos.xaml.cs",
-              "ToolTip": "D:\\C#\\NameCube-git\\NameCube\\NameCube\\Mode\\HomeChildrenPage\\Photos.xaml.cs",
-              "RelativeToolTip": "NameCube\\Mode\\HomeChildrenPage\\Photos.xaml.cs",
-              "ViewState": "AgIAABIAAAAAAAAAAADwvwAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-29T08:57:30.767Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "Photos.xaml",
-              "DocumentMoniker": "D:\\C#\\NameCube-git\\NameCube\\NameCube\\Mode\\HomeChildrenPage\\Photos.xaml",
-              "RelativeDocumentMoniker": "NameCube\\Mode\\HomeChildrenPage\\Photos.xaml",
-              "ToolTip": "D:\\C#\\NameCube-git\\NameCube\\NameCube\\Mode\\HomeChildrenPage\\Photos.xaml",
-              "RelativeToolTip": "NameCube\\Mode\\HomeChildrenPage\\Photos.xaml",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2026-03-29T08:57:28.335Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "Home.xaml.cs",
-              "DocumentMoniker": "D:\\C#\\NameCube-git\\NameCube\\NameCube\\Mode\\Home.xaml.cs",
-              "RelativeDocumentMoniker": "NameCube\\Mode\\Home.xaml.cs",
-              "ToolTip": "D:\\C#\\NameCube-git\\NameCube\\NameCube\\Mode\\Home.xaml.cs",
-              "RelativeToolTip": "NameCube\\Mode\\Home.xaml.cs",
-              "ViewState": "AgIAAC0AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-29T08:57:14.703Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "MemoryFactorMode.xaml",
-              "DocumentMoniker": "D:\\C#\\NameCube-git\\NameCube\\NameCube\\Mode\\MemoryFactorMode.xaml",
-              "RelativeDocumentMoniker": "NameCube\\Mode\\MemoryFactorMode.xaml",
-              "ToolTip": "D:\\C#\\NameCube-git\\NameCube\\NameCube\\Mode\\MemoryFactorMode.xaml",
-              "RelativeToolTip": "NameCube\\Mode\\MemoryFactorMode.xaml",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2026-03-29T08:57:12.618Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "MainWindow.xaml",
-              "DocumentMoniker": "D:\\C#\\NameCube-git\\NameCube\\NameCubeUpdata\\MainWindow.xaml",
-              "RelativeDocumentMoniker": "NameCubeUpdata\\MainWindow.xaml",
-              "ToolTip": "D:\\C#\\NameCube-git\\NameCube\\NameCubeUpdata\\MainWindow.xaml*",
-              "RelativeToolTip": "NameCubeUpdata\\MainWindow.xaml*",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2026-03-29T08:55:37.177Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 11,
-              "Title": "UpdateGuideWindow.xaml",
-              "DocumentMoniker": "D:\\C#\\NameCube-git\\NameCube\\NameCubeUpdata\\UpdateGuideWindow.xaml",
-              "RelativeDocumentMoniker": "NameCubeUpdata\\UpdateGuideWindow.xaml",
-              "ToolTip": "D:\\C#\\NameCube-git\\NameCube\\NameCubeUpdata\\UpdateGuideWindow.xaml",
-              "RelativeToolTip": "NameCubeUpdata\\UpdateGuideWindow.xaml",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2026-03-29T08:55:22.958Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "UpdateGuideWindow.xaml.cs",
-              "DocumentMoniker": "D:\\C#\\NameCube-git\\NameCube\\NameCubeUpdata\\UpdateGuideWindow.xaml.cs",
-              "RelativeDocumentMoniker": "NameCubeUpdata\\UpdateGuideWindow.xaml.cs",
-              "ToolTip": "D:\\C#\\NameCube-git\\NameCube\\NameCubeUpdata\\UpdateGuideWindow.xaml.cs",
-              "RelativeToolTip": "NameCubeUpdata\\UpdateGuideWindow.xaml.cs",
-              "ViewState": "AgIAALEAAAAAAAAAAADwv8UAAABEAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-29T08:52:19.421Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 12,
-              "Title": "MainWindow.xaml.cs",
-              "DocumentMoniker": "D:\\C#\\NameCube-git\\NameCube\\NameCubeUpdata\\MainWindow.xaml.cs",
-              "RelativeDocumentMoniker": "NameCubeUpdata\\MainWindow.xaml.cs",
-              "ToolTip": "D:\\C#\\NameCube-git\\NameCube\\NameCubeUpdata\\MainWindow.xaml.cs",
-              "RelativeToolTip": "NameCubeUpdata\\MainWindow.xaml.cs",
-              "ViewState": "AgIAAPYAAAAAAAAAAAAAAAMBAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-29T08:42:31.773Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 14,
-              "Title": "ThanksWindow.xaml.cs",
-              "DocumentMoniker": "D:\\C#\\NameCube-git\\NameCube\\NameCube\\Setting\\ThanksWindow.xaml.cs",
-              "RelativeDocumentMoniker": "NameCube\\Setting\\ThanksWindow.xaml.cs",
-              "ToolTip": "D:\\C#\\NameCube-git\\NameCube\\NameCube\\Setting\\ThanksWindow.xaml.cs",
-              "RelativeToolTip": "NameCube\\Setting\\ThanksWindow.xaml.cs",
-              "ViewState": "AgIAABwAAAAAAAAAAAAQwGEAAAAZAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-29T08:33:08.63Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 13,
-              "Title": "ThanksWindow.xaml",
-              "DocumentMoniker": "D:\\C#\\NameCube-git\\NameCube\\NameCube\\Setting\\ThanksWindow.xaml",
-              "RelativeDocumentMoniker": "NameCube\\Setting\\ThanksWindow.xaml",
-              "ToolTip": "D:\\C#\\NameCube-git\\NameCube\\NameCube\\Setting\\ThanksWindow.xaml",
-              "RelativeToolTip": "NameCube\\Setting\\ThanksWindow.xaml",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2026-03-29T08:32:31.115Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 16,
-              "Title": "NameCube.csproj",
-              "DocumentMoniker": "D:\\C#\\NameCube-git\\NameCube\\NameCube\\NameCube.csproj",
-              "RelativeDocumentMoniker": "NameCube\\NameCube.csproj",
-              "ToolTip": "D:\\C#\\NameCube-git\\NameCube\\NameCube\\NameCube.csproj",
-              "RelativeToolTip": "NameCube\\NameCube.csproj",
-              "ViewState": "AgIAAF0AAAAAAAAAAADwv4QAAAAKAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2026-03-29T08:31:24.716Z"
             },
             {
               "$type": "Document",
@@ -277,21 +86,10 @@
               "RelativeDocumentMoniker": "NameCube\\Setting\\About.xaml.cs",
               "ToolTip": "D:\\C#\\NameCube-git\\NameCube\\NameCube\\Setting\\About.xaml.cs",
               "RelativeToolTip": "NameCube\\Setting\\About.xaml.cs",
-              "ViewState": "AgIAAJAAAAAAAAAAAAAAAJQAAAA4AAAAAAAAAA==",
+              "ViewState": "AgIAAIEAAAAAAAAAAAAAAJ4AAAANAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-29T08:07:03.706Z",
+              "WhenOpened": "2026-04-06T07:45:50.948Z",
               "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 15,
-              "Title": "About.xaml",
-              "DocumentMoniker": "D:\\C#\\NameCube-git\\NameCube\\NameCube\\Setting\\About.xaml",
-              "RelativeDocumentMoniker": "NameCube\\Setting\\About.xaml",
-              "ToolTip": "D:\\C#\\NameCube-git\\NameCube\\NameCube\\Setting\\About.xaml",
-              "RelativeToolTip": "NameCube\\Setting\\About.xaml",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2026-03-29T07:53:41.313Z"
             }
           ]
         },

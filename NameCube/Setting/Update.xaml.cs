@@ -52,7 +52,7 @@ namespace NameCube.Setting
                 UpkButton.IsEnabled = true;
                 _logger.Information("检测到新版本: {NewVersion}", GlobalVariablesData.config.AllSettings.newVersion);
             }
-            UpdataWayGetComboBox.SelectedIndex = GlobalVariablesData.config.AllSettings.DownloadWay;
+            
             _logger.Information("更新设置加载完成，当前版本: {Version}, 自动更新: {AutoUpdate}, 更新方式: {UpdateWay}",
                 GlobalVariablesData.VERSION,
                 GlobalVariablesData.config.StartToDo.AutoUpdata,
@@ -314,11 +314,7 @@ namespace NameCube.Setting
 
         private void UpdataWayGetComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (Canchange)
-            {
-                GlobalVariablesData.config.AllSettings.DownloadWay = UpdataWayGetComboBox.SelectedIndex;
-                GlobalVariablesData.SaveConfig();
-            }
+
         }
     }
 }

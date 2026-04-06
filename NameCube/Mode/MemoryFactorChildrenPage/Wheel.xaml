@@ -65,7 +65,7 @@
                         VerticalAlignment="Center"
                         FontSize="40"
                         FontWeight="SemiBold"
-                        Foreground="#30d7d7"
+                        Foreground="#FF005493"
                         Text="点击开始旋转" />
                 </StackPanel>
             </ui:Border>

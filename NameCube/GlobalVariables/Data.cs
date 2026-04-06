@@ -79,6 +79,12 @@ namespace NameCube
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
         public AutomaticProcess AutomaticProcess { get; set; } = new AutomaticProcess();
+        /// <summary>
+        /// 用户相关信息
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+        public ImformationData ImformationData { get; set; } = new ImformationData();
+
 
         /// <summary>
         /// 配置文件的上一次运行所在点鸣魔方的版本

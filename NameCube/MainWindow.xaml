@@ -160,19 +160,22 @@
             Icon="{ui:ImageIcon icon.png}" />
 
         <!--  版本号显示在右上角  -->
-        <Border
-            Grid.Row="0"
-            Margin="0,0,20,0"
+
+        <ui:InfoBar
+                 Grid.Row="0"
+            Margin="0,0,120,0"
             Padding="8,4"
             HorizontalAlignment="Right"
             VerticalAlignment="Center"
-            Background="Transparent">
-            <TextBlock
-                x:Name="VersionTextBlock"
-                FontSize="12"
-                Text="{Binding version}"
-                ToolTip="当前软件版本" />
-        </Border>
+                    x:Name="VolumeInfoBar"
+                    Title="提示"
+            Background="Transparent"
+                    FontSize="14"
+                    IsClosable="False"
+                    IsOpen="True"
+                    Message="电脑已静音，朗读人可能没有声音"
+                    Severity="Informational"
+                    Visibility="Collapsed" />
 
         <ui:NavigationView
             x:Name="NavigationMenu"
@@ -183,19 +186,6 @@
             OpenPaneLength="260"
             PaneDisplayMode="Left">
 
-            <!--  优化信息栏样式  -->
-            <ui:NavigationView.Header>
-                <ui:InfoBar
-                    x:Name="VolumeInfoBar"
-                    Title="提示"
-                    Margin="10,10,10,20"
-                    FontSize="14"
-                    IsClosable="True"
-                    IsOpen="True"
-                    Message="电脑已静音，朗读人可能没有声音"
-                    Severity="Informational"
-                    Visibility="Collapsed" />
-            </ui:NavigationView.Header>
 
             <!--  优化菜单项样式  -->
             <ui:NavigationView.MenuItems>

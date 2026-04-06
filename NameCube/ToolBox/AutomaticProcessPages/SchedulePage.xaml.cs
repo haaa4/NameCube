@@ -2,6 +2,7 @@
 using Serilog;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using Brushes = System.Windows.Media.Brushes;
@@ -13,42 +14,23 @@ namespace NameCube.ToolBox.AutomaticProcessPages
     /// </summary>
     public partial class SchedulePage : Page
     {
-        //命名规则冲突，之后把他改了
+        // 命名规则冲突，之后把他改了
         public ObservableCollection<string> picker1 { get; } = new ObservableCollection<string>();
-
         public ObservableCollection<string> picker2 { get; } = new ObservableCollection<string>();
         public ObservableCollection<string> picker3 { get; } = new ObservableCollection<string>();
-
-        public ObservableCollection<string> processesGroupList { get; } =
-            new ObservableCollection<string>();
+        public ObservableCollection<string> processesGroupList { get; } = new ObservableCollection<string>();
 
         private List<ProcessGroup> processGroups { get; } = new List<ProcessGroup>();
         private List<ProcessGroup> ToChooseProcessGroup = new List<ProcessGroup>();
         private List<int> keyList = new List<int>();
         public List<int> indexList = new List<int>();
 
-        public ObservableCollection<string> processesChooseList { get; } =
-            new ObservableCollection<string>();
+        public ObservableCollection<string> processesChooseList { get; } = new ObservableCollection<string>();
 
-        private int indexToHour(int index)
-        {
-            return index / 3600;
-        }
-
-        private int indexToMinute(int index)
-        {
-            return index % 3600 / 60;
-        }
-
-        private int indexToSecond(int index)
-        {
-            return index % 3600 % 60;
-        }
-
-        private int TimeToIndex(int hour, int minute, int second)
-        {
-            return hour * 3600 + minute * 60 + second;
-        }
+        private int indexToHour(int index) => index / 3600;
+        private int indexToMinute(int index) => index % 3600 / 60;
+        private int indexToSecond(int index) => index % 3600 % 60;
+        private int TimeToIndex(int hour, int minute, int second) => hour * 3600 + minute * 60 + second;
 
         public SchedulePage()
         {
@@ -57,10 +39,7 @@ namespace NameCube.ToolBox.AutomaticProcessPages
             DataContext = this;
 
             // 初始化时间选择器
-            for (int i = 0; i <= 23; i++)
-            {
-                picker1.Add(i.ToString());
-            }
+            for (int i = 0; i <= 23; i++) picker1.Add(i.ToString());
             for (int i = 0; i <= 59; i++)
             {
                 picker2.Add(i.ToString());
@@ -75,36 +54,9 @@ namespace NameCube.ToolBox.AutomaticProcessPages
         private string IndexToTimeString(int index)
         {
             int hour = indexToHour(index);
-            string hourStr,
-                minuteStr,
-                secondStr;
-            if (hour <= 9)
-            {
-                hourStr = "0" + hour.ToString();
-            }
-            else
-            {
-                hourStr = hour.ToString();
-            }
             int minute = indexToMinute(index);
-            if (minute <= 9)
-            {
-                minuteStr = "0" + minute.ToString();
-            }
-            else
-            {
-                minuteStr = minute.ToString();
-            }
             int second = indexToSecond(index);
-            if (second <= 9)
-            {
-                secondStr = "0" + second.ToString();
-            }
-            else
-            {
-                secondStr = second.ToString();
-            }
-            return hourStr + ":" + minuteStr + ":" + secondStr;
+            return $"{hour:00}:{minute:00}:{second:00}";
         }
 
         private void RefreshList()
@@ -118,40 +70,51 @@ namespace NameCube.ToolBox.AutomaticProcessPages
             if (GlobalVariablesData.config.AutomaticProcess.processesSchedule == null)
             {
                 Log.Debug("时间表为空，创建新字典");
-                GlobalVariablesData.config.AutomaticProcess.processesSchedule =
-                    new Dictionary<int, List<ProcessGroup>>();
+                GlobalVariablesData.config.AutomaticProcess.processesSchedule = new Dictionary<int, List<ProcessGroupUid>>();
             }
 
             int scheduleCount = 0;
-            for (int key = 0; key <= 86399; key++)
+            // 注意：遍历时可能修改字典，使用 ToList() 创建副本
+            foreach (var kvp in GlobalVariablesData.config.AutomaticProcess.processesSchedule.ToList())
             {
-                if (GlobalVariablesData.config.AutomaticProcess.processesSchedule.ContainsKey(key))
-                {
-                    for (
-                        int i = 0;
-                        i < GlobalVariablesData.config.AutomaticProcess.processesSchedule[key].Count;
-                        i++
-                    )
-                    {
-                        string timeString = IndexToTimeString(key);
-                        string processName = GlobalVariablesData
-                            .config
-                            .AutomaticProcess
-                            .processesSchedule[key][i]
-                            .name;
+                int key = kvp.Key;
+                List<ProcessGroupUid> uidList = kvp.Value;
 
-                        processesGroupList.Add(timeString + " " + processName);
-                        processGroups.Add(
-                            GlobalVariablesData.config.AutomaticProcess.processesSchedule[key][i]
-                        );
+                // 从后向前遍历，以便安全删除
+                for (int i = uidList.Count - 1; i >= 0; i--)
+                {
+                    ProcessGroupUid uidObj = uidList[i];
+                    ProcessGroup pg = uidObj.GetProcessGroup();
+
+                    if (pg == null)
+                    {
+                      
+                        Log.Warning("时间表项对应的流程组已被删除 (UID: {Uid})，已自动移除该项", uidObj.uid);
+                        SnackBarFunction.ShowSnackBarInToolBoxWindow("未找到"+uidObj.uid+"对应的流程组，已自动删除该时间表项",Wpf.Ui.Controls.ControlAppearance.Caution);
+                        uidList.RemoveAt(i);
+    
+                    }
+                    else
+                    {
+                        // 有效项：添加到显示列表
+                        string timeString = IndexToTimeString(key);
+                        processesGroupList.Add(timeString + " " + pg.name);
+                        processGroups.Add(pg);
                         keyList.Add(key);
-                        indexList.Add(i);
+                        indexList.Add(i);   // 注意：此时 i 是删除无效项后的新索引
                         scheduleCount++;
                     }
                 }
+
+                // 如果该时间点下所有项都被删除，则移除整个 Key
+                if (uidList.Count == 0)
+                {
+                    GlobalVariablesData.config.AutomaticProcess.processesSchedule.Remove(key);
+                }
             }
+
             processesGroupList.Add("新建时间流程表...");
-            Log.Information("时间表列表刷新完成，共 {ScheduleCount} 个计划", scheduleCount);
+            Log.Information("时间表列表刷新完成，有效计划数: {ScheduleCount}", scheduleCount);
         }
 
         private void RefreshChooesList()
@@ -163,9 +126,7 @@ namespace NameCube.ToolBox.AutomaticProcessPages
             int processGroupCount = GlobalVariablesData.config.AutomaticProcess.processGroups?.Count ?? 0;
             Log.Information("当前有 {ProcessGroupCount} 个流程组可用", processGroupCount);
 
-            foreach (
-                ProcessGroup processGroup in GlobalVariablesData.config.AutomaticProcess.processGroups
-            )
+            foreach (ProcessGroup processGroup in GlobalVariablesData.config.AutomaticProcess.processGroups)
             {
                 processesChooseList.Add(processGroup.name);
                 ToChooseProcessGroup.Add(processGroup);
@@ -175,15 +136,6 @@ namespace NameCube.ToolBox.AutomaticProcessPages
         private void TimeListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             Log.Debug("时间表列表选择改变，当前选中项索引: {SelectedIndex}", TimeListView.SelectedIndex);
-            RefreshChooesList();
-
-            if (
-                processesChooseList.Count > 0
-                && processesChooseList[processesChooseList.Count - 1][0] == '*'
-            )
-            {
-                processesChooseList.RemoveAt(processesChooseList.Count - 1);
-            }
 
             if (TimeListView.SelectedIndex == processesGroupList.Count - 1)
             {
@@ -200,30 +152,21 @@ namespace NameCube.ToolBox.AutomaticProcessPages
             else if (TimeListView.SelectedIndex != -1)
             {
                 int selectedIndex = TimeListView.SelectedIndex;
-                int index = keyList[selectedIndex];
-                ProcessGroup processGroup = GlobalVariablesData.config.AutomaticProcess.processesSchedule[
-                    keyList[selectedIndex]
-                ][indexList[selectedIndex]];
+                int key = keyList[selectedIndex];
+                int idx = indexList[selectedIndex];
+                ProcessGroup processGroup = processGroups[selectedIndex]; // 直接从缓存中获取，已在RefreshList中保证有效
 
                 Log.Information("用户选择时间表项: {Time} {ProcessGroupName}, UID: {Uid}",
-                    IndexToTimeString(index), processGroup.name, processGroup.uid);
+                    IndexToTimeString(key), processGroup.name, processGroup.uid);
 
                 Part2.IsEnabled = true;
-                TimePicker1.SelectedIndex = indexToHour(index);
-                TimePicker2.SelectedIndex = indexToMinute(index);
-                TimePicker3.SelectedIndex = indexToSecond(index);
+                TimePicker1.SelectedIndex = indexToHour(key);
+                TimePicker2.SelectedIndex = indexToMinute(key);
+                TimePicker3.SelectedIndex = indexToSecond(key);
 
                 canDelMore = false;
                 ProcessesPicker.SelectedIndex = -1;
                 ProcessesPicker.SelectedItem = processGroup.name;
-
-                if (ProcessesPicker.SelectedItem == null || !HaveTheSame(processGroup))
-                {
-                    processesChooseList.Add("*" + processGroup.name + "(已删除)");
-                    ProcessesPicker.SelectedItem = "*" + processGroup.name + "(已删除)";
-                    Log.Warning("选择的流程组已被删除或不存在: {ProcessGroupName}", processGroup.name);
-                }
-
                 SaveButton.IsEnabled = true;
                 AddButton.IsEnabled = false;
                 canDelMore = true;
@@ -243,14 +186,10 @@ namespace NameCube.ToolBox.AutomaticProcessPages
 
         private bool HaveTheSame(ProcessGroup processGroup)
         {
-            for (int i = 0; i < GlobalVariablesData.config.AutomaticProcess.processGroups.Count; i++)
+            foreach (var group in GlobalVariablesData.config.AutomaticProcess.processGroups)
             {
-                if (processGroup.uid == GlobalVariablesData.config.AutomaticProcess.processGroups[i].uid)
-                {
-                    return true;
-                }
+                if (processGroup.uid == group.uid) return true;
             }
-
             return false;
         }
 
@@ -288,48 +227,30 @@ namespace NameCube.ToolBox.AutomaticProcessPages
                 Log.Warning("未选择秒");
             }
 
-            if (canAdd)
+            if (!canAdd) return;
+
+            int timeKey = TimeToIndex(TimePicker1.SelectedIndex, TimePicker2.SelectedIndex, TimePicker3.SelectedIndex);
+            ProcessGroup selectedGroup = GlobalVariablesData.config.AutomaticProcess.processGroups[ProcessesPicker.SelectedIndex];
+
+            ProcessGroupUid uidObj = new ProcessGroupUid { uid = selectedGroup.uid };
+
+            Log.Information("添加时间表: 时间 {Hour:00}:{Minute:00}:{Second:00}, 流程组: {ProcessGroupName} (UID:{Uid})",
+                TimePicker1.SelectedIndex, TimePicker2.SelectedIndex, TimePicker3.SelectedIndex,
+                selectedGroup.name, selectedGroup.uid);
+
+            if (GlobalVariablesData.config.AutomaticProcess.processesSchedule.ContainsKey(timeKey))
             {
-                if (
-                    processesChooseList.Count > 0
-                    && processesChooseList[processesChooseList.Count - 1][0] == '*'
-                )
-                {
-                    processesChooseList.RemoveAt(processesChooseList.Count - 1);
-                }
-
-                int timeKey = TimeToIndex(
-                    TimePicker1.SelectedIndex,
-                    TimePicker2.SelectedIndex,
-                    TimePicker3.SelectedIndex
-                );
-                ProcessGroup processGroup = GlobalVariablesData.config.AutomaticProcess.processGroups[
-                    ProcessesPicker.SelectedIndex
-                ];
-
-                Log.Information("添加时间表: 时间 {Hour:00}:{Minute:00}:{Second:00}, 流程组: {ProcessGroupName}",
-                    TimePicker1.SelectedIndex, TimePicker2.SelectedIndex, TimePicker3.SelectedIndex,
-                    processGroup.name);
-
-                if (GlobalVariablesData.config.AutomaticProcess.processesSchedule.ContainsKey(timeKey))
-                {
-                    GlobalVariablesData
-                        .config.AutomaticProcess.processesSchedule[timeKey]
-                        .Add(processGroup);
-                }
-                else
-                {
-                    GlobalVariablesData.config.AutomaticProcess.processesSchedule.Add(
-                        timeKey,
-                        new List<ProcessGroup>() { processGroup }
-                    );
-                }
-
-                GlobalVariablesData.SaveConfig();
-                Part2.IsEnabled = false;
-                RefreshList();
-                RefreshChooesList();
+                GlobalVariablesData.config.AutomaticProcess.processesSchedule[timeKey].Add(uidObj);
             }
+            else
+            {
+                GlobalVariablesData.config.AutomaticProcess.processesSchedule.Add(timeKey, new List<ProcessGroupUid> { uidObj });
+            }
+
+            GlobalVariablesData.SaveConfig();
+            Part2.IsEnabled = false;
+            RefreshList();
+            RefreshChooesList();
         }
 
         private void Page_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -341,83 +262,73 @@ namespace NameCube.ToolBox.AutomaticProcessPages
 
         private void ProcessesPicker_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (
-                canDelMore
-                && ProcessesPicker.SelectedIndex != -1
-                && ProcessesPicker.SelectedItem.ToString() != ""
-                && processesChooseList[processesChooseList.Count - 1][0] == '*'
-            )
-            {
-                processesChooseList.RemoveAt(processesChooseList.Count - 1);
-                Log.Debug("从选择器中移除了已删除的流程组标记");
-            }
+            // 不再需要处理“*”项，因为已删除项不会出现在选择列表中
         }
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
             Log.Information("用户点击保存时间表修改");
 
-            if (ProcessesPicker.SelectedItem.ToString()[0] == '*')
+            int selected = TimeListView.SelectedIndex;
+            if (selected < 0 || selected >= processGroups.Count)
             {
-                Log.Warning("尝试保存已删除的流程组");
-                int selected = TimeListView.SelectedIndex;
-                ProcessGroup processGroup = processGroups[selected];
-                GlobalVariablesData
-                    .config.AutomaticProcess.processesSchedule[keyList[selected]]
-                    .RemoveAt(indexList[selected]);
-                int newKey = TimeToIndex(
-                    TimePicker1.SelectedIndex,
-                    TimePicker2.SelectedIndex,
-                    TimePicker3.SelectedIndex
-                );
-                if (GlobalVariablesData.config.AutomaticProcess.processesSchedule.ContainsKey(newKey))
+                Log.Warning("保存失败：无效的选中项");
+                return;
+            }
+
+            int oldKey = keyList[selected];
+            int idx = indexList[selected];
+            ProcessGroup oldGroup = processGroups[selected];
+            ProcessGroupUid oldUid = GlobalVariablesData.config.AutomaticProcess.processesSchedule[oldKey][idx];
+
+            int newKey = TimeToIndex(TimePicker1.SelectedIndex, TimePicker2.SelectedIndex, TimePicker3.SelectedIndex);
+            ProcessGroup newGroup = null;
+            if (ProcessesPicker.SelectedIndex >= 0)
+            {
+                newGroup = ToChooseProcessGroup[ProcessesPicker.SelectedIndex];
+            }
+
+            // 移除原项
+            GlobalVariablesData.config.AutomaticProcess.processesSchedule[oldKey].RemoveAt(idx);
+            if (GlobalVariablesData.config.AutomaticProcess.processesSchedule[oldKey].Count == 0)
+            {
+                GlobalVariablesData.config.AutomaticProcess.processesSchedule.Remove(oldKey);
+            }
+
+            // 决定是否添加新项（如果新时间或新流程组有变化）
+            bool shouldAdd = false;
+            ProcessGroupUid newUid = null;
+
+            if (newGroup != null)
+            {
+                // 检查是否真的发生了变化（时间或流程组不同）
+                if (newKey != oldKey || newGroup.uid != oldGroup.uid)
                 {
-                    GlobalVariablesData
-                        .config.AutomaticProcess.processesSchedule[newKey]
-                        .Add(processGroup);
+                    shouldAdd = true;
+                    newUid = new ProcessGroupUid { uid = newGroup.uid };
+                    Log.Information("修改时间表: 从 {OldTime} {OldProcess} 修改为 {NewTime} {NewProcess} (UID:{NewUid})",
+                        IndexToTimeString(oldKey), oldGroup.name,
+                        IndexToTimeString(newKey), newGroup.name, newGroup.uid);
                 }
                 else
                 {
-                    GlobalVariablesData.config.AutomaticProcess.processesSchedule.Add(
-                        newKey,
-                        new List<ProcessGroup>() { processGroup }
-                    );
+                    Log.Information("时间与流程组均未变化，无需保存");
                 }
             }
             else
             {
-                int selected = TimeListView.SelectedIndex;
-                ProcessGroup processGroup = processGroups[selected];
-                ProcessGroup newProcessGroup = ToChooseProcessGroup[ProcessesPicker.SelectedIndex];
+                Log.Warning("新选择的流程组无效，仅删除原项");
+            }
 
-                Log.Information("修改时间表: 从 {OldTime} {OldProcess} 修改为 {NewTime} {NewProcess}",
-                    IndexToTimeString(keyList[selected]), processGroup.name,
-                    IndexToTimeString(TimeToIndex(
-                        TimePicker1.SelectedIndex,
-                        TimePicker2.SelectedIndex,
-                        TimePicker3.SelectedIndex
-                    )), newProcessGroup.name);
-
-                GlobalVariablesData
-                    .config.AutomaticProcess.processesSchedule[keyList[selected]]
-                    .RemoveAt(indexList[selected]);
-                int newKey = TimeToIndex(
-                    TimePicker1.SelectedIndex,
-                    TimePicker2.SelectedIndex,
-                    TimePicker3.SelectedIndex
-                );
+            if (shouldAdd && newUid != null)
+            {
                 if (GlobalVariablesData.config.AutomaticProcess.processesSchedule.ContainsKey(newKey))
                 {
-                    GlobalVariablesData
-                        .config.AutomaticProcess.processesSchedule[newKey]
-                        .Add(newProcessGroup);
+                    GlobalVariablesData.config.AutomaticProcess.processesSchedule[newKey].Add(newUid);
                 }
                 else
                 {
-                    GlobalVariablesData.config.AutomaticProcess.processesSchedule.Add(
-                        newKey,
-                        new List<ProcessGroup>() { newProcessGroup }
-                    );
+                    GlobalVariablesData.config.AutomaticProcess.processesSchedule.Add(newKey, new List<ProcessGroupUid> { newUid });
                 }
             }
 
@@ -429,10 +340,7 @@ namespace NameCube.ToolBox.AutomaticProcessPages
 
         private void ListViewContextMenu_Opened(object sender, RoutedEventArgs e)
         {
-            if (
-                TimeListView.SelectedItem != null
-                && TimeListView.SelectedIndex != processesGroupList.Count
-            )
+            if (TimeListView.SelectedItem != null && TimeListView.SelectedIndex != processesGroupList.Count - 1)
             {
                 ListViewContextMenu.Visibility = Visibility.Visible;
                 Log.Debug("显示时间表上下文菜单");
@@ -446,20 +354,18 @@ namespace NameCube.ToolBox.AutomaticProcessPages
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
             Log.Information("用户请求删除时间表项");
-            if (
-                TimeListView.SelectedItem != null
-                && TimeListView.SelectedIndex != processesGroupList.Count
-            )
+            if (TimeListView.SelectedItem != null && TimeListView.SelectedIndex != processesGroupList.Count - 1)
             {
                 int selected = TimeListView.SelectedIndex;
                 ProcessGroup processGroup = processGroups[selected];
-
                 Log.Information("删除时间表项: {Time} {ProcessGroupName}",
                     IndexToTimeString(keyList[selected]), processGroup.name);
 
-                GlobalVariablesData
-                    .config.AutomaticProcess.processesSchedule[keyList[selected]]
-                    .RemoveAt(indexList[selected]);
+                GlobalVariablesData.config.AutomaticProcess.processesSchedule[keyList[selected]].RemoveAt(indexList[selected]);
+                if (GlobalVariablesData.config.AutomaticProcess.processesSchedule[keyList[selected]].Count == 0)
+                {
+                    GlobalVariablesData.config.AutomaticProcess.processesSchedule.Remove(keyList[selected]);
+                }
                 GlobalVariablesData.SaveConfig();
                 RefreshList();
                 RefreshChooesList();

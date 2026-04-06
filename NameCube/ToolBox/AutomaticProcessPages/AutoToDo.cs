@@ -39,7 +39,7 @@ namespace NameCube.ToolBox.AutomaticProcessPages
                         {
                             Application.Current.Dispatcher.Invoke(() =>
                             {
-                                RunProcessesGroup(GlobalVariablesData.config.AutomaticProcess.processesSchedule[index][i]);
+                                RunProcessesGroup(GlobalVariablesData.config.AutomaticProcess.processesSchedule[index][i].GetProcessGroup());
                             });
                         }
                     }

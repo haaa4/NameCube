@@ -352,7 +352,7 @@
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"
                 FontSize="150"
-                Foreground="#30d7d7"
+                Foreground="#FF005493"
                 Text="XXX"
                 TextAlignment="Center">
                 <TextBlock.RenderTransform>
@@ -372,7 +372,7 @@
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"
                 FontSize="150"
-                Foreground="#30d7d7"
+                Foreground="#FF005493"
                 Text="XXX"
                 TextAlignment="Center"
                 Visibility="Hidden" />

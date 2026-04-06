@@ -31,6 +31,7 @@ namespace NameCube.Setting
             StartCheck.IsChecked = IsStartupApplication("NameCube");
             TopCheck.IsChecked = GlobalVariablesData.config.AllSettings.Top;
             ModeCombox.SelectedIndex = GlobalVariablesData.config.AllSettings.NameCubeMode;
+            UpdataWayGetComboBox.SelectedIndex = GlobalVariablesData.config.AllSettings.DownloadWay;
             DisabledAnimationCheck.IsChecked = GlobalVariablesData.config.AllSettings.DisableTheDisplayAnimationOfTheMainWindow;
             MaxSizeCheck.IsChecked = GlobalVariablesData.config.AllSettings.DefaultToMaximumSize;
 
@@ -262,6 +263,15 @@ namespace NameCube.Setting
                 GlobalVariablesData.SaveConfig();
 
                 _logger.Information("默认最大化已改为{value}", MaxSizeCheck.IsChecked.Value);
+            }
+        }
+
+        private void UpdataWayGetComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (CanChange)
+            {
+                GlobalVariablesData.config.AllSettings.DownloadWay = UpdataWayGetComboBox.SelectedIndex;
+                GlobalVariablesData.SaveConfig();
             }
         }
     }

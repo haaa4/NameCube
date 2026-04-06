@@ -1,6 +1,7 @@
 ﻿using NameCube.Function;
 using Serilog;
 using System;
+using System.Diagnostics;
 using System.Windows;
 
 namespace NameCube.WarningWindows
@@ -52,6 +53,12 @@ namespace NameCube.WarningWindows
         {
             Log.Information("用户点击重启应用程序按钮");
             AppFunction.Restart();
+        }
+
+        private void Button_Click_3(object sender, RoutedEventArgs e)
+        {
+            Log.Information("打开日志文件夹");
+            Process.Start("explorer.exe", System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "logs"));
         }
     }
 }

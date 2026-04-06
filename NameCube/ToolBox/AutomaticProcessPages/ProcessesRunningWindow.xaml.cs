@@ -19,7 +19,12 @@ namespace NameCube.ToolBox.AutomaticProcessPages
         {
             Log.Information("创建流程运行窗口，流程组: {ProcessGroupName}, UID: {Uid}",
                 processGroup?.name, processGroup?.uid);
-
+            if(processGroup == null)
+            {
+                Log.Error("流程组数据为 null，无法创建流程运行窗口");
+                this.Close();
+                return;
+            }
             try
             {
                 InitializeComponent();

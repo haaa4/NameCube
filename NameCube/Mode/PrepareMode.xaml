@@ -88,7 +88,7 @@
                     HorizontalAlignment="Center"
                     VerticalAlignment="Top"
                     FontSize="120"
-                    Foreground="#30d7d7"
+                    Foreground="#FF005493"
                     RenderTransformOrigin="0.5,0.5"
                     Text="XXX">
                     <TextBlock.RenderTransform>
@@ -107,7 +107,7 @@
                     HorizontalAlignment="Center"
                     VerticalAlignment="Top"
                     FontSize="120"
-                    Foreground="#30d7d7"
+                    Foreground="#FF005493"
                     Text="XX"
                     Visibility="Hidden" />
                 <ui:Button
@@ -130,7 +130,7 @@
                         x:Name="Ready1"
                         HorizontalAlignment="Left"
                         FontSize="55"
-                        Foreground="#30d7d7"
+                        Foreground="#FF005493"
                         RenderTransformOrigin="0.5,0.5"
                         Text="XXX">
                         <TextBlock.RenderTransform>
@@ -146,7 +146,7 @@
                         x:Name="Ready2"
                         HorizontalAlignment="Left"
                         FontSize="55"
-                        Foreground="#30d7d7"
+                        Foreground="#FF005493"
                         RenderTransformOrigin="0.5,0.5"
                         Text="XXX">
                         <TextBlock.RenderTransform>
@@ -162,7 +162,7 @@
                         x:Name="Ready3"
                         HorizontalAlignment="Left"
                         FontSize="55"
-                        Foreground="#30d7d7"
+                        Foreground="#FF005493"
                         RenderTransformOrigin="0.5,0.5"
                         Text="XXX">
                         <TextBlock.RenderTransform>
@@ -178,7 +178,7 @@
                         x:Name="Ready4"
                         HorizontalAlignment="Left"
                         FontSize="55"
-                        Foreground="#30d7d7"
+                        Foreground="#FF005493"
                         RenderTransformOrigin="0.5,0.5"
                         Text="XXX">
                         <TextBlock.RenderTransform>
@@ -194,7 +194,7 @@
                         x:Name="Ready5"
                         HorizontalAlignment="Left"
                         FontSize="55"
-                        Foreground="#30d7d7"
+                        Foreground="#FF005493"
                         RenderTransformOrigin="0.5,0.5"
                         Text="XXX">
                         <TextBlock.RenderTransform>
@@ -212,35 +212,35 @@
                         x:Name="FinishReady1"
                         HorizontalAlignment="Left"
                         FontSize="55"
-                        Foreground="#30d7d7"
+                        Foreground="#FF005493"
                         Text="XXX"
                         Visibility="Hidden" />
                     <TextBlock
                         x:Name="FinishReady2"
                         HorizontalAlignment="Left"
                         FontSize="55"
-                        Foreground="#30d7d7"
+                        Foreground="#FF005493"
                         Text="XXX"
                         Visibility="Hidden" />
                     <TextBlock
                         x:Name="FinishReady3"
                         HorizontalAlignment="Left"
                         FontSize="55"
-                        Foreground="#30d7d7"
+                        Foreground="#FF005493"
                         Text="XXX"
                         Visibility="Hidden" />
                     <TextBlock
                         x:Name="FinishReady4"
                         HorizontalAlignment="Left"
                         FontSize="55"
-                        Foreground="#30d7d7"
+                        Foreground="#FF005493"
                         Text="XXX"
                         Visibility="Hidden" />
                     <TextBlock
                         x:Name="FinishReady5"
                         HorizontalAlignment="Left"
                         FontSize="55"
-                        Foreground="#30d7d7"
+                        Foreground="#FF005493"
                         Text="XXX"
                         Visibility="Hidden" />
                 </StackPanel>
