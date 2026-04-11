@@ -26,7 +26,7 @@ namespace NameCube.Mode
 
         private void CardAction_Click_1(object sender, RoutedEventArgs e)
         {
-            Log.Information("导航到记忆因子模式");
+            Log.Information("导航到记忆势能模式");
             var mainWindow = Application.Current.MainWindow as MainWindow;
             mainWindow.LoadPage(new MemoryFactorMode());
         }

@@ -186,7 +186,6 @@
             OpenPaneLength="260"
             PaneDisplayMode="Left">
 
-
             <!--  优化菜单项样式  -->
             <ui:NavigationView.MenuItems>
                 <ui:NavigationViewItem
@@ -202,7 +201,7 @@
                 <ui:NavigationViewItem
                     Margin="0,2"
                     Click="NavigationViewItem_Click_2"
-                    Content="因子模式"
+                    Content="势能模式"
                     Icon="{ui:SymbolIcon Symbol=PeopleSettings24}" />
                 <ui:NavigationViewItem
                     Margin="0,2"
@@ -468,7 +467,7 @@
                         FontSize="16"
                         Foreground="White"
                         Opacity="0.8"
-                        Text="功能强大的抽学号软件" />
+                        Text="让每一次未中，都变成下一次的筹码" />
 
                     <!--  加载指示器  -->
                     <ProgressBar
@@ -498,5 +497,10 @@
             Grid.Row="1"
             Margin="0,0,20,20"
             d:IsHidden="True" />
+        <ui:ContentDialogHost
+            x:Name="RootContentDialogPresenter"
+            Grid.RowSpan="3"
+            Grid.ColumnSpan="2"
+            d:Visibility="Collapsed" />
     </Grid>
 </ui:FluentWindow>

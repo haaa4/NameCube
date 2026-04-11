@@ -235,7 +235,7 @@ namespace NameCube.Setting
 
         private void Button_Click_9(object sender, RoutedEventArgs e)
         {
-            NameCube.Setting.UpdateGuide.UpdateGuideWindow updateGuideWindow= new(GuideTag.Text);
+            NameCube.Setting.UpdateGuide.UpdateGuideWindow updateGuideWindow = new(GuideTag.Text);
             updateGuideWindow.Show();
         }
     }

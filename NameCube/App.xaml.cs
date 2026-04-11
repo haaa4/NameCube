@@ -402,9 +402,9 @@ namespace NameCube
                 Directory.CreateDirectory(baseDir + "\\user\\Music");
                 Log.Debug("用户数据文件夹初始化完成");
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw ex;
+                throw;
             }
         }
 

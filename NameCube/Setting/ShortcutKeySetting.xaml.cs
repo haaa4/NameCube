@@ -29,7 +29,7 @@ namespace NameCube.Setting
             _logger.Debug("ShortcutKeySetting 初始化完成");
         }
 
-        bool IsChoosing = false;
+        private bool IsChoosing = false;
 
         private void Choosing(bool isChossing)
         {
@@ -41,7 +41,6 @@ namespace NameCube.Setting
         {
             _logger.Information("开始初始化快捷键设置");
 
-           
             for (int i = GlobalVariablesData.config.ShortCutKey.keysGrounp.Count - 1; i >= 0; i--)
             {
                 var sc = GlobalVariablesData.config.ShortCutKey.keysGrounp[i];
@@ -70,7 +69,7 @@ namespace NameCube.Setting
 
             List<string> items = new List<string>
             {
-                "无", "单人模式", "因子模式", "批量模式", "数字模式", "预备模式", "记忆模式", "主页"
+                "无", "单人模式", "势能模式", "批量模式", "数字模式", "预备模式", "记忆模式", "主页"
             };
 
             for (int i = 0; i < GlobalVariablesData.config.ShortCutKey.keysGrounp.Count; i++)
@@ -253,7 +252,7 @@ namespace NameCube.Setting
                 // 构建下拉列表项
                 List<string> itemsource = new List<string>()
                 {
-                    "无", "单人模式", "因子模式", "批量模式", "数字模式", "预备模式", "记忆模式"
+                    "无", "单人模式", "势能模式", "批量模式", "数字模式", "预备模式", "记忆模式"
                 };
 
                 foreach (var pg in GlobalVariablesData.config.AutomaticProcess.processGroups)
@@ -298,8 +297,9 @@ namespace NameCube.Setting
                             new ComboBox() { ItemsSource = itemsource, SelectedIndex = selectedIndex }
                         }
                     },
-                    DialogHost = Host,
                 };
+                var mainWindow = Application.Current.Windows.OfType<SettingsWindow>().FirstOrDefault();
+                dialog.DialogHostEx = mainWindow.RootContentDialogPresenter;
 
                 Wpf.Ui.Controls.ContentDialogResult result = await dialog.ShowAsync();
                 Choosing(false);
@@ -446,7 +446,7 @@ namespace NameCube.Setting
 
                 List<string> itemsSource = new List<string>()
                 {
-                    "无", "单人模式", "因子模式", "批量模式", "数字模式", "预备模式", "记忆模式"
+                    "无", "单人模式", "势能模式", "批量模式", "数字模式", "预备模式", "记忆模式"
                 };
                 foreach (var pg in GlobalVariablesData.config.AutomaticProcess.processGroups)
                     itemsSource.Add(pg.name);
@@ -465,8 +465,9 @@ namespace NameCube.Setting
                             new ComboBox() { ItemsSource = itemsSource, SelectedIndex = 0 }
                         }
                     },
-                    DialogHost = Host,
                 };
+                var mainWindow = Application.Current.Windows.OfType<SettingsWindow>().FirstOrDefault();
+                dialog.DialogHostEx = mainWindow.RootContentDialogPresenter;
 
                 Wpf.Ui.Controls.ContentDialogResult result = await dialog.ShowAsync();
                 Choosing(false);

@@ -2,6 +2,7 @@
  * 注意！
  * 此处的代码使用了AI进行重构，部分逻辑可能存在问题，尤其是事件处理部分的细节。请务必仔细测试每个功能点，确保逻辑正确且没有遗漏。
  */
+
 using Masuit.Tools;
 using NameCube.Function;
 using Newtonsoft.Json;
@@ -25,7 +26,7 @@ using TextBlock = System.Windows.Controls.TextBlock;
 namespace NameCube.Mode
 {
     /// <summary>
-    /// 记忆因子模式页面
+    /// 记忆势能模式页面
     /// </summary>
     public partial class MemoryFactorMode : Page, IDisposable
     {
@@ -33,6 +34,7 @@ namespace NameCube.Mode
         public class ThisModeJson : INotifyPropertyChanged
         {
             private string _name;
+
             public string Name
             {
                 get => _name;
@@ -40,6 +42,7 @@ namespace NameCube.Mode
             }
 
             private int _factor;
+
             public int Factor
             {
                 get => _factor;
@@ -47,6 +50,7 @@ namespace NameCube.Mode
             }
 
             public event PropertyChangedEventHandler PropertyChanged;
+
             protected virtual void OnPropertyChanged(string propertyName) =>
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
@@ -67,6 +71,7 @@ namespace NameCube.Mode
 
         // ---------- 私有字段 ----------
         private readonly System.Timers.Timer _timer = new System.Timers.Timer();
+
         private readonly SpeechSynthesizer _speechSynthesizer = new SpeechSynthesizer();
         private readonly MemoryFactorModeSettingsJson _settings = new MemoryFactorModeSettingsJson();
         private readonly List<int> _incidentPool = new List<int>();      // 事件概率池
@@ -97,7 +102,7 @@ namespace NameCube.Mode
                 return;
             }
             // 初始化事件概率分布
-            if (GlobalVariablesData.config.MemoryFactorModeSettings.probabilityOfHappening==null||GlobalVariablesData.config.MemoryFactorModeSettings.probabilityOfHappening.Count < 10)
+            if (GlobalVariablesData.config.MemoryFactorModeSettings.probabilityOfHappening == null || GlobalVariablesData.config.MemoryFactorModeSettings.probabilityOfHappening.Count < 10)
             {
                 Log.Debug("初始化事件概率分布");
                 GlobalVariablesData.config.MemoryFactorModeSettings.probabilityOfHappening = new List<int> { 4, 2, 3, 4, 2, 2, 3, 1, 1, 2 };
@@ -135,7 +140,6 @@ namespace NameCube.Mode
                     _speechSynthesizer.Rate = GlobalVariablesData.config.AllSettings.Speed;
                     _speechSynthesizer.Volume = GlobalVariablesData.config.AllSettings.Volume;
                 }
-
 
                 if (GlobalVariablesData.config.AllSettings.Name.Count <= 9)
                 {
@@ -184,8 +188,6 @@ namespace NameCube.Mode
             string filePath = Path.Combine(GlobalVariablesData.userDataDir, "Mode_data", "MemoryFactoryMode", "Memory.json");
             if (!File.Exists(filePath))
             {
-
-
                 _settings.thisModeJson.Clear();
                 foreach (var name in GlobalVariablesData.config.AllSettings.Name)
                     _settings.thisModeJson.Add(new ThisModeJson { Name = name, Factor = 1 });
@@ -231,7 +233,7 @@ namespace NameCube.Mode
                 }
             }
 
-            // 同步因子缓存并重建抽奖池
+            // 同步势能缓存并重建抽奖池
             SyncFactorCache();
             RebuildTrainings();
 
@@ -249,7 +251,7 @@ namespace NameCube.Mode
                 }
             });
 
-            // 设置最大因子学生
+            // 设置最大势能学生
             if (string.IsNullOrEmpty(_settings.otherSettings.MaxName) && _settings.thisModeJson.Any())
             {
                 var max = _settings.thisModeJson.OrderByDescending(x => x.Factor).First();
@@ -257,7 +259,7 @@ namespace NameCube.Mode
                 _settings.otherSettings.MaxTimes = 1;
             }
 
-            Log.Information("数据加载完成，抽奖池大小: {Count}，最大因子: {MaxName} ({MaxFactor})",
+            Log.Information("数据加载完成，抽奖池大小: {Count}，最大势能: {MaxName} ({MaxFactor})",
                 _trainings.Count, _settings.otherSettings.MaxName,
                 _settings.thisModeJson.FirstOrDefault(x => x.Name == _settings.otherSettings.MaxName)?.Factor ?? 0);
         }
@@ -273,7 +275,7 @@ namespace NameCube.Mode
             File.WriteAllText(file, json);
         }
 
-        // 同步因子缓存 (Name->Factor)
+        // 同步势能缓存 (Name->Factor)
         private void SyncFactorCache()
         {
             _factorCache.Clear();
@@ -281,7 +283,7 @@ namespace NameCube.Mode
                 _factorCache[item.Name] = item.Factor;
         }
 
-        // 根据当前因子重建抽奖池
+        // 根据当前势能重建抽奖池
         private void RebuildTrainings()
         {
             _trainings.Clear();
@@ -382,10 +384,10 @@ namespace NameCube.Mode
                     NowNumberText.Visibility = Visibility.Hidden;
                     FinishNumberText.Visibility = Visibility.Visible;
 
-                    // 备份当前因子（用于排行榜变化显示）
+                    // 备份当前势能（用于排行榜变化显示）
                     var lastFactors = _settings.thisModeJson.Select(x => new ThisModeJson { Name = x.Name, Factor = x.Factor }).ToList();
 
-                    // 增加随机因子（每个学生 +0~5）
+                    // 增加随机势能（每个学生 +0~5）
                     var rndGen = new Random();
                     foreach (var item in _settings.thisModeJson)
                     {
@@ -395,7 +397,7 @@ namespace NameCube.Mode
                         _factorCache[item.Name] = item.Factor;
                     }
 
-                    // 被抽中的学生因子归零
+                    // 被抽中的学生势能归零
                     var selectedItem = _settings.thisModeJson.FirstOrDefault(x => x.Name == selectedName);
                     int lastFactor = selectedItem?.Factor ?? 0;
                     if (selectedItem != null)
@@ -404,14 +406,14 @@ namespace NameCube.Mode
                         _factorCache[selectedItem.Name] = 0;
                     }
 
-                    // 重建抽奖池（移除被抽中的名字，包含新因子）
+                    // 重建抽奖池（移除被抽中的名字，包含新势能）
                     RebuildTrainings();
 
                     // 触发随机事件
                     int incidentIndex = _incidentPool[rndGen.Next(_incidentPool.Count)];
                     await ApplyIncident(incidentIndex, selectedName, rndGen);
 
-                    // 更新最大因子学生及保底计数器
+                    // 更新最大势能学生及保底计数器
                     var maxItem = _settings.thisModeJson.OrderByDescending(x => x.Factor).FirstOrDefault();
                     if (maxItem != null)
                     {
@@ -430,7 +432,6 @@ namespace NameCube.Mode
                             MaxIndexRealProbability.Text = $"{Math.Round((double)maxItem.Factor / _trainings.Count * 100, 2)}%";
                         });
                     }
-
 
                     // 最终 UI 更新
                     Dispatcher.Invoke(() =>
@@ -463,7 +464,6 @@ namespace NameCube.Mode
                     {
                         StartButton.Content = "继续";
                     }
-
                 }
                 else
                 {
@@ -483,11 +483,12 @@ namespace NameCube.Mode
                 _isStopping = false;
             }
         }
+
         private void ChangeTheName(List<ThisModeJson> lastThisModeJsons)
         {
             StoreOriginalPositions();
 
-            // 获取排序后的列表（因子降序）
+            // 获取排序后的列表（势能降序）
             List<ThisModeJson> sortedList = _settings.thisModeJson.OrderByDescending(x => x.Factor).ToList();
 
             Storyboard storyboard = new Storyboard();
@@ -618,7 +619,7 @@ namespace NameCube.Mode
             // 如果有旧数据，显示变化差值
             if (lastThisModeJson != null)
             {
-                // 辅助方法：查找旧因子
+                // 辅助方法：查找旧势能
                 int FindLastFactor(string name)
                 {
                     var item = lastThisModeJson.FirstOrDefault(x => x.Name == name);
@@ -656,6 +657,7 @@ namespace NameCube.Mode
             originalTops[No6Name] = Canvas.GetTop(No6Name);
             originalTops[No6Factor] = Canvas.GetTop(No6Factor);
         }
+
         private async Task ApplyIncident(int incident, string selectedName, Random rnd)
         {
             // 隐藏所有事件面板（UI 操作，已在 UI 线程）
@@ -671,21 +673,27 @@ namespace NameCube.Mode
                 case 0: // 二倍
                     ApplyDoubleEvent(2);
                     break;
+
                 case 1: // 三倍
                     ApplyDoubleEvent(3);
                     break;
+
                 case 2: // 减半
                     ApplyHalfEvent();
                     break;
+
                 case 3: // 交换
                     ApplyExchangeEvent();
                     break;
+
                 case 4: // 复制
                     ApplyCopyEvent();
                     break;
+
                 case 5: // 窃取
                     ApplyStealEvent(rnd);
                     break;
+
                 case 6: // 保底事件
                     int add = rnd.Next(10) + 1;
                     _settings.otherSettings.MaxTimes += add;
@@ -694,12 +702,15 @@ namespace NameCube.Mode
                     incidentName.Text = "激活事件";
                     FloorAddPart.Visibility = Visibility.Visible;
                     break;
+
                 case 7: // 跳过事件 - 需要等待
                     await ApplySkipEvent(selectedName, rnd);
                     break;
+
                 case 8: // 平静事件
                     incidentName.Text = "平静无事";
                     break;
+
                 case 9: // 命定事件
                     _settings.otherSettings.DeterminedByFate = true;
                     incidentName.Text = "命定事件";
@@ -859,10 +870,8 @@ namespace NameCube.Mode
                     var story = FindResource("NewAddStoryBoard") as Storyboard;
                     story?.Begin();
                 }
-
             });
         }
-
 
         // ---------- 辅助方法 ----------
         private void NavigateToWheel()
@@ -875,6 +884,7 @@ namespace NameCube.Mode
             var show = FindResource("FrameShow") as Storyboard;
             show?.Begin();
         }
+
         private Dictionary<TextBlock, double> originalTops = new Dictionary<TextBlock, double>();
         private List<TextBlock> addedTextBlocks = new List<TextBlock>();
 
@@ -891,7 +901,7 @@ namespace NameCube.Mode
                         _factorCache[data] = 0;
                         if (data == _settings.otherSettings.MaxName)
                         {
-                            // 被清除的是最大因子学生，重置保底
+                            // 被清除的是最大势能学生，重置保底
                             var hide = FindResource("FrameHide") as Storyboard;
                             hide?.Begin();
                             WheelFrame.Visibility = Visibility.Collapsed;
@@ -899,7 +909,7 @@ namespace NameCube.Mode
                             _settings.otherSettings.MaxTimes = 1;
                             SaveSettings();
 
-                            // 重新计算最大因子
+                            // 重新计算最大势能
                             var max = _settings.thisModeJson.OrderByDescending(x => x.Factor).First();
                             _settings.otherSettings.MaxName = max.Name;
                             NowNumberText.Text = data;
@@ -909,7 +919,7 @@ namespace NameCube.Mode
                         }
                         else
                         {
-                            // 替换转盘中的名字为当前最大因子学生
+                            // 替换转盘中的名字为当前最大势能学生
                             int idx = _settings.otherSettings.NamesInWheel.IndexOf(data);
                             if (idx >= 0 && !string.IsNullOrEmpty(_settings.otherSettings.MaxName))
                             {
@@ -952,7 +962,7 @@ namespace NameCube.Mode
                 ResetButton.IsEnabled = false;
                 WheelFrame.IsEnabled = false;
                 SnackBarFunction.ShowSnackBarInMainWindow("重置成功，请重新打开界面", ControlAppearance.Primary);
-                Log.Information("记忆因子数据重置成功");
+                Log.Information("记忆势能数据重置成功");
             }
             catch (Exception ex)
             {
@@ -1074,7 +1084,8 @@ namespace NameCube.Mode
                 CloseButtonText = "取消"
             };
 
-            dialog.DialogHost = RootContentDialogPresenter;
+            var mainWindow = Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
+            dialog.DialogHostEx = mainWindow.RootContentDialogPresenter;
             ContentDialogResult contentDialogResult = await dialog.ShowAsync();
             if (contentDialogResult == ContentDialogResult.Primary)
             {

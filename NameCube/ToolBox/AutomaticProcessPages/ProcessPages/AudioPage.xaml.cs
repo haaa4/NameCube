@@ -339,10 +339,9 @@ namespace NameCube.ToolBox.AutomaticProcessPages.ProcessPages
             }
         }
 
-        private async void Page_Loaded(object sender, RoutedEventArgs e)
+        private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             Log.Debug("音频页面加载完成");
-
         }
 
         private void PositionSlider_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)

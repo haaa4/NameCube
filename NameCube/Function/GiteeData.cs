@@ -96,9 +96,9 @@ namespace NameCube.Function
                         }
                     }
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
-                    throw ex; // 将异常抛出到调用者处理
+                    throw; // 将异常抛出到调用者处理
                 }
             }
         }
@@ -107,12 +107,23 @@ namespace NameCube.Function
         {
             try
             {
-                await DownloadFileAsync("https://gitee.com/haaa4/NameCube/releases/download/V0/Version.txt", AppDomain.CurrentDomain.BaseDirectory + "\\TEMP.version");
+                if (GlobalVariablesData.config.AllSettings.UpdataGet == 0)
+                {
+                    await DownloadFileAsync("https://gitee.com/haaa4/NameCube/releases/download/V0.1/Version.txt", AppDomain.CurrentDomain.BaseDirectory + "\\TEMP.version");
+                }
+                else
+                {
+                    await DownloadFileAsync("https://gitee.com/haaa4/NameCube/releases/download/V0/Version.txt", AppDomain.CurrentDomain.BaseDirectory + "\\TEMP.version");
+                }
                 string get = File.ReadAllText(AppDomain.CurrentDomain.BaseDirectory + "\\TEMP.version");
+                if (get.EndsWith("\r\n"))
+                {
+                    get = get.Substring(0, get.Length - 2);
+                }
                 File.Delete(AppDomain.CurrentDomain.BaseDirectory + "\\TEMP.version");
                 return get;
             }
-            catch (Exception ex) { throw ex; }
+            catch (Exception) { throw; }
         }
     }
 }

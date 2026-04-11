@@ -20,13 +20,11 @@ namespace NameCube.Setting.EasterEgg
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-
         }
 
         // 视频成功打开时触发
         private void VideoPlayer_MediaOpened(object sender, RoutedEventArgs e)
         {
-
         }
 
         // 视频播放失败时触发

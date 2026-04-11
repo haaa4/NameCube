@@ -5,9 +5,9 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
-using Windows.Media.Protection.PlayReady;
 using Wpf.Ui.Controls;
 using Image = Wpf.Ui.Controls.Image;
 using StackPanel = System.Windows.Controls.StackPanel;
@@ -44,7 +44,6 @@ namespace NameCube.Setting
                         CloseButtonText = "取消",
                         PrimaryButtonText = "确定",
                         Title = "进入Debug模式",
-                        DialogHost = Host,
                         Content = new StackPanel()
                         {
                             Children =
@@ -57,7 +56,8 @@ namespace NameCube.Setting
                             }
                         }
                     };
-
+                    var mainWindow = Application.Current.Windows.OfType<SettingsWindow>().FirstOrDefault();
+                    dialog.DialogHostEx = mainWindow.RootContentDialogPresenter;
                     Wpf.Ui.Controls.ContentDialogResult contentDialogResult = await dialog.ShowAsync();
 
                     if (contentDialogResult == Wpf.Ui.Controls.ContentDialogResult.None)
@@ -91,10 +91,10 @@ namespace NameCube.Setting
                                     break;
 
                                 case "7a7bc4496e501462270ce7f6f8023c96d32098d8":
-                                    Log.Information("开启因子模式调试模式");
+                                    Log.Information("开启势能模式调试模式");
                                     GlobalVariablesData.config.MemoryFactorModeSettings.debug = true;
                                     GlobalVariablesData.SaveConfig();
-                                    SnackBarFunction.ShowSnackBarInSettingWindow("因子模式调试已开启", ControlAppearance.Success);
+                                    SnackBarFunction.ShowSnackBarInSettingWindow("势能模式调试已开启", ControlAppearance.Success);
                                     break;
                                 //以下是彩蛋部分
                                 case "philia093":
@@ -149,7 +149,8 @@ namespace NameCube.Setting
                         bitmapImage.DecodePixelWidth = 400;
                         bitmapImage.EndInit();
                         // 图片解码后，通过Dispatcher切换到UI线程更新控件
-                        this.Dispatcher.Invoke(() => {
+                        this.Dispatcher.Invoke(() =>
+                        {
                             targetImage.Source = bitmapImage;
                         });
                     }
@@ -164,7 +165,7 @@ namespace NameCube.Setting
         private async void Page_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
             VersionTextBlock.Text = GlobalVariablesData.VERSION;
-            if(GlobalVariablesData.config.AllSettings.DownloadWay == 0)
+            if (GlobalVariablesData.config.AllSettings.DownloadWay == 0)
                 await LoadImageFromWebAsync("https://avatars.githubusercontent.com/u/172395030?v=4", HeadImage);
             else
                 await LoadImageFromWebAsync("https://foruda.gitee.com/avatar/1774776926077586438/15207534_haaa4_1774776926.png!avatar200", HeadImage);

@@ -76,7 +76,7 @@ namespace NameCube.Setting.Debug
 
             // 计算基础时间（保持平均速度180度/秒）
             double baseDuration = totalExtraDegrees / 180.0;
-            // 随机因子 0.8~1.2 让每局速度略有不同
+            // 随机势能 0.8~1.2 让每局速度略有不同
             double randomFactor = 0.8 + _random.NextDouble() * 0.4; // 0.8 ~ 1.2
             double durationSeconds = baseDuration * randomFactor;
 

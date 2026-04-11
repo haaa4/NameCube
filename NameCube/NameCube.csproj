@@ -24,6 +24,7 @@
     <UseWPF>true</UseWPF>
     <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
     <ApplicationIcon>icon.ico</ApplicationIcon>
+	<ApplicationHighDpiMode>PerMonitorV2</ApplicationHighDpiMode>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <ManifestCertificateThumbprint>E5F3AADEFEEEFB83790AB25EF4754A34C681E1B9</ManifestCertificateThumbprint>
     <ManifestKeyFile>NameCube_TemporaryKey.pfx</ManifestKeyFile>
@@ -46,6 +47,14 @@
     <DocumentationFile>
     </DocumentationFile>
   </PropertyGroup>
+  <ItemGroup>
+    <None Remove="Image\HeadMap\Photo4.png" />
+    <None Remove="Image\HeadMap\Photo5.png" />
+    <None Remove="Image\HeadMap\Photo6.png" />
+    <None Remove="Image\HeadMap\Photo7.png" />
+    <None Remove="Image\HeadMap\Photo8.png" />
+    <None Remove="Image\HeadMap\Photo9.png" />
+  </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Speech" />
     <PackageReference Include="Costura.Fody">
@@ -75,6 +84,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Fonts\MiSans-Medium.ttf" />
+    <EmbeddedResource Include="Image\HeadMap\Photo4.png" />
+    <EmbeddedResource Include="Image\HeadMap\Photo5.png" />
+    <EmbeddedResource Include="Image\HeadMap\Photo6.png" />
+    <EmbeddedResource Include="Image\HeadMap\Photo7.png" />
+    <EmbeddedResource Include="Image\HeadMap\Photo8.png" />
+    <EmbeddedResource Include="Image\HeadMap\Photo9.png" />
     <EmbeddedResource Include="MarkDown\NewVersion.md" />
   </ItemGroup>
   <ItemGroup>

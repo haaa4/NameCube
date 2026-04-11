@@ -13,7 +13,7 @@ namespace NameCube.GlobalVariables.DataClass
         public List<Key> keys { get; set; } = new List<Key>();
 
         /// <summary>
-        /// 启动方式(0=无,1=单人模式,2=因子模式,3=批量模式,4=数字模式,5=预备模式,6=记忆模式,7=主页)
+        /// 启动方式(0=无,1=单人模式,2=势能模式,3=批量模式,4=数字模式,5=预备模式,6=记忆模式,7=主页)
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
         public int openWay { get; set; } = -1;

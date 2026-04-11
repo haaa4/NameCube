@@ -1022,6 +1022,7 @@
                     AutomationProperties.Name="No1Name"
                     Background="#00FF0000"
                     FontSize="36"
+                    FontFamily="{StaticResource AppFont}"
                     Foreground="Black"
                     Text="XXX"
                     TextWrapping="Wrap" />
@@ -1158,7 +1159,7 @@
                                         <DataGridTextColumn
                                             Binding="{Binding Factor}"
                                             FontSize="25"
-                                            Header="因子" />
+                                            Header="势能" />
                                     </ui:DataGrid.Columns>
                                 </ui:DataGrid>
                             </StackPanel>
@@ -1169,7 +1170,7 @@
                     Canvas.Left="25.662"
                     Canvas.Top="7.376"
                     FontSize="24"
-                    TextWrapping="Wrap"><Run Language="zh-cn" Text="概率" /><Run Text="排行榜" /></TextBlock>
+                    TextWrapping="Wrap"><Run Language="zh-cn" Text="势能大小" /><Run Text="排行榜" /></TextBlock>
                 <TextBlock
                     Canvas.Left="25.662"
                     Canvas.Top="395.376"
@@ -1177,7 +1178,7 @@
                     Height="26"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"
-                    TextWrapping="Wrap"><Run Language="zh-cn" Text="因子数量" /><LineBreak /><Run Language="zh-cn" /></TextBlock>
+                    TextWrapping="Wrap"><Run Language="zh-cn" Text="势能数量" /><LineBreak /><Run Language="zh-cn" /></TextBlock>
                 <TextBlock
                     x:Name="AddText1"
                     Canvas.Left="65.17"
@@ -1396,13 +1397,13 @@
                                 Canvas.Top="426.386"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Top"
-                                Content="重置概率因子"
+                                Content="重置概率势能"
                                 FontSize="12"
                                 Foreground="Red">
                                 <ui:FlyoutService.Flyout>
                                     <ui:Flyout Placement="Bottom">
                                         <StackPanel>
-                                            <TextBlock HorizontalAlignment="Left" Text="确定重置概率因子吗？（重置概率因子后配置文件不会删除，而是会创建一个备份,但保底数据会被清空）" />
+                                            <TextBlock HorizontalAlignment="Left" Text="确定重置概率势能吗？（重置概率势能后配置文件不会删除，而是会创建一个备份,但保底数据会被清空）" />
                                             <Button Click="ResetButton_Click" Content="确定" />
                                         </StackPanel>
                                     </ui:Flyout>
@@ -1445,12 +1446,6 @@
                     </ui:Flyout>
                 </ui:FlyoutService.Flyout>
             </ui:Button>
-            <ContentPresenter
-                x:Name="RootContentDialogPresenter"
-                Canvas.Left="0"
-                Canvas.Top="0"
-                Width="1049"
-                Height="595" />
         </Canvas>
     </Viewbox>
 </Page>

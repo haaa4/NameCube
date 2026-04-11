@@ -17,8 +17,10 @@ namespace NameCube.ToolBox.AutomaticProcessPages
     {
         public ObservableCollection<string> ProcessGroups { get; set; } =
             new ObservableCollection<string>();
+
         public ObservableCollection<string> ProcessKinds { get; set; } =
             new ObservableCollection<string>();
+
         private bool canChange = false;
         private bool isUserInteraction = true;
         private ProcessGroup selectedProcessGroup;
@@ -200,15 +202,16 @@ namespace NameCube.ToolBox.AutomaticProcessPages
                             Text = "未命名流程组",
                             PlaceholderText = "请输入流程组名称(不能以\" * \"开头)",
                         },
-                        DialogHost = Host,
                     };
+                    var toolboxWindow = Application.Current.Windows.OfType<ToolboxWindow>().FirstOrDefault();
+                    dialog.DialogHostEx = toolboxWindow.RootContentDialogPresenter;
                     Wpf.Ui.Controls.ContentDialogResult contentDialogResult =
                         await dialog.ShowAsync();
                     if (contentDialogResult == Wpf.Ui.Controls.ContentDialogResult.Primary)
                     {
                         if (dialog.Content is Wpf.Ui.Controls.TextBox textBox)
                         {
-                            if (textBox.Text != "" && textBox.Text[0] != '*'&&textBox.Text!= "新建流程组...")
+                            if (textBox.Text != "" && textBox.Text[0] != '*' && textBox.Text != "新建流程组...")
                             {
                                 ProcessGroup newGroup = new ProcessGroup()
                                 {
@@ -307,8 +310,9 @@ namespace NameCube.ToolBox.AutomaticProcessPages
                     Text = oldName,
                     PlaceholderText = "请输入新的流程组名称",
                 },
-                DialogHost = Host,
             };
+            var toolboxWindow = Application.Current.Windows.OfType<ToolboxWindow>().FirstOrDefault();
+            dialog.DialogHostEx = toolboxWindow.RootContentDialogPresenter;
 
             Wpf.Ui.Controls.ContentDialogResult result = await dialog.ShowAsync();
             if (result == Wpf.Ui.Controls.ContentDialogResult.Primary)
@@ -349,8 +353,9 @@ namespace NameCube.ToolBox.AutomaticProcessPages
                     $"确定要删除流程组 '{itemToDelete}' 吗？此操作不可恢复。",
                 PrimaryButtonText = "删除",
                 CloseButtonText = "取消",
-                DialogHost = Host,
             };
+            var toolboxWindow = Application.Current.Windows.OfType<ToolboxWindow>().FirstOrDefault();
+            confirmDialog.DialogHostEx = toolboxWindow.RootContentDialogPresenter;
 
             Wpf.Ui.Controls.ContentDialogResult result = await confirmDialog.ShowAsync();
             if (result == Wpf.Ui.Controls.ContentDialogResult.Primary)
@@ -767,8 +772,9 @@ namespace NameCube.ToolBox.AutomaticProcessPages
                 Content = $"确定要删除流程 '{itemToDelete}' 吗？此操作不可恢复。（时间表与快捷键内的流程需要保存后才会变化）",
                 PrimaryButtonText = "删除",
                 CloseButtonText = "取消",
-                DialogHost = Host,
             };
+            var toolboxWindow = Application.Current.Windows.OfType<ToolboxWindow>().FirstOrDefault();
+            confirmDialog.DialogHostEx = toolboxWindow.RootContentDialogPresenter;
 
             Wpf.Ui.Controls.ContentDialogResult result = await confirmDialog.ShowAsync();
             if (result == Wpf.Ui.Controls.ContentDialogResult.Primary)

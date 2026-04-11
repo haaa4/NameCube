@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Windows;
 
 namespace NameCube.Function
@@ -18,11 +17,10 @@ namespace NameCube.Function
             ProcessStartInfo startInfo = new ProcessStartInfo
             {
                 FileName = Environment.ProcessPath,
-                UseShellExecute = true  
+                UseShellExecute = true
             };
             Process.Start(startInfo);
             Application.Current.Shutdown();
-
         }
     }
 }

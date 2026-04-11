@@ -155,11 +155,7 @@
                     Header="姓名" />
             </ui:DataGrid.Columns>
         </ui:DataGrid>
-        <ContentPresenter
-            x:Name="RootContentDialogPresenter"
-            Grid.RowSpan="3"
-            Grid.ColumnSpan="2"
-            d:Visibility="Collapsed" />
+
         <Ellipse
             x:Name="ellipse"
             Grid.Row="1"

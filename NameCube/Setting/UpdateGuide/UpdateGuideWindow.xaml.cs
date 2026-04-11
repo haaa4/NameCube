@@ -79,7 +79,7 @@ namespace NameCube.Setting.UpdateGuide
                 var psi = new ProcessStartInfo
                 {
                     FileName = AppDomain.CurrentDomain.BaseDirectory + "\\新版本介绍.md",
-                    UseShellExecute = true 
+                    UseShellExecute = true
                 };
                 Process.Start(psi);
                 //防止被阻止
@@ -217,9 +217,9 @@ namespace NameCube.Setting.UpdateGuide
                         }
                     }
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
-                    throw ex; // 将异常抛出到调用者处理
+                    throw; // 将异常抛出到调用者处理
                 }
             }
         }
@@ -254,9 +254,25 @@ namespace NameCube.Setting.UpdateGuide
 
         private void StartButton_Click(object sender, RoutedEventArgs e)
         {
-            Process.Start(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Update", "NameCubeSetupX64.exe"), "UpdateMode");
-            Log.Information("用户已点击开始安装，正在启动安装程序...应用将退出");
-            Application.Current.Shutdown(); // 关闭当前应用程序
+            try
+            {
+                ProcessStartInfo process = new ProcessStartInfo
+                {
+                    FileName = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Update", "NameCubeSetupX64.exe"),
+                    Arguments = "UpdateMode",
+                    UseShellExecute = true // 使用操作系统的shell来启动程序，这样可以正确处理文件关联和权限问题
+                };
+                Process.Start(process);
+                Log.Information("用户已点击开始安装，正在启动安装程序...应用将退出");
+                Application.Current.Shutdown(); // 关闭当前应用程序
+            }
+            catch (Exception ex)
+            {
+                ErrorAttention.Text = ex.Message;
+                Text2nd.Foreground = Brushes.Red;
+                isError = true;
+                return;
+            }
         }
     }
 }

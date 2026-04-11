@@ -83,20 +83,20 @@ namespace NameCube
         {
             try
             {
-                Log.Debug("开始获取DPI缩放因子");
+                Log.Debug("开始获取DPI缩放势能");
                 var hwnd = new System.Windows.Interop.WindowInteropHelper(this).Handle;
                 if (hwnd != IntPtr.Zero)
                 {
                     uint dpi = GetDpiForWindow(hwnd);
                     double scale = dpi / 96.0;
-                    Log.Debug("获取到DPI缩放因子: {DpiScale}", scale);
+                    Log.Debug("获取到DPI缩放势能: {DpiScale}", scale);
                     return scale;
                 }
-                Log.Warning("无法获取窗口句柄，使用默认DPI缩放因子");
+                Log.Warning("无法获取窗口句柄，使用默认DPI缩放势能");
             }
             catch (Exception ex)
             {
-                Log.Error(ex, "获取DPI缩放因子时发生错误，使用备用方法");
+                Log.Error(ex, "获取DPI缩放势能时发生错误，使用备用方法");
                 return SystemParameters.PrimaryScreenHeight / 1080.0;
             }
             return 1.0;
@@ -126,7 +126,7 @@ namespace NameCube
                 {
                     Log.Information("配置为不显示悬浮球或使用传统模式，隐藏Bird窗口");
                     this.Hide();
-                    if(GlobalVariablesData.config.AllSettings.NameCubeMode == 1)
+                    if (GlobalVariablesData.config.AllSettings.NameCubeMode == 1)
                         ShowMainWindowAsync();
                 }
 
@@ -634,7 +634,6 @@ namespace NameCube
                     {
                         try
                         {
-
                             BitmapImage bitmap = new BitmapImage();
                             bitmap.BeginInit();
                             bitmap.UriSource = new Uri(imagePath);
@@ -643,7 +642,7 @@ namespace NameCube
                             ImageBox.Source = bitmap;
                             Log.Debug("自定义图片加载成功: {ImagePath}", imagePath);
                         }
-                        catch(Exception ex)
+                        catch (Exception ex)
                         {
                             MessageBoxFunction.ShowMessageBoxError("加载自定义图片时发生错误，已自动切换到默认图片", true, ex);
                             Log.Debug("使用默认图片");
@@ -651,7 +650,6 @@ namespace NameCube
                             GlobalVariablesData.config.BirdSettings.UseDefinedImage = false;
                             GlobalVariablesData.SaveConfig();
                         }
-
                     }
                     else
                     {

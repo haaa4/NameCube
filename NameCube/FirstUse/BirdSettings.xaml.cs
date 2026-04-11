@@ -1,14 +1,10 @@
-﻿using Masuit.Tools;
-using Serilog;  // 添加Serilog命名空间
+﻿using Serilog;  // 添加Serilog命名空间
 using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Forms;
-using System.Windows.Media.Imaging;
 
 namespace NameCube.FirstUse
 {
@@ -57,13 +53,6 @@ namespace NameCube.FirstUse
             }
         }
 
-        
-
-       
-
-     
-
-
         private void Initialize()
         {
             try
@@ -72,13 +61,11 @@ namespace NameCube.FirstUse
                 BallCheck.IsChecked = GlobalVariablesData.config.StartToDo.Ball;
                 StartWayComboBox.SelectedIndex = GlobalVariablesData.config.BirdSettings.StartWay;
 
-                
                 if (GlobalVariablesData.config.BirdSettings.diaphaneity == 0)
                 {
                     GlobalVariablesData.config.BirdSettings.diaphaneity = 100;
                     Log.Debug("修复透明度为默认值100%");
                 }
-
 
                 Log.Information("BirdSettings控件初始化完成");
             }
@@ -87,9 +74,6 @@ namespace NameCube.FirstUse
                 Log.Error(ex, "初始化BirdSettings控件时发生错误");
             }
         }
-
-       
-       
 
         private void StartWayComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -100,7 +84,5 @@ namespace NameCube.FirstUse
                 Log.Information("启动方式更改为索引: {StartWay}", selectedIndex);
             }
         }
-
-
     }
 }

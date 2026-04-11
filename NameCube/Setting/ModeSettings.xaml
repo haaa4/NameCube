@@ -28,7 +28,7 @@
                     Icon="{ui:SymbolIcon Symbol=Accessibility16}"
                     TargetPageType="{x:Type mode:OnePeopleModeSetting}" />
                 <ui:NavigationViewItem
-                    Content="因子模式"
+                    Content="势能模式"
                     Icon="{ui:SymbolIcon Symbol=PeopleSettings24}"
                     TargetPageType="{x:Type mode:MemoryFactorModeSettings}" />
                 <ui:NavigationViewItem

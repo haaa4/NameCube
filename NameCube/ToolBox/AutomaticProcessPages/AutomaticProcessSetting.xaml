@@ -217,9 +217,5 @@
                 </ui:Button>
             </DockPanel>
         </Grid>
-        <ContentPresenter
-            x:Name="Host"
-            Grid.ColumnSpan="2"
-            d:Visibility="Collapsed" />
     </Grid>
 </Page>

@@ -25,10 +25,10 @@ namespace NameCube.Mode
     {
         public ObservableCollection<string> AllFiles { get; set; } = new ObservableCollection<string>();
         public ObservableCollection<string> AllNames { get; set; } = new ObservableCollection<string>();
-        bool CanChange;
+        private bool CanChange;
         public System.Timers.Timer timer = new System.Timers.Timer();
         private SpeechSynthesizer _speechSynthesizer = new SpeechSynthesizer();
-        int now = 0;
+        private int now = 0;
 
         public MemoryMode()
         {
@@ -179,7 +179,7 @@ namespace NameCube.Mode
             }
         }
 
-        bool Canchange;
+        private bool Canchange;
 
         private void ComboBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
@@ -269,7 +269,8 @@ namespace NameCube.Mode
                         }
                     }
                 };
-                dialog.DialogHost = RootContentDialogPresenter;
+                var mainWindow = Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
+                dialog.DialogHostEx = mainWindow.RootContentDialogPresenter;
                 ContentDialogResult contentDialogResult = await dialog.ShowAsync();
 
                 if (dialog.Content is Wpf.Ui.Controls.StackPanel panel)

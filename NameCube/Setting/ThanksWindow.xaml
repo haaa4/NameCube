@@ -9,27 +9,27 @@
         Title="ThanksWindow" Height="450" Width="600">
     <Grid Margin="10">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0" Text="本应用感谢以下开源项目：" FontSize="16" FontWeight="Bold" Margin="0,0,0,10"/>
+        <TextBlock Grid.Row="0" Text="本应用感谢以下开源项目：" FontSize="16" FontWeight="Bold" Margin="0,0,0,10" />
 
         <ui:ListView Grid.Row="1" Name="PackagesListView" AlternationCount="2">
             <ui:ListView.View>
                 <GridView>
-                    <GridViewColumn Header="包名称" Width="300" DisplayMemberBinding="{Binding Name}"/>
-                    <GridViewColumn Header="版本" Width="150" DisplayMemberBinding="{Binding Version}"/>
+                    <GridViewColumn Header="包名称" Width="300" DisplayMemberBinding="{Binding Name}" />
+                    <GridViewColumn Header="版本" Width="150" DisplayMemberBinding="{Binding Version}" />
                 </GridView>
             </ui:ListView.View>
             <ui:ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
-                    <Setter Property="Padding" Value="5,2"/>
+                    <Setter Property="Padding" Value="5,2" />
                 </Style>
             </ui:ListView.ItemContainerStyle>
         </ui:ListView>
 
-        <Button Grid.Row="2" Content="关闭" Width="100" Height="30" HorizontalAlignment="Right" Margin="0,10,0,0" Click="CloseButton_Click"/>
+        <Button Grid.Row="2" Content="关闭" Width="100" Height="30" HorizontalAlignment="Right" Margin="0,10,0,0" Click="CloseButton_Click" />
     </Grid>
 </Window>

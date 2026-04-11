@@ -17,7 +17,7 @@ namespace NameCube.Setting.ModeSetting
         public MemoryFactorModeSettings()
         {
             InitializeComponent();
-            _logger.Debug("记忆因子模式设置页面初始化开始");
+            _logger.Debug("记忆势能模式设置页面初始化开始");
 
             CanChange = false;
             LockedCheck.IsChecked = GlobalVariablesData.config.MemoryFactorModeSettings.Locked;
@@ -26,7 +26,7 @@ namespace NameCube.Setting.ModeSetting
             if (GlobalVariablesData.config.MemoryFactorModeSettings.probabilityOfHappening == null)
             {
                 GlobalVariablesData.config.MemoryFactorModeSettings.probabilityOfHappening = new List<int> { 4, 2, 3, 4, 2, 2, 3, 1, 1, 2 };
-                _logger.Debug("记忆因子模式概率数组为空，使用默认值");
+                _logger.Debug("记忆势能模式概率数组为空，使用默认值");
             }
 
             Random1.Value = GlobalVariablesData.config.MemoryFactorModeSettings.probabilityOfHappening[0];
@@ -41,7 +41,7 @@ namespace NameCube.Setting.ModeSetting
             Random10.Value = GlobalVariablesData.config.MemoryFactorModeSettings.probabilityOfHappening[9];
             CanChange = true;
 
-            _logger.Information("记忆因子模式设置加载完成，锁定状态: {Locked}, 速度: {Speed}",
+            _logger.Information("记忆势能模式设置加载完成，锁定状态: {Locked}, 速度: {Speed}",
                 LockedCheck.IsChecked,
                 Speed.Value);
         }
@@ -52,7 +52,7 @@ namespace NameCube.Setting.ModeSetting
             {
                 GlobalVariablesData.config.MemoryFactorModeSettings.Locked = LockedCheck.IsChecked.Value;
                 GlobalVariablesData.SaveConfig();
-                _logger.Information("记忆因子模式锁定状态修改为: {Locked}", LockedCheck.IsChecked.Value);
+                _logger.Information("记忆势能模式锁定状态修改为: {Locked}", LockedCheck.IsChecked.Value);
             }
         }
 
@@ -62,7 +62,7 @@ namespace NameCube.Setting.ModeSetting
             {
                 GlobalVariablesData.config.MemoryFactorModeSettings.Speed = (int)Speed.Value + 10;
                 GlobalVariablesData.SaveConfig();
-                _logger.Debug("记忆因子模式速度修改为: {Speed}", (int)Speed.Value + 10);
+                _logger.Debug("记忆势能模式速度修改为: {Speed}", (int)Speed.Value + 10);
             }
         }
 
@@ -88,14 +88,14 @@ namespace NameCube.Setting.ModeSetting
                 GlobalVariablesData.config.MemoryFactorModeSettings.probabilityOfHappening[9] = ((int?)Random10.Value) ?? 0;
                 GlobalVariablesData.SaveConfig();
 
-                _logger.Debug("记忆因子模式概率设置修改为: {ProbabilityArray}",
+                _logger.Debug("记忆势能模式概率设置修改为: {ProbabilityArray}",
                     string.Join(",", GlobalVariablesData.config.MemoryFactorModeSettings.probabilityOfHappening));
             }
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            _logger.Information("重置记忆因子模式概率设置");
+            _logger.Information("重置记忆势能模式概率设置");
             CanChange = false;
             GlobalVariablesData.config.MemoryFactorModeSettings.probabilityOfHappening = new List<int> { 4, 2, 3, 4, 2, 2, 3, 1, 1, 2 };
             Random1.Value = GlobalVariablesData.config.MemoryFactorModeSettings.probabilityOfHappening[0];

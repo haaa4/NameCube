@@ -126,6 +126,7 @@ namespace NameCube.GlobalVariables.DataClass
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
         public int DownloadWay { get; set; } = 0;
+
         /// <summary>
         /// 默认打开的页面
         /// </summary>

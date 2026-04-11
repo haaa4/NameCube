@@ -137,5 +137,10 @@
                     TextWrapping="Wrap"><Run Language="zh-cn" Text="应用设置" /></TextBlock>
             </Canvas>
         </Border>
+        <ui:ContentDialogHost
+            x:Name="RootContentDialogPresenter"
+            Grid.RowSpan="3"
+            Grid.ColumnSpan="2"
+            d:Visibility="Collapsed" />
     </Grid>
 </ui:FluentWindow>

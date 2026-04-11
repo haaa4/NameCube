@@ -51,6 +51,10 @@
                     Content="自动流程"
                     Icon="{ui:SymbolIcon Symbol=ArrowWrap20}"
                     TargetPageType="{x:Type Toolbox:AutomaticProcess}" />
+                <ui:NavigationViewItem
+                    Content="桌面整理"
+                    Icon="{ui:SymbolIcon Symbol=Broom24}"
+                    Click="NavigationViewItem_Click" />
             </ui:NavigationView.MenuItems>
             <ui:NavigationView.PaneHeader>
                 <ui:Button Icon="{ui:SymbolIcon Symbol=ArrowClockwise24}">
@@ -97,5 +101,10 @@
             </Canvas>
         </Border>
         <ui:SnackbarPresenter x:Name="SnackbarPresenterHost" Grid.Row="1" />
+        <ui:ContentDialogHost
+            x:Name="RootContentDialogPresenter"
+            Grid.RowSpan="3"
+            Grid.ColumnSpan="2"
+            d:Visibility="Collapsed" />
     </Grid>
 </ui:FluentWindow>

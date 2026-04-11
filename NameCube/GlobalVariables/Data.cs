@@ -38,7 +38,7 @@ namespace NameCube
         public StartToDo StartToDo { get; set; } = new StartToDo();
 
         /// <summary>
-        /// 因子模式设置
+        /// 势能模式设置
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
         public MemoryFactorModeSettings MemoryFactorModeSettings { get; set; } =
@@ -79,12 +79,12 @@ namespace NameCube
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
         public AutomaticProcess AutomaticProcess { get; set; } = new AutomaticProcess();
+
         /// <summary>
         /// 用户相关信息
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
         public ImformationData ImformationData { get; set; } = new ImformationData();
-
 
         /// <summary>
         /// 配置文件的上一次运行所在点鸣魔方的版本
@@ -142,15 +142,18 @@ namespace NameCube
         /// <summary>
         /// 当前版本
         /// </summary>
-        public const string VERSION = "V1.3-Beta-7(#p5#)";
+        public const string VERSION = "V1.3(#l6#)";
+
         /// <summary>
         /// 当前版本代码
         /// </summary>
-        public const int VERSIONCODE = 5;
+        public const int VERSIONCODE = 6;
+
         /// <summary>
         /// 当前是否为测试版本
         /// </summary>
-        public const bool ISBETA = true;
+        public const bool ISBETA = false;
+
         public static bool ret = false;
     }
 }

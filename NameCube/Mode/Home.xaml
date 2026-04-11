@@ -74,7 +74,7 @@
                     <ui:TextBlock
                         Margin="0"
                         FontTypography="BodyStrong"
-                        Text="因子模式"
+                        Text="势能模式"
                         TextWrapping="WrapWithOverflow" />
                     <ui:TextBlock
                         Appearance="Secondary"

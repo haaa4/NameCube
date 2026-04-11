@@ -52,12 +52,12 @@ namespace NameCube.ToolBox.AutomaticProcessPages.ProcessPages
                 ReadyPage_Loaded(null, null);
             }
         }
-       
+
         private async void ReadyPage_Loaded(object sender, RoutedEventArgs e)
         {
             Log.Information("开始就绪等待，时间: {Time}秒", Time);
             await Task.Delay(Time * 1000);
-            if(!IsOpened)
+            if (!IsOpened)
             {
                 if (debug)
                 {
@@ -74,7 +74,7 @@ namespace NameCube.ToolBox.AutomaticProcessPages.ProcessPages
         public int Time { get; set; } = 5;
         public string Info { get; set; } = "即将执行";
         public bool debug = false;
-        private bool IsOpened=false;
+        private bool IsOpened = false;
 
         public event Action<string> RequestParentAction;
 

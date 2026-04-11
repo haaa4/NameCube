@@ -21,12 +21,15 @@ namespace NameCube.Mode.MemoryFactorChildrenPage
             "C#", "Python", "Java", "TypeScript", "Rust", "Go", "Swift", "Kotlin",
             "F#", "Ruby", "PHP", "C++", "JavaScript", "Dart", "Scala", "Lua"
         };
+
         public event EventHandler<string> DataSubmitted;
+
         private Random _random = new Random();
         private bool _isSpinning = false;
         private bool isRotate = false;
-        SpeechSynthesizer speechSynthesizer;
+        private SpeechSynthesizer speechSynthesizer;
         private List<string> names;
+
         public Wheel(List<string> names, SpeechSynthesizer speechSynthesizer)
         {
             InitializeComponent();
@@ -70,7 +73,7 @@ namespace NameCube.Mode.MemoryFactorChildrenPage
 
                 // 计算基础时间（保持平均速度180度/秒）
                 double baseDuration = totalExtraDegrees / 180.0;
-                // 随机因子 0.8~1.2 让每局速度略有不同
+                // 随机势能 0.8~1.2 让每局速度略有不同
                 double randomFactor = 0.8 + _random.NextDouble() * 0.4; // 0.8 ~ 1.2
                 double durationSeconds = baseDuration * randomFactor;
 
@@ -190,6 +193,7 @@ namespace NameCube.Mode.MemoryFactorChildrenPage
             WheelItemsControl.ItemsSource = _items;
         }
     }
+
     public class InverseAngleConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)

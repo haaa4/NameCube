@@ -159,7 +159,7 @@ namespace NameCube.ToolBox.AutomaticProcessPages
                         || fileInfo.Extension == ".wav"
                         || fileInfo.Extension == ".aac"
                         || fileInfo.Extension == ".flac"
-                        || fileInfo.Extension==".m4a"
+                        || fileInfo.Extension == ".m4a"
                     )
                     {
                         AudioSave audioSave = new AudioSave()
@@ -180,7 +180,7 @@ namespace NameCube.ToolBox.AutomaticProcessPages
             }
         }
 
-        string musicPath = Path.Combine(GlobalVariablesData.userDataDir, "Music");
+        private string musicPath = Path.Combine(GlobalVariablesData.userDataDir, "Music");
 
         private void OpenFolderButton_Click(object sender, RoutedEventArgs e)
         {
@@ -202,6 +202,7 @@ namespace NameCube.ToolBox.AutomaticProcessPages
             public Icon icon { get; set; }
             public string name { get; set; }
         }
+
         //词写错了，请谅解
         public ObservableCollection<AudioSave> AudioFamliy { get; } =
             new ObservableCollection<AudioSave>();
