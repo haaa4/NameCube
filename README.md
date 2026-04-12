@@ -12,7 +12,7 @@
 <div align="center">
 
 # 点鸣魔方 
-# <image src="https://github.com/haaa4/NameCube/blob/1.3/NameCube/icon.png?raw=true" height="120"/>
+# <image src="https://github.com/user-attachments/assets/2b48f65f-8eb2-4b91-b29e-78a1b0f9d52c" height="120"/>
 
 点鸣魔方有多种抽取模式，概率或者命中注定？同时，本应用的悬浮球功能也能随时在各种环境中快速开启应用。小工具可能也能满足一些需求
 
@@ -28,7 +28,7 @@
 - 点鸣魔方提供了六种点名方式，可以根据需要自行选择模式
 ![image](https://github.com/user-attachments/assets/32eebe23-23ff-4f70-a3f1-d3311c84323b)
 - [x] 单人模式
-- [x] 势能模式
+- [x] 因子模式
 - [x] 批量模式
 - [x] 数字模式
 - [x] 预备模式
@@ -59,8 +59,8 @@
 | 项目 | 密码 |
 | :------: | :------------------------: |
 | **自动流程调试** | `0d612c12d2ac33625bf3e0351b6f5e4f73829fa8` |
-| **开发者调试**     | `c53d2f1a9a8499bcb477be56c31caa5c76ae60f5` |
-| **势能模式调试** | `7a7bc4496e501462270ce7f6f8023c96d32098d8` |
+| **崩溃调试**     | `c53d2f1a9a8499bcb477be56c31caa5c76ae60f5` |
+| **因子模式调试** | `7a7bc4496e501462270ce7f6f8023c96d32098d8` |
 ## 遇到问题&需要反馈
 你可以通过以下方式
 
@@ -70,7 +70,8 @@
 ## 许可证
 [![许可证](https://img.shields.io/badge/license-MIT-blue.svg)]([https://github.com/ldqk/Masuit.Tools/blob/master/LICENSE](https://github.com/haaa4/NameCube/blob/main/LICENSE))
 ## 主要依赖库
-- 见应用设置-关于-支持库
+- [Wpfui](https://github.com/lepoco/wpfui)
+- [Masuit.Tools](https://github.com/ldqk/Masuit.Tools)
 ## 你需要知道的
 - 作者是第一次写此类程序，程序可能不稳定
 - 作者作为初学者，代码可能有难懂的部分，请谅解
