@@ -25,10 +25,14 @@ namespace NameCube.Mode
     {
         public ObservableCollection<string> AllFiles { get; set; } = new ObservableCollection<string>();
         public ObservableCollection<string> AllNames { get; set; } = new ObservableCollection<string>();
-        bool CanChange;
+        private bool CanChange;
         public System.Timers.Timer timer = new System.Timers.Timer();
         private SpeechSynthesizer _speechSynthesizer = new SpeechSynthesizer();
+<<<<<<< HEAD
         int now = 0;
+=======
+        private int now = 0;
+>>>>>>> c69be5c4950bc482a4a0fd3c6e85e97a8d570b2d
 
         public MemoryMode()
         {
@@ -82,6 +86,7 @@ namespace NameCube.Mode
                 if (StartButton.Content.ToString() == "开始")
                 {
                     Log.Information("开始记忆模式抽取");
+<<<<<<< HEAD
 
                     if (AllNames.Count == 0)
                     {
@@ -202,6 +207,128 @@ namespace NameCube.Mode
                         DelButton.IsEnabled = true;
                         if (ComboBox.SelectedIndex == -1)
                         {
+=======
+
+                    if (AllNames.Count == 0)
+                    {
+                        Log.Warning("名单为空，重新初始化");
+                        SnackBarFunction.ShowSnackBarInMainWindow("名单已完成，将删除", ControlAppearance.Primary);
+                        if (AllFiles.Count <= 1)
+                        {
+                            foreach (string name in GlobalVariablesData.config.AllSettings.Name)
+                            {
+                                AllNames.Add(name);
+                            }
+                            string filename = DateTime.Now.GetTotalMilliseconds().ToString() + ".json";
+                            File.WriteAllText(Path.Combine(GlobalVariablesData.userDataDir, "Mode_data", "MemoryMode", "temporary", filename), JsonConvert.SerializeObject(AllNames));
+                            Log.Information("创建临时名单文件: {Filename}", filename);
+                        }
+                        Button_Click(sender, e);
+                        return;
+                    }
+
+                    timer.Interval = GlobalVariablesData.config.MemoryModeSettings.Speed;
+                    FinishText.Visibility = Visibility.Hidden;
+                    NowNumberText.Visibility = Visibility.Visible;
+                    ChangeButton.IsEnabled = false;
+                    DelButton.IsEnabled = false;
+                    StartButton.Content = "结束";
+                    jumpStoryBoard.Begin();
+                    timer.Start();
+                    StartButton.IsEnabled = true;
+                    now = 0;
+
+                    Log.Debug("记忆模式开始，轮播间隔: {Speed}ms", GlobalVariablesData.config.MemoryModeSettings.Speed);
+                }
+                else
+                {
+                    Log.Information("结束记忆模式抽取");
+                    StartButton.Content = "开始";
+                    jumpStoryBoard.Stop();
+                    jumpStoryBoard.Remove();
+                    timer.Stop();
+                    string get = NowNumberText.Text;
+                    FinishText.Text = get;
+                    NowNumberText.Visibility = Visibility.Hidden;
+                    FinishText.Visibility = Visibility.Visible;
+
+                    if (GlobalVariablesData.config.MemoryModeSettings.Speak)
+                    {
+                        Log.Debug("语音播报: {Name}", get);
+                        _speechSynthesizer.SpeakAsync(get);
+                    }
+
+                    AllNames.Remove(get);
+                    GlobalVariablesData.config.MemoryModeSettings.LastName = get;
+
+                    string path1 = Path.Combine(GlobalVariablesData.userDataDir, "Mode_data", "MemoryMode", "permanent", AllFiles[ComboBox.SelectedIndex]);
+                    string path2 = Path.Combine(GlobalVariablesData.userDataDir, "Mode_data", "MemoryMode", "temporary", AllFiles[ComboBox.SelectedIndex]);
+
+                    if (File.Exists(path1))
+                    {
+                        File.WriteAllText(path1, JsonConvert.SerializeObject(AllNames));
+                        Log.Debug("更新永久名单文件: {Filename}", AllFiles[ComboBox.SelectedIndex]);
+                    }
+                    else
+                    {
+                        File.WriteAllText(path2, JsonConvert.SerializeObject(AllNames));
+                        Log.Debug("更新临时名单文件: {Filename}", AllFiles[ComboBox.SelectedIndex]);
+                    }
+
+                    if (AllNames.Count == 0)
+                    {
+                        Log.Information("名单已完成");
+                        SnackBarFunction.ShowSnackBarInMainWindow("名单已完成，将删除", ControlAppearance.Primary);
+                        if (AllFiles.Count <= 1)
+                        {
+                            foreach (string name in GlobalVariablesData.config.AllSettings.Name)
+                            {
+                                AllNames.Add(name);
+                            }
+                            string filename = DateTime.Now.GetTotalMilliseconds().ToString() + ".json";
+                            File.WriteAllText(Path.Combine(GlobalVariablesData.userDataDir, "Mode_data", "MemoryMode", "temporary", filename), JsonConvert.SerializeObject(AllNames));
+                            Log.Debug("创建新临时名单文件: {Filename}", filename);
+                        }
+                        Button_Click(sender, e);
+                    }
+
+                    StartButton.IsEnabled = true;
+                    ChangeButton.IsEnabled = true;
+                    DelButton.IsEnabled = true;
+                    Log.Information("抽取结果: {Name}", get);
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "MemoryMode开始/结束操作时发生异常");
+                StartButton.IsEnabled = true;
+            }
+        }
+
+        private bool Canchange;
+
+        private void ComboBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            try
+            {
+                if (Canchange)
+                {
+                    if (AllFiles.Count == 0)
+                    {
+                        Log.Warning("没有可用名单文件");
+                        AllNames.Clear();
+                        StartButton.IsEnabled = false;
+                        ChangeButton.IsEnabled = false;
+                        DelButton.IsEnabled = false;
+                    }
+                    else
+                    {
+                        StartButton.IsEnabled = true;
+                        ChangeButton.IsEnabled = true;
+                        DelButton.IsEnabled = true;
+                        if (ComboBox.SelectedIndex == -1)
+                        {
+>>>>>>> c69be5c4950bc482a4a0fd3c6e85e97a8d570b2d
                             ComboBox.SelectedIndex = 0;
                         }
 

@@ -29,7 +29,7 @@ namespace NameCube.Setting
             _logger.Debug("ShortcutKeySetting 初始化完成");
         }
 
-        bool IsChoosing = false;
+        private bool IsChoosing = false;
 
         private void Choosing(bool isChossing)
         {
@@ -41,7 +41,10 @@ namespace NameCube.Setting
         {
             _logger.Information("开始初始化快捷键设置");
 
+<<<<<<< HEAD
            
+=======
+>>>>>>> c69be5c4950bc482a4a0fd3c6e85e97a8d570b2d
             for (int i = GlobalVariablesData.config.ShortCutKey.keysGrounp.Count - 1; i >= 0; i--)
             {
                 var sc = GlobalVariablesData.config.ShortCutKey.keysGrounp[i];
@@ -298,7 +301,10 @@ namespace NameCube.Setting
                             new ComboBox() { ItemsSource = itemsource, SelectedIndex = selectedIndex }
                         }
                     },
+<<<<<<< HEAD
                     
+=======
+>>>>>>> c69be5c4950bc482a4a0fd3c6e85e97a8d570b2d
                 };
                 var mainWindow = Application.Current.Windows.OfType<SettingsWindow>().FirstOrDefault();
                 dialog.DialogHostEx = mainWindow.RootContentDialogPresenter;

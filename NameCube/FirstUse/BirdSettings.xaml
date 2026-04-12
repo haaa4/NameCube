@@ -65,7 +65,11 @@
                     <ComboBoxItem Content="长按+右键" />
                 </ComboBox>
             </ui:CardControl>
+<<<<<<< HEAD
             <TextBlock Text="更多设置请在应用设置里使用" Foreground="Gray" Margin="20"/>
+=======
+            <TextBlock Text="更多设置请在应用设置里使用" Foreground="Gray" Margin="20" />
+>>>>>>> c69be5c4950bc482a4a0fd3c6e85e97a8d570b2d
         </StackPanel>
     </Grid>
 </Page>

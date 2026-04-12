@@ -1,14 +1,20 @@
+<<<<<<< HEAD
 ﻿using Masuit.Tools;
 using Serilog;  // 添加Serilog命名空间
+=======
+﻿using Serilog;  // 添加Serilog命名空间
+>>>>>>> c69be5c4950bc482a4a0fd3c6e85e97a8d570b2d
 using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+<<<<<<< HEAD
 using System.Windows.Forms;
 using System.Windows.Media.Imaging;
+=======
+>>>>>>> c69be5c4950bc482a4a0fd3c6e85e97a8d570b2d
 
 namespace NameCube.FirstUse
 {
@@ -57,6 +63,7 @@ namespace NameCube.FirstUse
             }
         }
 
+<<<<<<< HEAD
         
 
        
@@ -64,6 +71,8 @@ namespace NameCube.FirstUse
      
 
 
+=======
+>>>>>>> c69be5c4950bc482a4a0fd3c6e85e97a8d570b2d
         private void Initialize()
         {
             try
@@ -72,14 +81,20 @@ namespace NameCube.FirstUse
                 BallCheck.IsChecked = GlobalVariablesData.config.StartToDo.Ball;
                 StartWayComboBox.SelectedIndex = GlobalVariablesData.config.BirdSettings.StartWay;
 
+<<<<<<< HEAD
                 
+=======
+>>>>>>> c69be5c4950bc482a4a0fd3c6e85e97a8d570b2d
                 if (GlobalVariablesData.config.BirdSettings.diaphaneity == 0)
                 {
                     GlobalVariablesData.config.BirdSettings.diaphaneity = 100;
                     Log.Debug("修复透明度为默认值100%");
                 }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> c69be5c4950bc482a4a0fd3c6e85e97a8d570b2d
                 Log.Information("BirdSettings控件初始化完成");
             }
             catch (Exception ex)
@@ -100,7 +115,10 @@ namespace NameCube.FirstUse
                 Log.Information("启动方式更改为索引: {StartWay}", selectedIndex);
             }
         }
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> c69be5c4950bc482a4a0fd3c6e85e97a8d570b2d
     }
 }

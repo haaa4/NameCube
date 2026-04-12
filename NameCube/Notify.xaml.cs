@@ -20,6 +20,7 @@ namespace NameCube
     {
         private NotifyIcon _notifyIcon;
         private Storyboard _currentStoryboard;
+
         public Notify()
         {
             try

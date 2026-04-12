@@ -13,7 +13,12 @@ namespace NameCube.Setting
     public partial class LogSetting : Page
     {
         private static readonly ILogger _logger = Log.ForContext<LogSetting>();
+<<<<<<< HEAD
         bool canChange;
+=======
+        private bool canChange;
+
+>>>>>>> c69be5c4950bc482a4a0fd3c6e85e97a8d570b2d
         public LogSetting()
         {
             InitializeComponent();
@@ -42,6 +47,10 @@ namespace NameCube.Setting
             GlobalVariablesData.SaveConfig();
             _logger.Information("日志级别已修改：{level}", GlobalVariablesData.config.AllSettings.LogLevel);
         }
+<<<<<<< HEAD
+=======
+
+>>>>>>> c69be5c4950bc482a4a0fd3c6e85e97a8d570b2d
         /// <summary>
         /// 重新按照用户配置初始化Serilog日志配置
         /// </summary>

@@ -186,7 +186,10 @@
             OpenPaneLength="260"
             PaneDisplayMode="Left">
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> c69be5c4950bc482a4a0fd3c6e85e97a8d570b2d
             <!--  优化菜单项样式  -->
             <ui:NavigationView.MenuItems>
                 <ui:NavigationViewItem
@@ -502,7 +505,11 @@
             x:Name="RootContentDialogPresenter"
             Grid.RowSpan="3"
             Grid.ColumnSpan="2"
+<<<<<<< HEAD
             d:Visibility="Collapsed"
             />
+=======
+            d:Visibility="Collapsed" />
+>>>>>>> c69be5c4950bc482a4a0fd3c6e85e97a8d570b2d
     </Grid>
 </ui:FluentWindow>

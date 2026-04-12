@@ -20,7 +20,12 @@ namespace NameCube.Setting
     {
         private static readonly ILogger _logger = Log.ForContext<BirdSettings>(); // 添加Serilog日志实例
 
+<<<<<<< HEAD
         bool CanChange;
+=======
+        private bool CanChange;
+
+>>>>>>> c69be5c4950bc482a4a0fd3c6e85e97a8d570b2d
         public BirdSettings()
         {
             InitializeComponent();

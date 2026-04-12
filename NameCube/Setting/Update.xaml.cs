@@ -48,20 +48,32 @@ namespace NameCube.Setting
                 _logger.Warning("当前运行的是Beta版本");
             }
 
+<<<<<<< HEAD
             if (GlobalVariablesData.config.AllSettings.newVersion != null&& GlobalVariablesData.config.AllSettings.newVersion != GlobalVariablesData.VERSION)
+=======
+            if (GlobalVariablesData.config.AllSettings.newVersion != null && GlobalVariablesData.config.AllSettings.newVersion != GlobalVariablesData.VERSION)
+>>>>>>> c69be5c4950bc482a4a0fd3c6e85e97a8d570b2d
             {
                 CaseText.Text = "检测到新的版本：" + GlobalVariablesData.config.AllSettings.newVersion;
                 UpkButton.IsEnabled = true;
                 _logger.Information("检测到新版本: {NewVersion}", GlobalVariablesData.config.AllSettings.newVersion);
             }
+<<<<<<< HEAD
             
+=======
+
+>>>>>>> c69be5c4950bc482a4a0fd3c6e85e97a8d570b2d
             _logger.Information("更新设置加载完成，当前版本: {Version}, 自动更新: {AutoUpdate}, 更新方式: {UpdateWay}",
                 GlobalVariablesData.VERSION,
                 GlobalVariablesData.config.StartToDo.AutoUpdata,
                 GlobalVariablesData.config.AllSettings.UpdataGet);
         }
 
+<<<<<<< HEAD
         bool Canchange;
+=======
+        private bool Canchange;
+>>>>>>> c69be5c4950bc482a4a0fd3c6e85e97a8d570b2d
 
         private async void CheckButton_Click(object sender, RoutedEventArgs e)
         {
@@ -291,6 +303,10 @@ namespace NameCube.Setting
                 MessageBoxFunction.ShowMessageBoxWarning("更新向导已经打开了哦");
             }
         }
+<<<<<<< HEAD
+=======
+
+>>>>>>> c69be5c4950bc482a4a0fd3c6e85e97a8d570b2d
         public static int ExtractVersionCode(string input)
         {
             if (string.IsNullOrEmpty(input))
@@ -316,7 +332,10 @@ namespace NameCube.Setting
 
         private void UpdataWayGetComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+<<<<<<< HEAD
 
+=======
+>>>>>>> c69be5c4950bc482a4a0fd3c6e85e97a8d570b2d
         }
     }
 }

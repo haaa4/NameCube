@@ -96,8 +96,11 @@ namespace NameCube.GlobalVariables
                 {
                     UsedBetterColor = false,
                 },
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> c69be5c4950bc482a4a0fd3c6e85e97a8d570b2d
             };
         }
 
@@ -148,7 +151,11 @@ namespace NameCube.GlobalVariables
                 GlobalVariablesData.config.AllSettings.color = (Brush)
                     new BrushConverter().ConvertFromInvariantString("#FF005493");
             }
+<<<<<<< HEAD
             if(GlobalVariablesData.config.ImformationData==null)
+=======
+            if (GlobalVariablesData.config.ImformationData == null)
+>>>>>>> c69be5c4950bc482a4a0fd3c6e85e97a8d570b2d
             {
                 GlobalVariablesData.config.ImformationData = new();
             }

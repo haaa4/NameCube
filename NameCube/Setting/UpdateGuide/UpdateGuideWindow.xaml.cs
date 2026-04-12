@@ -79,7 +79,11 @@ namespace NameCube.Setting.UpdateGuide
                 var psi = new ProcessStartInfo
                 {
                     FileName = AppDomain.CurrentDomain.BaseDirectory + "\\新版本介绍.md",
+<<<<<<< HEAD
                     UseShellExecute = true 
+=======
+                    UseShellExecute = true
+>>>>>>> c69be5c4950bc482a4a0fd3c6e85e97a8d570b2d
                 };
                 Process.Start(psi);
                 //防止被阻止
