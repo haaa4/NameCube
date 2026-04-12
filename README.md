@@ -5,14 +5,19 @@
 > 
 > 该项目为新手独立创作，会遇见一些难以理解的问题和代码逻辑，请见谅
 >
->  This project is independently created by a beginner and may present some challenging issues and code logic that are difficult to understand. Your understanding is appreciated. Additionally, please note that this project currently does not support English.
+>  This project is independently created by a beginner and may present some challenging issues and code logic that are difficult to understand. Your understanding is appreciated. Meanwhile, the project currently does not support any languages other than Chinese.
+
+>[!WARNING]
+>该项目处于**停更**状态，预计6或7月恢复更新
+>
+>The project is currently on hold and is expected to resume updates in June or July
 
 
 
 <div align="center">
 
 # 点鸣魔方 
-# <image src="https://github.com/haaa4/NameCube/blob/1.3/NameCube/icon.png?raw=true" height="120"/>
+# <image src="https://raw.githubusercontent.com/haaa4/NameCube/refs/heads/main/NameCube/icon.png" height="120"/>
 
 点鸣魔方有多种抽取模式，概率或者命中注定？同时，本应用的悬浮球功能也能随时在各种环境中快速开启应用。小工具可能也能满足一些需求
 
