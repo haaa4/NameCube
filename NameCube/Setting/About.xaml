@@ -49,7 +49,12 @@
 
                 </StackPanel>
             </Expander>
+<<<<<<< Updated upstream
         </StackPanel>
         <ContentPresenter x:Name="Host" />
+=======
+
+        </StackPanel>
+>>>>>>> Stashed changes
     </Grid>
 </Page>

@@ -9,6 +9,7 @@
     Title="Other"
     d:DesignHeight="450"
     d:DesignWidth="800"
+    FontFamily="{StaticResource AppFont}"
     mc:Ignorable="d">
 
     <StackPanel>
@@ -63,60 +64,57 @@
                 IsEnabled="True"
                 OffContent="关"
                 OnContent="开" />
-
         </ui:CardControl>
         <ui:CardControl
-    x:Name="DisabledAnimationCardContorl"
-    Margin="4"
-    Padding="20,10,20,10"
-    Icon="{ui:SymbolIcon Symbol=FastAcceleration24}">
+            x:Name="DisabledAnimationCardContorl"
+            Margin="4"
+            Padding="20,10,20,10"
+            Icon="{ui:SymbolIcon Symbol=FastAcceleration24}">
             <ui:CardControl.Header>
                 <StackPanel>
                     <ui:TextBlock
-                Margin="0"
-                FontTypography="BodyStrong"
-                Text="禁用窗口动画"
-                TextWrapping="WrapWithOverflow" />
+                        Margin="0"
+                        FontTypography="BodyStrong"
+                        Text="禁用窗口动画"
+                        TextWrapping="WrapWithOverflow" />
                     <ui:TextBlock
-                Appearance="Secondary"
-                Text="禁用主界面窗口显示时的平移动画"
-                TextWrapping="WrapWithOverflow" />
+                        Appearance="Secondary"
+                        Text="禁用主界面窗口显示时的平移动画"
+                        TextWrapping="WrapWithOverflow" />
                 </StackPanel>
             </ui:CardControl.Header>
             <ui:ToggleSwitch
-        x:Name="DisabledAnimationCheck"
-        HorizontalContentAlignment="Left"
-        Click="DisabledAnimationCheck_Click"
-        IsEnabled="True"
-        OffContent="关"
-        OnContent="开" />
-
+                x:Name="DisabledAnimationCheck"
+                HorizontalContentAlignment="Left"
+                Click="DisabledAnimationCheck_Click"
+                IsEnabled="True"
+                OffContent="关"
+                OnContent="开" />
         </ui:CardControl>
         <ui:CardControl
-Margin="4"
-Padding="20,10,20,10"
-Icon="{ui:SymbolIcon Symbol=ArrowMaximize24}">
+            Margin="4"
+            Padding="20,10,20,10"
+            Icon="{ui:SymbolIcon Symbol=ArrowMaximize24}">
             <ui:CardControl.Header>
                 <StackPanel>
                     <ui:TextBlock
-            Margin="0"
-            FontTypography="BodyStrong"
-            Text="主窗口默认最大化"
-            TextWrapping="WrapWithOverflow" />
+                        Margin="0"
+                        FontTypography="BodyStrong"
+                        Text="主窗口默认最大化"
+                        TextWrapping="WrapWithOverflow" />
                     <ui:TextBlock
-            Appearance="Secondary"
-            Text="主界面打开时默认最大化，可以解决一些奇怪的显示问题"
-            TextWrapping="WrapWithOverflow" />
+                        Appearance="Secondary"
+                        Text="主界面打开时默认最大化，可以解决一些奇怪的显示问题"
+                        TextWrapping="WrapWithOverflow" />
                 </StackPanel>
             </ui:CardControl.Header>
             <ui:ToggleSwitch
-    x:Name="MaxSizeCheck"
-    HorizontalContentAlignment="Left"
-    Click="MaxSizeCheck_Click"
-    IsEnabled="True"
-    OffContent="关"
-    OnContent="开" />
-
+                x:Name="MaxSizeCheck"
+                HorizontalContentAlignment="Left"
+                Click="MaxSizeCheck_Click"
+                IsEnabled="True"
+                OffContent="关"
+                OnContent="开" />
         </ui:CardControl>
         <ui:CardControl
             Margin="4"
@@ -183,6 +181,55 @@ Icon="{ui:SymbolIcon Symbol=ArrowMaximize24}">
                 </StackPanel>
             </ui:CardControl.Header>
             <Button Click="Button_Click" Content="创建" />
+        </ui:CardControl>
+        <ui:CardControl
+            Margin="4"
+            Padding="20,10,20,10"
+            Icon="{ui:SymbolIcon Symbol=ChevronCircleDown24}">
+            <ui:CardControl.Header>
+                <StackPanel>
+                    <ui:TextBlock
+                        Margin="0"
+                        FontTypography="BodyStrong"
+                        Text="连接通道"
+                        TextWrapping="WrapWithOverflow" />
+                    <ui:TextBlock
+                        Appearance="Secondary"
+                        Text="Github内容较新，但连接不稳定，Gitee连接稳定，但内容较旧"
+                        TextWrapping="WrapWithOverflow" />
+                </StackPanel>
+            </ui:CardControl.Header>
+            <ComboBox x:Name="UpdataWayGetComboBox" SelectionChanged="UpdataWayGetComboBox_SelectionChanged">
+                <ComboBoxItem Content="Github" />
+                <ComboBoxItem Content="Gitee" />
+            </ComboBox>
+        </ui:CardControl>
+        <ui:CardControl
+    Margin="4"
+    Padding="20,10,20,10"
+    Icon="{ui:SymbolIcon Symbol=PageFit24}">
+            <ui:CardControl.Header>
+                <StackPanel>
+                    <ui:TextBlock
+                Margin="0"
+                FontTypography="BodyStrong"
+                Text="默认打开页面"
+                TextWrapping="WrapWithOverflow" />
+                    <ui:TextBlock
+                Appearance="Secondary"
+                Text="选择主窗口打开后的默认页面"
+                TextWrapping="WrapWithOverflow" />
+                </StackPanel>
+            </ui:CardControl.Header>
+            <ComboBox x:Name="DefalultPageComboBox" SelectionChanged="DefalultPageComboBox_SelectionChanged">
+                <ComboBoxItem Content="主页" />
+                <ComboBoxItem Content="单人模式" />
+                <ComboBoxItem Content="势能模式" />
+                <ComboBoxItem Content="批量模式" />
+                <ComboBoxItem Content="数字模式" />
+                <ComboBoxItem Content="预备模式" />
+                <ComboBoxItem Content="记忆模式" />
+            </ComboBox>
         </ui:CardControl>
         <!--<ui:CardControl
     Margin="4"

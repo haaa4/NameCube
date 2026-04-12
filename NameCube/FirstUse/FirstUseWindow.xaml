@@ -7,6 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:mode="clr-namespace:NameCube.Mode"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+     FontFamily="{StaticResource AppFont}"
     xmlns:vio="http://schemas.lepo.co/wpfui/2022/xaml/violeta"
     Title="点鸣魔方"
     Width="1000"
@@ -240,6 +241,7 @@
                     Text="欢迎来到点鸣魔方，在使用软件前，我们需要进行一些设置"
                     TextWrapping="Wrap" />
                 <ui:Button
+                    x:Name="GoOnButton"
                     Margin="10,30,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Bottom"
@@ -337,7 +339,6 @@
                         </TransformGroup>
                     </vio:AnimatedImage.RenderTransform>
                 </vio:AnimatedImage>
-
             </Canvas>
         </Border>
         <Border
@@ -388,5 +389,4 @@
             </Canvas>
         </Border>
     </Grid>
-
 </ui:FluentWindow>

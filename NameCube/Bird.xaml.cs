@@ -78,16 +78,32 @@ namespace NameCube
         {
             try
             {
+<<<<<<< Updated upstream
+=======
+                Log.Debug("开始获取DPI缩放势能");
+>>>>>>> Stashed changes
                 var hwnd = new System.Windows.Interop.WindowInteropHelper(this).Handle;
                 if (hwnd != IntPtr.Zero)
                 {
                     uint dpi = GetDpiForWindow(hwnd);
+<<<<<<< Updated upstream
                     return dpi / 96.0;
                 }
+=======
+                    double scale = dpi / 96.0;
+                    Log.Debug("获取到DPI缩放势能: {DpiScale}", scale);
+                    return scale;
+                }
+                Log.Warning("无法获取窗口句柄，使用默认DPI缩放势能");
+>>>>>>> Stashed changes
             }
             catch
             {
+<<<<<<< Updated upstream
                 // 如果API调用失败，使用系统DPI
+=======
+                Log.Error(ex, "获取DPI缩放势能时发生错误，使用备用方法");
+>>>>>>> Stashed changes
                 return SystemParameters.PrimaryScreenHeight / 1080.0;
             }
             return 1.0;

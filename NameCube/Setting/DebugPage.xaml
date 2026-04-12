@@ -9,6 +9,7 @@
     Title="DebugPage"
     d:DesignHeight="450"
     d:DesignWidth="800"
+    FontFamily="{StaticResource AppFont}"
     mc:Ignorable="d">
 
     <StackPanel>
@@ -50,5 +51,18 @@
             Margin="10,0,0,0"
             Click="Button_Click_6"
             Content="多线程竞争条件异常" />
+        <ui:Button
+            Margin="10,0,0,0"
+            Click="Button_Click_7"
+            Content="Open whell" />
+        <ui:Button
+            Margin="10,0,0,0"
+            Click="Button_Click_8"
+            Content="获取资源" />
+        <ui:TextBox x:Name="GuideTag" />
+        <ui:Button
+            Margin="10,0,0,0"
+            Click="Button_Click_9"
+            Content="open guide" />
     </StackPanel>
 </Page>

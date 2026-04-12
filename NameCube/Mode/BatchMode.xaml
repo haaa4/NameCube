@@ -52,7 +52,6 @@
                 x:Name="StartButton"
                 Click="Button_Click"
                 Content="输出" />
-
         </StackPanel>
         <ui:DataGrid
             x:Name="DataGrid"

@@ -51,7 +51,7 @@
                 Margin="10,0,0,0"
                 FontSize="14"
                 Foreground="Gray"
-                Text="点鸣魔方发生了未处理的问题，如果你需要，请尝试反馈一下，但是你需要重现一下步骤，因为日志还不完善（笑" />
+                Text="点鸣魔方发生了未处理的问题，如果你需要，请尝试反馈一下，并带上日志文件" />
             <ui:TextBox
                 x:Name="ErrorTextBox"
                 Grid.Row="2"
@@ -79,6 +79,10 @@
                     Appearance="Primary"
                     Click="Button_Click_2"
                     Content="重启应用" />
+                <ui:Button
+                    Margin="10"
+                    Click="Button_Click_3"
+                    Content="打开日志" />
                 <ui:HyperlinkButton
                     Margin="10"
                     Content="反馈问题"
