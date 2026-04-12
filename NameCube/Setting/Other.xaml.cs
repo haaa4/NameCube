@@ -187,7 +187,7 @@ namespace NameCube.Setting
             {
                 string desktop = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
                 string shortcutPath = Path.Combine(desktop, "点鸣魔方.lnk");
-                string appPath = Assembly.GetExecutingAssembly().Location;
+                string appPath = Environment.ProcessPath;
 
                 if (!File.Exists(appPath))
                 {

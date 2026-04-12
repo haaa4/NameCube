@@ -62,11 +62,11 @@ namespace NameCube.Mode.HomeChildrenPage
             _cts = new CancellationTokenSource();
             if(GlobalVariablesData.config.AllSettings.DownloadWay==0)
             {
-                _ = LoadImageFromWebAsync("https://raw.githubusercontent.com/haaa4/NameCube/refs/heads/1.3/NameCube/Image/HeadMap/Online.png");
+                _ = LoadImageFromWebAsync("https://raw.githubusercontent.com/haaa4/NameCube/refs/heads/main/NameCube/Image/HeadMap/Online.png");
             }
             else
             {
-                _ = LoadImageFromWebAsync("https://gitee.com/haaa4/NameCube/raw/1.3/NameCube/Image/HeadMap/Online.png");
+                _ = LoadImageFromWebAsync("https://gitee.com/haaa4/NameCube/raw/main/NameCube/Image/HeadMap/Online.png");
             }
 
                 // 使用 DispatcherTimer 在 UI 线程上定时切换本地图片

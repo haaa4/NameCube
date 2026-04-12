@@ -35,6 +35,10 @@
                     <TextBlock x:Name="VersionTextBlock"/>
                     <TextBlock Text="作者:哈阿斯" />
                     <TextBlock Text="默认名单所有名字均为Ai生成，如侵请联系作者，立刻删除" />
+                    <TextBlock Text="风带来故事的种子，时间使之发芽" Foreground="Green"/>
+                    <TextBlock Text="头图里有错别字，不想改......"  Foreground="Gray"/>
+                    <TextBlock Text="捕捉到一只去中考的野生开发者，点‘确定’为他加油，一年后他就会回来继续更新啦！"  Foreground="Gray"/>
+                    <ui:Button Content="确定" Click="Button_Click_1" x:Name="EncourageButton"/>
                 </StackPanel>
             </Expander>
             <Expander Margin="12 0">

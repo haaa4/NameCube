@@ -176,5 +176,10 @@ namespace NameCube.Setting
             ThanksWindow thanksWindow = new ThanksWindow();
             thanksWindow.ShowDialog();
         }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            EncourageButton.Content = "~=o(*^▽^*)o~♪";
+        }
     }
 }
