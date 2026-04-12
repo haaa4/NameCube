@@ -8,10 +8,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
-<<<<<<< HEAD
-using Windows.Media.Protection.PlayReady;
-=======
->>>>>>> c69be5c4950bc482a4a0fd3c6e85e97a8d570b2d
 using Wpf.Ui.Controls;
 using Image = Wpf.Ui.Controls.Image;
 using StackPanel = System.Windows.Controls.StackPanel;
@@ -153,12 +149,8 @@ namespace NameCube.Setting
                         bitmapImage.DecodePixelWidth = 400;
                         bitmapImage.EndInit();
                         // 图片解码后，通过Dispatcher切换到UI线程更新控件
-<<<<<<< HEAD
-                        this.Dispatcher.Invoke(() => {
-=======
                         this.Dispatcher.Invoke(() =>
                         {
->>>>>>> c69be5c4950bc482a4a0fd3c6e85e97a8d570b2d
                             targetImage.Source = bitmapImage;
                         });
                     }
@@ -173,11 +165,7 @@ namespace NameCube.Setting
         private async void Page_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
             VersionTextBlock.Text = GlobalVariablesData.VERSION;
-<<<<<<< HEAD
-            if(GlobalVariablesData.config.AllSettings.DownloadWay == 0)
-=======
             if (GlobalVariablesData.config.AllSettings.DownloadWay == 0)
->>>>>>> c69be5c4950bc482a4a0fd3c6e85e97a8d570b2d
                 await LoadImageFromWebAsync("https://avatars.githubusercontent.com/u/172395030?v=4", HeadImage);
             else
                 await LoadImageFromWebAsync("https://foruda.gitee.com/avatar/1774776926077586438/15207534_haaa4_1774776926.png!avatar200", HeadImage);

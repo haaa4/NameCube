@@ -278,15 +278,9 @@ namespace NameCube.Setting
 
         private void DefalultPageComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-<<<<<<< HEAD
-            if(CanChange)
-            {
-                GlobalVariablesData.config.AllSettings.DefaultPage= DefalultPageComboBox.SelectedIndex;
-=======
             if (CanChange)
             {
                 GlobalVariablesData.config.AllSettings.DefaultPage = DefalultPageComboBox.SelectedIndex;
->>>>>>> c69be5c4950bc482a4a0fd3c6e85e97a8d570b2d
                 GlobalVariablesData.SaveConfig();
             }
         }

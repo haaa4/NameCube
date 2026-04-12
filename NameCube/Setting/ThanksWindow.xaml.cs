@@ -2,22 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-<<<<<<< HEAD
-using System.Linq;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-=======
 using System.Text.Json;
 using System.Windows;
->>>>>>> c69be5c4950bc482a4a0fd3c6e85e97a8d570b2d
 
 namespace NameCube.Setting
 {
@@ -31,19 +17,13 @@ namespace NameCube.Setting
             public string Name { get; set; }
             public string Version { get; set; }
         }
-<<<<<<< HEAD
-=======
 
->>>>>>> c69be5c4950bc482a4a0fd3c6e85e97a8d570b2d
         public ThanksWindow()
         {
             InitializeComponent();
             Loaded += CreditsWindow_Loaded;
         }
-<<<<<<< HEAD
-=======
 
->>>>>>> c69be5c4950bc482a4a0fd3c6e85e97a8d570b2d
         private async void CreditsWindow_Loaded(object sender, RoutedEventArgs e)
         {
             var packages = await System.Threading.Tasks.Task.Run(() => LoadPackagesFromCreditsFile());
@@ -121,8 +101,4 @@ namespace NameCube.Setting
             this.Close();
         }
     }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> c69be5c4950bc482a4a0fd3c6e85e97a8d570b2d

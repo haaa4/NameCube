@@ -1,8 +1,4 @@
 ﻿using NameCube.Function;
-<<<<<<< HEAD
-using NameCube.Setting;
-=======
->>>>>>> c69be5c4950bc482a4a0fd3c6e85e97a8d570b2d
 using Serilog;
 using System.Diagnostics;
 using System.Linq;
@@ -26,10 +22,6 @@ namespace NameCube.ToolBox
             InitializeComponent();
             _logger.Debug("工具箱窗口初始化开始");
 
-<<<<<<< HEAD
-
-=======
->>>>>>> c69be5c4950bc482a4a0fd3c6e85e97a8d570b2d
             _logger.Information("工具箱窗口创建完成");
         }
 
@@ -81,11 +73,7 @@ namespace NameCube.ToolBox
             {
                 ProcessStartInfo processStartInfo = new();
                 processStartInfo.FileName = "https://github.com/haaa4/DeskSweeper";
-<<<<<<< HEAD
-                processStartInfo.UseShellExecute= true;
-=======
                 processStartInfo.UseShellExecute = true;
->>>>>>> c69be5c4950bc482a4a0fd3c6e85e97a8d570b2d
                 Process.Start(processStartInfo);
             }
         }

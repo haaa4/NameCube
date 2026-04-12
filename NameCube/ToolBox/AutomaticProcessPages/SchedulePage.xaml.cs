@@ -29,16 +29,11 @@ namespace NameCube.ToolBox.AutomaticProcessPages
         public ObservableCollection<string> processesChooseList { get; } = new ObservableCollection<string>();
 
         private int indexToHour(int index) => index / 3600;
-<<<<<<< HEAD
-        private int indexToMinute(int index) => index % 3600 / 60;
-        private int indexToSecond(int index) => index % 3600 % 60;
-=======
 
         private int indexToMinute(int index) => index % 3600 / 60;
 
         private int indexToSecond(int index) => index % 3600 % 60;
 
->>>>>>> c69be5c4950bc482a4a0fd3c6e85e97a8d570b2d
         private int TimeToIndex(int hour, int minute, int second) => hour * 3600 + minute * 60 + second;
 
         public SchedulePage()
@@ -97,17 +92,9 @@ namespace NameCube.ToolBox.AutomaticProcessPages
 
                     if (pg == null)
                     {
-<<<<<<< HEAD
-                      
-                        Log.Warning("时间表项对应的流程组已被删除 (UID: {Uid})，已自动移除该项", uidObj.uid);
-                        SnackBarFunction.ShowSnackBarInToolBoxWindow("未找到"+uidObj.uid+"对应的流程组，已自动删除该时间表项",Wpf.Ui.Controls.ControlAppearance.Caution);
-                        uidList.RemoveAt(i);
-    
-=======
                         Log.Warning("时间表项对应的流程组已被删除 (UID: {Uid})，已自动移除该项", uidObj.uid);
                         SnackBarFunction.ShowSnackBarInToolBoxWindow("未找到" + uidObj.uid + "对应的流程组，已自动删除该时间表项", Wpf.Ui.Controls.ControlAppearance.Caution);
                         uidList.RemoveAt(i);
->>>>>>> c69be5c4950bc482a4a0fd3c6e85e97a8d570b2d
                     }
                     else
                     {
@@ -179,10 +166,6 @@ namespace NameCube.ToolBox.AutomaticProcessPages
                 TimePicker2.SelectedIndex = indexToMinute(key);
                 TimePicker3.SelectedIndex = indexToSecond(key);
 
-<<<<<<< HEAD
-
-=======
->>>>>>> c69be5c4950bc482a4a0fd3c6e85e97a8d570b2d
                 ProcessesPicker.SelectedIndex = -1;
                 ProcessesPicker.SelectedItem = processGroup.name;
                 SaveButton.IsEnabled = true;
@@ -199,10 +182,6 @@ namespace NameCube.ToolBox.AutomaticProcessPages
             SecondTextBlock.Foreground = Brushes.Black;
         }
 
-<<<<<<< HEAD
-
-=======
->>>>>>> c69be5c4950bc482a4a0fd3c6e85e97a8d570b2d
         private bool HaveTheSame(ProcessGroup processGroup)
         {
             foreach (var group in GlobalVariablesData.config.AutomaticProcess.processGroups)

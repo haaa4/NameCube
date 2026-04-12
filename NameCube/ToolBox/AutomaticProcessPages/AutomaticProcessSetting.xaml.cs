@@ -1,10 +1,7 @@
 ﻿using Masuit.Tools;
 using Masuit.Tools.DateTimeExt;
 using NameCube.GlobalVariables.DataClass;
-<<<<<<< HEAD
 using NameCube.Setting;
-=======
->>>>>>> c69be5c4950bc482a4a0fd3c6e85e97a8d570b2d
 using Serilog;
 using System;
 using System.Collections.Generic;
@@ -13,10 +10,7 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-<<<<<<< HEAD
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
-=======
->>>>>>> c69be5c4950bc482a4a0fd3c6e85e97a8d570b2d
 using Application = System.Windows.Application;
 
 namespace NameCube.ToolBox.AutomaticProcessPages
@@ -219,11 +213,7 @@ namespace NameCube.ToolBox.AutomaticProcessPages
                     {
                         if (dialog.Content is Wpf.Ui.Controls.TextBox textBox)
                         {
-<<<<<<< HEAD
-                            if (textBox.Text != "" && textBox.Text[0] != '*'&&textBox.Text!= "新建流程组...")
-=======
                             if (textBox.Text != "" && textBox.Text[0] != '*' && textBox.Text != "新建流程组...")
->>>>>>> c69be5c4950bc482a4a0fd3c6e85e97a8d570b2d
                             {
                                 ProcessGroup newGroup = new ProcessGroup()
                                 {

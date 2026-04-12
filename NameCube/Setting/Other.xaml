@@ -198,10 +198,6 @@
                         Text="Github内容较新，但连接不稳定，Gitee连接稳定，但内容较旧"
                         TextWrapping="WrapWithOverflow" />
                 </StackPanel>
-<<<<<<< HEAD
-
-=======
->>>>>>> c69be5c4950bc482a4a0fd3c6e85e97a8d570b2d
             </ui:CardControl.Header>
             <ComboBox x:Name="UpdataWayGetComboBox" SelectionChanged="UpdataWayGetComboBox_SelectionChanged">
                 <ComboBoxItem Content="Github" />
@@ -224,27 +220,15 @@
                 Text="选择主窗口打开后的默认页面"
                 TextWrapping="WrapWithOverflow" />
                 </StackPanel>
-<<<<<<< HEAD
-
-=======
->>>>>>> c69be5c4950bc482a4a0fd3c6e85e97a8d570b2d
             </ui:CardControl.Header>
             <ComboBox x:Name="DefalultPageComboBox" SelectionChanged="DefalultPageComboBox_SelectionChanged">
                 <ComboBoxItem Content="主页" />
                 <ComboBoxItem Content="单人模式" />
-<<<<<<< HEAD
-                <ComboBoxItem Content="势能模式"/>
-                <ComboBoxItem Content="批量模式" />
-                <ComboBoxItem Content="数字模式"/>
-                <ComboBoxItem Content="预备模式"/>
-                <ComboBoxItem Content="记忆模式"/>
-=======
                 <ComboBoxItem Content="势能模式" />
                 <ComboBoxItem Content="批量模式" />
                 <ComboBoxItem Content="数字模式" />
                 <ComboBoxItem Content="预备模式" />
                 <ComboBoxItem Content="记忆模式" />
->>>>>>> c69be5c4950bc482a4a0fd3c6e85e97a8d570b2d
             </ComboBox>
         </ui:CardControl>
         <!--<ui:CardControl

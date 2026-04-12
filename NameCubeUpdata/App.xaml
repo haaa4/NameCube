@@ -2,10 +2,6 @@
     x:Class="NameCubeUpdata.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-<<<<<<< HEAD
-    xmlns:local="clr-namespace:NameCubeUpdata"
-=======
->>>>>>> c69be5c4950bc482a4a0fd3c6e85e97a8d570b2d
     Startup="Application_Startup">
     <Application.Resources />
 </Application>

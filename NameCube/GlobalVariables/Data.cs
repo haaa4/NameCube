@@ -79,20 +79,13 @@ namespace NameCube
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
         public AutomaticProcess AutomaticProcess { get; set; } = new AutomaticProcess();
-<<<<<<< HEAD
-=======
 
->>>>>>> c69be5c4950bc482a4a0fd3c6e85e97a8d570b2d
         /// <summary>
         /// 用户相关信息
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
         public ImformationData ImformationData { get; set; } = new ImformationData();
 
-<<<<<<< HEAD
-
-=======
->>>>>>> c69be5c4950bc482a4a0fd3c6e85e97a8d570b2d
         /// <summary>
         /// 配置文件的上一次运行所在点鸣魔方的版本
         /// </summary>
@@ -150,26 +143,17 @@ namespace NameCube
         /// 当前版本
         /// </summary>
         public const string VERSION = "V1.3(#l6#)";
-<<<<<<< HEAD
-=======
 
->>>>>>> c69be5c4950bc482a4a0fd3c6e85e97a8d570b2d
         /// <summary>
         /// 当前版本代码
         /// </summary>
         public const int VERSIONCODE = 6;
-<<<<<<< HEAD
-=======
 
->>>>>>> c69be5c4950bc482a4a0fd3c6e85e97a8d570b2d
         /// <summary>
         /// 当前是否为测试版本
         /// </summary>
         public const bool ISBETA = false;
-<<<<<<< HEAD
-=======
 
->>>>>>> c69be5c4950bc482a4a0fd3c6e85e97a8d570b2d
         public static bool ret = false;
     }
 }

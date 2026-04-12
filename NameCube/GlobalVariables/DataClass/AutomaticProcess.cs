@@ -1,8 +1,4 @@
 ﻿using Newtonsoft.Json;
-<<<<<<< HEAD
-using System;
-=======
->>>>>>> c69be5c4950bc482a4a0fd3c6e85e97a8d570b2d
 using System.Collections.Generic;
 
 namespace NameCube.GlobalVariables.DataClass
@@ -29,14 +25,6 @@ namespace NameCube.GlobalVariables.DataClass
         public Dictionary<int, List<ProcessGroupUid>> processesSchedule { get; set; } =
             new Dictionary<int, List<ProcessGroupUid>>();
     }
-<<<<<<< HEAD
-    public class ProcessGroupUid
-    {
-        public int uid { get; set; }
-        public ProcessGroup GetProcessGroup()
-        {
-            foreach(var group in GlobalVariablesData.config.AutomaticProcess.processGroups)
-=======
 
     public class ProcessGroupUid
     {
@@ -45,18 +33,13 @@ namespace NameCube.GlobalVariables.DataClass
         public ProcessGroup GetProcessGroup()
         {
             foreach (var group in GlobalVariablesData.config.AutomaticProcess.processGroups)
->>>>>>> c69be5c4950bc482a4a0fd3c6e85e97a8d570b2d
             {
                 if (group.uid == uid)
                 {
                     return group;
                 }
             }
-<<<<<<< HEAD
-            return null;    
-=======
             return null;
->>>>>>> c69be5c4950bc482a4a0fd3c6e85e97a8d570b2d
         }
     }
 

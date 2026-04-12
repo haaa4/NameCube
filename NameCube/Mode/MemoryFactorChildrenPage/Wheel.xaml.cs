@@ -21,14 +21,6 @@ namespace NameCube.Mode.MemoryFactorChildrenPage
             "C#", "Python", "Java", "TypeScript", "Rust", "Go", "Swift", "Kotlin",
             "F#", "Ruby", "PHP", "C++", "JavaScript", "Dart", "Scala", "Lua"
         };
-<<<<<<< HEAD
-        public event EventHandler<string> DataSubmitted;
-        private Random _random = new Random();
-        private bool _isSpinning = false;
-        private bool isRotate = false;
-        SpeechSynthesizer speechSynthesizer;
-        private List<string> names;
-=======
 
         public event EventHandler<string> DataSubmitted;
 
@@ -38,7 +30,6 @@ namespace NameCube.Mode.MemoryFactorChildrenPage
         private SpeechSynthesizer speechSynthesizer;
         private List<string> names;
 
->>>>>>> c69be5c4950bc482a4a0fd3c6e85e97a8d570b2d
         public Wheel(List<string> names, SpeechSynthesizer speechSynthesizer)
         {
             InitializeComponent();
@@ -202,10 +193,7 @@ namespace NameCube.Mode.MemoryFactorChildrenPage
             WheelItemsControl.ItemsSource = _items;
         }
     }
-<<<<<<< HEAD
-=======
 
->>>>>>> c69be5c4950bc482a4a0fd3c6e85e97a8d570b2d
     public class InverseAngleConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)

@@ -53,11 +53,7 @@ namespace NameCube.ToolBox.AutomaticProcessPages.ProcessPages
                 var psi = new ProcessStartInfo
                 {
                     FileName = pathToStart,
-<<<<<<< HEAD
-                    UseShellExecute = true 
-=======
                     UseShellExecute = true
->>>>>>> c69be5c4950bc482a4a0fd3c6e85e97a8d570b2d
                 };
                 Process.Start(psi);
                 Log.Information("文件启动成功");

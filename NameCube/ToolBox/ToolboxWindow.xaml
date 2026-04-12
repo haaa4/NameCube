@@ -54,11 +54,7 @@
                 <ui:NavigationViewItem
                     Content="桌面整理"
                     Icon="{ui:SymbolIcon Symbol=Broom24}"
-<<<<<<< HEAD
-                    Click="NavigationViewItem_Click"/>
-=======
                     Click="NavigationViewItem_Click" />
->>>>>>> c69be5c4950bc482a4a0fd3c6e85e97a8d570b2d
             </ui:NavigationView.MenuItems>
             <ui:NavigationView.PaneHeader>
                 <ui:Button Icon="{ui:SymbolIcon Symbol=ArrowClockwise24}">
