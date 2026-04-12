@@ -10,24 +10,25 @@
     Title="ModeSettings"
     d:DesignHeight="400"
     d:DesignWidth="800"
+    FontFamily="{StaticResource AppFont}"
     mc:Ignorable="d">
 
     <Grid>
         <ui:NavigationView
             x:Name="NavigationMenu"
+            Height="600"
             VerticalAlignment="Center"
             FontSize="40"
             IsBackButtonVisible="Auto"
             IsPaneToggleVisible="True"
-            PaneDisplayMode="Top" Height="600">
+            PaneDisplayMode="Top">
             <ui:NavigationView.MenuItems>
                 <ui:NavigationViewItem
                     Content="单人模式"
                     Icon="{ui:SymbolIcon Symbol=Accessibility16}"
-                    TargetPageType="{x:Type mode:OnePeopleModeSetting}" 
-                    />
+                    TargetPageType="{x:Type mode:OnePeopleModeSetting}" />
                 <ui:NavigationViewItem
-                    Content="因子模式"
+                    Content="势能模式"
                     Icon="{ui:SymbolIcon Symbol=PeopleSettings24}"
                     TargetPageType="{x:Type mode:MemoryFactorModeSettings}" />
                 <ui:NavigationViewItem
@@ -46,11 +47,6 @@
                     Content="记忆模式"
                     Icon="{ui:SymbolIcon Symbol=BrainCircuit24}"
                     TargetPageType="{x:Type mode:MemoryModeSetting}" />
-                <ui:NavigationViewItem
-                    Content="旧因子模式"
-                    Icon="{ui:SymbolIcon Symbol=PeopleSettings24}"
-                    Foreground="Gray"
-                    TargetPageType="{x:Type mode:OldMemoryFactorModeSetting}" />
             </ui:NavigationView.MenuItems>
         </ui:NavigationView>
     </Grid>

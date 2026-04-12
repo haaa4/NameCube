@@ -39,6 +39,7 @@
             </Grid.RowDefinitions>
             <ui:Image
                 Grid.RowSpan="2"
+                Margin="10"
                 RenderOptions.BitmapScalingMode="HighQuality"
                 Source="Icon.png" />
             <TextBlock
@@ -61,7 +62,7 @@
                 Grid.ColumnSpan="2"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
-                FontSize="20"
+                FontSize="15"
                 Text="Unkown" />
         </Grid>
         <ui:Button
@@ -105,5 +106,4 @@
             Content="退出应用"
             Icon="{ui:SymbolIcon Symbol=ArrowExit20}" />
     </Grid>
-
 </ui:FluentWindow>

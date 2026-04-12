@@ -1,5 +1,6 @@
-﻿using System.Diagnostics;
+﻿using Serilog; // 添加Serilog引用
 using System;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -10,24 +11,35 @@ namespace NameCube.Setting
     /// </summary>
     public partial class Speech : Page
     {
-        bool CanChange;
+        private static readonly ILogger _logger = Log.ForContext<Speech>(); // 添加Serilog日志实例
+        private bool CanChange;
+
         public Speech()
         {
             InitializeComponent();
+            _logger.Debug("Speech 页面初始化开始");
+
             CanChange = false;
-            VolumeSlider.Value = GlobalVariables.json.AllSettings.Volume;
-            SpeedSlider.Value = GlobalVariables.json.AllSettings.Speed + 10;
-            SystemSpeechCheck.IsChecked = GlobalVariables.json.AllSettings.SystemSpeech;
-            SpeedSlider.IsEnabled = !GlobalVariables.json.AllSettings.SystemSpeech;
-            VolumeSlider.IsEnabled = !GlobalVariables.json.AllSettings.SystemSpeech;
+            VolumeSlider.Value = GlobalVariablesData.config.AllSettings.Volume;
+            SpeedSlider.Value = GlobalVariablesData.config.AllSettings.Speed + 10;
+            SystemSpeechCheck.IsChecked = GlobalVariablesData.config.AllSettings.SystemSpeech;
+            SpeedSlider.IsEnabled = !GlobalVariablesData.config.AllSettings.SystemSpeech;
+            VolumeSlider.IsEnabled = !GlobalVariablesData.config.AllSettings.SystemSpeech;
             CanChange = true;
+
+            _logger.Information("语音设置加载完成，音量: {Volume}, 语速: {Speed}, 系统语音: {SystemSpeech}",
+                GlobalVariablesData.config.AllSettings.Volume,
+                GlobalVariablesData.config.AllSettings.Speed,
+                GlobalVariablesData.config.AllSettings.SystemSpeech);
         }
+
         private void VolumeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             if (CanChange)
             {
-                GlobalVariables.json.AllSettings.Volume = (int)VolumeSlider.Value;
-                GlobalVariables.SaveJson();
+                GlobalVariablesData.config.AllSettings.Volume = (int)VolumeSlider.Value;
+                GlobalVariablesData.SaveConfig();
+                _logger.Debug("音量设置修改为: {Volume}", (int)VolumeSlider.Value);
             }
         }
 
@@ -35,8 +47,9 @@ namespace NameCube.Setting
         {
             if (CanChange)
             {
-                GlobalVariables.json.AllSettings.Speed = (int)SpeedSlider.Value - 10;
-                GlobalVariables.SaveJson();
+                GlobalVariablesData.config.AllSettings.Speed = (int)SpeedSlider.Value - 10;
+                GlobalVariablesData.SaveConfig();
+                _logger.Debug("语速设置修改为: {Speed}", (int)SpeedSlider.Value - 10);
             }
         }
 
@@ -44,15 +57,17 @@ namespace NameCube.Setting
         {
             if (CanChange)
             {
-                GlobalVariables.json.AllSettings.SystemSpeech = SystemSpeechCheck.IsChecked.Value;
-                GlobalVariables.SaveJson();
-                SpeedSlider.IsEnabled = !GlobalVariables.json.AllSettings.SystemSpeech;
-                VolumeSlider.IsEnabled = !GlobalVariables.json.AllSettings.SystemSpeech;
+                GlobalVariablesData.config.AllSettings.SystemSpeech = SystemSpeechCheck.IsChecked.Value;
+                GlobalVariablesData.SaveConfig();
+                SpeedSlider.IsEnabled = !GlobalVariablesData.config.AllSettings.SystemSpeech;
+                VolumeSlider.IsEnabled = !GlobalVariablesData.config.AllSettings.SystemSpeech;
+                _logger.Information("系统语音设置修改为: {SystemSpeech}", SystemSpeechCheck.IsChecked.Value);
             }
         }
 
         private void CardAction_Click(object sender, RoutedEventArgs e)
         {
+            _logger.Information("尝试打开系统朗读人设置");
             try
             {
                 // 使用系统协议直接打开 "设置" 应用中的朗读人界面
@@ -61,9 +76,11 @@ namespace NameCube.Setting
                     FileName = "ms-settings:easeofaccess-narrator", // Win10/11 专用 URI
                     UseShellExecute = true // 必须启用 Shell 执行
                 });
+                _logger.Debug("成功打开系统朗读人设置");
             }
             catch (Exception ex)
             {
+                _logger.Error(ex, "无法打开系统朗读人设置界面");
                 Console.WriteLine($"无法打开设置界面: {ex.Message}");
             }
         }

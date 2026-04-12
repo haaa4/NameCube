@@ -9,6 +9,7 @@
     Title="BirdSettings"
     d:DesignHeight="1000"
     d:DesignWidth="800"
+    FontFamily="{StaticResource AppFont}"
     mc:Ignorable="d">
 
     <Grid>
@@ -63,7 +64,6 @@
                     <ComboBoxItem Content="左键+右键" />
                     <ComboBoxItem Content="长按+右键" />
                 </ComboBox>
-
             </ui:CardControl>
             <ui:CardControl
                 Margin="4"
@@ -101,7 +101,6 @@
                         Click="Button_Click_1"
                         Content="恢复默认" />
                 </StackPanel>
-
             </ui:CardControl>
             <ui:CardControl
                 Margin="4"
@@ -125,7 +124,6 @@
                     Maximum="120"
                     Minimum="0"
                     ValueChanged="ABSlider_ValueChanged" />
-
             </ui:CardControl>
             <ui:CardControl
                 Margin="4"
@@ -151,7 +149,6 @@
                     IsEnabled="True"
                     OffContent="关"
                     OnContent="开" />
-
             </ui:CardControl>
 
             <ui:CardControl
@@ -176,7 +173,6 @@
                     Maximum="100"
                     Minimum="10"
                     ValueChanged="Diaphaneity_ValueChanged" />
-
             </ui:CardControl>
             <ui:CardControl
                 Margin="4"
@@ -251,31 +247,28 @@
                     ValueChanged="BallWidthHeight_ValueChanged" />
             </ui:CardControl>
             <ui:CardControl
-    Margin="4"
-    Padding="20,10,20,10"
-    Icon="{ui:SymbolIcon Symbol=ArrowMove24}">
+                Margin="4"
+                Padding="20,10,20,10"
+                Icon="{ui:SymbolIcon Symbol=ArrowMove24}">
                 <ui:CardControl.Header>
                     <StackPanel>
                         <ui:TextBlock
-                Margin="0"
-                FontTypography="BodyStrong"
-                Text="长按防误判阈值"
-                TextWrapping="WrapWithOverflow" />
+                            Margin="0"
+                            FontTypography="BodyStrong"
+                            Text="长按防误判阈值"
+                            TextWrapping="WrapWithOverflow" />
                         <ui:TextBlock
-                Appearance="Secondary"
-                Text="防止移动悬浮球导致的误判为长按"
-                TextWrapping="WrapWithOverflow" />
+                            Appearance="Secondary"
+                            Text="防止移动悬浮球导致的误判为长按"
+                            TextWrapping="WrapWithOverflow" />
                     </StackPanel>
                 </ui:CardControl.Header>
                 <Slider
-        x:Name="LongPressMisjudgment"
-        Maximum="300"
-        Minimum="0"
-        ValueChanged="LongPressMisjudgment_ValueChanged" />
+                    x:Name="LongPressMisjudgment"
+                    Maximum="300"
+                    Minimum="0"
+                    ValueChanged="LongPressMisjudgment_ValueChanged" />
             </ui:CardControl>
-
-
         </StackPanel>
     </Grid>
-
 </Page>
