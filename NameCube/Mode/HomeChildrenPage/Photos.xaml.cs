@@ -60,7 +60,7 @@ namespace NameCube.Mode.HomeChildrenPage
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             _cts = new CancellationTokenSource();
-            if (GlobalVariablesData.config.AllSettings.DownloadWay == 0)
+            if(GlobalVariablesData.config.AllSettings.DownloadWay==0)
             {
                 _ = LoadImageFromWebAsync("https://raw.githubusercontent.com/haaa4/NameCube/refs/heads/1.3/NameCube/Image/HeadMap/Online.png");
             }
@@ -69,8 +69,8 @@ namespace NameCube.Mode.HomeChildrenPage
                 _ = LoadImageFromWebAsync("https://gitee.com/haaa4/NameCube/raw/1.3/NameCube/Image/HeadMap/Online.png");
             }
 
-            // 使用 DispatcherTimer 在 UI 线程上定时切换本地图片
-            _timer = new DispatcherTimer();
+                // 使用 DispatcherTimer 在 UI 线程上定时切换本地图片
+                _timer = new DispatcherTimer();
             _timer.Interval = TimeSpan.FromSeconds(10);
             _timer.Tick += OnTimerTick;
             _timer.Start();
@@ -90,7 +90,7 @@ namespace NameCube.Mode.HomeChildrenPage
                 photoIndex = 0;
             var assembly = Assembly.GetExecutingAssembly();
             string resourceName = photosPath[photoIndex];
-            if (resourceName == "online")
+            if(resourceName=="online")
             {
                 if (currentPhoto != null)
                 {

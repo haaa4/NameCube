@@ -2,8 +2,17 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Text;
 using System.Text.Json;
+using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace NameCube.Setting
 {
@@ -17,13 +26,11 @@ namespace NameCube.Setting
             public string Name { get; set; }
             public string Version { get; set; }
         }
-
         public ThanksWindow()
         {
             InitializeComponent();
             Loaded += CreditsWindow_Loaded;
         }
-
         private async void CreditsWindow_Loaded(object sender, RoutedEventArgs e)
         {
             var packages = await System.Threading.Tasks.Task.Run(() => LoadPackagesFromCreditsFile());

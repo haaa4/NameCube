@@ -2,7 +2,6 @@
  * 注意！
  * 此处的代码使用了AI进行重构，部分逻辑可能存在问题，尤其是事件处理部分的细节。请务必仔细测试每个功能点，确保逻辑正确且没有遗漏。
  */
-
 using Masuit.Tools;
 using NameCube.Function;
 using Newtonsoft.Json;
@@ -34,7 +33,6 @@ namespace NameCube.Mode
         public class ThisModeJson : INotifyPropertyChanged
         {
             private string _name;
-
             public string Name
             {
                 get => _name;
@@ -42,7 +40,6 @@ namespace NameCube.Mode
             }
 
             private int _factor;
-
             public int Factor
             {
                 get => _factor;
@@ -50,7 +47,6 @@ namespace NameCube.Mode
             }
 
             public event PropertyChangedEventHandler PropertyChanged;
-
             protected virtual void OnPropertyChanged(string propertyName) =>
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
@@ -71,7 +67,6 @@ namespace NameCube.Mode
 
         // ---------- 私有字段 ----------
         private readonly System.Timers.Timer _timer = new System.Timers.Timer();
-
         private readonly SpeechSynthesizer _speechSynthesizer = new SpeechSynthesizer();
         private readonly MemoryFactorModeSettingsJson _settings = new MemoryFactorModeSettingsJson();
         private readonly List<int> _incidentPool = new List<int>();      // 事件概率池
@@ -102,7 +97,7 @@ namespace NameCube.Mode
                 return;
             }
             // 初始化事件概率分布
-            if (GlobalVariablesData.config.MemoryFactorModeSettings.probabilityOfHappening == null || GlobalVariablesData.config.MemoryFactorModeSettings.probabilityOfHappening.Count < 10)
+            if (GlobalVariablesData.config.MemoryFactorModeSettings.probabilityOfHappening==null||GlobalVariablesData.config.MemoryFactorModeSettings.probabilityOfHappening.Count < 10)
             {
                 Log.Debug("初始化事件概率分布");
                 GlobalVariablesData.config.MemoryFactorModeSettings.probabilityOfHappening = new List<int> { 4, 2, 3, 4, 2, 2, 3, 1, 1, 2 };
@@ -140,6 +135,7 @@ namespace NameCube.Mode
                     _speechSynthesizer.Rate = GlobalVariablesData.config.AllSettings.Speed;
                     _speechSynthesizer.Volume = GlobalVariablesData.config.AllSettings.Volume;
                 }
+
 
                 if (GlobalVariablesData.config.AllSettings.Name.Count <= 9)
                 {
@@ -188,6 +184,8 @@ namespace NameCube.Mode
             string filePath = Path.Combine(GlobalVariablesData.userDataDir, "Mode_data", "MemoryFactoryMode", "Memory.json");
             if (!File.Exists(filePath))
             {
+
+
                 _settings.thisModeJson.Clear();
                 foreach (var name in GlobalVariablesData.config.AllSettings.Name)
                     _settings.thisModeJson.Add(new ThisModeJson { Name = name, Factor = 1 });
@@ -433,6 +431,7 @@ namespace NameCube.Mode
                         });
                     }
 
+
                     // 最终 UI 更新
                     Dispatcher.Invoke(() =>
                     {
@@ -464,6 +463,7 @@ namespace NameCube.Mode
                     {
                         StartButton.Content = "继续";
                     }
+
                 }
                 else
                 {
@@ -483,7 +483,6 @@ namespace NameCube.Mode
                 _isStopping = false;
             }
         }
-
         private void ChangeTheName(List<ThisModeJson> lastThisModeJsons)
         {
             StoreOriginalPositions();
@@ -657,7 +656,6 @@ namespace NameCube.Mode
             originalTops[No6Name] = Canvas.GetTop(No6Name);
             originalTops[No6Factor] = Canvas.GetTop(No6Factor);
         }
-
         private async Task ApplyIncident(int incident, string selectedName, Random rnd)
         {
             // 隐藏所有事件面板（UI 操作，已在 UI 线程）
@@ -673,27 +671,21 @@ namespace NameCube.Mode
                 case 0: // 二倍
                     ApplyDoubleEvent(2);
                     break;
-
                 case 1: // 三倍
                     ApplyDoubleEvent(3);
                     break;
-
                 case 2: // 减半
                     ApplyHalfEvent();
                     break;
-
                 case 3: // 交换
                     ApplyExchangeEvent();
                     break;
-
                 case 4: // 复制
                     ApplyCopyEvent();
                     break;
-
                 case 5: // 窃取
                     ApplyStealEvent(rnd);
                     break;
-
                 case 6: // 保底事件
                     int add = rnd.Next(10) + 1;
                     _settings.otherSettings.MaxTimes += add;
@@ -702,15 +694,12 @@ namespace NameCube.Mode
                     incidentName.Text = "激活事件";
                     FloorAddPart.Visibility = Visibility.Visible;
                     break;
-
                 case 7: // 跳过事件 - 需要等待
                     await ApplySkipEvent(selectedName, rnd);
                     break;
-
                 case 8: // 平静事件
                     incidentName.Text = "平静无事";
                     break;
-
                 case 9: // 命定事件
                     _settings.otherSettings.DeterminedByFate = true;
                     incidentName.Text = "命定事件";
@@ -870,8 +859,10 @@ namespace NameCube.Mode
                     var story = FindResource("NewAddStoryBoard") as Storyboard;
                     story?.Begin();
                 }
+
             });
         }
+
 
         // ---------- 辅助方法 ----------
         private void NavigateToWheel()
@@ -884,7 +875,6 @@ namespace NameCube.Mode
             var show = FindResource("FrameShow") as Storyboard;
             show?.Begin();
         }
-
         private Dictionary<TextBlock, double> originalTops = new Dictionary<TextBlock, double>();
         private List<TextBlock> addedTextBlocks = new List<TextBlock>();
 

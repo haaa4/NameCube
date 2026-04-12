@@ -19,10 +19,8 @@ namespace NameCube.ToolBox.AutomaticProcessPages
     {
         public ObservableCollection<string> ProcessGroups { get; set; } =
             new ObservableCollection<string>();
-
         public ObservableCollection<string> ProcessKinds { get; set; } =
             new ObservableCollection<string>();
-
         private bool canChange = false;
         private bool isUserInteraction = true;
         private ProcessGroup selectedProcessGroup;
@@ -213,7 +211,7 @@ namespace NameCube.ToolBox.AutomaticProcessPages
                     {
                         if (dialog.Content is Wpf.Ui.Controls.TextBox textBox)
                         {
-                            if (textBox.Text != "" && textBox.Text[0] != '*' && textBox.Text != "新建流程组...")
+                            if (textBox.Text != "" && textBox.Text[0] != '*'&&textBox.Text!= "新建流程组...")
                             {
                                 ProcessGroup newGroup = new ProcessGroup()
                                 {

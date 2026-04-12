@@ -28,15 +28,13 @@ namespace NameCube
     {
         private Dictionary<string, Dictionary<Key, DateTime>> _shortcutKeyTimes =
             new Dictionary<string, Dictionary<Key, DateTime>>();
-
         private NotifyIcon _notifyIcon = new NotifyIcon();
-        private Timer Timer = new Timer();
+        Timer Timer = new Timer();
         private const int WH_KEYBOARD_LL = 13;
         private const int WM_KEYDOWN = 0x0100;
         private const int WM_SYSKEYDOWN = 0x0104;
         public bool CanUseShortCutKey = true;
         public string version { get; set; }
-
         [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         private static extern IntPtr SetWindowsHookEx(
             int idHook,
@@ -61,7 +59,6 @@ namespace NameCube
         private static extern IntPtr GetModuleHandle(string lpModuleName);
 
         private delegate IntPtr LowLevelKeyboardProc(int nCode, IntPtr wParam, IntPtr lParam);
-
         private MMDeviceEnumerator deviceEnumerator;
         private MMDevice defaultDevice;
         private LowLevelKeyboardProc _proc;
@@ -80,44 +77,39 @@ namespace NameCube
                         NavigationMenu.Navigate(typeof(Mode.Home));
                         Log.Information("默认页面加载: 主页");
                         break;
-
                     case 1:
                         NavigationMenu.Navigate(typeof(Mode.OnePeopleMode));
                         Log.Information("默认页面加载:单人模式 ");
                         break;
-
                     case 2:
                         NavigationMenu.Navigate(typeof(Mode.MemoryFactorMode));
                         Log.Information("默认页面加载:势能模式 ");
                         break;
-
                     case 3:
                         NavigationMenu.Navigate(typeof(Mode.BatchMode));
                         Log.Information("默认页面加载:批量模式 ");
                         break;
-
                     case 4:
                         NavigationMenu.Navigate(typeof(Mode.NumberMode));
                         Log.Information("默认页面加载:数字模式");
                         break;
-
                     case 5:
                         NavigationMenu.Navigate(typeof(Mode.PrepareMode));
                         Log.Information("默认页面加载:预备模式");
                         break;
-
                     case 6:
                         NavigationMenu.Navigate(typeof(Mode.MemoryMode));
                         Log.Information("默认页面加载:记忆模式");
                         break;
-
                     default:
                         Log.Warning("默认页面配置无效，导航到主页");
                         NavigationMenu.Navigate(typeof(Mode.Home));
                         GlobalVariablesData.config.AllSettings.DefaultPage = 0;
                         GlobalVariablesData.SaveConfig();
                         break;
+
                 }
+
             }
             catch (Exception ex)
             {
@@ -243,43 +235,37 @@ namespace NameCube
                             NavigationMenu.Navigate(typeof(Mode.Home));
                             Log.Information("默认页面加载: 主页");
                             break;
-
                         case 1:
                             NavigationMenu.Navigate(typeof(Mode.OnePeopleMode));
                             Log.Information("默认页面加载:单人模式 ");
                             break;
-
                         case 2:
                             NavigationMenu.Navigate(typeof(Mode.MemoryFactorMode));
                             Log.Information("默认页面加载:势能模式 ");
                             break;
-
                         case 3:
                             NavigationMenu.Navigate(typeof(Mode.BatchMode));
                             Log.Information("默认页面加载:批量模式 ");
                             break;
-
                         case 4:
                             NavigationMenu.Navigate(typeof(Mode.NumberMode));
                             Log.Information("默认页面加载:数字模式");
                             break;
-
                         case 5:
                             NavigationMenu.Navigate(typeof(Mode.PrepareMode));
                             Log.Information("默认页面加载:预备模式");
                             break;
-
                         case 6:
                             NavigationMenu.Navigate(typeof(Mode.MemoryMode));
                             Log.Information("默认页面加载:记忆模式");
                             break;
-
                         default:
                             Log.Warning("默认页面配置无效，导航到主页");
                             NavigationMenu.Navigate(typeof(Mode.Home));
                             GlobalVariablesData.config.AllSettings.DefaultPage = 0;
                             GlobalVariablesData.SaveConfig();
                             break;
+
                     }
                     Log.Debug("主窗口加载完成，导航到主页");
                 };
@@ -304,7 +290,6 @@ namespace NameCube
                 throw;
             }
         }
-
         /// <summary>
         /// 检查窗口置顶状态以及更新状态的定时器事件处理程序，确保窗口保持置顶状态（如果配置要求）
         /// </summary>
@@ -316,7 +301,7 @@ namespace NameCube
             {
                 var SettingWindow = Application.Current.Windows.OfType<SettingsWindow>().FirstOrDefault();
                 var ToolBoxWindow = Application.Current.Windows.OfType<ToolboxWindow>().FirstOrDefault();
-                if ((SettingWindow != null && SettingWindow.Visibility == Visibility.Visible) || (ToolBoxWindow != null && ToolBoxWindow.Visibility == Visibility.Visible))
+                if((SettingWindow!=null&&SettingWindow.Visibility==Visibility.Visible)||(ToolBoxWindow!=null&&ToolBoxWindow.Visibility==Visibility.Visible))
                 {
                     this.Topmost = false;
                     Log.Debug("检测到其他窗口，MainWindow不进行窗口置顶");
@@ -329,12 +314,13 @@ namespace NameCube
                         Log.Debug("窗口置顶状态检查: 已置顶");
                     }
                 }
+
             }
             catch (Exception ex)
             {
                 Log.Error(ex, "窗口置顶检查定时器处理时发生错误");
             }
-            if (GlobalVariablesData.config.AllSettings.newVersion == null || GlobalVariablesData.config.AllSettings.newVersion == GlobalVariablesData.VERSION)
+            if (GlobalVariablesData.config.AllSettings.newVersion == null||GlobalVariablesData.config.AllSettings.newVersion==GlobalVariablesData.VERSION)
             {
                 UpdateWarn.Visibility = Visibility.Collapsed;
             }
@@ -700,7 +686,7 @@ namespace NameCube
             }
         }
 
-        private double LastTop = -1;
+        double LastTop = -1;
 
         public void ShowThisWindow()
         {
@@ -806,8 +792,8 @@ namespace NameCube
             }
         }
 
-        private Storyboard loadPageStoryBoard;
-        private Storyboard loadedPageStoryBoard;
+        Storyboard loadPageStoryBoard;
+        Storyboard loadedPageStoryBoard;
 
         public void LoadPage(Page page)
         {

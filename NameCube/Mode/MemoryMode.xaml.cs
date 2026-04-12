@@ -25,10 +25,10 @@ namespace NameCube.Mode
     {
         public ObservableCollection<string> AllFiles { get; set; } = new ObservableCollection<string>();
         public ObservableCollection<string> AllNames { get; set; } = new ObservableCollection<string>();
-        private bool CanChange;
+        bool CanChange;
         public System.Timers.Timer timer = new System.Timers.Timer();
         private SpeechSynthesizer _speechSynthesizer = new SpeechSynthesizer();
-        private int now = 0;
+        int now = 0;
 
         public MemoryMode()
         {
@@ -179,7 +179,7 @@ namespace NameCube.Mode
             }
         }
 
-        private bool Canchange;
+        bool Canchange;
 
         private void ComboBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {

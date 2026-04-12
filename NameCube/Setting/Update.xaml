@@ -78,6 +78,7 @@
                 </ComboBox>
             </ui:CardControl>
 
+
             <ui:InfoBar
                 x:Name="WarningInfo"
                 Title="注意"

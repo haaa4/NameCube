@@ -79,12 +79,12 @@ namespace NameCube
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
         public AutomaticProcess AutomaticProcess { get; set; } = new AutomaticProcess();
-
         /// <summary>
         /// 用户相关信息
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
         public ImformationData ImformationData { get; set; } = new ImformationData();
+
 
         /// <summary>
         /// 配置文件的上一次运行所在点鸣魔方的版本
@@ -143,17 +143,14 @@ namespace NameCube
         /// 当前版本
         /// </summary>
         public const string VERSION = "V1.3(#l6#)";
-
         /// <summary>
         /// 当前版本代码
         /// </summary>
         public const int VERSIONCODE = 6;
-
         /// <summary>
         /// 当前是否为测试版本
         /// </summary>
         public const bool ISBETA = false;
-
         public static bool ret = false;
     }
 }

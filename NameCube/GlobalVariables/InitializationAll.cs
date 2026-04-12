@@ -96,6 +96,8 @@ namespace NameCube.GlobalVariables
                 {
                     UsedBetterColor = false,
                 },
+
+
             };
         }
 
@@ -146,7 +148,7 @@ namespace NameCube.GlobalVariables
                 GlobalVariablesData.config.AllSettings.color = (Brush)
                     new BrushConverter().ConvertFromInvariantString("#FF005493");
             }
-            if (GlobalVariablesData.config.ImformationData == null)
+            if(GlobalVariablesData.config.ImformationData==null)
             {
                 GlobalVariablesData.config.ImformationData = new();
             }

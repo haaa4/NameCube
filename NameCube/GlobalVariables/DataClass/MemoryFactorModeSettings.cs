@@ -36,7 +36,7 @@ namespace NameCube.GlobalVariables.DataClass
         /// <summary>
         /// 每一种事件的发生概率
         /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
-        public List<int> probabilityOfHappening = new List<int> { 4, 2, 3, 4, 2, 2, 3, 1, 1, 1 };
+            [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+        public List<int> probabilityOfHappening = new List<int> { 4, 2, 3, 4, 2, 2, 3, 1, 1,1 };
     }
 }

@@ -107,7 +107,7 @@ namespace NameCube.Function
         {
             try
             {
-                if (GlobalVariablesData.config.AllSettings.UpdataGet == 0)
+                if(GlobalVariablesData.config.AllSettings.UpdataGet==0)
                 {
                     await DownloadFileAsync("https://gitee.com/haaa4/NameCube/releases/download/V0.1/Version.txt", AppDomain.CurrentDomain.BaseDirectory + "\\TEMP.version");
                 }
@@ -116,9 +116,9 @@ namespace NameCube.Function
                     await DownloadFileAsync("https://gitee.com/haaa4/NameCube/releases/download/V0/Version.txt", AppDomain.CurrentDomain.BaseDirectory + "\\TEMP.version");
                 }
                 string get = File.ReadAllText(AppDomain.CurrentDomain.BaseDirectory + "\\TEMP.version");
-                if (get.EndsWith("\r\n"))
+                if(get.EndsWith("\r\n"))
                 {
-                    get = get.Substring(0, get.Length - 2);
+                    get=get.Substring(0,get.Length-2);
                 }
                 File.Delete(AppDomain.CurrentDomain.BaseDirectory + "\\TEMP.version");
                 return get;

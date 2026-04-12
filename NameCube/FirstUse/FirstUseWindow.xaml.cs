@@ -20,8 +20,7 @@ namespace NameCube.FirstUse
     /// </summary>
     public partial class FirstUseWindow
     {
-        private int now = 0;
-
+        int now = 0;
         public FirstUseWindow()
         {
             InitializeComponent();
