@@ -1,19 +1,12 @@
-﻿using Masuit.Tools.Logging;
-using Microsoft.Toolkit.Uwp.Notifications;
-using NameCube.Setting;
+﻿using NameCube.Function;
 using NameCube.WarningWindows;
 using Newtonsoft.Json;
+using Serilog;
 using System;
-using System.Collections.Generic;
-using System.Data.SqlTypes;
-using System.Diagnostics;
 using System.IO;
-using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Forms;
-using System.Windows.Media;
 using Application = System.Windows.Application;
 
 namespace NameCube
@@ -21,9 +14,6 @@ namespace NameCube
     /// <summary>
     /// App.xaml 的交互逻辑
     /// </summary>
-    /// 
-
-
     public partial class App : System.Windows.Application
     {
         [System.Runtime.InteropServices.DllImport("user32.dll")]
@@ -31,12 +21,15 @@ namespace NameCube
 
         protected override void OnStartup(StartupEventArgs e)
         {
-            // 方法1：系统DPI感知
             if (Environment.OSVersion.Version.Major >= 6)
+            {
                 SetProcessDPIAware();
+                Log.Information("已启用DPI感知");
+            }
             base.OnStartup(e);
         }
-        Mutex mutex;
+
+        private Mutex mutex;
 
         public App()
         {
@@ -45,140 +38,397 @@ namespace NameCube
 
         private void App_Startup(object sender, StartupEventArgs e)
         {
+            try
+            {
+                // 初始化Serilog日志
+                InitializeSerilog();
 
-            GlobalExceptionHandler.Initialize();
-            System.Threading.Tasks.TaskScheduler.UnobservedTaskException += (sende, args) =>
-            {
-                args.SetObserved(); 
-                Application.Current.Dispatcher.Invoke(() =>
+                Log.Information("应用程序启动开始");
+                Log.Debug("启动参数: {@Args}", e.Args);
+
+                GlobalExceptionHandler.Initialize();
+
+                System.Threading.Tasks.TaskScheduler.UnobservedTaskException += (sende, args) =>
                 {
-                    new ErrorWindow(args.Exception).ShowDialog();
-                });
-            };
-            bool ret;
-            mutex = new Mutex(true, "NameCube", out ret);
-            GlobalVariables.ret=ret;
-            if (Directory.Exists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Namecube")))
-            {
-                GlobalVariables.configDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Namecube");
-            }
-            else
-            {
-                GlobalVariables.configDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "NameCube");
-            }
-            if (!ret && !File.Exists(Path.Combine(GlobalVariables.configDir, "START")))
-            {
-                RepeatWarning repeat = new RepeatWarning();
-                repeat.Show();
-                repeat.Activate();
-                repeat.WindowState = WindowState.Normal;
-                return;
-            }
-            if(Directory.Exists(Path.Combine(GlobalVariables.configDir,"Updata")))
-            {
-                if(File.Exists(Path.Combine(GlobalVariables.configDir, "UpdataZip.zip")))
+                    args.SetObserved();
+                    Log.Error(args.Exception, "未观察到的任务异常");
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        new ErrorWindow(args.Exception).ShowDialog();
+                    });
+                };
+
+                bool ret;
+                mutex = new Mutex(true, "NameCube", out ret);
+                GlobalVariablesData.ret = ret;
+
+                Log.Debug("Mutex创建结果: {Result}, 是否为首次实例: {IsFirstInstance}", ret, ret);
+                GlobalVariablesData.configDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "NameCube");
+                Log.Information("使用AppData配置目录: {ConfigDir}", GlobalVariablesData.configDir);
+                InitializationUserData();
+                // 如果存在START文件，说明此次启动仅为重启
+                if (!ret && !File.Exists(Path.Combine(GlobalVariablesData.configDir, "START")))
                 {
-                    File.Delete(Path.Combine(GlobalVariables.configDir, "UpdataZip.zip"));
+                    Log.Warning("应用程序重复启动且无START文件，显示重复警告窗口");
+                    RepeatWarning repeat = new RepeatWarning();
+                    repeat.Show();
+                    repeat.Activate();
+                    repeat.WindowState = WindowState.Normal;
+                    return;
                 }
-                if(File.Exists(Path.Combine(GlobalVariables.configDir, "Updata","Success")))
+
+                // 处理更新目录
+                if (Directory.Exists(Path.Combine(GlobalVariablesData.userDataDir, "Updata")))
                 {
-                    string username = System.Security.Principal.WindowsIdentity.GetCurrent().Name;
-                    new ToastContentBuilder()
-                            .AddArgument("action", "viewConversation")
-                            .AddArgument("conversationId", 9813)
-                            .AddText("点鸣魔方")
-                            .AddText("点鸣魔方已经升级到"+GlobalVariables.Version+"。"+username+"，欢迎")
-                            .Show();
+                    Log.Information("检测到更新目录，处理更新后清理");
+
+                    if (File.Exists(Path.Combine(GlobalVariablesData.userDataDir, "UpdataZip.zip")))
+                    {
+                        File.Delete(Path.Combine(GlobalVariablesData.userDataDir, "UpdataZip.zip"));
+                        Log.Debug("删除旧的更新压缩包");
+                    }
+
+                    if (File.Exists(Path.Combine(GlobalVariablesData.userDataDir, "Updata", "Success")))
+                    {
+                        string username = System.Security.Principal.WindowsIdentity.GetCurrent().Name;
+                        Log.Information("更新成功，显示欢迎通知。用户: {Username}, 版本: {Version}", username, GlobalVariablesData.VERSION);
+                    }
+                    else
+                    {
+                    }
+
+                    try
+                    {
+                        Directory.Delete(Path.Combine(GlobalVariablesData.userDataDir, "Updata"), true);
+                        Log.Information("清理更新目录成功");
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.Error(ex, "清理更新目录失败");
+                        MessageBoxFunction.ShowMessageBoxError(ex.Message);
+                    }
                 }
-                else
+
+                string configPath = Path.Combine(GlobalVariablesData.configDir, "config.json");
+                if (GlobalVariablesData.config.AllSettings.newVersion != null && ExtractVersionCode(GlobalVariablesData.config.AllSettings.newVersion) <= GlobalVariablesData.VERSIONCODE)
                 {
-                    new ToastContentBuilder()
-                            .AddArgument("action", "viewConversation")
-                            .AddArgument("conversationId", 9813)
-                            .AddText("点鸣魔方")
-                            .AddText("当前版本是："+ GlobalVariables.Version+"。升级遇到问题？尝试去Github项目询问")
-                            .Show();
+                    GlobalVariablesData.config.AllSettings.newVersion = null;
                 }
+
+                if (File.Exists(Path.Combine(GlobalVariablesData.configDir, "START")))
+                {
+                    File.Delete(Path.Combine(GlobalVariablesData.configDir, "START"));
+                    Log.Debug("删除START标记文件");
+                }
+
                 try
                 {
-                    Directory.Delete(Path.Combine(GlobalVariables.configDir, "Updata"),true);
+                    // 确保目录存在
+                    Directory.CreateDirectory(GlobalVariablesData.configDir);
+                    Log.Debug("确保配置目录存在: {ConfigDir}", GlobalVariablesData.configDir);
+
+                    GlobalVariables.InitializationAll.InitializeData();
+
+                    if (!File.Exists(configPath))
+                    {
+                        Log.Warning("找不到配置文件，启动首次使用向导");
+                        GlobalVariablesData.ret = false;
+
+                        // 初始化默认配置
+                        FirstUse.FirstUseWindow firstUseWindow = new FirstUse.FirstUseWindow();
+                        firstUseWindow.Show();
+                        firstUseWindow.Activate();
+                        firstUseWindow.WindowState = WindowState.Normal;
+                        return; // 确保保存成功
+                    }
+
+                    // 再次检查文件是否存在（防止异步问题）
+                    if (File.Exists(configPath))
+                    {
+                        Log.Debug("加载配置文件: {ConfigPath}", configPath);
+                        var jsonString = File.ReadAllText(configPath);
+
+                        JsonConvert.DefaultSettings = () => new JsonSerializerSettings
+                        {
+                            NullValueHandling = NullValueHandling.Ignore,
+                            ObjectCreationHandling = ObjectCreationHandling.Replace,
+                            DefaultValueHandling = DefaultValueHandling.Populate
+                        };
+
+                        GlobalVariablesData.config = JsonConvert.DeserializeObject<Json>(jsonString);
+                        GlobalVariables.InitializationAll.KeepDataNotNull();
+                        Log.Information("配置文件加载成功");
+                    }
+                    else
+                    {
+                        var errorMsg = "配置文件未找到且初始化失败。";
+                        Log.Error(errorMsg);
+                        throw new FileNotFoundException(errorMsg);
+                    }
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
-                    MessageBoxFunction.ShowMessageBoxError(ex.Message);
-                }
-            }
-            string configPath = Path.Combine(GlobalVariables.configDir, "config.json");
-            LogManager.LogDirectory = Path.Combine(GlobalVariables.configDir, "logs");
-            if (File.Exists(Path.Combine(GlobalVariables.configDir, "START")))
-            {
-                File.Delete(Path.Combine(GlobalVariables.configDir, "START"));
-            }
-            try
-            {
-                // 确保目录存在
-                Directory.CreateDirectory(GlobalVariables.configDir);
-                InitializationAll.InitializeData();
-                if (!File.Exists(configPath))
-                {
-                    LogManager.Info("找不到文件");
-                    GlobalVariables.ret = false;
-                    // 初始化默认配置
-                    FirstUse.FirstUseWindow firstUseWindow = new FirstUse.FirstUseWindow();
-                    firstUseWindow.Show();
-                    firstUseWindow.Activate();
-                    firstUseWindow.WindowState = WindowState.Normal;
-                    return;// 确保保存成功
+                    Log.Fatal(ex, "应用程序启动失败");
+                    MessageBoxFunction.ShowMessageBoxError($"启动失败: {ex.Message}");
+                    Environment.Exit(1);
                 }
 
-                // 再次检查文件是否存在（防止异步问题）
-                if (File.Exists(configPath))
+                try
                 {
-                    var jsonString = File.ReadAllText(configPath);
-                    JsonConvert.DefaultSettings = () => new JsonSerializerSettings
+                    string tempDir = Path.Combine(GlobalVariablesData.userDataDir, "Mode_data", "MemoryMode", "temporary");
+                    if (Directory.Exists(tempDir))
                     {
-                        NullValueHandling = NullValueHandling.Ignore,
-                        ObjectCreationHandling = ObjectCreationHandling.Replace,
-                        DefaultValueHandling = DefaultValueHandling.Populate
-                    };
-                    GlobalVariables.json = JsonConvert.DeserializeObject<Json>(jsonString);
-                    InitializationAll.KeepDataNotNull();
+                        Directory.Delete(tempDir, true);
+                        Log.Debug("清理临时目录: {TempDir}", tempDir);
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
-                    throw new FileNotFoundException("配置文件未找到且初始化失败。");
+                    Log.Error(ex, "清理临时目录失败");
                 }
+
+                StartToDoSomething.GetUpdata();
+                Log.Debug("执行GetUpdata完成");
+
+                StartToDoSomething.RunAutomaticProcesses();
+                Log.Debug("执行RunAutomaticProcesses完成");
+
+                // 记录系统信息
+                Log.Information("应用程序启动信息:" +
+                    $"\n操作系统版本: {Environment.OSVersion}" +
+                    $"\n平台类型: {Environment.OSVersion.Platform}" +
+                    $"\n是否为64位系统: {Environment.Is64BitOperatingSystem}" +
+                    $"\n当前进程是否为64位: {Environment.Is64BitProcess}" +
+                    $"\n计算机名: {Environment.MachineName}" +
+                    $"\n当前用户名: {Environment.UserName}" +
+                    $"\n用户域: {Environment.UserDomainName}" +
+                    $"\n处理器核心数: {Environment.ProcessorCount}" +
+                    $"\n系统目录: {Environment.SystemDirectory}" +
+                    $"\n当前目录: {Environment.CurrentDirectory}" +
+                    $"\n进程工作集内存: {Environment.WorkingSet}" +
+                    $"\n应用版本: {GlobalVariablesData.VERSION}");
+
+                MainWindow mainWindow = new MainWindow();
+                if (GlobalVariablesData.config.AllSettings.NameCubeMode != 0)
+                {
+                    Log.Debug("NameCube模式不为0，显示主窗口");
+                    mainWindow.ShowThisWindow();
+                }
+                if (File.Exists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Update", "START")))
+                {
+                    // 如果update存在START文件，说明更新过程中发生了错误，显示更新错误窗口
+                    File.Delete(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Update", "START"));
+                    Log.Debug("删除START标记文件,并报错");
+                    NameCube.Setting.UpdateGuide.UpdateGuideWindow updateGuideWindow = new NameCube.Setting.UpdateGuide.UpdateGuideWindow("Error");
+                    updateGuideWindow.Show();
+                    updateGuideWindow.Activate();
+                }
+                if (File.Exists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Update", "FINISH")))
+                {
+                    // 如果存在FINISH文件，说明更新过程中发生了错误，显示更新错误窗口
+                    File.Delete(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Update", "FINISH"));
+                    Log.Debug("删除FINISH标记文件,并处理多余文件");
+                    NameCube.Setting.UpdateGuide.UpdateGuideWindow updateGuideWindow = new NameCube.Setting.UpdateGuide.UpdateGuideWindow("Finish");
+                    updateGuideWindow.Show();
+                    updateGuideWindow.Activate();
+                }
+                if (GlobalVariablesData.config.AllSettings.newVersion == GlobalVariablesData.VERSION)
+                {
+                    GlobalVariablesData.config.AllSettings.newVersion = null;
+                }
+                InitializeSerilogAgain();
+                Notify notify = new Notify();
+                Log.Information("应用程序启动完成");
             }
             catch (Exception ex)
             {
-                MessageBoxFunction.ShowMessageBoxError($"启动失败: {ex.Message}");
+                Log.Fatal(ex, "应用程序启动过程中发生未捕获的异常");
+                MessageBoxFunction.ShowMessageBoxError($"应用程序启动失败: {ex.Message}");
                 Environment.Exit(1);
             }
+        }
+
+        /// <summary>
+        /// 初始化Serilog日志配置
+        /// </summary>
+        private void InitializeSerilog()
+        {
             try
             {
-                if (Directory.Exists(Path.Combine(GlobalVariables.configDir, "Mode_data", "MemoryMode", "temporary")))
-                {
-                    Directory.Delete(Path.Combine(GlobalVariables.configDir, "Mode_data", "MemoryMode", "temporary"), true);
-                }
+                string logDirectory = Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "logs");
+                string logFilePath = Path.Combine(logDirectory, "NameCube-.log");
 
+                Log.Logger = new LoggerConfiguration()
+                    .MinimumLevel.Information() // 提升最低日志级别，减少Debug日志
+                    .Enrich.FromLogContext()
+                    // 使用异步文件写入，避免阻塞主线程
+                    .WriteTo.Async(a => a.File(
+                        logFilePath,
+                        rollingInterval: RollingInterval.Day,
+                        retainedFileCountLimit: 7, // 减少保留天数
+                        outputTemplate: "{Timestamp:HH:mm:ss} [{Level:u3}] {Message:lj}{NewLine}{Exception}",
+                        shared: true,
+                        flushToDiskInterval: TimeSpan.FromSeconds(5))) // 每5秒刷新到磁盘
+                    .WriteTo.Console(
+                        restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Warning, // 控制台只显示警告及以上
+                        outputTemplate: "{Timestamp:HH:mm:ss} [{Level:u3}] {Message:lj}{NewLine}")
+                    .CreateLogger();
+
+                Log.Information("Serilog日志系统初始化完成，日志目录: {LogDirectory}", logDirectory);
             }
             catch (Exception ex)
             {
-                LogManager.Error(ex);
+                // 如果日志初始化失败，使用简化的日志配置
+                Log.Logger = new LoggerConfiguration()
+                    .MinimumLevel.Warning()
+                    .WriteTo.Console()
+                    .CreateLogger();
+
+                Log.Error(ex, "Serilog日志初始化失败，使用控制台后备日志");
             }
-            StartToDoSomething.GetUpdata();
-            StartToDoSomething.RunAutomaticProcesses();
-            LogManager.Info("程序启动");
-            MainWindow mainWindow = new MainWindow();
-            if (GlobalVariables.json.AllSettings.NameCubeMode != 0)
-            {
-                mainWindow.ShowThisWindow();
-            }
-           Notify notify = new Notify();
         }
-       
 
+        protected override void OnExit(ExitEventArgs e)
+        {
+            Log.Information("应用程序退出，退出代码: {ExitCode}", e.ApplicationExitCode);
 
+            // 确保日志被刷新
+            Log.CloseAndFlush();
+            base.OnExit(e);
+        }
 
+        /// <summary>
+        /// 重新按照用户配置初始化Serilog日志配置
+        /// </summary>
+        public void InitializeSerilogAgain()
+        {
+            string logDirectory = Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "logs");
+            string logFilePath = Path.Combine(logDirectory, "NameCube-.log");
+            switch (GlobalVariablesData.config.AllSettings.LogLevel)
+            {
+                case 0://调试级别
+                    Log.Logger = new LoggerConfiguration()
+                   .MinimumLevel.Debug()
+                   .Enrich.FromLogContext()
+                   // 使用异步文件写入，避免阻塞主线程
+                   .WriteTo.Async(a => a.File(
+                       logFilePath,
+                       rollingInterval: RollingInterval.Day,
+                       retainedFileCountLimit: 7, // 减少保留天数
+                       outputTemplate: "{Timestamp:HH:mm:ss} [{Level:u3}] {Message:lj}{NewLine}{Exception}",
+                       shared: true,
+                       flushToDiskInterval: TimeSpan.FromSeconds(5))) // 每5秒刷新到磁盘
+                   .WriteTo.Console(
+                       restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Warning, // 控制台只显示警告及以上
+                       outputTemplate: "{Timestamp:HH:mm:ss} [{Level:u3}] {Message:lj}{NewLine}")
+                   .CreateLogger();
+                    break;
+
+                case 1://调试级别
+                    Log.Logger = new LoggerConfiguration()
+                   .MinimumLevel.Information()
+                   .Enrich.FromLogContext()
+                   // 使用异步文件写入，避免阻塞主线程
+                   .WriteTo.Async(a => a.File(
+                       logFilePath,
+                       rollingInterval: RollingInterval.Day,
+                       retainedFileCountLimit: 7, // 减少保留天数
+                       outputTemplate: "{Timestamp:HH:mm:ss} [{Level:u3}] {Message:lj}{NewLine}{Exception}",
+
+                       shared: true,
+                       flushToDiskInterval: TimeSpan.FromSeconds(5))) // 每5秒刷新到磁盘
+                   .WriteTo.Console(
+                       restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Warning, // 控制台只显示警告及以上
+                       outputTemplate: "{Timestamp:HH:mm:ss} [{Level:u3}] {Message:lj}{NewLine}")
+                   .CreateLogger();
+                    break;
+
+                case 2://警告级别
+                    Log.Logger = new LoggerConfiguration()
+                   .MinimumLevel.Warning()
+                   .Enrich.FromLogContext()
+                   // 使用异步文件写入，避免阻塞主线程
+                   .WriteTo.Async(a => a.File(
+                       logFilePath,
+                       rollingInterval: RollingInterval.Day,
+                       retainedFileCountLimit: 7, // 减少保留天数
+                       outputTemplate: "{Timestamp:HH:mm:ss} [{Level:u3}] {Message:lj}{NewLine}{Exception}",
+
+                       shared: true,
+                       flushToDiskInterval: TimeSpan.FromSeconds(5))) // 每5秒刷新到磁盘
+                   .WriteTo.Console(
+                       restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Warning, // 控制台只显示警告及以上
+                       outputTemplate: "{Timestamp:HH:mm:ss} [{Level:u3}] {Message:lj}{NewLine}")
+                   .CreateLogger();
+                    break;
+
+                case 3://错误级别
+                    Log.Logger = new LoggerConfiguration()
+                   .MinimumLevel.Error()
+                   .Enrich.FromLogContext()
+                   // 使用异步文件写入，避免阻塞主线程
+                   .WriteTo.Async(a => a.File(
+                       logFilePath,
+                       rollingInterval: RollingInterval.Day,
+                       retainedFileCountLimit: 7, // 减少保留天数
+                       outputTemplate: "{Timestamp:HH:mm:ss} [{Level:u3}] {Message:lj}{NewLine}{Exception}",
+                       shared: true,
+                       flushToDiskInterval: TimeSpan.FromSeconds(5))) // 每5秒刷新到磁盘
+                   .WriteTo.Console(
+                       restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Warning, // 控制台只显示警告及以上
+                       outputTemplate: "{Timestamp:HH:mm:ss} [{Level:u3}] {Message:lj}{NewLine}")
+                   .CreateLogger();
+                    break;
+
+                default:
+                    //什么也不做
+                    break;
+            }
+            Log.Debug("Serilog二次初始化成功");
+        }
+
+        /// <summary>
+        /// 初始化用户数据文件夹
+        /// </summary>
+        private void InitializationUserData()
+        {
+            try
+            {
+                string baseDir = AppDomain.CurrentDomain.BaseDirectory;
+                Directory.CreateDirectory(baseDir + "\\user\\Bird_data\\Image");
+                Directory.CreateDirectory(baseDir + "\\user\\Mode_data\\MemoryFactoryMode");
+                Directory.CreateDirectory(baseDir + "\\user\\Mode_data\\MemoryMode\\permanent");
+                Directory.CreateDirectory(baseDir + "\\user\\Mode_data\\MemoryMode\\temporary");
+                Directory.CreateDirectory(baseDir + "\\user\\Music");
+                Log.Debug("用户数据文件夹初始化完成");
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public static int ExtractVersionCode(string input)
+        {
+            if (string.IsNullOrEmpty(input))
+                throw new ArgumentException("输入字符串不能为空。");
+
+            // 正则表达式解释：
+            // \( 匹配左括号
+            // # 匹配井号
+            // [^#]* 匹配任意非#字符（如p或r）
+            // (\d+) 捕获一组数字
+            // # 匹配井号
+            // \) 匹配右括号
+            string pattern = @"\(#[^#]*(\d+)#\)";
+            Match match = Regex.Match(input, pattern);
+
+            if (match.Success)
+            {
+                return int.Parse(match.Groups[1].Value);
+            }
+
+            throw new ArgumentException("输入字符串中未找到有效的版本代码格式。");
+        }
     }
 }

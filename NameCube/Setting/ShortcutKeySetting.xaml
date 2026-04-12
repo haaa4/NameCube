@@ -9,6 +9,7 @@
     Title="ShortcutKeySetting"
     d:DesignHeight="450"
     d:DesignWidth="800"
+    FontFamily="{StaticResource AppFont}"
     Loaded="Page_Loaded"
     mc:Ignorable="d">
     <Grid>
@@ -38,8 +39,5 @@
                 Content="新建按键组"
                 Icon="{ui:SymbolIcon Symbol=Add16}" />
         </StackPanel>
-        <ContentPresenter x:Name="Host" />
-
     </Grid>
-
 </Page>

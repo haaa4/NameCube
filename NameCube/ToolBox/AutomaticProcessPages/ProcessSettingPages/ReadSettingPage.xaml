@@ -60,6 +60,5 @@
             HorizontalAlignment="Left"
             VerticalAlignment="Center"
             Click="ReadCheckBox_Checked" />
-
     </Grid>
 </Page>

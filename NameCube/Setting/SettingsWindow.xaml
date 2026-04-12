@@ -9,6 +9,7 @@
     Title="应用设置"
     Width="1200"
     Height="650"
+    FontFamily="{StaticResource AppFont}"
     Loaded="FluentWindow_Loaded"
     mc:Ignorable="d">
     <ui:FluentWindow.Resources>
@@ -69,6 +70,10 @@
                     Icon="{ui:SymbolIcon Symbol=Document24}"
                     TargetPageType="{x:Type local:Document}" />
                 <ui:NavigationViewItem
+                    Content="日志"
+                    Icon="{ui:SymbolIcon Symbol=Pen24}"
+                    TargetPageType="{x:Type local:LogSetting}" />
+                <ui:NavigationViewItem
                     Content="更新"
                     Icon="{ui:SymbolIcon Symbol=ArrowUpload24}"
                     TargetPageType="{x:Type local:Updata}" />
@@ -104,10 +109,11 @@
         <Border
             x:Name="border"
             Grid.RowSpan="2"
+            d:IsHidden="True"
             Background="White"
             BorderBrush="White"
             BorderThickness="1"
-            Visibility="Visible" d:IsHidden="True">
+            Visibility="Visible">
             <Canvas>
                 <Image
                     Canvas.Left="335.393"
@@ -131,5 +137,10 @@
                     TextWrapping="Wrap"><Run Language="zh-cn" Text="应用设置" /></TextBlock>
             </Canvas>
         </Border>
+        <ui:ContentDialogHost
+            x:Name="RootContentDialogPresenter"
+            Grid.RowSpan="3"
+            Grid.ColumnSpan="2"
+            d:Visibility="Collapsed" />
     </Grid>
 </ui:FluentWindow>

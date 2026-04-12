@@ -1,4 +1,4 @@
-﻿using Masuit.Tools;
+﻿using Serilog;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
@@ -10,36 +10,49 @@ namespace NameCube.Setting.ModeSetting
     /// </summary>
     public partial class MemoryFactorModeSettings : Page
     {
-        bool CanChange;
+        private static readonly ILogger _logger = Log.ForContext<MemoryFactorModeSettings>();
+
+        private bool CanChange;
+
         public MemoryFactorModeSettings()
         {
             InitializeComponent();
+            _logger.Debug("记忆势能模式设置页面初始化开始");
+
             CanChange = false;
-            LockedCheck.IsChecked = GlobalVariables.json.MemoryFactorModeSettings.Locked;
-            Speed.Value = GlobalVariables.json.MemoryFactorModeSettings.Speed - 10;
-            if(GlobalVariables.json.MemoryFactorModeSettings.probabilityOfHappening==null)
+            LockedCheck.IsChecked = GlobalVariablesData.config.MemoryFactorModeSettings.Locked;
+            Speed.Value = GlobalVariablesData.config.MemoryFactorModeSettings.Speed - 10;
+
+            if (GlobalVariablesData.config.MemoryFactorModeSettings.probabilityOfHappening == null)
             {
-                GlobalVariables.json.MemoryFactorModeSettings.probabilityOfHappening = new List<int> { 4, 2, 3, 4, 2, 2, 3, 1, 1 ,2};
+                GlobalVariablesData.config.MemoryFactorModeSettings.probabilityOfHappening = new List<int> { 4, 2, 3, 4, 2, 2, 3, 1, 1, 2 };
+                _logger.Debug("记忆势能模式概率数组为空，使用默认值");
             }
-            Random1.Value = GlobalVariables.json.MemoryFactorModeSettings.probabilityOfHappening[0];
-            Random2.Value = GlobalVariables.json.MemoryFactorModeSettings.probabilityOfHappening[1];
-            Random3.Value = GlobalVariables.json.MemoryFactorModeSettings.probabilityOfHappening[2];
-            Random4.Value = GlobalVariables.json.MemoryFactorModeSettings.probabilityOfHappening[3];
-            Random5.Value = GlobalVariables.json.MemoryFactorModeSettings.probabilityOfHappening[4];
-            Random6.Value = GlobalVariables.json.MemoryFactorModeSettings.probabilityOfHappening[5];
-            Random7.Value = GlobalVariables.json.MemoryFactorModeSettings.probabilityOfHappening[6];
-            Random8.Value = GlobalVariables.json.MemoryFactorModeSettings.probabilityOfHappening[7];
-            Random9.Value = GlobalVariables.json.MemoryFactorModeSettings.probabilityOfHappening[8];
-            Random10.Value = GlobalVariables.json.MemoryFactorModeSettings.probabilityOfHappening[9];
+
+            Random1.Value = GlobalVariablesData.config.MemoryFactorModeSettings.probabilityOfHappening[0];
+            Random2.Value = GlobalVariablesData.config.MemoryFactorModeSettings.probabilityOfHappening[1];
+            Random3.Value = GlobalVariablesData.config.MemoryFactorModeSettings.probabilityOfHappening[2];
+            Random4.Value = GlobalVariablesData.config.MemoryFactorModeSettings.probabilityOfHappening[3];
+            Random5.Value = GlobalVariablesData.config.MemoryFactorModeSettings.probabilityOfHappening[4];
+            Random6.Value = GlobalVariablesData.config.MemoryFactorModeSettings.probabilityOfHappening[5];
+            Random7.Value = GlobalVariablesData.config.MemoryFactorModeSettings.probabilityOfHappening[6];
+            Random8.Value = GlobalVariablesData.config.MemoryFactorModeSettings.probabilityOfHappening[7];
+            Random9.Value = GlobalVariablesData.config.MemoryFactorModeSettings.probabilityOfHappening[8];
+            Random10.Value = GlobalVariablesData.config.MemoryFactorModeSettings.probabilityOfHappening[9];
             CanChange = true;
+
+            _logger.Information("记忆势能模式设置加载完成，锁定状态: {Locked}, 速度: {Speed}",
+                LockedCheck.IsChecked,
+                Speed.Value);
         }
 
         private void LockedCheck_Click(object sender, RoutedEventArgs e)
         {
             if (CanChange)
             {
-                GlobalVariables.json.MemoryFactorModeSettings.Locked = LockedCheck.IsChecked.Value;
-                GlobalVariables.SaveJson();
+                GlobalVariablesData.config.MemoryFactorModeSettings.Locked = LockedCheck.IsChecked.Value;
+                GlobalVariablesData.SaveConfig();
+                _logger.Information("记忆势能模式锁定状态修改为: {Locked}", LockedCheck.IsChecked.Value);
             }
         }
 
@@ -47,8 +60,9 @@ namespace NameCube.Setting.ModeSetting
         {
             if (CanChange)
             {
-                GlobalVariables.json.MemoryFactorModeSettings.Speed = (int)Speed.Value + 10;
-                GlobalVariables.SaveJson();
+                GlobalVariablesData.config.MemoryFactorModeSettings.Speed = (int)Speed.Value + 10;
+                GlobalVariablesData.SaveConfig();
+                _logger.Debug("记忆势能模式速度修改为: {Speed}", (int)Speed.Value + 10);
             }
         }
 
@@ -60,40 +74,42 @@ namespace NameCube.Setting.ModeSetting
 
         private void Random_ValueChanged(object sender, Wpf.Ui.Controls.NumberBoxValueChangedEventArgs args)
         {
-            if(CanChange)
+            if (CanChange)
             {
-                GlobalVariables.json.MemoryFactorModeSettings.probabilityOfHappening[0] = ((int?)Random1.Value)??0;
-                GlobalVariables.json.MemoryFactorModeSettings.probabilityOfHappening[1] = ((int?)Random2.Value)??0;
-                GlobalVariables.json.MemoryFactorModeSettings.probabilityOfHappening[2] = ((int?)Random3.Value)??0;
-                GlobalVariables.json.MemoryFactorModeSettings.probabilityOfHappening[3] = ((int?)Random4.Value)??0;
-                GlobalVariables.json.MemoryFactorModeSettings.probabilityOfHappening[4] = ((int?)Random5.Value)??0;
-                GlobalVariables.json.MemoryFactorModeSettings.probabilityOfHappening[5] = ((int?)Random6.Value)??0;
-                GlobalVariables.json.MemoryFactorModeSettings.probabilityOfHappening[6] = ((int?)Random7.Value)??0;
-                GlobalVariables.json.MemoryFactorModeSettings.probabilityOfHappening[7] = ((int?)Random8.Value)??0;
-                GlobalVariables.json.MemoryFactorModeSettings.probabilityOfHappening[8] = ((int?)Random9.Value) ?? 0;
-                GlobalVariables.json.MemoryFactorModeSettings.probabilityOfHappening[9] = ((int?)Random10.Value) ?? 0;
-                GlobalVariables.SaveJson();
-            }
+                GlobalVariablesData.config.MemoryFactorModeSettings.probabilityOfHappening[0] = ((int?)Random1.Value) ?? 0;
+                GlobalVariablesData.config.MemoryFactorModeSettings.probabilityOfHappening[1] = ((int?)Random2.Value) ?? 0;
+                GlobalVariablesData.config.MemoryFactorModeSettings.probabilityOfHappening[2] = ((int?)Random3.Value) ?? 0;
+                GlobalVariablesData.config.MemoryFactorModeSettings.probabilityOfHappening[3] = ((int?)Random4.Value) ?? 0;
+                GlobalVariablesData.config.MemoryFactorModeSettings.probabilityOfHappening[4] = ((int?)Random5.Value) ?? 0;
+                GlobalVariablesData.config.MemoryFactorModeSettings.probabilityOfHappening[5] = ((int?)Random6.Value) ?? 0;
+                GlobalVariablesData.config.MemoryFactorModeSettings.probabilityOfHappening[6] = ((int?)Random7.Value) ?? 0;
+                GlobalVariablesData.config.MemoryFactorModeSettings.probabilityOfHappening[7] = ((int?)Random8.Value) ?? 0;
+                GlobalVariablesData.config.MemoryFactorModeSettings.probabilityOfHappening[8] = ((int?)Random9.Value) ?? 0;
+                GlobalVariablesData.config.MemoryFactorModeSettings.probabilityOfHappening[9] = ((int?)Random10.Value) ?? 0;
+                GlobalVariablesData.SaveConfig();
 
+                _logger.Debug("记忆势能模式概率设置修改为: {ProbabilityArray}",
+                    string.Join(",", GlobalVariablesData.config.MemoryFactorModeSettings.probabilityOfHappening));
+            }
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            _logger.Information("重置记忆势能模式概率设置");
             CanChange = false;
-            GlobalVariables.json.MemoryFactorModeSettings.probabilityOfHappening = new List<int> { 4, 2, 3, 4, 2, 2, 3, 1, 1 ,2};
-            Random1.Value = GlobalVariables.json.MemoryFactorModeSettings.probabilityOfHappening[0];
-            Random2.Value = GlobalVariables.json.MemoryFactorModeSettings.probabilityOfHappening[1];
-            Random3.Value = GlobalVariables.json.MemoryFactorModeSettings.probabilityOfHappening[2];
-            Random4.Value = GlobalVariables.json.MemoryFactorModeSettings.probabilityOfHappening[3];
-            Random5.Value = GlobalVariables.json.MemoryFactorModeSettings.probabilityOfHappening[4];
-            Random6.Value = GlobalVariables.json.MemoryFactorModeSettings.probabilityOfHappening[5];
-            Random7.Value = GlobalVariables.json.MemoryFactorModeSettings.probabilityOfHappening[6];
-            Random8.Value = GlobalVariables.json.MemoryFactorModeSettings.probabilityOfHappening[7];
-            Random9.Value = GlobalVariables.json.MemoryFactorModeSettings.probabilityOfHappening[8];
-            Random10.Value = GlobalVariables.json.MemoryFactorModeSettings.probabilityOfHappening[9];
+            GlobalVariablesData.config.MemoryFactorModeSettings.probabilityOfHappening = new List<int> { 4, 2, 3, 4, 2, 2, 3, 1, 1, 2 };
+            Random1.Value = GlobalVariablesData.config.MemoryFactorModeSettings.probabilityOfHappening[0];
+            Random2.Value = GlobalVariablesData.config.MemoryFactorModeSettings.probabilityOfHappening[1];
+            Random3.Value = GlobalVariablesData.config.MemoryFactorModeSettings.probabilityOfHappening[2];
+            Random4.Value = GlobalVariablesData.config.MemoryFactorModeSettings.probabilityOfHappening[3];
+            Random5.Value = GlobalVariablesData.config.MemoryFactorModeSettings.probabilityOfHappening[4];
+            Random6.Value = GlobalVariablesData.config.MemoryFactorModeSettings.probabilityOfHappening[5];
+            Random7.Value = GlobalVariablesData.config.MemoryFactorModeSettings.probabilityOfHappening[6];
+            Random8.Value = GlobalVariablesData.config.MemoryFactorModeSettings.probabilityOfHappening[7];
+            Random9.Value = GlobalVariablesData.config.MemoryFactorModeSettings.probabilityOfHappening[8];
+            Random10.Value = GlobalVariablesData.config.MemoryFactorModeSettings.probabilityOfHappening[9];
             CanChange = true;
-            GlobalVariables.SaveJson();
+            GlobalVariablesData.SaveConfig();
         }
     }
-    
 }
