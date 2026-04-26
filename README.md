@@ -26,7 +26,6 @@
 [![正式版本](https://img.shields.io/github/v/release/haaa4/NameCube?style=flat-square&color=%233fb950&label=正式)](https://github.com/haaa4/NameCube/releases/latest)
 [![测试中版本](https://img.shields.io/github/v/release/haaa4/NameCube?include_prereleases&style=flat-square&label=测试)](https://github.com/haaa4/NameCube/releases/)
 [![下载量](https://img.shields.io/github/downloads/haaa4/NameCube/total?style=social&label=下载量&logo=github)](https://github.com/haaa4/NameCube/releases/latest)
-[![许可证](https://img.shields.io/badge/license-GPL3.0-blue.svg)]([https://github.com/ldqk/Masuit.Tools/blob/master/LICENSE](https://github.com/haaa4/NameCube/blob/main/LICENSE))
 </div>
 
 ## 抽取方式
