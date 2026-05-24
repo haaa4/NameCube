@@ -30,6 +30,7 @@ namespace NameCube.Setting
             _logger.Debug("LogSetting 开始初始化");
             canChange = false;
             LogLevelComboBox.SelectedIndex = GlobalVariablesData.config.AllSettings.LogLevel;
+            RetentionDays.Value = GlobalVariablesData.config.AllSettings.LogRetentionDays;
             canChange = true;
             _logger.Debug("LogSetting 页面加载完成");
         }
@@ -59,7 +60,7 @@ namespace NameCube.Setting
                    .WriteTo.Async(a => a.File(
                        logFilePath,
                        rollingInterval: RollingInterval.Day,
-                       retainedFileCountLimit: 7, // 减少保留天数
+                       retainedFileCountLimit: GlobalVariablesData.config.AllSettings.LogRetentionDays, // 使用用户配置的保留天数
                        outputTemplate: "{Timestamp:HH:mm:ss} [{Level:u3}] {Message:lj}{NewLine}{Exception}",
 
                        shared: true,
@@ -78,7 +79,7 @@ namespace NameCube.Setting
                    .WriteTo.Async(a => a.File(
                        logFilePath,
                        rollingInterval: RollingInterval.Day,
-                       retainedFileCountLimit: 7, // 减少保留天数
+                       retainedFileCountLimit: GlobalVariablesData.config.AllSettings.LogRetentionDays, // 使用用户配置的保留天数
                        outputTemplate: "{Timestamp:HH:mm:ss} [{Level:u3}] {Message:lj}{NewLine}{Exception}",
 
                        shared: true,
@@ -97,7 +98,7 @@ namespace NameCube.Setting
                    .WriteTo.Async(a => a.File(
                        logFilePath,
                        rollingInterval: RollingInterval.Day,
-                       retainedFileCountLimit: 7, // 减少保留天数
+                       retainedFileCountLimit: GlobalVariablesData.config.AllSettings.LogRetentionDays, // 使用用户配置的保留天数
                        outputTemplate: "{Timestamp:HH:mm:ss} [{Level:u3}] {Message:lj}{NewLine}{Exception}",
                        shared: true,
                        flushToDiskInterval: TimeSpan.FromSeconds(5))) // 每5秒刷新到磁盘
@@ -115,7 +116,7 @@ namespace NameCube.Setting
                    .WriteTo.Async(a => a.File(
                        logFilePath,
                        rollingInterval: RollingInterval.Day,
-                       retainedFileCountLimit: 7, // 减少保留天数
+                       retainedFileCountLimit: GlobalVariablesData.config.AllSettings.LogRetentionDays, // 使用用户配置的保留天数
                        outputTemplate: "{Timestamp:HH:mm:ss} [{Level:u3}] {Message:lj}{NewLine}{Exception}",
                        shared: true,
                        flushToDiskInterval: TimeSpan.FromSeconds(5))) // 每5秒刷新到磁盘
@@ -130,6 +131,15 @@ namespace NameCube.Setting
                     break;
             }
             Log.Debug("Serilog二次初始化成功");
+        }
+
+        private void RetentionDays_ValueChanged(object sender, Wpf.Ui.Controls.NumberBoxValueChangedEventArgs args)
+        {
+            if(canChange)
+            {
+                GlobalVariablesData.config.AllSettings.LogRetentionDays = (int)RetentionDays.Value.Value;
+                GlobalVariablesData.SaveConfig();
+            }
         }
     }
 }

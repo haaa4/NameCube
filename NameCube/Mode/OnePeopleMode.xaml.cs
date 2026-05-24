@@ -18,7 +18,7 @@ namespace NameCube.Mode
             public string Index { get; set; }
             public string Name { get; set; }
         }
-
+        private Random Random = new();
         public System.Timers.Timer timer;
         private int NowIndex = 0;
         private bool IsReadyToStop;
@@ -69,7 +69,7 @@ namespace NameCube.Mode
                                 resultText = NowNumberText.Text;
                             });
                             Log.Information("单抽模式结束，结果: {Result}", resultText);
-                            _speechSynthesizer.SpeakAsync(resultText);
+                            _speechSynthesizer?.SpeakAsync(resultText);
                         }
                     });
                     timer.Stop();
@@ -89,11 +89,7 @@ namespace NameCube.Mode
                     Log.Error(ex, "更新显示文本时发生异常");
                 }
 
-                NowIndex++;
-                if (NowIndex >= GlobalVariablesData.config.AllSettings.Name.Count)
-                {
-                    NowIndex = 0;
-                }
+                NowIndex=Random.Next(0, GlobalVariablesData.config.AllSettings.Name.Count);
             }
             catch (Exception ex)
             {
@@ -106,7 +102,7 @@ namespace NameCube.Mode
             try
             {
                 StartButton.IsEnabled = false;
-                _speechSynthesizer.SpeakAsyncCancelAll();
+                _speechSynthesizer?.SpeakAsyncCancelAll();
 
                 if (GlobalVariablesData.config.AllSettings.Name.Count == 0)
                 {
@@ -163,7 +159,7 @@ namespace NameCube.Mode
                         if (GlobalVariablesData.config.OnePeopleModeSettings.Speech)
                         {
                             Log.Debug("语音播报结果: {Name}", Text);
-                            _speechSynthesizer.SpeakAsync(Text);
+                            _speechSynthesizer?.SpeakAsync(Text);
                         }
 
                         FinishText.Text = Text;
@@ -220,7 +216,7 @@ namespace NameCube.Mode
 
                 if (!GlobalVariablesData.config.AllSettings.SystemSpeech)
                 {
-                    _speechSynthesizer.SelectVoiceByHints(VoiceGender.Female, VoiceAge.Adult);
+                    _speechSynthesizer?.SelectVoiceByHints(VoiceGender.Female, VoiceAge.Adult);
                     _speechSynthesizer.Rate = GlobalVariablesData.config.AllSettings.Speed;
                     _speechSynthesizer.Volume = GlobalVariablesData.config.AllSettings.Volume;
                     Log.Debug("配置语音合成器: 性别=Female, 音量={Volume}, 语速={Speed}",

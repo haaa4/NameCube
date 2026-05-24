@@ -314,7 +314,7 @@ namespace NameCube
                    .WriteTo.Async(a => a.File(
                        logFilePath,
                        rollingInterval: RollingInterval.Day,
-                       retainedFileCountLimit: 7, // 减少保留天数
+                       retainedFileCountLimit: GlobalVariablesData.config.AllSettings.LogRetentionDays, // 减少保留天数
                        outputTemplate: "{Timestamp:HH:mm:ss} [{Level:u3}] {Message:lj}{NewLine}{Exception}",
                        shared: true,
                        flushToDiskInterval: TimeSpan.FromSeconds(5))) // 每5秒刷新到磁盘
@@ -332,7 +332,7 @@ namespace NameCube
                    .WriteTo.Async(a => a.File(
                        logFilePath,
                        rollingInterval: RollingInterval.Day,
-                       retainedFileCountLimit: 7, // 减少保留天数
+                       retainedFileCountLimit: GlobalVariablesData.config.AllSettings.LogRetentionDays, // 减少保留天数
                        outputTemplate: "{Timestamp:HH:mm:ss} [{Level:u3}] {Message:lj}{NewLine}{Exception}",
 
                        shared: true,
@@ -351,7 +351,7 @@ namespace NameCube
                    .WriteTo.Async(a => a.File(
                        logFilePath,
                        rollingInterval: RollingInterval.Day,
-                       retainedFileCountLimit: 7, // 减少保留天数
+                       retainedFileCountLimit: GlobalVariablesData.config.AllSettings.LogRetentionDays, // 使用用户配置的保留天数  
                        outputTemplate: "{Timestamp:HH:mm:ss} [{Level:u3}] {Message:lj}{NewLine}{Exception}",
 
                        shared: true,
@@ -370,7 +370,7 @@ namespace NameCube
                    .WriteTo.Async(a => a.File(
                        logFilePath,
                        rollingInterval: RollingInterval.Day,
-                       retainedFileCountLimit: 7, // 减少保留天数
+                       retainedFileCountLimit: GlobalVariablesData.config.AllSettings.LogRetentionDays, // 使用用户配置的保留天数
                        outputTemplate: "{Timestamp:HH:mm:ss} [{Level:u3}] {Message:lj}{NewLine}{Exception}",
                        shared: true,
                        flushToDiskInterval: TimeSpan.FromSeconds(5))) // 每5秒刷新到磁盘

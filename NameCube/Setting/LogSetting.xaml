@@ -43,5 +43,24 @@
                 <ComboBoxItem Content="错误" />
             </ComboBox>
         </ui:CardControl>
+        <ui:CardControl
+     Margin="4"
+     Padding="20,10,20,10"
+     Icon="{ui:SymbolIcon Symbol=Timer20}">
+            <ui:CardControl.Header>
+                <StackPanel>
+                    <ui:TextBlock
+                 Margin="0"
+                 FontTypography="BodyStrong"
+                 Text="日志保留天数"
+                 TextWrapping="WrapWithOverflow" />
+                    <ui:TextBlock
+                 Appearance="Secondary"
+                 Text="选择日志保留天数"
+                 TextWrapping="WrapWithOverflow" />
+                </StackPanel>
+            </ui:CardControl.Header>
+            <ui:NumberBox x:Name="RetentionDays" Minimum="1" Maximum="365" ValueChanged="RetentionDays_ValueChanged"/>
+        </ui:CardControl>
     </StackPanel>
 </Page>

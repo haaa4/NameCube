@@ -25,7 +25,7 @@
                         TextWrapping="WrapWithOverflow" />
                     <ui:TextBlock
                         Appearance="Secondary"
-                        Text="开启后，将在后台每隔十分钟清理内存(重启后生效）"
+                        Text="开启后，将在后台每隔十分钟清理内存(重启后生效）,并且会在主界面关闭时清理一次内存"
                         TextWrapping="WrapWithOverflow" />
                 </StackPanel>
             </ui:CardControl.Header>

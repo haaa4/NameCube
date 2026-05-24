@@ -1,4 +1,5 @@
-﻿using NameCube.GlobalVariables.DataClass;
+﻿using Masuit.Tools.Win32;
+using NameCube.GlobalVariables.DataClass;
 using NameCube.Mode;
 using NameCube.Setting;
 using NameCube.ToolBox;
@@ -344,6 +345,8 @@ namespace NameCube
                     Log.Information("悬浮球模式，隐藏主窗口");
                     e.Cancel = true;
                     this.Hide();
+                    if(GlobalVariablesData.config.StartToDo.AlwaysCleanMemory)
+                        Masuit.Tools.Win32.Windows.ClearMemory();
                 }
             }
             catch (Exception ex)

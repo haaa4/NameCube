@@ -71,7 +71,7 @@ namespace NameCube.Mode
             {
                 var flicker = FindResource("flicker") as Storyboard;
                 flicker.Begin();
-                _speechSynthesizer.SpeakAsyncCancelAll();
+                _speechSynthesizer?.SpeakAsyncCancelAll();
                 StartButton.IsEnabled = false;
                 var jumpStoryBoard = FindResource("JumpStoryBoard") as Storyboard;
 
@@ -157,7 +157,7 @@ namespace NameCube.Mode
                     if (GlobalVariablesData.config.PrepareModeSetting.Speak)
                     {
                         Log.Debug("语音播报结果: {Name}", get);
-                        _speechSynthesizer.SpeakAsync(get);
+                        _speechSynthesizer?.SpeakAsync(get);
                     }
 
                     StartButton.IsEnabled = true;
@@ -191,7 +191,7 @@ namespace NameCube.Mode
 
                 if (!GlobalVariablesData.config.AllSettings.SystemSpeech)
                 {
-                    _speechSynthesizer.SelectVoiceByHints(VoiceGender.Female, VoiceAge.Adult);
+                    _speechSynthesizer?.SelectVoiceByHints(VoiceGender.Female, VoiceAge.Adult);
                     _speechSynthesizer.Volume = GlobalVariablesData.config.AllSettings.Volume;
                     _speechSynthesizer.Rate = GlobalVariablesData.config.AllSettings.Speed;
                     Log.Debug("配置语音合成器: 性别=Female, 音量={Volume}, 语速={Speed}",

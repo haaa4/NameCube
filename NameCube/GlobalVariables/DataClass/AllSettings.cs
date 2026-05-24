@@ -115,10 +115,16 @@ namespace NameCube.GlobalVariables.DataClass
         public bool DefaultToMaximumSize { get; set; }
 
         /// <summary>
-        /// log等级
+        /// 日志等级
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
         public int LogLevel { get; set; } = 1;
+
+        /// <summary>
+        /// 日志保留天数
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+        public int LogRetentionDays { get; set; } = 7;
 
         /// <summary>
         /// 数据获取方式

@@ -21,7 +21,7 @@ namespace NameCube.ToolBox
 
             if (!GlobalVariablesData.config.AllSettings.SystemSpeech)
             {
-                _speechSynthesizer.SelectVoiceByHints(VoiceGender.Female, VoiceAge.Adult);
+                _speechSynthesizer?.SelectVoiceByHints(VoiceGender.Female, VoiceAge.Adult);
                 _speechSynthesizer.Volume = GlobalVariablesData.config.AllSettings.Volume;
                 _speechSynthesizer.Rate = GlobalVariablesData.config.AllSettings.Speed;
                 _logger.Debug("使用自定义语音合成器，音量: {Volume}, 语速: {Speed}",
@@ -39,8 +39,8 @@ namespace NameCube.ToolBox
             string textToRead = Read1.Text + Read2.Text;
             _logger.Information("开始朗读文本，长度: {Length}", textToRead.Length);
 
-            _speechSynthesizer.SpeakAsyncCancelAll();
-            _speechSynthesizer.SpeakAsync(textToRead);
+            _speechSynthesizer?.SpeakAsyncCancelAll();
+            _speechSynthesizer?.SpeakAsync(textToRead);
 
             _logger.Debug("朗读任务已启动");
         }

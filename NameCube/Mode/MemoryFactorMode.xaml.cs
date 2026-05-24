@@ -131,7 +131,7 @@ namespace NameCube.Mode
                 // 语音合成配置
                 if (!GlobalVariablesData.config.AllSettings.SystemSpeech)
                 {
-                    _speechSynthesizer.SelectVoiceByHints(VoiceGender.Female, VoiceAge.Adult);
+                    _speechSynthesizer?.SelectVoiceByHints(VoiceGender.Female, VoiceAge.Adult);
                     _speechSynthesizer.Rate = GlobalVariablesData.config.AllSettings.Speed;
                     _speechSynthesizer.Volume = GlobalVariablesData.config.AllSettings.Volume;
                 }
@@ -336,7 +336,7 @@ namespace NameCube.Mode
                     // 开始轮播
                     Log.Information("开始轮播");
                     StartButton.IsEnabled = false;
-                    _speechSynthesizer.SpeakAsyncCancelAll();
+                    _speechSynthesizer?.SpeakAsyncCancelAll();
                     FinishNumberText.Visibility = Visibility.Hidden;
                     NowNumberText.Visibility = Visibility.Visible;
                     StartButton.Content = "结束";
@@ -443,7 +443,7 @@ namespace NameCube.Mode
 
                     // 语音播报
                     if (GlobalVariablesData.config.MemoryFactorModeSettings.Speech)
-                        _speechSynthesizer.SpeakAsync(FinishNumberText.Text);
+                        _speechSynthesizer?.SpeakAsync(FinishNumberText.Text);
 
                     // 保存设置
                     SaveSettings();

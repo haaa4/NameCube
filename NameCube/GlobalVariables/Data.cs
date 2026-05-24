@@ -142,11 +142,11 @@ namespace NameCube
         /// <summary>
         /// 当前版本
         /// </summary>
-        public const string VERSION = "V1.3(#l6#)";
+        public const string VERSION = "V1.3.1(#l7#)";
         /// <summary>
         /// 当前版本代码
         /// </summary>
-        public const int VERSIONCODE = 6;
+        public const int VERSIONCODE = 7;
         /// <summary>
         /// 当前是否为测试版本
         /// </summary>

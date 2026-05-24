@@ -77,21 +77,21 @@ namespace NameCube.Setting
 
                             switch (enteredPassword)
                             {
-                                case "0d612c12d2ac33625bf3e0351b6f5e4f73829fa8":
+                                case "我知道自动流程Debug可能带来的危害，我仍然要开启它":
                                     Log.Information("开启自动流程Debug模式");
                                     GlobalVariablesData.config.AutomaticProcess.debug = true;
                                     GlobalVariablesData.SaveConfig();
                                     SnackBarFunction.ShowSnackBarInSettingWindow("自动流程Debug模式已开启", ControlAppearance.Success);
                                     break;
 
-                                case "c53d2f1a9a8499bcb477be56c31caa5c76ae60f5":
+                                case "我知道开发者调试可能带来的危害，我仍然要开启它":
                                     Log.Information("开启开发者调试");
                                     GlobalVariablesData.config.AllSettings.debug = true;
                                     GlobalVariablesData.SaveConfig();
                                     SnackBarFunction.ShowSnackBarInSettingWindow("开发者调试已开启", ControlAppearance.Success);
                                     break;
 
-                                case "7a7bc4496e501462270ce7f6f8023c96d32098d8":
+                                case "我知道势能模式调试可能带来的危害，我仍然要开启它":
                                     Log.Information("开启势能模式调试模式");
                                     GlobalVariablesData.config.MemoryFactorModeSettings.debug = true;
                                     GlobalVariablesData.SaveConfig();
@@ -168,7 +168,7 @@ namespace NameCube.Setting
             if(GlobalVariablesData.config.AllSettings.DownloadWay == 0)
                 await LoadImageFromWebAsync("https://avatars.githubusercontent.com/u/172395030?v=4", HeadImage);
             else
-                await LoadImageFromWebAsync("https://foruda.gitee.com/avatar/1774776926077586438/15207534_haaa4_1774776926.png!avatar200", HeadImage);
+                await LoadImageFromWebAsync("https://foruda.gitee.com/avatar/1777196359746152210/15207534_haaa4_1777196359.png!avatar200", HeadImage);
         }
 
         private void Button_Click(object sender, System.Windows.RoutedEventArgs e)
