@@ -302,6 +302,10 @@ namespace NameCube
         /// </summary>
         public void InitializeSerilogAgain()
         {
+            if(GlobalVariablesData.config.AllSettings.LogRetentionDays<1)
+            {
+                               GlobalVariablesData.config.AllSettings.LogRetentionDays = 7;
+            }
             string logDirectory = Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "logs");
             string logFilePath = Path.Combine(logDirectory, "NameCube-.log");
             switch (GlobalVariablesData.config.AllSettings.LogLevel)
