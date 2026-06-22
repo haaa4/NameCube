@@ -64,7 +64,7 @@ namespace NameCube.Setting
         {
             _logger.Information("重启悬浮球功能");
             string[] args = Environment.GetCommandLineArgs();
-            File.WriteAllText(Path.Combine(GlobalVariablesData.configDir, "START"), "The cake is a lie");
+            File.WriteAllText(Path.Combine(GlobalVariablesData.userDataDir, "START"), "The cake is a lie");
 
             _logger.Information("程序退出以重启悬浮球");
             Application.Current.Shutdown();

@@ -64,5 +64,9 @@
             Margin="10,0,0,0"
             Click="Button_Click_9"
             Content="open guide" />
+        <ui:Button
+    Margin="10,0,0,0"
+    Click="Button_Click_10"
+    Content="认证" />
     </StackPanel>
 </Page>

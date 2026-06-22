@@ -21,11 +21,11 @@
                     <ui:TextBlock
                         Margin="0"
                         FontTypography="BodyStrong"
-                        Text="自动内存清理"
+                        Text="自动内存整理"
                         TextWrapping="WrapWithOverflow" />
                     <ui:TextBlock
                         Appearance="Secondary"
-                        Text="开启后，将在后台每隔十分钟清理内存(重启后生效）,并且会在主界面关闭时清理一次内存"
+                        Text="开启后，将在后台每隔十分钟整理内存(重启后生效）,并且会在主界面关闭时整理一次内存"
                         TextWrapping="WrapWithOverflow" />
                 </StackPanel>
             </ui:CardControl.Header>
@@ -40,7 +40,7 @@
         <ui:Button
             Margin="5,0,0,0"
             Click="Button_Click"
-            Content="现在进行内存清理"
+            Content="现在进行内存整理"
             Icon="ui:SymbolIcon Symbol=Broom24" />
         <ui:SnackbarPresenter x:Name="SnackbarPresenterHost" />
         <ui:SnackbarPresenter x:Name="SnackbarPresenterHost1" />

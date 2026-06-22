@@ -44,7 +44,6 @@ namespace NameCube.Mode.HomeChildrenPage
         {
             "NameCube.Image.HeadMap.Photo1.png",
             "NameCube.Image.HeadMap.Photo2.png",
-            "NameCube.Image.HeadMap.Photo3.png",
             "NameCube.Image.HeadMap.Photo4.png",
             "NameCube.Image.HeadMap.Photo5.png",
             "NameCube.Image.HeadMap.Photo6.png",

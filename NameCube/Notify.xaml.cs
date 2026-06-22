@@ -417,8 +417,13 @@ namespace NameCube
         {
             try
             {
+                if (GlobalVariablesData.config.PermissionManager.needAdmin[0] && (!CredentialHelper.PermissionVerification()))
+                {
+                    return;
+                }
                 Log.Information("通知窗口：退出应用");
                 _notifyIcon.Dispose();
+
                 Application.Current.Shutdown(); // 手动关闭应用
             }
             catch (Exception ex)
@@ -479,7 +484,6 @@ namespace NameCube
             try
             {
                 Log.Information("通知窗口：重启应用");
-                _notifyIcon.Dispose();
                 AppFunction.Restart();
             }
             catch (Exception ex)

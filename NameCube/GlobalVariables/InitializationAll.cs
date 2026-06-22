@@ -95,7 +95,9 @@ namespace NameCube.GlobalVariables
                 ImformationData = new ImformationData
                 {
                     UsedBetterColor = false,
+                   
                 },
+                PermissionManager = new()
 
 
             };
@@ -191,6 +193,14 @@ namespace NameCube.GlobalVariables
             if (GlobalVariablesData.config.AutomaticProcess == null)
             {
                 GlobalVariablesData.config.AutomaticProcess = new AutomaticProcess();
+            }
+            if(GlobalVariablesData.config.PermissionManager == null)
+            {
+                GlobalVariablesData.config.PermissionManager = new PermissionManager();
+            }   
+            if(GlobalVariablesData.config.PermissionManager.needAdmin == null)
+            {
+                GlobalVariablesData.config.PermissionManager.needAdmin = new List<bool> { false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false };
             }
             //未来的开发请注意！！！！
             GlobalVariablesData.config.AllSettings.LowMemoryMode = false;

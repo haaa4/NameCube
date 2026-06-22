@@ -44,7 +44,7 @@ namespace NameCube.FirstUse
             {
                 string[] args = Environment.GetCommandLineArgs();
                 Log.Information("开始重启应用操作");
-                File.WriteAllText(Path.Combine(GlobalVariablesData.configDir, "START"), "The cake is a lie");
+                File.WriteAllText(Path.Combine(GlobalVariablesData.userDataDir, "START"), "The cake is a lie");
                 Log.Information("重启标记文件已写入");
                 Log.Information("程序退出，准备重启");
                 System.Windows.Application.Current.Shutdown();

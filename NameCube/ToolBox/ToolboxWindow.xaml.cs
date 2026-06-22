@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Speech.Synthesis;
 using System.Windows;
+using System.Windows.Media;
 using System.Windows.Media.Animation;
 using Wpf.Ui.Controls;
 
@@ -17,14 +18,12 @@ namespace NameCube.ToolBox
     {
         private static readonly ILogger _logger = Log.ForContext<ToolboxWindow>();
         private SpeechSynthesizer _speechSynthesizer = new SpeechSynthesizer();
-
         public ToolboxWindow()
         {
             InitializeComponent();
             _logger.Debug("工具箱窗口初始化开始");
-
-
             _logger.Information("工具箱窗口创建完成");
+
         }
 
         private void FluentWindow_Loaded(object sender, RoutedEventArgs e)
@@ -46,6 +45,25 @@ namespace NameCube.ToolBox
             };
 
             showStoryBoard.Begin();
+            Item1.IsEnabled = true;
+            Item2.IsEnabled = true;
+            Item3.IsEnabled = true;
+            if (!CredentialHelper.PermissionVerification())
+            {
+                Item1.IsEnabled = !GlobalVariablesData.config.PermissionManager.needAdmin[12];
+                Item2.IsEnabled = !GlobalVariablesData.config.PermissionManager.needAdmin[13];
+                Item3.IsEnabled = !GlobalVariablesData.config.PermissionManager.needAdmin[14];
+                this.Title = "小工具（权限受限）";
+                TitleBar.Title= "小工具（权限受限）";
+            }
+            else
+            {
+                Item1.IsEnabled = true;
+                Item2.IsEnabled = true;
+                Item3.IsEnabled = true;
+                this.Title = "小工具";
+                TitleBar.Title = "小工具";
+            }
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

@@ -116,8 +116,6 @@ namespace NameCube.FirstUse
                         Directory.CreateDirectory(GlobalVariablesData.userDataDir);
                         var SevenZipCompressor = new SevenZipCompressor(null);
                         SevenZipCompressor.Decompress(openFileDialog.FileName, GlobalVariablesData.userDataDir);
-                        File.Copy(Path.Combine(GlobalVariablesData.userDataDir, "config_backup.json"), Path.Combine(GlobalVariablesData.configDir, "config.json"), true);
-                        File.Delete(Path.Combine(GlobalVariablesData.userDataDir, "config_backup.json"));
                         MessageBoxFunction.ShowMessageBoxInfo("覆盖成功，请自行启动软件");
                         Log.Information("配置恢复成功，程序即将重启");
 

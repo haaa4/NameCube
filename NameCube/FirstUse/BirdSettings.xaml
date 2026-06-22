@@ -7,9 +7,9 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     Title="BirdSettings"
-    FontFamily="{StaticResource AppFont}"
     d:DesignHeight="1000"
     d:DesignWidth="800"
+    FontFamily="{StaticResource AppFont}"
     mc:Ignorable="d">
 
     <Grid>
@@ -65,7 +65,10 @@
                     <ComboBoxItem Content="长按+右键" />
                 </ComboBox>
             </ui:CardControl>
-            <TextBlock Text="更多设置请在应用设置里使用" Foreground="Gray" Margin="20"/>
+            <TextBlock
+                Margin="20"
+                Foreground="Gray"
+                Text="更多设置请在应用设置里使用" />
         </StackPanel>
     </Grid>
 </Page>

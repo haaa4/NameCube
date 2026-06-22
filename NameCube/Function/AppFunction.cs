@@ -10,10 +10,14 @@ namespace NameCube.Function
     {
         public static void Restart()
         {
+            if(GlobalVariablesData.config.PermissionManager.needAdmin[0]&&(!CredentialHelper.PermissionVerification()))
+            {
+                return;
+            }
             string[] args = Environment.GetCommandLineArgs();
             File.WriteAllText(
-                Path.Combine(GlobalVariablesData.configDir, "START"),
-                "The cake is a lie"
+                Path.Combine(GlobalVariablesData.userDataDir, "START"),
+                "The cake is a lie"//彩蛋而已
             );
             ProcessStartInfo startInfo = new ProcessStartInfo
             {

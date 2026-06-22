@@ -29,6 +29,7 @@
         <ui:TitleBar
             Title="小工具"
             Grid.Row="0"
+            x:Name="TitleBar"
             Icon="{ui:ImageIcon 'pack://application:,,,/icon.ico'}" />
         <ui:NavigationView
             x:Name="NavigationMenu"
@@ -42,19 +43,22 @@
                 <ui:NavigationViewItem
                     Content="自定义朗读"
                     Icon="{ui:SymbolIcon Symbol=PersonVoice24}"
-                    TargetPageType="{x:Type Toolbox:SpeechToolbox}" />
+                    TargetPageType="{x:Type Toolbox:SpeechToolbox}" 
+                    x:Name="Item1"/>
                 <ui:NavigationViewItem
-                    Content="内存"
+                    Content="内存整理"
                     Icon="{ui:SymbolIcon Symbol=Memory16}"
-                    TargetPageType="{x:Type Toolbox:MemoryToolbox}" />
+                    TargetPageType="{x:Type Toolbox:MemoryToolbox}" 
+                     x:Name="Item2"/>
                 <ui:NavigationViewItem
                     Content="自动流程"
                     Icon="{ui:SymbolIcon Symbol=ArrowWrap20}"
-                    TargetPageType="{x:Type Toolbox:AutomaticProcess}" />
+                    TargetPageType="{x:Type Toolbox:AutomaticProcess}" 
+                     x:Name="Item3"/>
                 <ui:NavigationViewItem
+                    Click="NavigationViewItem_Click"
                     Content="桌面整理"
-                    Icon="{ui:SymbolIcon Symbol=Broom24}"
-                    Click="NavigationViewItem_Click"/>
+                    Icon="{ui:SymbolIcon Symbol=Broom24}" />
             </ui:NavigationView.MenuItems>
             <ui:NavigationView.PaneHeader>
                 <ui:Button Icon="{ui:SymbolIcon Symbol=ArrowClockwise24}">

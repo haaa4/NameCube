@@ -61,6 +61,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="CredentialManagement" />
     <PackageReference Include="Masuit.Tools.Abstractions" />
     <PackageReference Include="Masuit.Tools.Core" />
     <PackageReference Include="Microsoft.CSharp" />
@@ -144,7 +145,6 @@
   <ItemGroup>
     <EmbeddedResource Include="Image\HeadMap\Photo1.png" />
     <EmbeddedResource Include="Image\HeadMap\Photo2.png" />
-    <EmbeddedResource Include="Image\HeadMap\Photo3.png" />
   </ItemGroup>
 	<Target Name="GenerateCreditsFile" AfterTargets="Build">
 		<Exec Command="dotnet list $(MSBuildProjectFile) package --format json &gt; $(OutputPath)credits.json" IgnoreExitCode="true" />

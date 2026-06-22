@@ -7,12 +7,12 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:mode="clr-namespace:NameCube.Mode"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
-     FontFamily="{StaticResource AppFont}"
     xmlns:vio="http://schemas.lepo.co/wpfui/2022/xaml/violeta"
     Title="点鸣魔方"
     Width="1000"
     Height="450"
     Closing="FluentWindow_Closing"
+    FontFamily="{StaticResource AppFont}"
     Icon="pack://application:,,,/icon.ico"
     Loaded="FluentWindow_Loaded"
     mc:Ignorable="d">

@@ -1,4 +1,5 @@
 ﻿using Masuit.Tools.Win32;
+using NameCube.Function;
 using NameCube.GlobalVariables.DataClass;
 using NameCube.Mode;
 using NameCube.Setting;
@@ -693,6 +694,11 @@ namespace NameCube
 
         public void ShowThisWindow()
         {
+            if (GlobalVariablesData.config.PermissionManager.needAdmin[1] && (!CredentialHelper.PermissionVerification()))
+            {
+                this.Hide();
+                return;
+            }
             try
             {
                 Log.Information("显示主窗口");
@@ -939,6 +945,7 @@ namespace NameCube
 
         private void fluentWindow_Loaded(object sender, RoutedEventArgs e)
         {
+
             try
             {
                 Log.Information("主窗口加载完成");

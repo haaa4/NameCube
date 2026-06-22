@@ -29,11 +29,6 @@ namespace NameCube.Setting
             string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Namecube");
         }
 
-        private void CardAction_Click(object sender, RoutedEventArgs e)
-        {
-            _logger.Information("打开配置目录: {ConfigDir}", GlobalVariablesData.configDir);
-            Process.Start("explorer.exe", GlobalVariablesData.configDir);
-        }
 
         private void CardAction_Click_1(object sender, RoutedEventArgs e)
         {
@@ -74,13 +69,12 @@ namespace NameCube.Setting
 
         private void CardAction_Click_2(object sender, RoutedEventArgs e)
         {
-            _logger.Warning("用户请求删除整个配置目录: {ConfigDir}", GlobalVariablesData.configDir);
+            _logger.Warning("用户请求删除整个配置目录: {ConfigDir}", GlobalVariablesData.userDataDir);
             SnackBarFunction.ShowSnackBarInSettingWindow("正在删除，请稍等", ControlAppearance.Primary, null, 1);
             Task.Run(() =>
             {
                 try
                 {
-                    Directory.Delete(GlobalVariablesData.configDir, true);
                     Directory.Delete(GlobalVariablesData.userDataDir, true);
                     MessageBoxFunction.ShowMessageBoxInfo("删除成功，请自行启动软件");
                     _logger.Information("配置目录删除成功，程序即将退出");
@@ -109,16 +103,20 @@ namespace NameCube.Setting
 
                 if (saveFileDialog.ShowDialog() == DialogResult.OK)
                 {
+
                     _logger.Information("开始备份配置文件到: {FilePath}", saveFileDialog.FileName);
                     SnackBarFunction.ShowSnackBarInSettingWindow("正在保存，请稍等", ControlAppearance.Primary, null, 1);
-
+                    if (GlobalVariablesData.creds != null)
+                    {
+                        MessageBoxFunction.ShowMessageBoxWarning("配置文件属于加密状态，无法直接给其他电脑使用。若要转移，请关闭权限控制");
+                    }
+                    var SevenZipCompressor = new SevenZipCompressor(null);
+                    SevenZipCompressor.Zip(new List<string>() { GlobalVariablesData.userDataDir }, saveFileDialog.FileName);
                     Task.Run(() =>
                     {
                         try
                         {
-                            var SevenZipCompressor = new SevenZipCompressor(null);
-                            File.Copy(Path.Combine(GlobalVariablesData.configDir, "config.json"), Path.Combine(GlobalVariablesData.userDataDir, "config_backup.json"), true);
-                            SevenZipCompressor.Zip(new List<string>() { GlobalVariablesData.userDataDir }, saveFileDialog.FileName);
+
                             File.Delete(Path.Combine(GlobalVariablesData.userDataDir, "config_backup.json"));
                             MessageBoxFunction.ShowMessageBoxInfo("保存成功");
                             _logger.Information("配置文件备份成功: {FilePath}", saveFileDialog.FileName);
@@ -129,6 +127,7 @@ namespace NameCube.Setting
                             MessageBoxFunction.ShowMessageBoxError("保存失败\n" + ex.Message);
                         }
                     });
+
                 }
             }
         }
@@ -152,7 +151,6 @@ namespace NameCube.Setting
                         Directory.CreateDirectory(GlobalVariablesData.userDataDir);
                         var SevenZipCompressor = new SevenZipCompressor(null);
                         SevenZipCompressor.Decompress(openFileDialog.FileName, GlobalVariablesData.userDataDir);
-                        File.Copy(Path.Combine(GlobalVariablesData.userDataDir, "config_backup.json"), Path.Combine(GlobalVariablesData.configDir, "config.json"), true);
                         File.Delete(Path.Combine(GlobalVariablesData.userDataDir, "config_backup.json"));
                         MessageBoxFunction.ShowMessageBoxInfo("覆盖成功，请自行启动软件");
                         _logger.Information("配置恢复成功，程序即将重启");

@@ -1,4 +1,5 @@
-﻿using Masuit.Tools.Logging;
+﻿using CredentialManagement;
+using Masuit.Tools.Logging;
 using NameCube.Function;
 using NameCube.GlobalVariables.DataClass;
 using Newtonsoft.Json;
@@ -84,6 +85,11 @@ namespace NameCube
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
         public ImformationData ImformationData { get; set; } = new ImformationData();
+        /// <summary>
+        /// 权限管理设置
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+        public PermissionManager PermissionManager { get; set; } = new PermissionManager();
 
 
         /// <summary>
@@ -102,13 +108,6 @@ namespace NameCube
         /// </summary>
         public static Json config = new Json(); // 默认初始化
 
-        /// <summary>
-        /// 配置文件储存地址
-        /// </summary>
-        public static string configDir = Path.Combine(
-            Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-            "NameCube"
-        );
 
         /// <summary>
         /// 用户数据文件夹
@@ -121,14 +120,18 @@ namespace NameCube
         /// </summary>
         public static void SaveConfig()
         {
-            Log.Debug("正在保存配置文件到: {ConfigPath}", Path.Combine(configDir, "config.json"));
-            string configPath = Path.Combine(configDir, "config.json");
+            Log.Debug("正在保存配置文件到: {ConfigPath}", Path.Combine(userDataDir, "config.json"));
+            string configPath = Path.Combine(userDataDir, "config.json");
             try
             {
                 // 确保目录存在
-                Directory.CreateDirectory(configDir);
+                Directory.CreateDirectory(userDataDir);
 
                 string jsonString = JsonConvert.SerializeObject(config, Formatting.Indented);
+                if(GlobalVariablesData.creds!=null)
+                {
+                    jsonString="密"+AesHelper.AesBestPracticeHelper.Encrypt("解"+jsonString,GlobalVariablesData.creds);
+                }
                 File.WriteAllText(configPath, jsonString);
             }
             catch (Exception ex)
@@ -142,15 +145,16 @@ namespace NameCube
         /// <summary>
         /// 当前版本
         /// </summary>
-        public const string VERSION = "V1.3.1(#l7#)";
+        public const string VERSION = "V1.4-Beta-1(#p8#)";
         /// <summary>
         /// 当前版本代码
         /// </summary>
-        public const int VERSIONCODE = 7;
+        public const int VERSIONCODE = 8;
         /// <summary>
         /// 当前是否为测试版本
         /// </summary>
-        public const bool ISBETA = false;
+        public const bool ISBETA = true;
         public static bool ret = false;
+        public static string? creds = CredentialHelper.LoadCredential();
     }
 }

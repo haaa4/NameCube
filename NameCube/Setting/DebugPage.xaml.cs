@@ -238,5 +238,11 @@ namespace NameCube.Setting
             NameCube.Setting.UpdateGuide.UpdateGuideWindow updateGuideWindow= new(GuideTag.Text);
             updateGuideWindow.Show();
         }
+
+        private void Button_Click_10(object sender, RoutedEventArgs e)
+        {
+            bool get=CredentialHelper.PermissionVerification();
+            MessageBoxFunction.ShowMessageBoxInfo(get.ToString());
+        }
     }
 }

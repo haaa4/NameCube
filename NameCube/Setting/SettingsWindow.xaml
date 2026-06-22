@@ -29,6 +29,7 @@
         <ui:TitleBar
             Title="应用设置"
             Grid.Row="0"
+            x:Name="TitleBar"
             Icon="{ui:ImageIcon 'pack://application:,,,/icon.ico'}" />
         <ui:NavigationView
             x:Name="NavigationMenu"
@@ -43,48 +44,63 @@
                 <ui:NavigationViewItem
                     Content="档案编辑"
                     Icon="{ui:SymbolIcon Symbol=BookContacts24}"
-                    TargetPageType="{x:Type local:Archives}" />
+                    TargetPageType="{x:Type local:Archives}"
+                    x:Name="Item1"/>
                 <ui:NavigationViewItem
                     Content="模式设置"
                     Icon="{ui:SymbolIcon Symbol=Settings24}"
-                    TargetPageType="{x:Type local:ModeSettings}" />
+                    TargetPageType="{x:Type local:ModeSettings}"
+                    x:Name="Item2"/>
                 <ui:NavigationViewItem
                     Content="外观"
                     Icon="{ui:SymbolIcon Symbol=Collections24}"
-                    TargetPageType="{x:Type local:Appearance}" />
+                    TargetPageType="{x:Type local:Appearance}"
+                    x:Name="Item3"/>
                 <ui:NavigationViewItem
                     Content="讲述人"
                     Icon="{ui:SymbolIcon Symbol=PersonVoice24}"
-                    TargetPageType="{x:Type local:Speech}" />
+                    TargetPageType="{x:Type local:Speech}"
+                    x:Name="Item4"/>
                 <ui:NavigationViewItem
-                    x:Name="BallSetting"
+                    x:Name="Item5"
                     Content="悬浮球"
                     Icon="{ui:SymbolIcon Symbol=Balloon12}"
-                    TargetPageType="{x:Type local:BirdSettings}" />
+                    TargetPageType="{x:Type local:BirdSettings}"/>
                 <ui:NavigationViewItem
                     Content="快捷键"
                     Icon="{ui:SymbolIcon Symbol=Keyboard24}"
-                    TargetPageType="{x:Type local:ShortcutKeySetting}" />
+                    TargetPageType="{x:Type local:ShortcutKeySetting}"
+                    x:Name="Item6"/>
+                <ui:NavigationViewItem
+                    Content="权限管理"
+                    Icon="{ui:SymbolIcon Symbol=KeyMultiple20}"
+                    TargetPageType="{x:Type local:PermissionManagerSettings}" 
+                    x:Name="Item7"/>
                 <ui:NavigationViewItem
                     Content="配置文件"
                     Icon="{ui:SymbolIcon Symbol=Document24}"
-                    TargetPageType="{x:Type local:Document}" />
+                    TargetPageType="{x:Type local:Document}" 
+                    x:Name="Item8"/>
                 <ui:NavigationViewItem
                     Content="日志"
                     Icon="{ui:SymbolIcon Symbol=Pen24}"
-                    TargetPageType="{x:Type local:LogSetting}" />
+                    TargetPageType="{x:Type local:LogSetting}" 
+                    x:Name="Item9"/>
                 <ui:NavigationViewItem
                     Content="更新"
                     Icon="{ui:SymbolIcon Symbol=ArrowUpload24}"
-                    TargetPageType="{x:Type local:Updata}" />
+                    TargetPageType="{x:Type local:Updata}" 
+                    x:Name="Item10"/>
                 <ui:NavigationViewItem
                     Content="其他"
                     Icon="{ui:SymbolIcon Symbol=MoreCircle24}"
-                    TargetPageType="{x:Type local:Other}" />
+                    TargetPageType="{x:Type local:Other}"
+                    x:Name="Item11"/>
                 <ui:NavigationViewItem
                     Content="关于"
                     Icon="{ui:SymbolIcon Symbol=Info24}"
-                    TargetPageType="{x:Type local:About}" />
+                    TargetPageType="{x:Type local:About}" 
+                    x:Name="Item12"/>
                 <ui:NavigationViewItem
                     x:Name="DebugItem"
                     Content="调试"

@@ -1021,8 +1021,8 @@
                     VerticalAlignment="Center"
                     AutomationProperties.Name="No1Name"
                     Background="#00FF0000"
-                    FontSize="36"
                     FontFamily="{StaticResource AppFont}"
+                    FontSize="36"
                     Foreground="Black"
                     Text="XXX"
                     TextWrapping="Wrap" />

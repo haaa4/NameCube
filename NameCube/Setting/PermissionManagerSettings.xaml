@@ -1,0 +1,143 @@
+﻿<Page
+    x:Class="NameCube.Setting.PermissionManagerSettings"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:NameCube.Setting"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    Title="PermissionManagerSettings"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    FontFamily="{StaticResource AppFont}"
+    mc:Ignorable="d">
+
+    <StackPanel>
+        <ui:CardControl
+            x:Name="StartActionCard"
+            Margin="4"
+            Padding="20,10,20,10"
+            Icon="{ui:SymbolIcon Symbol=KeyMultiple20}">
+            <ui:CardControl.Header>
+                <StackPanel>
+                    <ui:TextBlock
+                        Margin="0"
+                        FontTypography="BodyStrong"
+                        Text="权限管理"
+                        TextWrapping="WrapWithOverflow" />
+                    <ui:TextBlock
+                        Appearance="Secondary"
+                        Text="通过权限管理控制用户对应用各功能设置的访问，同时加密配置文件"
+                        TextWrapping="WrapWithOverflow" />
+                </StackPanel>
+            </ui:CardControl.Header>
+            <ui:ToggleSwitch
+                x:Name="StartCheck"
+                HorizontalContentAlignment="Left"
+                Click="StartCheck_Click"
+                IsEnabled="True"
+                OffContent="关"
+                OnContent="开" />
+        </ui:CardControl>
+        <ui:CardExpander
+            Margin="4"
+            Padding="20,10,20,10"
+            Icon="{ui:SymbolIcon Symbol=Key24}"
+            IsEnabled="{Binding IsChecked, ElementName=StartCheck}">
+            <ui:CardExpander.Header>
+                <StackPanel>
+                    <ui:TextBlock
+                        Margin="0"
+                        FontTypography="BodyStrong"
+                        Text="凭据管理"
+                        TextWrapping="WrapWithOverflow" />
+                    <ui:TextBlock
+                        Appearance="Secondary"
+                        Text="管理应用的用户凭据"
+                        TextWrapping="WrapWithOverflow" />
+                </StackPanel>
+            </ui:CardExpander.Header>
+            <StackPanel>
+                <ui:Button
+                    Margin="20,0,0,0"
+                    Click="ChangePassword_Click"
+                    Content="修改密码" />
+                <ui:Button
+                    Margin="20,0,0,0"
+                    Click="ManageUSB_Click"
+                    Content="管理U盘凭据" />
+            </StackPanel>
+        </ui:CardExpander>
+        <ui:CardExpander
+            Margin="4"
+            Padding="20,10,20,10"
+            Icon="{ui:SymbolIcon Symbol=LockClosed24}"
+            IsEnabled="{Binding IsChecked, ElementName=StartCheck}">
+            <ui:CardExpander.Header>
+                <StackPanel>
+                    <ui:TextBlock
+                        Margin="0"
+                        FontTypography="BodyStrong"
+                        Text="功能控制管理"
+                        TextWrapping="WrapWithOverflow" />
+                    <ui:TextBlock
+                        Appearance="Secondary"
+                        Text="管理应用的功能访问权限，选择哪些功能需要权限才可访问"
+                        TextWrapping="WrapWithOverflow" />
+                </StackPanel>
+            </ui:CardExpander.Header>
+            <StackPanel>
+                <CheckBox Content="退出/重启应用" x:Name="CheckBox1" Click="CheckBox_Checked"/>
+                <CheckBox Content="主界面" x:Name="CheckBox2" Click="CheckBox_Checked"/>
+                <CheckBox Content="档案编辑" x:Name="CheckBox3" Click="CheckBox_Checked"/>
+                <CheckBox Content="模式设置" x:Name="CheckBox4" Click="CheckBox_Checked"/>
+                <CheckBox Content="外观" x:Name="CheckBox5" Click="CheckBox_Checked"/>
+                <CheckBox Content="讲述人" x:Name="CheckBox6" Click="CheckBox_Checked"/>
+                <CheckBox Content="悬浮球" x:Name="CheckBox7" Click="CheckBox_Checked"/>
+                <CheckBox Content="快捷键" x:Name="CheckBox8" Click="CheckBox_Checked"/>
+                <CheckBox
+                    Content="权限管理"
+                    IsChecked="True"
+                    IsEnabled="False" />
+                <CheckBox
+                    Content="配置文件"
+                    IsChecked="True"
+                    IsEnabled="False" />
+                <CheckBox Content="日志" x:Name="CheckBox9" Click="CheckBox_Checked"/>
+                <CheckBox Content="更新" x:Name="CheckBox10" Click="CheckBox_Checked"/>
+                <CheckBox Content="其他" x:Name="CheckBox11" Click="CheckBox_Checked"/>
+                <CheckBox Content="关于" x:Name="CheckBox12" Click="CheckBox_Checked"/>
+                <CheckBox Content="自定义朗读" x:Name="CheckBox13" Click="CheckBox_Checked"/>
+                <CheckBox Content="内存整理" x:Name="CheckBox14" Click="CheckBox_Checked"/>
+                <CheckBox Content="自动流程" x:Name="CheckBox15" Click="CheckBox_Checked"/>
+
+            </StackPanel>
+        </ui:CardExpander>
+        <ui:CardExpander
+    Margin="4"
+    Padding="20,10,20,10"
+    Icon="{ui:SymbolIcon Symbol=Key24}"
+>
+            <ui:CardExpander.Header>
+                <StackPanel>
+                    <ui:TextBlock
+                Margin="0"
+                FontTypography="BodyStrong"
+                Text="配置文件恢复"
+                TextWrapping="WrapWithOverflow" />
+                    <ui:TextBlock
+                Appearance="Secondary"
+                Text="如果你还记得秘钥的话，在这里可以尝试恢复配置文件"
+                TextWrapping="WrapWithOverflow" />
+                </StackPanel>
+            </ui:CardExpander.Header>
+            <StackPanel>
+                <ui:TextBox Margin="20,0,0,0" PlaceholderText="将原config.json中的字符串复制到这里" x:Name="LastConfig"/>
+                <ui:PasswordBox
+            Margin="20,0,0,0"
+            PlaceholderText="输入秘钥以恢复配置文件" x:Name="LastPassword"/>
+                <Button Content="尝试恢复" Margin="20 0 0 0" Click="Button_Click"/>
+            </StackPanel>
+        </ui:CardExpander>
+    </StackPanel>
+</Page>

@@ -6,6 +6,7 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageVersion Include="Costura.Fody" Version="6.2.0" />
+    <PackageVersion Include="CredentialManagement" Version="1.0.2" />
     <PackageVersion Include="Masuit.Tools.Abstractions" Version="2026.1.5" />
     <PackageVersion Include="Masuit.Tools.Core" Version="2026.1.5" />
     <PackageVersion Include="Masuit.Tools.Net" Version="2025.2.0" />

@@ -1,4 +1,5 @@
 ﻿using NameCube.Function;
+using NameCube.GlobalVariables.DataClass;
 using NameCube.WarningWindows;
 using Newtonsoft.Json;
 using Serilog;
@@ -63,11 +64,10 @@ namespace NameCube
                 GlobalVariablesData.ret = ret;
 
                 Log.Debug("Mutex创建结果: {Result}, 是否为首次实例: {IsFirstInstance}", ret, ret);
-                GlobalVariablesData.configDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "NameCube");
-                Log.Information("使用AppData配置目录: {ConfigDir}", GlobalVariablesData.configDir);
+                Log.Information("使用AppData配置目录: {UserDataDir}", GlobalVariablesData.userDataDir);
                 InitializationUserData();
                 // 如果存在START文件，说明此次启动仅为重启
-                if (!ret && !File.Exists(Path.Combine(GlobalVariablesData.configDir, "START")))
+                if (!ret && !File.Exists(Path.Combine(GlobalVariablesData.userDataDir, "START")))
                 {
                     Log.Warning("应用程序重复启动且无START文件，显示重复警告窗口");
                     RepeatWarning repeat = new RepeatWarning();
@@ -76,7 +76,32 @@ namespace NameCube
                     repeat.WindowState = WindowState.Normal;
                     return;
                 }
-
+               
+                //针对低版本的配置文件移动
+                if(File.Exists(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "NameCube", "config.json")))
+                {
+                    try
+                    {
+                        string oldConfigPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "NameCube", "config.json");
+                        if (File.Exists(oldConfigPath))
+                        {
+                            string newConfigDir = Path.Combine(GlobalVariablesData.userDataDir);
+                            Directory.CreateDirectory(newConfigDir);
+                            string newConfigPath = Path.Combine(newConfigDir, "config.json");
+                            File.Move(oldConfigPath, newConfigPath,true);
+                            Log.Information("已将旧配置文件从 {OldConfigPath} 移动到 {NewConfigPath}", oldConfigPath, newConfigPath);
+                        }
+                        else
+                        {
+                            Log.Debug("旧配置文件未找到，无需移动");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.Error(ex, "移动旧配置文件失败");
+                        MessageBoxFunction.ShowMessageBoxError($"移动旧配置文件失败: {ex.Message}");
+                    }
+                }
                 // 处理更新目录
                 if (Directory.Exists(Path.Combine(GlobalVariablesData.userDataDir, "Updata")))
                 {
@@ -109,23 +134,23 @@ namespace NameCube
                     }
                 }
 
-                string configPath = Path.Combine(GlobalVariablesData.configDir, "config.json");
+                string configPath = Path.Combine(GlobalVariablesData.userDataDir, "config.json");
                 if (GlobalVariablesData.config.AllSettings.newVersion != null && ExtractVersionCode(GlobalVariablesData.config.AllSettings.newVersion) <= GlobalVariablesData.VERSIONCODE)
                 {
                     GlobalVariablesData.config.AllSettings.newVersion = null;
                 }
 
-                if (File.Exists(Path.Combine(GlobalVariablesData.configDir, "START")))
+                if (File.Exists(Path.Combine(GlobalVariablesData.userDataDir, "START")))
                 {
-                    File.Delete(Path.Combine(GlobalVariablesData.configDir, "START"));
+                    File.Delete(Path.Combine(GlobalVariablesData.userDataDir, "START"));
                     Log.Debug("删除START标记文件");
                 }
 
                 try
                 {
                     // 确保目录存在
-                    Directory.CreateDirectory(GlobalVariablesData.configDir);
-                    Log.Debug("确保配置目录存在: {ConfigDir}", GlobalVariablesData.configDir);
+                    Directory.CreateDirectory(GlobalVariablesData.userDataDir);
+                    Log.Debug("确保用户数据目录存在: {UserDataDir}", GlobalVariablesData.userDataDir);
 
                     GlobalVariables.InitializationAll.InitializeData();
 
@@ -147,7 +172,34 @@ namespace NameCube
                     {
                         Log.Debug("加载配置文件: {ConfigPath}", configPath);
                         var jsonString = File.ReadAllText(configPath);
-
+                        if (jsonString.StartsWith("密"))
+                        {
+                            try
+                            {
+                                jsonString = jsonString.Substring(1);
+                                jsonString = AesHelper.AesBestPracticeHelper.Decrypt(jsonString, GlobalVariablesData.creds);
+                                if (jsonString.StartsWith("解"))
+                                {
+                                    jsonString = jsonString.Substring(1);
+                                    Log.Debug("配置文件解密成功");
+                                }
+                                else
+                                {
+                                    var errorMsg = "配置文件解密失败，可能是由于密码错误或文件损坏导致的。请剪切走配置文件后在权限设置处尝试还原文件";
+                                    Log.Error(errorMsg);
+                                    MessageBoxFunction.ShowMessageBoxError(errorMsg);
+                                    Environment.Exit(1);
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                var errorMsg = "配置文件解密失败，可能是由于密码错误或文件损坏导致的。请剪切走配置文件后在权限设置处尝试还原文件";
+                                Log.Error(errorMsg);
+                                MessageBoxFunction.ShowMessageBoxError(errorMsg);
+                                Environment.Exit(1);
+                            }
+                            
+                        }
                         JsonConvert.DefaultSettings = () => new JsonSerializerSettings
                         {
                             NullValueHandling = NullValueHandling.Ignore,

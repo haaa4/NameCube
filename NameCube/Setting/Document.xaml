@@ -21,11 +21,6 @@
             Severity="Warning" />
         <ui:CardAction
             Margin="5,0"
-            Click="CardAction_Click"
-            Content="打开配置文件文件夹"
-            Icon="{ui:SymbolIcon Symbol=WindowSettings20}" />
-        <ui:CardAction
-            Margin="5,0"
             Click="CardAction_Click_5"
             Content="打开用户数据文件夹"
             Icon="{ui:SymbolIcon Symbol=WindowSettings20}" />

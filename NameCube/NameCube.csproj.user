@@ -17,6 +17,18 @@
     <Compile Update="Setting\EasterEgg\Media.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Setting\PermissionManagerSettings.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Setting\PermissionManager\AuthenticationWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Setting\PermissionManager\CenterScreen.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Setting\PermissionManager\PasswordManagementWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Setting\ThanksWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
