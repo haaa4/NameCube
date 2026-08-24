@@ -1,4 +1,16 @@
-﻿using NameCube.Function;
+﻿// /*
+//  * NameCube-<点名器>
+//  * Copyright (C) 2025-2026 haaa4
+//  *
+//  * This program is free software: you can redistribute it and/or modify
+//  * it under the terms of the GNU General Public License as published by
+//  * the Free Software Foundation, either version 3 of the License, or
+//  * (at your option) any later version.
+//  *
+//  * This program is distributed in the hope that it will be useful,
+//  * but WITHOUT ANY WARRANTY
+
+using NameCube.Function;
 using Serilog;
 using System;
 using System.IO;
@@ -131,7 +143,7 @@ namespace NameCube.ToolBox.AutomaticProcessPages.ProcessPages
                 // 使用 MediaPlayer 打开媒体文件
                 _mediaPlayer.Open(new Uri(url, UriKind.Absolute));
                 FileInfo fileInfo = new FileInfo(url);
-                AudioNameText.Text = fileInfo.Name;
+                AudioNow.Content = fileInfo.Name;
 
                 _progressTimer = new DispatcherTimer();
                 _progressTimer.Interval = TimeSpan.FromMilliseconds(100);
@@ -166,20 +178,21 @@ namespace NameCube.ToolBox.AutomaticProcessPages.ProcessPages
             {
                 PositionSlider.Maximum = _mediaPlayer.NaturalDuration.TimeSpan.TotalSeconds;
             }
-            PositionText.Text = FormatTime(TimeSpan.Zero);
+            PositionText = FormatTime(TimeSpan.Zero);
 
             _mediaPlayer.SpeedRatio = 1.0;
             if (_mediaPlayer.NaturalDuration.HasTimeSpan)
             {
                 _totalDuration = _mediaPlayer.NaturalDuration.TimeSpan;
-                TotalTimeText.Text = FormatTime(_totalDuration);
+                TotalTimeText = FormatTime(_totalDuration);
                 Log.Debug("音频总时长: {TotalDuration}", _totalDuration);
             }
             else
             {
-                TotalTimeText.Text = "N/A";
+                TotalTimeText = "N/A";
                 Log.Warning("无法获取音频总时长");
             }
+            TimeNow.Content = PositionText + "/" + TotalTimeText;
             if (waitTimeInThisPage != 0)
             {
                 Log.Information("开始等待 {WaitTime} 秒", waitTimeInThisPage);
@@ -194,7 +207,8 @@ namespace NameCube.ToolBox.AutomaticProcessPages.ProcessPages
                 }
             }
         }
-
+        string TotalTimeText;
+        string PositionText;
         private void UpdateProgress(object sender, EventArgs e)
         {
             if (
@@ -204,7 +218,8 @@ namespace NameCube.ToolBox.AutomaticProcessPages.ProcessPages
             )
             {
                 PositionSlider.Value = _mediaPlayer.Position.TotalSeconds;
-                PositionText.Text = FormatTime(_mediaPlayer.Position);
+                PositionText= FormatTime(_mediaPlayer.Position);
+                TimeNow.Content = PositionText + "/" + TotalTimeText;
             }
         }
 
@@ -228,7 +243,7 @@ namespace NameCube.ToolBox.AutomaticProcessPages.ProcessPages
             if (slider.IsMouseCaptureWithin)
             {
                 _isUserDragging = true;
-                PositionText.Text = FormatTime(TimeSpan.FromSeconds(e.NewValue));
+                PositionText = FormatTime(TimeSpan.FromSeconds(e.NewValue));
 
                 _mediaPlayer.Position = TimeSpan.FromSeconds(e.NewValue);
 
@@ -237,8 +252,9 @@ namespace NameCube.ToolBox.AutomaticProcessPages.ProcessPages
                     _mediaPlayer.Play();
                 }
 
-                PositionText.Text = FormatTime(_mediaPlayer.Position);
+                PositionText= FormatTime(_mediaPlayer.Position);
                 Log.Debug("用户拖动进度条到: {NewValue}秒", e.NewValue);
+                TimeNow.Content = PositionText + "/" + TotalTimeText;
             }
         }
 
@@ -299,8 +315,9 @@ namespace NameCube.ToolBox.AutomaticProcessPages.ProcessPages
             _progressTimer.Stop();
             _mediaPlayer.Position = TimeSpan.Zero;
             PositionSlider.Value = 0;
-            PositionText.Text = FormatTime(TimeSpan.Zero);
+            PositionText = FormatTime(TimeSpan.Zero);
             _currentState = PlayerState.Stopped;
+            TimeNow.Content = PositionText + "/" + TotalTimeText;
         }
 
         private void MediaPlayer_MediaEnded(object sender, EventArgs e)
@@ -309,7 +326,8 @@ namespace NameCube.ToolBox.AutomaticProcessPages.ProcessPages
             _progressTimer.Stop();
             _mediaPlayer.Position = TimeSpan.Zero;
             PositionSlider.Value = 0;
-            PositionText.Text = FormatTime(TimeSpan.Zero);
+            PositionText= FormatTime(TimeSpan.Zero);
+            TimeNow.Content = PositionText + "/" + TotalTimeText;
             _currentState = PlayerState.Stopped;
 
             if (waitTimeInThisPage == 0)

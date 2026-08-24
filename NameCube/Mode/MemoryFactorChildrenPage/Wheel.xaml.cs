@@ -1,4 +1,16 @@
-﻿using Serilog;
+﻿// /*
+//  * NameCube-<点名器>
+//  * Copyright (C) 2025-2026 haaa4
+//  *
+//  * This program is free software: you can redistribute it and/or modify
+//  * it under the terms of the GNU General Public License as published by
+//  * the Free Software Foundation, either version 3 of the License, or
+//  * (at your option) any later version.
+//  *
+//  * This program is distributed in the hope that it will be useful,
+//  * but WITHOUT ANY WARRANTY
+
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Speech.Synthesis;
@@ -38,11 +50,11 @@ namespace NameCube.Mode.MemoryFactorChildrenPage
             {
                 this.speechSynthesizer = speechSynthesizer;
             }
-            ResultTextBlock.Foreground = GlobalVariablesData.config.AllSettings.color;
         }
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
+            this.Background = Application.Current.MainWindow.Background;
             // 绑定数据源
             Log.Information("加载转盘");
             WheelItemsControl.ItemsSource = _items;

@@ -13,10 +13,10 @@
     mc:Ignorable="d">
 
     <Grid>
-        <TextBlock
+        <Label
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
-            FontSize="40"
-            Text="内存清理中..." />
+            Content="内存清理中..."
+            FontSize="40" />
     </Grid>
 </Page>

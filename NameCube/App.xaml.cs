@@ -1,4 +1,16 @@
-﻿using NameCube.Function;
+﻿// /*
+//  * NameCube-<点名器>
+//  * Copyright (C) 2025-2026 haaa4
+//  *
+//  * This program is free software: you can redistribute it and/or modify
+//  * it under the terms of the GNU General Public License as published by
+//  * the Free Software Foundation, either version 3 of the License, or
+//  * (at your option) any later version.
+//  *
+//  * This program is distributed in the hope that it will be useful,
+//  * but WITHOUT ANY WARRANTY
+
+using NameCube.Function;
 using NameCube.GlobalVariables.DataClass;
 using NameCube.WarningWindows;
 using Newtonsoft.Json;
@@ -8,6 +20,8 @@ using System.IO;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows;
+using System.Windows.Media;
+using Wpf.Ui.Appearance;
 using Application = System.Windows.Application;
 
 namespace NameCube
@@ -191,7 +205,7 @@ namespace NameCube
                                     Environment.Exit(1);
                                 }
                             }
-                            catch (Exception ex)
+                            catch 
                             {
                                 var errorMsg = "配置文件解密失败，可能是由于密码错误或文件损坏导致的。请剪切走配置文件后在权限设置处尝试还原文件";
                                 Log.Error(errorMsg);
@@ -298,6 +312,16 @@ namespace NameCube
                 MessageBoxFunction.ShowMessageBoxError($"应用程序启动失败: {ex.Message}");
                 Environment.Exit(1);
             }
+            if (GlobalVariablesData.config.AllSettings.Dark)
+            {
+                Log.Debug("应用深色主题");
+                Wpf.Ui.Appearance.ApplicationThemeManager.Apply(
+                    Wpf.Ui.Appearance.ApplicationTheme.Dark, // Theme type
+                    Wpf.Ui.Controls.WindowBackdropType.Auto, // Background type
+                    true // Whether to change accents automatically
+                );
+            }
+            ApplicationAccentColorManager.Apply(((SolidColorBrush)GlobalVariablesData.config.AllSettings.color).Color);
         }
 
         /// <summary>

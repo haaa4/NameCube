@@ -12,12 +12,11 @@
     mc:Ignorable="d">
 
     <Grid>
-        <TextBlock
+        <Label
             x:Name="marqueeText"
             Margin="5"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
-            FontSize="30"
-            TextWrapping="Wrap" />
+            FontSize="30" />
     </Grid>
 </Page>

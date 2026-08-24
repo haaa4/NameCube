@@ -1,4 +1,16 @@
-﻿using Masuit.Tools;
+﻿// /*
+//  * NameCube-<点名器>
+//  * Copyright (C) 2025-2026 haaa4
+//  *
+//  * This program is free software: you can redistribute it and/or modify
+//  * it under the terms of the GNU General Public License as published by
+//  * the Free Software Foundation, either version 3 of the License, or
+//  * (at your option) any later version.
+//  *
+//  * This program is distributed in the hope that it will be useful,
+//  * but WITHOUT ANY WARRANTY
+
+using Masuit.Tools;
 using Serilog;
 using System;
 using System.Collections.Generic;
@@ -81,11 +93,11 @@ namespace NameCube.Mode
                     timer.Interval = GlobalVariablesData.config.PrepareModeSetting.Speed;
 
                     // 显示预备名字
-                    BeforeReady1.Text = "(" + GlobalVariablesData.config.PrepareModeSetting.Name[0] + ")";
-                    BeforeReady2.Text = "(" + GlobalVariablesData.config.PrepareModeSetting.Name[1] + ")";
-                    BeforeReady3.Text = "(" + GlobalVariablesData.config.PrepareModeSetting.Name[2] + ")";
-                    BeforeReady4.Text = "(" + GlobalVariablesData.config.PrepareModeSetting.Name[3] + ")";
-                    BeforeReady5.Text = "(" + GlobalVariablesData.config.PrepareModeSetting.Name[4] + ")";
+                    BeforeReady1.Content = "(" + GlobalVariablesData.config.PrepareModeSetting.Name[0] + ")";
+                    BeforeReady2.Content = "(" + GlobalVariablesData.config.PrepareModeSetting.Name[1] + ")";
+                    BeforeReady3.Content = "(" + GlobalVariablesData.config.PrepareModeSetting.Name[2] + ")";
+                    BeforeReady4.Content = "(" + GlobalVariablesData.config.PrepareModeSetting.Name[3] + ")";
+                    BeforeReady5.Content = "(" + GlobalVariablesData.config.PrepareModeSetting.Name[4] + ")";
 
                     Log.Debug("预备名单: {Name1}, {Name2}, {Name3}, {Name4}, {Name5}",
                         GlobalVariablesData.config.PrepareModeSetting.Name[0],
@@ -233,18 +245,7 @@ namespace NameCube.Mode
                 Ready4.Text = GlobalVariablesData.config.PrepareModeSetting.Name[3];
                 Ready5.Text = GlobalVariablesData.config.PrepareModeSetting.Name[4];
 
-                NowNumberText.Foreground = GlobalVariablesData.config.AllSettings.color;
-                FinishText.Foreground = GlobalVariablesData.config.AllSettings.color;
-                Ready1.Foreground = GlobalVariablesData.config.AllSettings.color;
-                Ready2.Foreground = GlobalVariablesData.config.AllSettings.color;
-                Ready3.Foreground = GlobalVariablesData.config.AllSettings.color;
-                Ready4.Foreground = GlobalVariablesData.config.AllSettings.color;
-                Ready5.Foreground = GlobalVariablesData.config.AllSettings.color;
-                FinishReady1.Foreground = GlobalVariablesData.config.AllSettings.color;
-                FinishReady2.Foreground = GlobalVariablesData.config.AllSettings.color;
-                FinishReady3.Foreground = GlobalVariablesData.config.AllSettings.color;
-                FinishReady4.Foreground = GlobalVariablesData.config.AllSettings.color;
-                FinishReady5.Foreground = GlobalVariablesData.config.AllSettings.color;
+
                 //NowNumberText.FontFamily = GlobalVariablesData.config.AllSettings.Font;
                 //FinishText.FontFamily = GlobalVariablesData.config.AllSettings.Font;
                 //Ready1.FontFamily = GlobalVariablesData.config.AllSettings.Font;

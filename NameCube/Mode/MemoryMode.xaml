@@ -10,6 +10,7 @@
     Title="MemoryMode"
     d:DesignHeight="450"
     d:DesignWidth="800"
+    Background="Transparent"
     Loaded="Page_Loaded"
     mc:Ignorable="d">
     <Page.Resources>
@@ -78,7 +79,7 @@
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
             FontSize="200"
-            Foreground="#FF005493"
+            Foreground="{ui:ThemeResource AccentTextFillColorPrimaryBrush}"
             RenderTransformOrigin="0.5,0.5"
             Text="XXX">
             <TextBlock.RenderTransform>
@@ -95,7 +96,7 @@
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
             FontSize="200"
-            Foreground="#FF005493"
+            Foreground="{ui:ThemeResource AccentTextFillColorPrimaryBrush}"
             Text="XXX"
             Visibility="Hidden" />
         <ui:Button

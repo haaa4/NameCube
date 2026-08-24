@@ -1,4 +1,16 @@
-﻿using NameCube.GlobalVariables.DataClass;
+﻿// /*
+//  * NameCube-<点名器>
+//  * Copyright (C) 2025-2026 haaa4
+//  *
+//  * This program is free software: you can redistribute it and/or modify
+//  * it under the terms of the GNU General Public License as published by
+//  * the Free Software Foundation, either version 3 of the License, or
+//  * (at your option) any later version.
+//  *
+//  * This program is distributed in the hope that it will be useful,
+//  * but WITHOUT ANY WARRANTY
+
+using NameCube.GlobalVariables.DataClass;
 using Serilog;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -175,10 +187,10 @@ namespace NameCube.ToolBox.AutomaticProcessPages
                 return;
             }
 
-            ProcessesGroupTextBlock.Foreground = Brushes.Black;
-            HourTextBlock.Foreground = Brushes.Black;
-            MinutesTextBlock.Foreground = Brushes.Black;
-            SecondTextBlock.Foreground = Brushes.Black;
+            ProcessesGroupTextBlock.Foreground = TimeLable.Foreground;
+            HourTextBlock.Foreground = TimeLable.Foreground;
+            MinutesTextBlock.Foreground = TimeLable.Foreground;
+            SecondTextBlock.Foreground =  TimeLable.Foreground;
         }
 
 
@@ -194,10 +206,10 @@ namespace NameCube.ToolBox.AutomaticProcessPages
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
             Log.Information("用户点击添加时间表按钮");
-            ProcessesGroupTextBlock.Foreground = Brushes.Black;
-            HourTextBlock.Foreground = Brushes.Black;
-            MinutesTextBlock.Foreground = Brushes.Black;
-            SecondTextBlock.Foreground = Brushes.Black;
+            ProcessesGroupTextBlock.Foreground = TimeLable.Foreground;
+            HourTextBlock.Foreground = TimeLable.Foreground;
+            MinutesTextBlock.Foreground = TimeLable.Foreground;
+            SecondTextBlock.Foreground = TimeLable.Foreground;
             bool canAdd = true;
 
             if (ProcessesPicker.SelectedIndex == -1)

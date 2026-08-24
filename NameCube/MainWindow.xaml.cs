@@ -1,4 +1,17 @@
-﻿using Masuit.Tools.Win32;
+﻿// /*
+//  * NameCube-<点名器>
+//  * Copyright (C) 2025-2026 haaa4
+//  *
+//  * This program is free software: you can redistribute it and/or modify
+//  * it under the terms of the GNU General Public License as published by
+//  * the Free Software Foundation, either version 3 of the License, or
+//  * (at your option) any later version.
+//  *
+//  * This program is distributed in the hope that it will be useful,
+//  * but WITHOUT ANY WARRANTY
+
+using Masuit.Tools;
+using Masuit.Tools.Win32;
 using NameCube.Function;
 using NameCube.GlobalVariables.DataClass;
 using NameCube.Mode;
@@ -6,9 +19,11 @@ using NameCube.Setting;
 using NameCube.ToolBox;
 using NameCube.ToolBox.AutomaticProcessPages;
 using NAudio.CoreAudioApi;
-using Serilog;  // 添加Serilog命名空间
+using Serilog; 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows;
@@ -17,7 +32,9 @@ using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
+using System.Windows.Media.Imaging;
 using System.Windows.Threading;
+using Wpf.Ui.Appearance;
 using Application = System.Windows.Application;
 using Timer = System.Windows.Forms.Timer;
 
@@ -218,15 +235,7 @@ namespace NameCube
                 Timer.Start();
                 Log.Debug("窗口置顶检查定时器已启动");
 
-                if (GlobalVariablesData.config.AllSettings.Dark)
-                {
-                    Log.Debug("应用深色主题");
-                    Wpf.Ui.Appearance.ApplicationThemeManager.Apply(
-                        Wpf.Ui.Appearance.ApplicationTheme.Dark, // Theme type
-                        Wpf.Ui.Controls.WindowBackdropType.Auto, // Background type
-                        true // Whether to change accents automatically
-                    );
-                }
+
 
                 Loaded += (sender, args) =>
                 {
@@ -945,7 +954,7 @@ namespace NameCube
 
         private void fluentWindow_Loaded(object sender, RoutedEventArgs e)
         {
-
+            ReFreshBackgroundImage();
             try
             {
                 Log.Information("主窗口加载完成");
@@ -1003,6 +1012,45 @@ namespace NameCube
             catch (Exception ex)
             {
                 Log.Error(ex, "处理DPI变化事件时发生错误");
+            }
+        }
+
+        public void ReFreshBackgroundImage()
+        {
+            Log.Debug("刷新背景图片");
+            if (GlobalVariablesData.config.AllSettings.HaveBackgroundImage)
+            {
+                try
+                {
+                    Directory.CreateDirectory(Path.Combine(GlobalVariablesData.userDataDir, "Image"));
+                    if (!File.Exists(Path.Combine(GlobalVariablesData.userDataDir, "Image", "Background.png")))
+                    {
+                        MessageBoxFunction.ShowMessageBoxWarning("未查找到主界面背景的图片文件，请前往设置重新选择");
+                        GlobalVariablesData.config.AllSettings.HaveBackgroundImage = false;
+                        GlobalVariablesData.SaveConfig();
+                        return;
+                    }
+                    BitmapImage bitmap = new BitmapImage();
+                    bitmap.BeginInit();
+                    bitmap.UriSource = new Uri(Path.Combine(GlobalVariablesData.userDataDir, "Image", "Background.png"));
+                    bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                    BackgroundImage.Source = null;
+                    BackgroundImage.Source = bitmap;
+                    bitmap.EndInit();
+                    BackgroundImage.Stretch = GlobalVariablesData.config.AllSettings.BackgroundImageStretch ?? Stretch.Fill;
+                    BackgroundImage.Opacity = (GlobalVariablesData.config.AllSettings.BackgroundOpacity ?? 100).ToDouble() / 100;
+                }
+                catch(Exception ex)
+                {
+                    MessageBoxFunction.ShowMessageBoxWarning("获取主界面背景的图片文件时出错，请前往设置重新选择\n"+ex.Message);
+                    GlobalVariablesData.config.AllSettings.HaveBackgroundImage = false;
+                    GlobalVariablesData.SaveConfig();
+                    return;
+                }
+            }
+            else
+            {
+                BackgroundImage.Source = null;
             }
         }
     }

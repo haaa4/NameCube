@@ -16,17 +16,17 @@
             <RowDefinition />
             <RowDefinition />
         </Grid.RowDefinitions>
-        <TextBlock
+        <Label
             HorizontalAlignment="Center"
             VerticalAlignment="Bottom"
-            FontSize="40"
-            Text="请稍后..." />
-        <TextBlock
+            Content="请稍后..."
+            FontSize="40" />
+        <Label
             x:Name="timeText"
             Grid.Row="1"
             HorizontalAlignment="Center"
             VerticalAlignment="Top"
-            FontSize="40"
-            Text="12" />
+            Content="12"
+            FontSize="40" />
     </Grid>
 </Page>

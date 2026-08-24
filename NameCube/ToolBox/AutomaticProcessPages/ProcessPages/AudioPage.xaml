@@ -30,25 +30,22 @@
             Minimum="0"
             MouseLeave="PositionSlider_MouseLeave"
             ValueChanged="PositionSlider_ValueChanged" />
-        <TextBlock
+        <Label
+            x:Name="TimeNow"
             Grid.Row="1"
             HorizontalAlignment="Right"
             VerticalAlignment="Center"
-            FontSize="20">
-            <Run x:Name="PositionText" />
-            <Run Text="/" />
-            <Run x:Name="TotalTimeText" />
-        </TextBlock>
+            FontSize="20" />
 
         <!--  倍速控制  -->
         <StackPanel
             Grid.Row="2"
             HorizontalAlignment="Right"
             Orientation="Horizontal">
-            <TextBlock
+            <Label
                 Margin="0,0,10,0"
                 VerticalAlignment="Center"
-                Text="速度:" />
+                Content="速度:" />
             <ComboBox
                 x:Name="SpeedComboBox"
                 Width="80"
@@ -84,12 +81,10 @@
         </StackPanel>
 
         <!--  媒体元素（隐藏）  -->
-        <TextBlock
+        <Label
+            x:Name="AudioNow"
             Grid.Row="2"
             HorizontalAlignment="Left"
-            VerticalAlignment="Center">
-            <Run Text="正在播放：" />
-            <Run x:Name="AudioNameText" />
-        </TextBlock>
+            VerticalAlignment="Center" />
     </Grid>
 </Page>

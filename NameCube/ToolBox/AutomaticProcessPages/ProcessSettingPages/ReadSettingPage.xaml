@@ -9,7 +9,6 @@
     Title="ReadSettingPage"
     d:DesignHeight="350"
     d:DesignWidth="410"
-    Background="#f5f1f1"
     mc:Ignorable="d">
 
     <Grid Margin="20">
@@ -22,10 +21,10 @@
             <RowDefinition Height="60" />
             <RowDefinition Height="60" />
         </Grid.RowDefinitions>
-        <TextBlock
+        <Label
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
-            Text="文本内容" />
+            Content="文本内容" />
         <ui:TextBox
             x:Name="TextTextBox"
             Grid.Column="1"
@@ -33,11 +32,11 @@
             Margin="5"
             TextChanged="TextTextBox_TextChanged"
             TextWrapping="WrapWithOverflow" />
-        <TextBlock
+        <Label
             Grid.Row="1"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
-            Text="展示时间" />
+            Content="展示时间" />
         <ui:NumberBox
             x:Name="TimeNumberBox"
             Grid.Row="1"
@@ -47,11 +46,11 @@
             Maximum="3600"
             Minimum="1"
             ValueChanged="TimeNumberBox_ValueChanged" />
-        <TextBlock
+        <Label
             Grid.Row="2"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
-            Text="启用朗读" />
+            Content="启用朗读" />
         <CheckBox
             x:Name="ReadCheckBox"
             Grid.Row="2"

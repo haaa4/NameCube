@@ -12,19 +12,19 @@
     mc:Ignorable="d">
 
     <StackPanel>
-        <TextBlock
+        <Label
             Grid.ColumnSpan="2"
             HorizontalAlignment="Center"
+            Content="自动关机"
             FontSize="40"
-            FontWeight="Black"
-            Text="自动关机" />
-        <TextBlock
+            FontWeight="Black" />
+        <Label
             Grid.Row="1"
             Grid.ColumnSpan="2"
             Margin="10,20,0,0"
             HorizontalAlignment="Center"
-            FontSize="20"
-            Text="根据用户设置，电脑即将关机，是否继续？" />
+            Content="根据用户设置，电脑即将关机，是否继续？"
+            FontSize="20" />
 
         <ui:Button
             x:Name="PowerOffButton"
@@ -48,7 +48,7 @@
             Click="Button_Click"
             Icon="{ui:SymbolIcon Symbol=ArrowCircleRight24,
                                  FontSize=40}">
-            <TextBlock FontSize="40" Text="继续使用电脑" />
+            <Label Content="继续使用电脑" FontSize="40" />
         </ui:Button>
     </StackPanel>
 </Page>

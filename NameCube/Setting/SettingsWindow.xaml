@@ -6,6 +6,7 @@
     xmlns:local="clr-namespace:NameCube.Setting"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    x:Name="SettingWindow"
     Title="应用设置"
     Width="1200"
     Height="650"
@@ -27,9 +28,9 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <ui:TitleBar
+            x:Name="TitleBar"
             Title="应用设置"
             Grid.Row="0"
-            x:Name="TitleBar"
             Icon="{ui:ImageIcon 'pack://application:,,,/icon.ico'}" />
         <ui:NavigationView
             x:Name="NavigationMenu"
@@ -42,65 +43,65 @@
             PaneDisplayMode="LeftMinimal">
             <ui:NavigationView.MenuItems>
                 <ui:NavigationViewItem
+                    x:Name="Item1"
                     Content="档案编辑"
                     Icon="{ui:SymbolIcon Symbol=BookContacts24}"
-                    TargetPageType="{x:Type local:Archives}"
-                    x:Name="Item1"/>
+                    TargetPageType="{x:Type local:Archives}" />
                 <ui:NavigationViewItem
+                    x:Name="Item2"
                     Content="模式设置"
                     Icon="{ui:SymbolIcon Symbol=Settings24}"
-                    TargetPageType="{x:Type local:ModeSettings}"
-                    x:Name="Item2"/>
+                    TargetPageType="{x:Type local:ModeSettings}" />
                 <ui:NavigationViewItem
+                    x:Name="Item3"
                     Content="外观"
                     Icon="{ui:SymbolIcon Symbol=Collections24}"
-                    TargetPageType="{x:Type local:Appearance}"
-                    x:Name="Item3"/>
+                    TargetPageType="{x:Type local:Appearance}" />
                 <ui:NavigationViewItem
+                    x:Name="Item4"
                     Content="讲述人"
                     Icon="{ui:SymbolIcon Symbol=PersonVoice24}"
-                    TargetPageType="{x:Type local:Speech}"
-                    x:Name="Item4"/>
+                    TargetPageType="{x:Type local:Speech}" />
                 <ui:NavigationViewItem
                     x:Name="Item5"
                     Content="悬浮球"
                     Icon="{ui:SymbolIcon Symbol=Balloon12}"
-                    TargetPageType="{x:Type local:BirdSettings}"/>
+                    TargetPageType="{x:Type local:BirdSettings}" />
                 <ui:NavigationViewItem
+                    x:Name="Item6"
                     Content="快捷键"
                     Icon="{ui:SymbolIcon Symbol=Keyboard24}"
-                    TargetPageType="{x:Type local:ShortcutKeySetting}"
-                    x:Name="Item6"/>
+                    TargetPageType="{x:Type local:ShortcutKeySetting}" />
                 <ui:NavigationViewItem
+                    x:Name="Item7"
                     Content="权限管理"
                     Icon="{ui:SymbolIcon Symbol=KeyMultiple20}"
-                    TargetPageType="{x:Type local:PermissionManagerSettings}" 
-                    x:Name="Item7"/>
+                    TargetPageType="{x:Type local:PermissionManagerSettings}" />
                 <ui:NavigationViewItem
+                    x:Name="Item8"
                     Content="配置文件"
                     Icon="{ui:SymbolIcon Symbol=Document24}"
-                    TargetPageType="{x:Type local:Document}" 
-                    x:Name="Item8"/>
+                    TargetPageType="{x:Type local:Document}" />
                 <ui:NavigationViewItem
+                    x:Name="Item9"
                     Content="日志"
                     Icon="{ui:SymbolIcon Symbol=Pen24}"
-                    TargetPageType="{x:Type local:LogSetting}" 
-                    x:Name="Item9"/>
+                    TargetPageType="{x:Type local:LogSetting}" />
                 <ui:NavigationViewItem
+                    x:Name="Item10"
                     Content="更新"
                     Icon="{ui:SymbolIcon Symbol=ArrowUpload24}"
-                    TargetPageType="{x:Type local:Updata}" 
-                    x:Name="Item10"/>
+                    TargetPageType="{x:Type local:Updata}" />
                 <ui:NavigationViewItem
+                    x:Name="Item11"
                     Content="其他"
                     Icon="{ui:SymbolIcon Symbol=MoreCircle24}"
-                    TargetPageType="{x:Type local:Other}"
-                    x:Name="Item11"/>
+                    TargetPageType="{x:Type local:Other}" />
                 <ui:NavigationViewItem
+                    x:Name="Item12"
                     Content="关于"
                     Icon="{ui:SymbolIcon Symbol=Info24}"
-                    TargetPageType="{x:Type local:About}" 
-                    x:Name="Item12"/>
+                    TargetPageType="{x:Type local:About}" />
                 <ui:NavigationViewItem
                     x:Name="DebugItem"
                     Content="调试"
@@ -126,8 +127,8 @@
             x:Name="border"
             Grid.RowSpan="2"
             d:IsHidden="True"
-            Background="White"
-            BorderBrush="White"
+            Background="{Binding Background, ElementName=SettingWindow}"
+            BorderBrush="{Binding Background, ElementName=SettingWindow}"
             BorderThickness="1"
             Visibility="Visible">
             <Canvas>
@@ -149,7 +150,6 @@
                     VerticalAlignment="Top"
                     FontFamily="Segoe UI Black"
                     FontSize="72"
-                    Foreground="#FF1D1D1D"
                     TextWrapping="Wrap"><Run Language="zh-cn" Text="应用设置" /></TextBlock>
             </Canvas>
         </Border>

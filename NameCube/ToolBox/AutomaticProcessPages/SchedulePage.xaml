@@ -19,10 +19,10 @@
         </Grid.ColumnDefinitions>
         <Rectangle
             Margin="5"
-            Fill="#f5f1f1"
+            Fill="{ui:ThemeResource ControlFillColorDefaultBrush}"
             RadiusX="10"
             RadiusY="10" />
-        <TextBlock Margin="10" Text="选择流程组" />
+        <Label Margin="10" Content="选择流程组" />
         <ui:ListView
             x:Name="TimeListView"
             Margin="10,40,10,10"
@@ -41,31 +41,32 @@
         <Rectangle
             Grid.Column="1"
             Margin="5"
-            Fill="#f5f1f1"
+            Fill="{ui:ThemeResource ControlFillColorDefaultBrush}"
             RadiusX="10"
             RadiusY="10" />
         <StackPanel
             x:Name="Part2"
             Grid.Column="1"
             IsEnabled="False">
-            <TextBlock
+            <Label
                 Grid.Column="1"
                 Margin="10"
-                Text="详细设置" />
-            <TextBlock
+                Content="详细设置" />
+            <Label
                 x:Name="ProcessesGroupTextBlock"
                 HorizontalAlignment="Center"
-                FontSize="18"
-                Text="流程组" />
+                Content="流程组"
+                FontSize="18" />
             <ComboBox
                 x:Name="ProcessesPicker"
                 Margin="20"
                 ItemsSource="{Binding processesChooseList}"
                 SelectionChanged="ProcessesPicker_SelectionChanged" />
-            <TextBlock
+            <Label
+                x:Name="TimeLable"
                 HorizontalAlignment="Center"
-                FontSize="18"
-                Text="时间" />
+                Content="时间"
+                FontSize="18" />
             <Grid Margin="10">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition />
@@ -90,26 +91,26 @@
                     Grid.Column="2"
                     Margin="5"
                     ItemsSource="{Binding picker3}" />
-                <TextBlock
+                <Label
                     x:Name="HourTextBlock"
                     Grid.Row="1"
                     HorizontalAlignment="Center"
-                    FontSize="20"
-                    Text="时" />
-                <TextBlock
+                    Content="时"
+                    FontSize="20" />
+                <Label
                     x:Name="MinutesTextBlock"
                     Grid.Row="1"
                     Grid.Column="1"
                     HorizontalAlignment="Center"
-                    FontSize="20"
-                    Text="分" />
-                <TextBlock
+                    Content="分"
+                    FontSize="20" />
+                <Label
                     x:Name="SecondTextBlock"
                     Grid.Row="1"
                     Grid.Column="2"
                     HorizontalAlignment="Center"
-                    FontSize="20"
-                    Text="秒" />
+                    Content="秒"
+                    FontSize="20" />
             </Grid>
             <ui:Button
                 x:Name="AddButton"

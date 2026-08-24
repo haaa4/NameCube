@@ -14,15 +14,15 @@
 
     <Grid>
         <StackPanel>
-            <TextBlock
+            <Label
                 HorizontalAlignment="Center"
-                FontSize="30"
-                Text="当前版本" />
-            <TextBlock
+                Content="当前版本"
+                FontSize="30" />
+            <Label
                 x:Name="VersionText"
                 HorizontalAlignment="Center"
-                FontSize="50"
-                Text="Unknow" />
+                Content="Unknow"
+                FontSize="50" />
             <ProgressBar
                 x:Name="NowProgressBar"
                 Height="10"
@@ -30,16 +30,16 @@
                 Maximum="100"
                 Minimum="0"
                 Value="100" />
-            <TextBlock
+            <Label
                 x:Name="CaseText"
                 Margin="10,0"
-                FontSize="20"
-                Text="当前已是最新版本" />
-            <TextBlock
+                Content="当前已是最新版本"
+                FontSize="20" />
+            <Label
                 x:Name="CheckText"
                 Margin="10,0"
-                FontSize="20"
-                Text="上次检查时间：Unknow" />
+                Content="上次检查时间：Unknow"
+                FontSize="20" />
             <ui:Button
                 x:Name="CheckButton"
                 Margin="10"

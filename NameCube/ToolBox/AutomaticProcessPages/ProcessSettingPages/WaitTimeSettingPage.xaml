@@ -9,7 +9,6 @@
     Title="WaitTimeSettingPage"
     d:DesignHeight="350"
     d:DesignWidth="410"
-    Background="#f5f1f1"
     mc:Ignorable="d">
 
     <Grid Margin="20">
@@ -17,10 +16,10 @@
             <ColumnDefinition Width="1*" />
             <ColumnDefinition Width="2*" />
         </Grid.ColumnDefinitions>
-        <TextBlock
+        <Label
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
-            Text="等待时间" />
+            Content="等待时间" />
         <ui:NumberBox
             x:Name="WaitTimeNumberBox"
             Grid.Column="1"

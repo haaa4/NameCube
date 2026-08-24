@@ -1,4 +1,16 @@
-﻿using Masuit.Tools;
+﻿// /*
+//  * NameCube-<点名器>
+//  * Copyright (C) 2025-2026 haaa4
+//  *
+//  * This program is free software: you can redistribute it and/or modify
+//  * it under the terms of the GNU General Public License as published by
+//  * the Free Software Foundation, either version 3 of the License, or
+//  * (at your option) any later version.
+//  *
+//  * This program is distributed in the hope that it will be useful,
+//  * but WITHOUT ANY WARRANTY
+
+using Masuit.Tools;
 using Serilog;
 using System;
 using System.Speech.Synthesis;
@@ -194,9 +206,6 @@ namespace NameCube.Mode
                     NowNumberText.Text = GlobalVariablesData.config.NumberModeSettings.LastName;
                     Log.Debug("设置上次抽取结果: {LastName}", GlobalVariablesData.config.NumberModeSettings.LastName);
                 }
-
-                NowNumberText.Foreground = GlobalVariablesData.config.AllSettings.color;
-                FinishText.Foreground = GlobalVariablesData.config.AllSettings.color;
                 //NowNumberText.FontFamily = GlobalVariablesData.config.AllSettings.Font;
                 //FinishText.FontFamily = GlobalVariablesData.config.AllSettings.Font;
 

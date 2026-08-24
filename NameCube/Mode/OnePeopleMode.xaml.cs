@@ -1,4 +1,18 @@
-﻿using Serilog;
+﻿// /*
+//  * NameCube-<点名器>
+//  * Copyright (C) 2025-2026 haaa4
+//  *
+//  * This program is free software: you can redistribute it and/or modify
+//  * it under the terms of the GNU General Public License as published by
+//  * the Free Software Foundation, either version 3 of the License, or
+//  * (at your option) any later version.
+//  *
+//  * This program is distributed in the hope that it will be useful,
+//  * but WITHOUT ANY WARRANTY
+
+using Masuit.Tools;
+using NameCube.Function;
+using Serilog;
 using System;
 using System.Speech.Synthesis;
 using System.Timers;
@@ -76,7 +90,7 @@ namespace NameCube.Mode
                     Log.Information("单抽模式结束，结果: {Result}", NowNumberText.Text);
                     return;
                 }
-
+                NowIndex = Random.StrictNext(GlobalVariablesData.config.AllSettings.Name.Count);
                 try
                 {
                     Dispatcher.Invoke(() =>
@@ -89,14 +103,12 @@ namespace NameCube.Mode
                     Log.Error(ex, "更新显示文本时发生异常");
                 }
 
-                NowIndex=Random.Next(0, GlobalVariablesData.config.AllSettings.Name.Count);
             }
             catch (Exception ex)
             {
                 Log.Error(ex, "OnePeopleMode定时器处理时发生异常");
             }
         }
-
         private void StartButton_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -125,6 +137,7 @@ namespace NameCube.Mode
                 flicker.Begin();
                 if (StartButton.Content.ToString() == "开始")
                 {
+                    Random = new();
                     Log.Information("开始单抽模式");
                     FinishText.Visibility = Visibility.Hidden;
                     NowNumberText.Visibility = Visibility.Visible;
@@ -224,8 +237,6 @@ namespace NameCube.Mode
                         GlobalVariablesData.config.AllSettings.Speed);
                 }
 
-                NowNumberText.Foreground = GlobalVariablesData.config.AllSettings.color;
-                FinishText.Foreground = GlobalVariablesData.config.AllSettings.color;
                 //NowNumberText.FontFamily = GlobalVariablesData.config.AllSettings.Font;
                 //FinishText.FontFamily = GlobalVariablesData.config.AllSettings.Font;
 

@@ -1,4 +1,16 @@
-﻿namespace NameCubeSetup.Properties
+﻿// /*
+//  * NameCube-<点名器>
+//  * Copyright (C) 2025-2026 haaa4
+//  *
+//  * This program is free software: you can redistribute it and/or modify
+//  * it under the terms of the GNU General Public License as published by
+//  * the Free Software Foundation, either version 3 of the License, or
+//  * (at your option) any later version.
+//  *
+//  * This program is distributed in the hope that it will be useful,
+//  * but WITHOUT ANY WARRANTY
+
+namespace NameCubeSetup.Properties
 {
     // 通过此类可以处理设置类的特定事件:
     //  在更改某个设置的值之前将引发 SettingChanging 事件。

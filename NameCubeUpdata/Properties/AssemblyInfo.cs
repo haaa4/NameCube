@@ -1,4 +1,16 @@
-﻿using System.Reflection;
+﻿// /*
+//  * NameCube-<点名器>
+//  * Copyright (C) 2025-2026 haaa4
+//  *
+//  * This program is free software: you can redistribute it and/or modify
+//  * it under the terms of the GNU General Public License as published by
+//  * the Free Software Foundation, either version 3 of the License, or
+//  * (at your option) any later version.
+//  *
+//  * This program is distributed in the hope that it will be useful,
+//  * but WITHOUT ANY WARRANTY
+
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows;
 
@@ -10,7 +22,7 @@ using System.Windows;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("哈阿斯")]
 [assembly: AssemblyProduct("NameCubeSetup")]
-[assembly: AssemblyCopyright("Copyright ©  2025")]
+[assembly: AssemblyCopyright("Copyright © haaa4 2025-2026")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -45,4 +57,4 @@ using System.Windows;
 //      修订号
 //
 [assembly: AssemblyVersion("0.3.0.0")]
-[assembly: AssemblyFileVersion("1.3.0.1")]
+[assembly: AssemblyFileVersion("1.3.0.2")]

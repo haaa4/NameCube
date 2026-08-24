@@ -12,10 +12,10 @@
     mc:Ignorable="d">
 
     <Grid>
-        <TextBlock
+        <Label
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
-            FontSize="40"
-            Text="执行命令中..." />
+            Content="执行命令中..."
+            FontSize="40" />
     </Grid>
 </Page>

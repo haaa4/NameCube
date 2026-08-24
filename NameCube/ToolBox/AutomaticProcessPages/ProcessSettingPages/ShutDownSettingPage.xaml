@@ -9,7 +9,6 @@
     Title="ShutDownSettingPage"
     d:DesignHeight="350"
     d:DesignWidth="410"
-    Background="#f5f1f1"
     mc:Ignorable="d">
 
     <Grid>
@@ -21,10 +20,10 @@
             <RowDefinition />
             <RowDefinition Height="40" />
         </Grid.RowDefinitions>
-        <TextBlock
+        <Label
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
-            Text="关机方式" />
+            Content="关机方式" />
         <ComboBox
             x:Name="ShutDownWayComboBox"
             Grid.Column="1"

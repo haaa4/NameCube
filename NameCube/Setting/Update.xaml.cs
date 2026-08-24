@@ -1,4 +1,16 @@
-﻿using NameCube.Function;
+﻿// /*
+//  * NameCube-<点名器>
+//  * Copyright (C) 2025-2026 haaa4
+//  *
+//  * This program is free software: you can redistribute it and/or modify
+//  * it under the terms of the GNU General Public License as published by
+//  * the Free Software Foundation, either version 3 of the License, or
+//  * (at your option) any later version.
+//  *
+//  * This program is distributed in the hope that it will be useful,
+//  * but WITHOUT ANY WARRANTY
+
+using NameCube.Function;
 using Serilog; // 添加Serilog引用
 using System;
 using System.Diagnostics;
@@ -25,7 +37,7 @@ namespace NameCube.Setting
             GlobalVariablesData.config.StartToDo.AutoUpdata = false;
             GlobalVariablesData.SaveConfig();
             Canchange = false;
-            VersionText.Text = GlobalVariablesData.VERSION;
+            VersionText.Content = GlobalVariablesData.VERSION;
             UpdataWayComboBox.SelectedIndex = GlobalVariablesData.config.AllSettings.UpdataGet;
             AutoStart.IsChecked = GlobalVariablesData.config.StartToDo.AutoUpdata;
             tokenText.Text = GlobalVariablesData.config.AllSettings.token;
@@ -33,11 +45,11 @@ namespace NameCube.Setting
 
             if (GlobalVariablesData.config.AllSettings.UpdataTime != null)
             {
-                CheckText.Text = "上次检查时间:" + GlobalVariablesData.config.AllSettings.UpdataTime;
+                CheckText.Content = "上次检查时间:" + GlobalVariablesData.config.AllSettings.UpdataTime;
             }
             else
             {
-                CheckText.Text = "上次检查时间:从未检查过";
+                CheckText.Content = "上次检查时间:从未检查过";
             }
 
             if (GlobalVariablesData.ISBETA)
@@ -50,7 +62,7 @@ namespace NameCube.Setting
 
             if (GlobalVariablesData.config.AllSettings.newVersion != null&& GlobalVariablesData.config.AllSettings.newVersion != GlobalVariablesData.VERSION)
             {
-                CaseText.Text = "检测到新的版本：" + GlobalVariablesData.config.AllSettings.newVersion;
+                CaseText.Content = "检测到新的版本：" + GlobalVariablesData.config.AllSettings.newVersion;
                 UpkButton.IsEnabled = true;
                 _logger.Information("检测到新版本: {NewVersion}", GlobalVariablesData.config.AllSettings.newVersion);
             }
@@ -66,7 +78,7 @@ namespace NameCube.Setting
         private async void CheckButton_Click(object sender, RoutedEventArgs e)
         {
             _logger.Information("开始检查更新");
-            CaseText.Text = "获取最新版本中...";
+            CaseText.Content = "获取最新版本中...";
             NowProgressBar.IsIndeterminate = true;
             CheckButton.IsEnabled = false;
             UpkButton.IsEnabled = false;
@@ -105,11 +117,11 @@ namespace NameCube.Setting
                 {
                     NowProgressBar.IsIndeterminate = false;
                     NowProgressBar.Value = NowProgressBar.Maximum;
-                    CaseText.Text = "检测到新的版本：" + GetVersion;
+                    CaseText.Content = "检测到新的版本：" + GetVersion;
                     GlobalVariablesData.config.AllSettings.newVersion = GetVersion;
                     GlobalVariablesData.SaveConfig();
                     UpkButton.IsEnabled = true;
-                    CheckText.Text = "上次检查时间:" + GlobalVariablesData.config.AllSettings.UpdataTime;
+                    CheckText.Content = "上次检查时间:" + GlobalVariablesData.config.AllSettings.UpdataTime;
 
                     _logger.Information("发现新版本: {NewVersion}, 当前版本: {CurrentVersion}", GetVersion, GlobalVariablesData.VERSION);
                 }
@@ -117,8 +129,8 @@ namespace NameCube.Setting
                 {
                     GlobalVariablesData.config.AllSettings.newVersion = null;
                     GlobalVariablesData.SaveConfig();
-                    CaseText.Text = "已是最新版本";
-                    CheckText.Text = "上次检查时间:" + GlobalVariablesData.config.AllSettings.UpdataTime;
+                    CaseText.Content = "已是最新版本";
+                    CheckText.Content = "上次检查时间:" + GlobalVariablesData.config.AllSettings.UpdataTime;
                     _logger.Information("已是最新版本: {CurrentVersion}", GlobalVariablesData.VERSION);
                 }
 
@@ -131,7 +143,7 @@ namespace NameCube.Setting
                 SnackBarFunction.ShowSnackBarInSettingWindow(ex.Message, Wpf.Ui.Controls.ControlAppearance.Caution);
                 NowProgressBar.IsIndeterminate = false;
                 CheckButton.IsEnabled = true;
-                CaseText.Text = "检查更新失败";
+                CaseText.Content = "检查更新失败";
             }
         }
 
@@ -173,7 +185,7 @@ namespace NameCube.Setting
         private async Task CardAction_ClickAsync(object sender, RoutedEventArgs e)
         {
             _logger.Information("开始尝试强制更新");
-            CaseText.Text = "获取最新版本中...";
+            CaseText.Content = "获取最新版本中...";
             NowProgressBar.IsIndeterminate = true;
             CheckButton.IsEnabled = false;
             UpkButton.IsEnabled = false;
@@ -196,11 +208,11 @@ namespace NameCube.Setting
 
                 NowProgressBar.IsIndeterminate = false;
                 NowProgressBar.Value = NowProgressBar.Maximum;
-                CaseText.Text = "检测到新的版本：" + GetVersion;
+                CaseText.Content = "检测到新的版本：" + GetVersion;
                 GlobalVariablesData.config.AllSettings.newVersion = GetVersion;
                 GlobalVariablesData.SaveConfig();
                 UpkButton.IsEnabled = true;
-                CheckText.Text = "上次检查时间:" + GlobalVariablesData.config.AllSettings.UpdataTime;
+                CheckText.Content = "上次检查时间:" + GlobalVariablesData.config.AllSettings.UpdataTime;
 
                 _logger.Information("发现新版本: {NewVersion}, 当前版本: {CurrentVersion}", GetVersion, GlobalVariablesData.VERSION);
 
@@ -213,14 +225,14 @@ namespace NameCube.Setting
                 SnackBarFunction.ShowSnackBarInSettingWindow(ex.Message, Wpf.Ui.Controls.ControlAppearance.Caution);
                 NowProgressBar.IsIndeterminate = false;
                 CheckButton.IsEnabled = true;
-                CaseText.Text = "检查更新失败";
+                CaseText.Content = "检查更新失败";
             }
         }
 
         private async void CardAction_Click(object sender, RoutedEventArgs e)
         {
             _logger.Information("开始强制更新");
-            CaseText.Text = "获取最新版本中...";
+            CaseText.Content = "获取最新版本中...";
             NowProgressBar.IsIndeterminate = true;
             CheckButton.IsEnabled = false;
             UpkButton.IsEnabled = false;
@@ -256,11 +268,11 @@ namespace NameCube.Setting
                 }
                 NowProgressBar.IsIndeterminate = false;
                 NowProgressBar.Value = NowProgressBar.Maximum;
-                CaseText.Text = "检测到新的版本：" + GetVersion;
+                CaseText.Content = "检测到新的版本：" + GetVersion;
                 GlobalVariablesData.config.AllSettings.newVersion = GetVersion;
                 GlobalVariablesData.SaveConfig();
                 UpkButton.IsEnabled = true;
-                CheckText.Text = "上次检查时间:" + GlobalVariablesData.config.AllSettings.UpdataTime;
+                CheckText.Content = "上次检查时间:" + GlobalVariablesData.config.AllSettings.UpdataTime;
 
                 _logger.Information("发现版本: {NewVersion}, 当前版本: {CurrentVersion}", GetVersion, GlobalVariablesData.VERSION);
 
@@ -273,7 +285,7 @@ namespace NameCube.Setting
                 SnackBarFunction.ShowSnackBarInSettingWindow(ex.Message, Wpf.Ui.Controls.ControlAppearance.Caution);
                 NowProgressBar.IsIndeterminate = false;
                 CheckButton.IsEnabled = true;
-                CaseText.Text = "检查更新失败";
+                CaseText.Content = "检查更新失败";
             }
         }
 

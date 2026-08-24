@@ -1,4 +1,16 @@
-﻿using NameCube.Function;
+﻿// /*
+//  * NameCube-<点名器>
+//  * Copyright (C) 2025-2026 haaa4
+//  *
+//  * This program is free software: you can redistribute it and/or modify
+//  * it under the terms of the GNU General Public License as published by
+//  * the Free Software Foundation, either version 3 of the License, or
+//  * (at your option) any later version.
+//  *
+//  * This program is distributed in the hope that it will be useful,
+//  * but WITHOUT ANY WARRANTY
+
+using NameCube.Function;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -213,11 +225,13 @@ namespace NameCube.Setting.PermissionManager
                     Buffer.BlockCopy(fullBytes, 16, cipherBytes, 0, cipherBytes.Length);
 
                     // 用相同的密码和盐生成密钥
+#pragma warning disable SYSLIB0041 // 类型或成员已过时
                     using (var deriveBytes = new Rfc2898DeriveBytes(password, Salt, 10000))
                     {
                         aes.Key = deriveBytes.GetBytes(32);
                         aes.IV = iv;
                     }
+#pragma warning restore SYSLIB0041 // 类型或成员已过时
 
                     var decryptor = aes.CreateDecryptor();
                     byte[] plainBytes = decryptor.TransformFinalBlock(cipherBytes, 0, cipherBytes.Length);

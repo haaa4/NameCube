@@ -1,4 +1,16 @@
-﻿using NameCube.Setting.EasterEgg;
+﻿// /*
+//  * NameCube-<点名器>
+//  * Copyright (C) 2025-2026 haaa4
+//  *
+//  * This program is free software: you can redistribute it and/or modify
+//  * it under the terms of the GNU General Public License as published by
+//  * the Free Software Foundation, either version 3 of the License, or
+//  * (at your option) any later version.
+//  *
+//  * This program is distributed in the hope that it will be useful,
+//  * but WITHOUT ANY WARRANTY
+
+using NameCube.Setting.EasterEgg;
 using Serilog;
 using System;
 using System.IO;
@@ -10,7 +22,7 @@ using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using Windows.Media.Protection.PlayReady;
 using Wpf.Ui.Controls;
-using Image = Wpf.Ui.Controls.Image;
+using Image = System.Windows.Controls.Image;
 using StackPanel = System.Windows.Controls.StackPanel;
 
 namespace NameCube.Setting
@@ -161,25 +173,42 @@ namespace NameCube.Setting
                 Log.Warning("加载头像失败：{Error}", ex);
             }
         }
+        /*
+         *  if (GlobalVariables.json.GiteeMode ?? false)
+            {
+                await LoadImageFromWebAsync("https://foruda.gitee.com/avatar/1777196359746152210/15207534_haaa4_1777196359.png!avatar100", HeadImage);
+                await LoadImageFromWebAsync("https://raw.giteeusercontent.com/haaa4/NameCube/raw/main/NameCube/icon.png?metadata=eyJyIjoibWFpbiIsImZwIjoiTmFtZUN1YmUvaWNvbi5wbmciLCJ1aWQiOjE1MjA3NTM0LCJwaWQiOjQ1MzY1MzYxLCJzdG8iOiJnaXQtc2hhcmRpbmctc3RvLTQydC0wMTQiLCJycCI6InJlcG9zLzhmL2RiLzhmZGJiNGM1MDdhYzQ1ZWY5NmIyZmY1ODU4ZDM3NTVhOGM3MjVkMDQ5MzQyM2I5OWQwZTE5M2QwOTE1MzExZmQuZ2l0IiwiaXNwIjp0cnVlLCJleHBpcmVfYXQiOjE3ODY5NTY2MDB9&signature=vIuuYREbx9tXE51ysZ8Sdjr-d96rAS3VgABcw1nG-vI", NameCubeIcon);
+                await LoadImageFromWebAsync("https://raw.giteeusercontent.com/haaa4/DeskSweeper/raw/main/DeskSweeper.png?metadata=eyJyIjoibWFpbiIsImZwIjoiRGVza1N3ZWVwZXIucG5nIiwidWlkIjoxNTIwNzUzNCwicGlkIjo0OTc0NTg3NSwic3RvIjoiZ2l0LXNoYXJkaW5nLXN0by00MnQtMDE0IiwicnAiOiJyZXBvcy9hMS81OC9hMTU4YWUyYWU4ZTJmNWJkZmQxOWI5YTFmMmJlMTQ5OWNjN2FhZjM0ZDM3MWI0MjM1NWNmY2ZkNDhhYjcyMmRhLmdpdCIsImlzcCI6dHJ1ZSwiZXhwaXJlX2F0IjoxNzg2OTU3MjAwfQ&signature=hAgvqtSg5jMESkzD-IScmskcVQVGWLn9N0aOfYnoZq4", DeskSweeperIcon);
+            }
+            else
+            {
+                await LoadImageFromWebAsync("https://avatars.githubusercontent.com/u/172395030?v=4", HeadImage);
+                await LoadImageFromWebAsync("https://raw.githubusercontent.com/haaa4/NameCube/refs/heads/main/NameCube/icon.png", NameCubeIcon);
+                await LoadImageFromWebAsync("https://raw.githubusercontent.com/haaa4/DeskSweeper/refs/heads/main/DeskSweeper.png", DeskSweeperIcon);
+            }
 
+         */
         private async void Page_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
             VersionTextBlock.Text = GlobalVariablesData.VERSION;
-            if(GlobalVariablesData.config.AllSettings.DownloadWay == 0)
+            if (GlobalVariablesData.config.AllSettings.DownloadWay == 0)
+            {
                 await LoadImageFromWebAsync("https://avatars.githubusercontent.com/u/172395030?v=4", HeadImage);
+                await LoadImageFromWebAsync("https://github.com/haaa4/SeatMapper/blob/master/SeatMapper/Image/icon.png?raw=true", SeatMapperIcon);
+                await LoadImageFromWebAsync("https://raw.githubusercontent.com/haaa4/DeskSweeper/refs/heads/main/DeskSweeper.png", DeskSweeperIcon);
+            }
             else
+            {
                 await LoadImageFromWebAsync("https://foruda.gitee.com/avatar/1777196359746152210/15207534_haaa4_1777196359.png!avatar200", HeadImage);
+                await LoadImageFromWebAsync("https://raw.giteeusercontent.com/haaa4/SeatMapper/raw/master/SeatMapper/Image/icon.png?metadata=eyJyIjoibWFzdGVyIiwiZnAiOiJTZWF0TWFwcGVyL0ltYWdlL2ljb24ucG5nIiwidWlkIjoxNTIwNzUzNCwicGlkIjo0OTc0NTg3Mywic3RvIjoiZ2l0LXNoYXJkaW5nLXN0by00MnQtMDE0IiwicnAiOiJyZXBvcy8wNC81MS8wNDUxYzVhNTFkYjIxY2Y2Njg5MTYwODVlNWIzODhmODg2MDBiNjVjNjhjMDgwMmRiZjNlZDYxZTkyYTlkODdkLmdpdCIsImlzcCI6dHJ1ZSwiZXhwaXJlX2F0IjoxNzg3NTcyMjAwfQ&signature=c43QSbBGFppGrpQ8DhE2rZJt0AYNgkqGS6eUp97uvtE", SeatMapperIcon);
+                await LoadImageFromWebAsync("https://raw.giteeusercontent.com/haaa4/DeskSweeper/raw/main/DeskSweeper.png?metadata=eyJyIjoibWFpbiIsImZwIjoiRGVza1N3ZWVwZXIucG5nIiwidWlkIjoxNTIwNzUzNCwicGlkIjo0OTc0NTg3NSwic3RvIjoiZ2l0LXNoYXJkaW5nLXN0by00MnQtMDE0IiwicnAiOiJyZXBvcy9hMS81OC9hMTU4YWUyYWU4ZTJmNWJkZmQxOWI5YTFmMmJlMTQ5OWNjN2FhZjM0ZDM3MWI0MjM1NWNmY2ZkNDhhYjcyMmRhLmdpdCIsImlzcCI6dHJ1ZSwiZXhwaXJlX2F0IjoxNzg2OTU3MjAwfQ&signature=hAgvqtSg5jMESkzD-IScmskcVQVGWLn9N0aOfYnoZq4", DeskSweeperIcon);
+            }
         }
 
         private void Button_Click(object sender, System.Windows.RoutedEventArgs e)
         {
             ThanksWindow thanksWindow = new ThanksWindow();
             thanksWindow.ShowDialog();
-        }
-
-        private void Button_Click_1(object sender, RoutedEventArgs e)
-        {
-            EncourageButton.Content = "~=o(*^▽^*)o~♪";
         }
     }
 }

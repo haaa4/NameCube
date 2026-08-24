@@ -1,4 +1,16 @@
-﻿using CredentialManagement;
+﻿// /*
+//  * NameCube-<点名器>
+//  * Copyright (C) 2025-2026 haaa4
+//  *
+//  * This program is free software: you can redistribute it and/or modify
+//  * it under the terms of the GNU General Public License as published by
+//  * the Free Software Foundation, either version 3 of the License, or
+//  * (at your option) any later version.
+//  *
+//  * This program is distributed in the hope that it will be useful,
+//  * but WITHOUT ANY WARRANTY
+
+using CredentialManagement;
 using Masuit.Tools.Logging;
 using NameCube.Function;
 using NameCube.GlobalVariables.DataClass;
@@ -145,16 +157,17 @@ namespace NameCube
         /// <summary>
         /// 当前版本
         /// </summary>
-        public const string VERSION = "V1.4-Beta-1(#p8#)";
+        public const string VERSION = "V1.4-Beta-2(#p9#)";
         /// <summary>
         /// 当前版本代码
         /// </summary>
-        public const int VERSIONCODE = 8;
+        public const int VERSIONCODE = 9;
         /// <summary>
         /// 当前是否为测试版本
         /// </summary>
         public const bool ISBETA = true;
         public static bool ret = false;
+#nullable enable
         public static string? creds = CredentialHelper.LoadCredential();
     }
 }

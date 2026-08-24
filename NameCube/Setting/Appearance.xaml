@@ -6,27 +6,27 @@
     xmlns:local="clr-namespace:NameCube.Setting"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
-    Title="Appearance"
+    Title="Appearance" Loaded="Page_Loaded"
     d:DesignHeight="450"
     d:DesignWidth="800"
     FontFamily="{StaticResource AppFont}"
     mc:Ignorable="d">
 
     <StackPanel>
-        <!--<ui:CardControl
+        <ui:CardControl
             Margin="4"
             Padding="20,10,20,10"
-            Icon="{ui:SymbolIcon Symbol=Lightbulb20}">
+            Icon="{ui:SymbolIcon Symbol=WeatherMoon24}">
             <ui:CardControl.Header>
                 <StackPanel>
                     <ui:TextBlock
                         Margin="0"
                         FontTypography="BodyStrong"
-                        Text="关灯"
+                        Text="暗色模式"
                         TextWrapping="WrapWithOverflow" />
                     <ui:TextBlock
                         Appearance="Secondary"
-                        Text="改变界面黑白主题(测试中...)"
+                        Text="切换为亮度更低的暗色模式"
                         TextWrapping="WrapWithOverflow" />
                 </StackPanel>
             </ui:CardControl.Header>
@@ -37,7 +37,7 @@
                 IsEnabled="True"
                 OffContent="关"
                 OnContent="开" />
-        </ui:CardControl>-->
+        </ui:CardControl>
         <ui:CardControl
             Margin="4"
             Padding="20,10,20,10"
@@ -51,8 +51,9 @@
                         TextWrapping="WrapWithOverflow" />
                     <ui:TextBlock
                         Appearance="Secondary"
-                        Text="改变主界面部分控件颜色，如需参考，可访问下列网址"
-                        TextWrapping="WrapWithOverflow" />
+                        Text="改变部分控件颜色，按下回车以保存，按右键获取更多操作"
+                        TextWrapping="WrapWithOverflow" >
+                    </ui:TextBlock>
                     <ui:HyperlinkButton
                         Content="在线取色盘"
                         Icon="{ui:SymbolIcon Link24}"
@@ -64,26 +65,33 @@
                     x:Name="ColorTextBox"
                     Width="200"
                     Margin="20,0,0,0"
-                    KeyDown="TextBox_KeyDown"
+                    KeyUp="TextBox_KeyDown"
                     MaxLength="9"
                     PlaceholderText="如:#FF005493"
-                    TextChanged="ColorTextBox_TextChanged" />
+                    TextChanged="ColorTextBox_TextChanged" >
+                    <ui:TextBox.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="恢复默认" Click="MenuItem_Click_1"/>
+                            <!--<MenuItem Header="设置为图片主题色" Click="MenuItem_Click_2"/>-->
+                        </ContextMenu>
+                    </ui:TextBox.ContextMenu>
+                </ui:TextBox>
             </Grid>
         </ui:CardControl>
         <!--<ui:CardControl
             Margin="4"
             Padding="20,10,20,10"
-            Icon="{ui:SymbolIcon Symbol=Lightbulb20}">
+            Icon="{ui:SymbolIcon Symbol=TextFont24}">
             <ui:CardControl.Header>
                 <StackPanel>
                     <ui:TextBlock
                         Margin="0"
                         FontTypography="BodyStrong"
-                        Text="字体"
+                        Text="主题字体"
                         TextWrapping="WrapWithOverflow" />
                     <ui:TextBlock
                         Appearance="Secondary"
-                        Text="主界面的字体类型"
+                        Text="主界面的各个大字的字体"
                         TextWrapping="WrapWithOverflow" />
                 </StackPanel>
             </ui:CardControl.Header>
@@ -101,6 +109,85 @@
             <StackPanel>
                 <TextBlock x:Name="PreviewText" Text="123456789金木水火土齉褨蕧祃蠃櫱瘝滍 你好 Hello 안녕 こんにちは привет" />
             </StackPanel>
+        </ui:CardControl>
+        <ui:CardControl
+            Margin="4"
+            Padding="20,10,20,10"
+            Icon="{ui:SymbolIcon Symbol=Image28}">
+            <ui:CardControl.Header>
+                <StackPanel>
+                    <ui:TextBlock
+                        Margin="0"
+                        FontTypography="BodyStrong"
+                        Text="背景图片"
+                        TextWrapping="WrapWithOverflow" />
+                    <ui:TextBlock
+                        Appearance="Secondary"
+                        Text="点击右侧可自定义主界面背景图片"
+                        TextWrapping="WrapWithOverflow" />
+                </StackPanel>
+            </ui:CardControl.Header>
+            <StackPanel>
+                <ui:ProgressRing
+                    x:Name="Ring"
+                    Width="90"
+                    Height="90"
+                    IsIndeterminate="True"
+                    Visibility="Collapsed" />
+                <ui:Button
+                    HorizontalAlignment="Center"
+                    Click="Button_Click"
+                    Content="点此设定">
+                    <ui:Button.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Click="MenuItem_Click" Header="恢复默认" />
+                        </ContextMenu>
+                    </ui:Button.ContextMenu>
+                </ui:Button>
+            </StackPanel>
+        </ui:CardControl>
+        <ui:CardControl
+            Margin="4"
+            Padding="20,10,20,10"
+            Icon="{ui:SymbolIcon Symbol=ResizeImage24}">
+            <ui:CardControl.Header>
+                <StackPanel>
+                    <ui:TextBlock
+                        Margin="0"
+                        FontTypography="BodyStrong"
+                        Text="背景图片拉伸方式"
+                        TextWrapping="WrapWithOverflow" />
+                    <ui:TextBlock
+                        Appearance="Secondary"
+                        Text="可以设置背景如何调整图片的大小以填充其分配的空间"
+                        TextWrapping="WrapWithOverflow" />
+                </StackPanel>
+            </ui:CardControl.Header>
+            <ComboBox x:Name="StretchComboBox" SelectionChanged="StretchComboBox_SelectionChanged">
+                <ComboBoxItem Content="无"/>
+                <ComboBoxItem Content="拉伸"/>
+                <ComboBoxItem Content="适合"/>
+                <ComboBoxItem Content="填充"/>
+            </ComboBox>
+        </ui:CardControl>
+        <ui:CardControl
+    Margin="4"
+    Padding="20,10,20,10"
+    Icon="{ui:SymbolIcon Symbol=BorderNone24}">
+            <ui:CardControl.Header>
+                <StackPanel>
+                    <ui:TextBlock
+                Margin="0"
+                FontTypography="BodyStrong"
+                Text="背景图片不透明度"
+                TextWrapping="WrapWithOverflow" />
+                    <ui:TextBlock
+                Appearance="Secondary"
+                Text="调整主界面背景图片的透明度"
+                TextWrapping="WrapWithOverflow" />
+                </StackPanel>
+            </ui:CardControl.Header>
+            <Slider x:Name="BackgroundOpacitySlider" Minimum="0" Maximum="100" SmallChange="5" ValueChanged="BackgroundOpacitySlider_ValueChanged"/>
         </ui:CardControl>
     </StackPanel>
 </Page>

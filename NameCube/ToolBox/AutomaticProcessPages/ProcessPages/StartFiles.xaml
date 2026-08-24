@@ -13,10 +13,10 @@
     mc:Ignorable="d">
 
     <Grid>
-        <TextBlock
+        <Label
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
-            FontSize="50"
-            Text="打开文件中..." />
+            Content="打开文件中..."
+            FontSize="50" />
     </Grid>
 </Page>

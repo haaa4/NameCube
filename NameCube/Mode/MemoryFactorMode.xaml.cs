@@ -1,4 +1,16 @@
-﻿/*
+﻿// /*
+//  * NameCube-<点名器>
+//  * Copyright (C) 2025-2026 haaa4
+//  *
+//  * This program is free software: you can redistribute it and/or modify
+//  * it under the terms of the GNU General Public License as published by
+//  * the Free Software Foundation, either version 3 of the License, or
+//  * (at your option) any later version.
+//  *
+//  * This program is distributed in the hope that it will be useful,
+//  * but WITHOUT ANY WARRANTY
+
+/*
  * 注意！
  * 此处的代码使用了AI进行重构，部分逻辑可能存在问题，尤其是事件处理部分的细节。请务必仔细测试每个功能点，确保逻辑正确且没有遗漏。
  */
@@ -158,7 +170,6 @@ namespace NameCube.Mode
                 LoadData();
 
                 // UI 样式初始化
-                NowNumberText.Foreground = FinishNumberText.Foreground = GlobalVariablesData.config.AllSettings.color;
                 if (GlobalVariablesData.config.MemoryFactorModeSettings.LastName != null)
                     NowNumberText.Text = GlobalVariablesData.config.MemoryFactorModeSettings.LastName;
 
@@ -325,7 +336,6 @@ namespace NameCube.Mode
 
         private async void StartButton_Click(object sender, RoutedEventArgs e)
         {
-            FinishNumberText.Foreground = GlobalVariablesData.config.AllSettings.color;
             try
             {
                 var flicker = FindResource("flicker") as Storyboard;

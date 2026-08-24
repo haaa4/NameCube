@@ -1,4 +1,16 @@
-﻿using Newtonsoft.Json;
+﻿// /*
+//  * NameCube-<点名器>
+//  * Copyright (C) 2025-2026 haaa4
+//  *
+//  * This program is free software: you can redistribute it and/or modify
+//  * it under the terms of the GNU General Public License as published by
+//  * the Free Software Foundation, either version 3 of the License, or
+//  * (at your option) any later version.
+//  *
+//  * This program is distributed in the hope that it will be useful,
+//  * but WITHOUT ANY WARRANTY
+
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Windows.Media;
 
@@ -43,7 +55,7 @@ namespace NameCube.GlobalVariables.DataClass
         public bool Top { get; set; } = true;
 
         /// <summary>
-        /// 学号魔方模式（0:长期运行模式 1：单次运行模式）
+        /// 点鸣魔方模式（0:长期运行模式 1：单次运行模式）
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
         public int NameCubeMode { get; set; } = 0;
@@ -55,11 +67,11 @@ namespace NameCube.GlobalVariables.DataClass
         public Brush color { get; set; } =
             (Brush)new BrushConverter().ConvertFromInvariantString("#FF005493");
 
-        ///// <summary>
-        ///// 字体类型
-        ///// </summary>
-        //[JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
-        //public FontFamily Font { get; set; } = new FontFamily("Arial");
+        /// <summary>
+        /// 字体类型
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+        public FontFamily Font { get; set; } = new FontFamily("Arial");
 
         /// <summary>
         /// 上次更新的检查时间
@@ -137,5 +149,20 @@ namespace NameCube.GlobalVariables.DataClass
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
         public int DefaultPage { get; set; } = 0;
+        /// <summary>
+        /// 是否启用主界面背景
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+        public bool HaveBackgroundImage { get; set; } = false;
+        /// <summary>
+        /// 背景图片拉伸方式
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+        public Stretch? BackgroundImageStretch { get; set; } =Stretch.Fill;
+        /// <summary>
+        /// 背景图片不透明度
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+        public int? BackgroundOpacity { get; set; } = 100;
     }
 }

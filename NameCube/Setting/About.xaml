@@ -35,13 +35,8 @@
                     <TextBlock x:Name="VersionTextBlock" />
                     <TextBlock Text="作者:哈阿斯" />
                     <TextBlock Text="默认名单所有名字均为Ai生成，如侵请联系作者，立刻删除" />
-                    <TextBlock Foreground="Green" Text="风带来故事的种子，时间使之发芽" />
-                    <TextBlock Foreground="Gray" Text="头图里有错别字，不想改......" />
-                    <TextBlock Foreground="Gray" Text="Never Gonna Give You Up" />
-                    <ui:Button
-                        x:Name="EncourageButton"
-                        Click="Button_Click_1"
-                        Content="确定" />
+                    <TextBlock Text="Copyright (C) 2025-2026 haaa4" />
+                    <TextBlock Foreground="Brown"  Text="记忆是梦的开场白" />
                 </StackPanel>
             </Expander>
             <Expander Margin="12,0">
@@ -55,7 +50,7 @@
                         <ColumnDefinition Width="1*" />
                         <ColumnDefinition Width="3*" />
                     </Grid.ColumnDefinitions>
-                    <ui:Image
+                    <Image
                         x:Name="HeadImage"
                         Width="100"
                         Height="100"
@@ -63,7 +58,7 @@
                     <StackPanel Grid.Column="1">
                         <TextBlock TextWrapping="Wrap">
                             <Run FontSize="30" Text="哈阿斯（haaa4)" />
-                            <Run FontSize="20" Text="   偶尔写写代码，以软件开发为喜好。正在备战中考，更新频率有所下降。同时因为是.NET初学者，请大家原谅一下代码中难以理解的逻辑" />
+                            <Run FontSize="20" Text="   因为祂永远不会放弃你，永远不会令你沮丧，永远不会抛弃你，永远不会让你哭，永远不会同你道别，永远不会用谎言伤害你。" />
                         </TextBlock>
                         <ui:HyperlinkButton
                             Content="作者B站"
@@ -76,6 +71,141 @@
                     </StackPanel>
                 </Grid>
             </Expander>
+            <Expander Margin="12,0">
+                <Expander.Header>
+                    <TextBlock>
+                            <Run FontSize="30" Text="系列应用" />
+                    </TextBlock>
+                </Expander.Header>
+                <StackPanel>
+                    <ui:Card HorizontalAlignment="Stretch">
+                        <Grid Height="60">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="50" />
+                                <ColumnDefinition Width="1*" />
+                                <ColumnDefinition Width="120" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="1*" />
+                                <RowDefinition Height="1.5*" />
+                            </Grid.RowDefinitions>
+                            <Image
+                                    x:Name="NameCubeIcon"
+                                    Grid.RowSpan="2"
+                                    Height="80" 
+                                Source="/icon.png"/>
+                            <TextBlock
+                                    Grid.Column="1"
+                                    Margin="20,0,0,0"
+                                    FontSize="15"
+                                    FontWeight="Black"
+                                    Text="NameCube" />
+                            <TextBlock
+                                    Grid.Row="1"
+                                    Grid.Column="1"
+                                    Margin="20,0,0,0"
+                                    Text="点名器-概率或者命中注定？" />
+                            <StackPanel
+                                    Grid.RowSpan="2"
+                                    Grid.Column="2"
+                                    VerticalAlignment="Top">
+                                <ui:HyperlinkButton
+                                        Content="Github"
+                                        Icon="{ui:SymbolIcon Link24}"
+                                        NavigateUri="https://github.com/haaa4/NameCube" />
+                                <ui:HyperlinkButton
+                                        Content="Gitee"
+                                        Icon="{ui:SymbolIcon Link24}"
+                                        NavigateUri="https://gitee.com/haaa4/NameCube" />
+                            </StackPanel>
+                        </Grid>
+                    </ui:Card>
+                    <ui:Card HorizontalAlignment="Stretch">
+                        <Grid Height="60">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="50" />
+                                <ColumnDefinition Width="1*" />
+                                <ColumnDefinition Width="120" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="1*" />
+                                <RowDefinition Height="1.5*" />
+                            </Grid.RowDefinitions>
+                            <Image
+                                    Grid.RowSpan="2"
+                                    Height="80"
+                                x:Name="SeatMapperIcon"
+                            />
+                            <TextBlock
+                                    Grid.Column="1"
+                                    Margin="20,0,0,0"
+                                    FontSize="15"
+                                    FontWeight="Black"
+                                    Text="SeatMapper" />
+                            <TextBlock
+                                    Grid.Row="1"
+                                    Grid.Column="1"
+                                    Margin="20,0,0,0"
+                                    Text="生成座位表-基于Excel表格生成座位表" />
+                            <StackPanel
+                                    Grid.RowSpan="2"
+                                    Grid.Column="2"
+                                    VerticalAlignment="Top">
+                                <ui:HyperlinkButton
+                                        Content="Github"
+                                        Icon="{ui:SymbolIcon Link24}"
+                                        NavigateUri="https://github.com/haaa4/SeatMapper" />
+                                <ui:HyperlinkButton
+                                        Content="Gitee"
+                                        Icon="{ui:SymbolIcon Link24}"
+                                        NavigateUri="https://gitee.com/haaa4/SeatMapper" />
+                            </StackPanel>
+                        </Grid>
+                    </ui:Card>
+                    <ui:Card HorizontalAlignment="Stretch">
+                        <Grid Height="60">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="50" />
+                                <ColumnDefinition Width="1*" />
+                                <ColumnDefinition Width="120" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="1*" />
+                                <RowDefinition Height="1.5*" />
+                            </Grid.RowDefinitions>
+                            <Image
+                                    Grid.RowSpan="2"
+                                    Height="80"
+                                    x:Name="DeskSweeperIcon" />
+                            <TextBlock
+                                    Grid.Column="1"
+                                    Margin="20,0,0,0"
+                                    FontSize="15"
+                                    FontWeight="Black"
+                                    Text="DeskSweeper" />
+                            <TextBlock
+                                    Grid.Row="1"
+                                    Grid.Column="1"
+                                    Margin="20,0,0,0"
+                                    Text="文件整理-诶🤓👆🏻，您的桌面上又被下载了一个PPT，让我们的清道夫来帮你整理吧" />
+                            <StackPanel
+                                    Grid.RowSpan="2"
+                                    Grid.Column="2"
+                                    VerticalAlignment="Top">
+                                <ui:HyperlinkButton
+                                        Content="Github"
+                                        Icon="{ui:SymbolIcon Link24}"
+                                        NavigateUri="https://github.com/haaa4/DeskSweeper" />
+                                <ui:HyperlinkButton
+                                        Content="Gitee"
+                                        Icon="{ui:SymbolIcon Link24}"
+                                        NavigateUri="https://gitee.com/haaa4/DeskSweeper" />
+                            </StackPanel>
+                        </Grid>
+                    </ui:Card>
+                </StackPanel>
+            </Expander>
+
             <Expander Margin="12,0">
                 <Expander.Header>
                     <TextBlock>

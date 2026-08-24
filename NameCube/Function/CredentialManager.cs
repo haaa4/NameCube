@@ -1,4 +1,16 @@
-﻿using CredentialManagement;
+﻿// /*
+//  * NameCube-<点名器>
+//  * Copyright (C) 2025-2026 haaa4
+//  *
+//  * This program is free software: you can redistribute it and/or modify
+//  * it under the terms of the GNU General Public License as published by
+//  * the Free Software Foundation, either version 3 of the License, or
+//  * (at your option) any later version.
+//  *
+//  * This program is distributed in the hope that it will be useful,
+//  * but WITHOUT ANY WARRANTY
+
+using CredentialManagement;
 using NameCube.Setting.PermissionManager;
 using Serilog;
 using System;
@@ -36,6 +48,7 @@ namespace NameCube.Function
         /// 读取凭据，如果不存在则返回 null
         /// </summary>
         /// <returns>凭据，如果不存在则返回 null</returns>
+        #nullable enable
         public static string? LoadCredential()
         {
             using (var cred = new Credential())

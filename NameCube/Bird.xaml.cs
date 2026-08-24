@@ -1,4 +1,16 @@
-﻿using Masuit.Tools;
+﻿// /*
+//  * NameCube-<点名器>
+//  * Copyright (C) 2025-2026 haaa4
+//  *
+//  * This program is free software: you can redistribute it and/or modify
+//  * it under the terms of the GNU General Public License as published by
+//  * the Free Software Foundation, either version 3 of the License, or
+//  * (at your option) any later version.
+//  *
+//  * This program is distributed in the hope that it will be useful,
+//  * but WITHOUT ANY WARRANTY
+
+using Masuit.Tools;
 using NameCube.Function;
 using Serilog;  // 添加Serilog命名空间
 using System;
@@ -130,15 +142,6 @@ namespace NameCube
                         ShowMainWindowAsync();
                 }
 
-                if (GlobalVariablesData.config.AllSettings.Dark)
-                {
-                    Log.Debug("应用深色主题");
-                    Wpf.Ui.Appearance.ApplicationThemeManager.Apply(
-                        Wpf.Ui.Appearance.ApplicationTheme.Dark,
-                        Wpf.Ui.Controls.WindowBackdropType.Auto,
-                        true
-                    );
-                }
 
                 _timer = new DispatcherTimer();
                 _timer.Interval = TimeSpan.FromSeconds(600);

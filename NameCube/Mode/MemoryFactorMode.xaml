@@ -11,6 +11,7 @@
     xmlns:vio="http://schemas.lepo.co/wpfui/2022/xaml/violeta"
     x:Name="page"
     Title="MemoryFactorMode"
+    Background="Transparent"
     d:DesignHeight="614.404"
     d:DesignWidth="1015.083"
     Loaded="Page_Loaded"
@@ -352,7 +353,7 @@
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"
                 FontSize="150"
-                Foreground="#FF005493"
+                Foreground="{ui:ThemeResource AccentTextFillColorPrimaryBrush}"
                 Text="XXX"
                 TextAlignment="Center">
                 <TextBlock.RenderTransform>
@@ -372,7 +373,7 @@
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"
                 FontSize="150"
-                Foreground="#FF005493"
+                Foreground="{ui:ThemeResource AccentTextFillColorPrimaryBrush}"
                 Text="XXX"
                 TextAlignment="Center"
                 Visibility="Hidden" />
@@ -423,13 +424,9 @@
                     Padding="5,5,5,1"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Top"
-                    Background="White"
                     BorderBrush="{Binding Foreground, ElementName=NowNumberText}"
                     BorderThickness="3,8,3,8"
                     CornerRadius="20,20,20,20">
-                    <ui:Border.Effect>
-                        <DropShadowEffect BlurRadius="20" />
-                    </ui:Border.Effect>
                     <Canvas Margin="-6,0,0,0">
                         <Canvas
                             x:Name="NotGuaranteed"
@@ -504,13 +501,9 @@
                     Height="127"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Top"
-                    Background="White"
                     BorderBrush="{Binding Foreground, ElementName=NowNumberText}"
                     BorderThickness="8,3,8,3"
                     CornerRadius="20,20,20,20">
-                    <ui:Border.Effect>
-                        <DropShadowEffect BlurRadius="25" />
-                    </ui:Border.Effect>
                     <Canvas>
                         <Canvas Width="814" Height="125">
                             <Canvas
@@ -963,7 +956,6 @@
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
                     FontSize="36"
-                    Foreground="Black"
                     TextWrapping="Wrap">
                     <Run Language="zh-cn" Text="2" />
                 </ui:TextBlock>
@@ -973,7 +965,6 @@
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
                     FontSize="36"
-                    Foreground="Black"
                     TextWrapping="Wrap">
                     <Run Language="zh-cn" Text="3" />
                 </ui:TextBlock>
@@ -1023,7 +1014,6 @@
                     Background="#00FF0000"
                     FontFamily="{StaticResource AppFont}"
                     FontSize="36"
-                    Foreground="Black"
                     Text="XXX"
                     TextWrapping="Wrap" />
                 <ui:TextBlock
@@ -1131,13 +1121,20 @@
                     FontSize="24"
                     Text="XXX"
                     TextWrapping="Wrap" />
+                <ui:Border
+                    Canvas.Left="25.662"
+                    Canvas.Top="331.636"
+                    Width="235"
+                    Height="53"
+                    Panel.ZIndex="999"
+                    Background="{ui:ThemeResource ControlFillColorDefaultBrush}" />
                 <ui:Button
                     Canvas.Left="25.662"
                     Canvas.Top="331.636"
                     Width="235"
                     Height="53"
                     Panel.ZIndex="1000"
-                    Background="White"
+                    Background="{ui:ThemeResource ControlFillColorDefaultBrush}"
                     Content="查看更多...">
                     <ui:FlyoutService.Flyout>
                         <ui:Flyout Placement="Bottom">
@@ -1189,7 +1186,6 @@
                     HorizontalAlignment="Center"
                     VerticalAlignment="Top"
                     Panel.ZIndex="6"
-                    Background="#75FFFFFF"
                     FontSize="36"
                     FontWeight="Bold"
                     Foreground="Red"
@@ -1218,7 +1214,6 @@
                     VerticalAlignment="Top"
                     Panel.ZIndex="6"
                     d:IsHidden="True"
-                    Background="#75FFFFFF"
                     FontSize="36"
                     FontWeight="Bold"
                     Foreground="Red"
@@ -1247,7 +1242,6 @@
                     VerticalAlignment="Top"
                     Panel.ZIndex="6"
                     d:IsHidden="True"
-                    Background="#75FFFFFF"
                     FontSize="36"
                     FontWeight="Bold"
                     Foreground="Red"
@@ -1276,7 +1270,6 @@
                     VerticalAlignment="Top"
                     Panel.ZIndex="6"
                     d:IsHidden="True"
-                    Background="#75FFFFFF"
                     FontSize="36"
                     FontWeight="Bold"
                     Foreground="Red"
@@ -1305,7 +1298,6 @@
                     VerticalAlignment="Top"
                     Panel.ZIndex="6"
                     d:IsHidden="True"
-                    Background="#75FFFFFF"
                     FontSize="36"
                     FontWeight="Bold"
                     Foreground="Red"
@@ -1334,7 +1326,6 @@
                     VerticalAlignment="Top"
                     Panel.ZIndex="6"
                     d:IsHidden="True"
-                    Background="#75FFFFFF"
                     FontSize="36"
                     FontWeight="Bold"
                     Foreground="Red"
@@ -1376,11 +1367,12 @@
             </Ellipse>
             <Frame
                 x:Name="WheelFrame"
-                Canvas.Top="10"
+                Canvas.Top="-10"
                 Width="1049"
-                Height="585"
+                Height="620"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Top"
+                Background="{Binding ElementName=page, Path=Background}"
                 Visibility="Collapsed" />
             <ui:Button
                 Canvas.Left="1004.37"

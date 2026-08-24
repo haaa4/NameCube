@@ -88,7 +88,7 @@
                     HorizontalAlignment="Center"
                     VerticalAlignment="Top"
                     FontSize="120"
-                    Foreground="#FF005493"
+                    Foreground="{ui:ThemeResource AccentTextFillColorPrimaryBrush}"
                     RenderTransformOrigin="0.5,0.5"
                     Text="XXX">
                     <TextBlock.RenderTransform>
@@ -107,7 +107,7 @@
                     HorizontalAlignment="Center"
                     VerticalAlignment="Top"
                     FontSize="120"
-                    Foreground="#FF005493"
+                    Foreground="{ui:ThemeResource AccentTextFillColorPrimaryBrush}"
                     Text="XX"
                     Visibility="Hidden" />
                 <ui:Button
@@ -124,13 +124,13 @@
                     FontFamily="Segoe UI"
                     FontSize="36"
                     FontWeight="Black" />
-                <TextBlock FontSize="30" Text="请以下同学做好准备:" />
+                <Label Content="请以下同学做好准备:" FontSize="30" />
                 <StackPanel Margin="0,40,0,0">
                     <TextBlock
                         x:Name="Ready1"
                         HorizontalAlignment="Left"
                         FontSize="55"
-                        Foreground="#FF005493"
+                        Foreground="{ui:ThemeResource AccentTextFillColorPrimaryBrush}"
                         RenderTransformOrigin="0.5,0.5"
                         Text="XXX">
                         <TextBlock.RenderTransform>
@@ -146,7 +146,7 @@
                         x:Name="Ready2"
                         HorizontalAlignment="Left"
                         FontSize="55"
-                        Foreground="#FF005493"
+                        Foreground="{ui:ThemeResource AccentTextFillColorPrimaryBrush}"
                         RenderTransformOrigin="0.5,0.5"
                         Text="XXX">
                         <TextBlock.RenderTransform>
@@ -162,7 +162,7 @@
                         x:Name="Ready3"
                         HorizontalAlignment="Left"
                         FontSize="55"
-                        Foreground="#FF005493"
+                        Foreground="{ui:ThemeResource AccentTextFillColorPrimaryBrush}"
                         RenderTransformOrigin="0.5,0.5"
                         Text="XXX">
                         <TextBlock.RenderTransform>
@@ -178,7 +178,7 @@
                         x:Name="Ready4"
                         HorizontalAlignment="Left"
                         FontSize="55"
-                        Foreground="#FF005493"
+                        Foreground="{ui:ThemeResource AccentTextFillColorPrimaryBrush}"
                         RenderTransformOrigin="0.5,0.5"
                         Text="XXX">
                         <TextBlock.RenderTransform>
@@ -194,7 +194,7 @@
                         x:Name="Ready5"
                         HorizontalAlignment="Left"
                         FontSize="55"
-                        Foreground="#FF005493"
+                        Foreground="{ui:ThemeResource AccentTextFillColorPrimaryBrush}"
                         RenderTransformOrigin="0.5,0.5"
                         Text="XXX">
                         <TextBlock.RenderTransform>
@@ -212,74 +212,69 @@
                         x:Name="FinishReady1"
                         HorizontalAlignment="Left"
                         FontSize="55"
-                        Foreground="#FF005493"
+                        Foreground="{ui:ThemeResource AccentTextFillColorPrimaryBrush}"
                         Text="XXX"
                         Visibility="Hidden" />
                     <TextBlock
                         x:Name="FinishReady2"
                         HorizontalAlignment="Left"
                         FontSize="55"
-                        Foreground="#FF005493"
+                        Foreground="{ui:ThemeResource AccentTextFillColorPrimaryBrush}"
                         Text="XXX"
                         Visibility="Hidden" />
                     <TextBlock
                         x:Name="FinishReady3"
                         HorizontalAlignment="Left"
                         FontSize="55"
-                        Foreground="#FF005493"
+                        Foreground="{ui:ThemeResource AccentTextFillColorPrimaryBrush}"
                         Text="XXX"
                         Visibility="Hidden" />
                     <TextBlock
                         x:Name="FinishReady4"
                         HorizontalAlignment="Left"
                         FontSize="55"
-                        Foreground="#FF005493"
+                        Foreground="{ui:ThemeResource AccentTextFillColorPrimaryBrush}"
                         Text="XXX"
                         Visibility="Hidden" />
                     <TextBlock
                         x:Name="FinishReady5"
                         HorizontalAlignment="Left"
                         FontSize="55"
-                        Foreground="#FF005493"
+                        Foreground="{ui:ThemeResource AccentTextFillColorPrimaryBrush}"
                         Text="XXX"
                         Visibility="Hidden" />
                 </StackPanel>
                 <StackPanel Margin="0,40,0,0">
 
-                    <TextBlock
+                    <Label
                         x:Name="BeforeReady1"
                         HorizontalAlignment="Right"
+                        Content="XXX"
                         FontSize="55"
-                        Foreground="Black"
-                        Text="XXX"
                         Visibility="Hidden" />
-                    <TextBlock
+                    <Label
                         x:Name="BeforeReady2"
                         HorizontalAlignment="Right"
+                        Content="XXX"
                         FontSize="55"
-                        Foreground="Black"
-                        Text="XXX"
                         Visibility="Hidden" />
-                    <TextBlock
+                    <Label
                         x:Name="BeforeReady3"
                         HorizontalAlignment="Right"
+                        Content="XXX"
                         FontSize="55"
-                        Foreground="Black"
-                        Text="XXX"
                         Visibility="Hidden" />
-                    <TextBlock
+                    <Label
                         x:Name="BeforeReady4"
                         HorizontalAlignment="Right"
+                        Content="XXX"
                         FontSize="55"
-                        Foreground="Black"
-                        Text="XXX"
                         Visibility="Hidden" />
-                    <TextBlock
+                    <Label
                         x:Name="BeforeReady5"
                         HorizontalAlignment="Right"
+                        Content="XXX"
                         FontSize="55"
-                        Foreground="Black"
-                        Text="XXX"
                         Visibility="Hidden" />
                 </StackPanel>
             </Grid>

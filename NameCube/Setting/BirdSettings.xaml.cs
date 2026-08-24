@@ -1,4 +1,16 @@
-﻿using Masuit.Tools;
+﻿// /*
+//  * NameCube-<点名器>
+//  * Copyright (C) 2025-2026 haaa4
+//  *
+//  * This program is free software: you can redistribute it and/or modify
+//  * it under the terms of the GNU General Public License as published by
+//  * the Free Software Foundation, either version 3 of the License, or
+//  * (at your option) any later version.
+//  *
+//  * This program is distributed in the hope that it will be useful,
+//  * but WITHOUT ANY WARRANTY
+
+using Masuit.Tools;
 using Serilog; // 添加Serilog引用
 using System;
 using System.Diagnostics;
@@ -75,23 +87,21 @@ namespace NameCube.Setting
         {
             if (CanChange)
             {
-                using (OpenFileDialog openFileDialog = new OpenFileDialog())
-                {
-                    openFileDialog.InitialDirectory = "c:\\";
-                    openFileDialog.Title = "选择图片";
-                    openFileDialog.Filter = "png图片 (*.png)|*.png";
-                    openFileDialog.FilterIndex = 2;
-                    openFileDialog.RestoreDirectory = true;
+                using OpenFileDialog openFileDialog = new OpenFileDialog();
+                openFileDialog.InitialDirectory = "c:\\";
+                openFileDialog.Title = "选择图片";
+                openFileDialog.Filter = "png图片 (*.png)|*.png";
+                openFileDialog.FilterIndex = 2;
+                openFileDialog.RestoreDirectory = true;
 
-                    if (openFileDialog.ShowDialog() == DialogResult.OK)
-                    {
-                        _logger.Information("选择悬浮球自定义图片: {FilePath}", openFileDialog.FileName);
-                        Ring.Visibility = Visibility.Visible;
-                        ImageIcon.Visibility = Visibility.Collapsed;
-                        CopyImage(openFileDialog.FileName);
-                        GlobalVariablesData.config.BirdSettings.UseDefinedImage = true;
-                        GlobalVariablesData.SaveConfig();
-                    }
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    _logger.Information("选择悬浮球自定义图片: {FilePath}", openFileDialog.FileName);
+                    Ring.Visibility = Visibility.Visible;
+                    ImageIcon.Visibility = Visibility.Collapsed;
+                    CopyImage(openFileDialog.FileName);
+                    GlobalVariablesData.config.BirdSettings.UseDefinedImage = true;
+                    GlobalVariablesData.SaveConfig();
                 }
             }
         }
@@ -104,7 +114,8 @@ namespace NameCube.Setting
             {
                 try
                 {
-                    File.Delete(Path.Combine(GlobalVariablesData.userDataDir, "Bird_data", "Image", "image.png"));
+                    if (File.Exists(Path.Combine(GlobalVariablesData.userDataDir, "Bird_data", "Image", "image.png")))
+                        File.Delete(Path.Combine(GlobalVariablesData.userDataDir, "Bird_data", "Image", "image.png"));
                     File.Copy(Filename, Path.Combine(GlobalVariablesData.userDataDir, "Bird_data", "Image", "image.png"));
 
                     this.Dispatcher.Invoke(new Action(() =>

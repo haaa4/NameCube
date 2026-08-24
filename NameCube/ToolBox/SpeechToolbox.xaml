@@ -12,10 +12,10 @@
     mc:Ignorable="d">
 
     <StackPanel>
-        <ui:TextBlock
-            Margin="5"
-            FontSize="20"
-            Text="自定义朗读" />
+        <Label
+            Margin="20,5,0,0"
+            Content="自定义朗读,可在此测试朗读效果"
+            FontSize="20" />
         <Grid Height="40">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="5*" />

@@ -9,7 +9,6 @@
     Title="CmdSettingPage"
     d:DesignHeight="350"
     d:DesignWidth="410"
-    Background="#f5f1f1"
     mc:Ignorable="d">
 
     <Grid>
@@ -21,10 +20,10 @@
             <RowDefinition Height="1*" />
             <RowDefinition Height="120" />
         </Grid.RowDefinitions>
-        <TextBlock
+        <Label
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
-            Text="命令" />
+            Content="命令" />
         <ui:TextBox
             x:Name="CmdTextBox"
             Grid.Column="1"
@@ -32,11 +31,11 @@
             PlaceholderText="输入cmd命令"
             TextChanged="CmdTextBox_TextChanged"
             TextWrapping="Wrap" />
-        <TextBlock
+        <Label
             Grid.Row="1"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
-            Text="是否显示页面" />
+            Content="是否显示页面" />
         <CheckBox
             x:Name="VisibilityCheckBox"
             Grid.Row="1"

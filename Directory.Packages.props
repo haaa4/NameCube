@@ -5,8 +5,11 @@
     <NoWarn>$(NoWarn);NU1507</NoWarn>
   </PropertyGroup>
   <ItemGroup>
+    <PackageVersion Include="Chromis" Version="1.0.5" />
+    <PackageVersion Include="ColorThief.ImageSharp" Version="1.0.0" />
     <PackageVersion Include="Costura.Fody" Version="6.2.0" />
     <PackageVersion Include="CredentialManagement" Version="1.0.2" />
+    <PackageVersion Include="ksemenenko.ColorThief" Version="1.1.1.4" />
     <PackageVersion Include="Masuit.Tools.Abstractions" Version="2026.1.5" />
     <PackageVersion Include="Masuit.Tools.Core" Version="2026.1.5" />
     <PackageVersion Include="Masuit.Tools.Net" Version="2025.2.0" />

@@ -147,12 +147,12 @@
         </Storyboard>
     </ui:FluentWindow.Resources>
 
-    <Grid x:Name="RootGrid" Background="{DynamicResource AppBackgroundLight}">
+    <Grid x:Name="RootGrid">
         <Grid.RowDefinitions>
             <RowDefinition Height="50" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-
+        <Image Grid.RowSpan="2" x:Name="BackgroundImage" />
         <!--  简化标题栏，版本号放在其他地方  -->
         <ui:TitleBar
             Title="点鸣魔方"
@@ -178,13 +178,16 @@
             Visibility="Collapsed" />
 
         <ui:NavigationView
-            x:Name="NavigationMenu"
-            Grid.Row="1"
-            Margin="0"
-            IsBackButtonVisible="Auto"
-            IsPaneToggleVisible="True"
-            OpenPaneLength="260"
-            PaneDisplayMode="Left">
+                x:Name="NavigationMenu"
+                Grid.Row="1"
+                Margin="0"
+                IsBackButtonVisible="Auto"
+                IsPaneToggleVisible="True"
+                OpenPaneLength="260"
+                PaneDisplayMode="Left"
+                Background="Transparent"
+                Foreground="{ui:ThemeResource TextFillColorPrimaryBrush}"
+                >
 
 
             <!--  优化菜单项样式  -->
@@ -269,6 +272,7 @@
                     </StackPanel>
                 </StackPanel>
             </ui:NavigationView.PaneFooter>
+            
         </ui:NavigationView>
 
         <!--  优化启动动画容器  -->
@@ -276,7 +280,7 @@
             x:Name="border"
             Grid.Row="1"
             Margin="260,0,0,0"
-            Background="#F5F5F5"
+            Background="{Binding ElementName=fluentWindow, Path=Background}"
             BorderThickness="0"
             Grid.IsSharedSizeScope="True"
             Visibility="Collapsed">
@@ -321,7 +325,7 @@
                         Canvas.Top="420"
                         FontSize="24"
                         FontWeight="SemiBold"
-                        Foreground="#0078D4"
+                        Foreground="{ui:ThemeResource AccentTextFillColorPrimaryBrush}"
                         Text="Loading...">
                         <TextBlock.RenderTransform>
                             <ScaleTransform ScaleX="1" ScaleY="1" />
@@ -347,7 +351,7 @@
                         Width="0"
                         Height="12"
                         HorizontalAlignment="Left"
-                        Fill="#0078D4"
+                        Fill="{ui:ThemeResource AccentTextFillColorPrimaryBrush}"
                         RadiusX="6"
                         RadiusY="6">
                         <Rectangle.RenderTransform>
@@ -362,7 +366,7 @@
                         Canvas.Top="476"
                         FontSize="16"
                         FontWeight="Bold"
-                        Foreground="#0078D4"
+                        Foreground="{ui:ThemeResource AccentTextFillColorPrimaryBrush}"
                         Text="0%" />
 
                     <!--  新增：四个装饰性圆点（围绕图像）  -->

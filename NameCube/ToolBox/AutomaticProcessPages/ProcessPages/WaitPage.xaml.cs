@@ -1,4 +1,16 @@
-﻿using Serilog;
+﻿// /*
+//  * NameCube-<点名器>
+//  * Copyright (C) 2025-2026 haaa4
+//  *
+//  * This program is free software: you can redistribute it and/or modify
+//  * it under the terms of the GNU General Public License as published by
+//  * the Free Software Foundation, either version 3 of the License, or
+//  * (at your option) any later version.
+//  *
+//  * This program is distributed in the hope that it will be useful,
+//  * but WITHOUT ANY WARRANTY
+
+using Serilog;
 using System;
 using System.Threading.Tasks;
 using System.Windows;
@@ -47,12 +59,12 @@ namespace NameCube.ToolBox.AutomaticProcessPages.ProcessPages
         private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
             Log.Information("开始等待 {Time} 秒", _time);
-            timeText.Text = _time.ToString();
+            timeText.Content = _time.ToString();
             while (_time > 0)
             {
                 await Task.Delay(1000);
                 _time--;
-                timeText.Text = _time.ToString();
+                timeText.Content = _time.ToString();
                 Log.Debug("等待倒计时: {Time}秒", _time);
             }
             Log.Information("等待结束");
