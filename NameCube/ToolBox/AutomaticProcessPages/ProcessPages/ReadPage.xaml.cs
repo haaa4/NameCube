@@ -72,13 +72,24 @@ namespace NameCube.ToolBox.AutomaticProcessPages.ProcessPages
                 Log.Information("开始朗读文本，长度: {TextLength}", _text?.Length ?? 0);
                 if (!GlobalVariablesData.config.AllSettings.SystemSpeech)
                 {
-                    _speechSynthesizer?.SelectVoiceByHints(VoiceGender.Female, VoiceAge.Adult);
-                    _speechSynthesizer.Volume = GlobalVariablesData.config.AllSettings.Volume;
-                    _speechSynthesizer.Rate = GlobalVariablesData.config.AllSettings.Speed;
-                    Log.Debug("语音合成器设置 - 音量: {Volume}, 速度: {Speed}",
-                        GlobalVariablesData.config.AllSettings.Volume, GlobalVariablesData.config.AllSettings.Speed);
+                    try
+                    {
+                        _speechSynthesizer = new SpeechSynthesizer();
+                        _speechSynthesizer.SelectVoiceByHints(VoiceGender.Female, VoiceAge.Adult);
+                        _speechSynthesizer.Rate = GlobalVariablesData.config.AllSettings.Speed;
+                        _speechSynthesizer.Volume = GlobalVariablesData.config.AllSettings.Volume;
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.Warning("Win7 语音组件初始化失败，将禁用语音播报: " + ex.Message);
+                        _speechSynthesizer = null; // 标记为 null，后续调用直接跳过
+                    }
                 }
-                _speechSynthesizer?.SpeakAsync(_text);
+                try
+                {
+                    _speechSynthesizer?.SpeakAsync(_text);
+                }
+                catch { /* 忽略 */ }
             }
             else
             {
@@ -89,7 +100,7 @@ namespace NameCube.ToolBox.AutomaticProcessPages.ProcessPages
             await Task.Delay(_time * 1000);
 
             Log.Debug("取消所有语音合成");
-            _speechSynthesizer?.SpeakAsyncCancelAll();
+            try { _speechSynthesizer?.SpeakAsyncCancelAll(); } catch { /* 忽略 Win7 的 COM 异常 */ }
 
             Log.Information("阅读完成");
             if (_debug)
@@ -105,7 +116,7 @@ namespace NameCube.ToolBox.AutomaticProcessPages.ProcessPages
         private void Page_Unloaded(object sender, RoutedEventArgs e)
         {
             Log.Debug("页面卸载，取消语音合成");
-            _speechSynthesizer?.SpeakAsyncCancelAll();
+            try { _speechSynthesizer?.SpeakAsyncCancelAll(); } catch { /* 忽略 Win7 的 COM 异常 */ }
         }
     }
 }

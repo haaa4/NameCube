@@ -324,8 +324,8 @@
                         Canvas.Left="260"
                         Canvas.Top="420"
                         FontSize="24"
-                        FontWeight="SemiBold"
-                        Foreground="{ui:ThemeResource AccentTextFillColorPrimaryBrush}"
+                        FontWeight="SemiBold" 
+                        Foreground="{ui:ThemeResource AccentTextFillColorTertiaryBrush}"
                         Text="Loading...">
                         <TextBlock.RenderTransform>
                             <ScaleTransform ScaleX="1" ScaleY="1" />
@@ -351,7 +351,7 @@
                         Width="0"
                         Height="12"
                         HorizontalAlignment="Left"
-                        Fill="{ui:ThemeResource AccentTextFillColorPrimaryBrush}"
+                        Fill="{ui:ThemeResource AccentTextFillColorTertiaryBrush}"
                         RadiusX="6"
                         RadiusY="6">
                         <Rectangle.RenderTransform>
@@ -366,7 +366,7 @@
                         Canvas.Top="476"
                         FontSize="16"
                         FontWeight="Bold"
-                        Foreground="{ui:ThemeResource AccentTextFillColorPrimaryBrush}"
+                        Foreground="{ui:ThemeResource AccentTextFillColorTertiaryBrush}"
                         Text="0%" />
 
                     <!--  新增：四个装饰性圆点（围绕图像）  -->

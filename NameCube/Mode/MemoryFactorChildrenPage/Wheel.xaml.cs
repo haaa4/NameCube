@@ -106,7 +106,11 @@ namespace NameCube.Mode.MemoryFactorChildrenPage
 
                     string selectedItem = DetermineSelectedItem(finalAngle);
                     ResultTextBlock.Text = selectedItem;
-                    speechSynthesizer?.SpeakAsync(selectedItem);
+                    try
+                    {
+                        speechSynthesizer?.SpeakAsync(selectedItem);
+                    }
+                    catch { /* 忽略 */ }
                     Log.Information("抽取结果: {Result}", selectedItem);
                     DataSubmitted?.Invoke(this, selectedItem);
                     UpdateItems(names);

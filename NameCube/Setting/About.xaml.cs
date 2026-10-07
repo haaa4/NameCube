@@ -20,7 +20,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
-using Windows.Media.Protection.PlayReady;
 using Wpf.Ui.Controls;
 using Image = System.Windows.Controls.Image;
 using StackPanel = System.Windows.Controls.StackPanel;

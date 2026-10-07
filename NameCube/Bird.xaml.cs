@@ -95,23 +95,25 @@ namespace NameCube
         {
             try
             {
+                if (Environment.OSVersion.Version.Major < 10)
+                {
+                    return 1.0; 
+                }
+
                 Log.Debug("开始获取DPI缩放势能");
                 var hwnd = new System.Windows.Interop.WindowInteropHelper(this).Handle;
                 if (hwnd != IntPtr.Zero)
                 {
                     uint dpi = GetDpiForWindow(hwnd);
                     double scale = dpi / 96.0;
-                    Log.Debug("获取到DPI缩放势能: {DpiScale}", scale);
                     return scale;
                 }
-                Log.Warning("无法获取窗口句柄，使用默认DPI缩放势能");
             }
             catch (Exception ex)
             {
                 Log.Error(ex, "获取DPI缩放势能时发生错误，使用备用方法");
-                return SystemParameters.PrimaryScreenHeight / 1080.0;
             }
-            return 1.0;
+            return SystemParameters.PrimaryScreenHeight / 1080.0; // 备用方法
         }
 
         public Bird()
@@ -353,32 +355,33 @@ namespace NameCube
                 Log.Error(ex, "初始化Bird窗口位置时发生错误");
             }
         }
+        private Point _dragStartMouseScreenPoint; // 鼠标按下时，鼠标在屏幕上的物理像素位置
+        private Point _dragStartWindowScreenPoint; // 鼠标按下时，窗口左上角在屏幕上的物理像素位置
 
         private void OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             try
             {
-                Log.Debug("开始拖动Bird窗口");
-                // 开始拖动
-                var dpiScale = GetDpiScaleFactor();
-                _dragOffset = e.GetPosition(this);
-                _dragOffset = new Point(_dragOffset.X * dpiScale, _dragOffset.Y * dpiScale);
-                _isDragging = true;
-                LongPressAnimation = (Storyboard)FindResource("LongPressAnimation");
-                LastPosition = new POINT
-                {
-                    X = (int)Left,
-                    Y = (int)Top,
-                };
-                Log.Debug("拖动开始位置: X={LastX}, Y={LastY}", LastPosition.X, LastPosition.Y);
+                // 1. 获取鼠标相对于窗口的 DIP 坐标，并转换为屏幕物理像素坐标
+                Point mousePosInWindow = e.GetPosition(this);
+                _dragStartMouseScreenPoint = PointToScreen(mousePosInWindow);
 
-                LongPressAnimation.Begin();
+                // 2. 获取窗口左上角在屏幕上的物理像素坐标
+                _dragStartWindowScreenPoint = PointToScreen(new Point(0, 0));
+
+                _isDragging = true;
                 CaptureMouse();
 
-                // 启动长按计时
+                // Debug 信息改用 DIP
+                if (GlobalVariablesData.config.BirdSettings.ShowLocation)
+                {
+                    DebugText.Text = $"X: {Left}, \n Y: {Top}";
+                }
+
+                LongPressAnimation = (Storyboard)FindResource("LongPressAnimation");
+                LongPressAnimation.Begin();
                 _longPressTimer.Start();
                 Ab.Stop();
-                Log.Debug("长按计时器启动，自动吸附定时器停止");
             }
             catch (Exception ex)
             {
@@ -397,7 +400,6 @@ namespace NameCube
                 GlobalVariablesData.config.BirdSettings.StartLocationY = Top;
                 GlobalVariablesData.SaveConfig();
                 Log.Information("保存窗口位置: X={Left}, Y={Top}", Left, Top);
-
                 ReleaseMouseCapture();
                 LongPressAnimation.Stop();
                 LongPressAnimation.Remove();
@@ -420,13 +422,30 @@ namespace NameCube
 
             try
             {
-                var dpiScale = GetDpiScaleFactor();
-                var mousePos = e.GetPosition(this);
-                var screenPoint = PointToScreen(mousePos);
+                if (!_isDragging) return;
 
-                Left = (screenPoint.X / dpiScale) - _dragOffset.X;
-                Top = (screenPoint.Y / dpiScale) - _dragOffset.Y;
+                // 1. 获取鼠标当前在屏幕上的物理像素坐标
+                Point currentMouseScreenPoint = PointToScreen(e.GetPosition(this));
 
+                // 2. 计算鼠标在屏幕上的物理位移量
+                double deltaX = currentMouseScreenPoint.X - _dragStartMouseScreenPoint.X;
+                double deltaY = currentMouseScreenPoint.Y - _dragStartMouseScreenPoint.Y;
+
+                // 3. 计算窗口新的屏幕物理像素位置
+                Point newWindowScreenPoint = new Point(
+                    _dragStartWindowScreenPoint.X + deltaX,
+                    _dragStartWindowScreenPoint.Y + deltaY);
+
+                // 4. 将新的物理像素坐标转换回 WPF 逻辑坐标，并赋值给 Left/Top
+                // 注意：这里需要使用 PointFromScreen 来获取相对于窗口的坐标，但 Left/Top 需要的是屏幕坐标
+                // 所以，更直接的方式是使用 PresentationSource 进行转换
+                var source = PresentationSource.FromVisual(this);
+                if (source?.CompositionTarget != null)
+                {
+                    Point newWindowLogicalPoint = source.CompositionTarget.TransformFromDevice.Transform(newWindowScreenPoint);
+                    Left = newWindowLogicalPoint.X;
+                    Top = newWindowLogicalPoint.Y;
+                }
                 Log.Debug("拖动中，新位置: X={Left}, Y={Top}", Left, Top);
             }
             catch (Exception ex)
@@ -677,7 +696,14 @@ namespace NameCube
                 progressRing.Width = Math.Min(ImageBox.Height, ImageBox.Width);
                 Width = GlobalVariablesData.config.BirdSettings.Width + 20;
                 Height = GlobalVariablesData.config.BirdSettings.Height + 20;
-
+                if(GlobalVariablesData.config.BirdSettings.ShowLocation)
+                {
+                     DebugText.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    DebugText.Visibility = Visibility.Collapsed;
+                }
                 Log.Information("Bird窗口配置初始化完成，尺寸: {Width}x{Height}，透明度: {Opacity}%，吸附阈值: {AdsorbValue}",
                     Width, Height, GlobalVariablesData.config.BirdSettings.diaphaneity, SnapThreshold);
             }

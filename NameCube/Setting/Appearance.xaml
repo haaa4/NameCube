@@ -103,11 +103,76 @@
         <ui:CardControl Margin="4" Padding="20,10,20,10">
             <ui:CardControl.Header>
                 <StackPanel>
-                    <TextBlock>字体预览</TextBlock>
+                    <TextBlock>预览</TextBlock>
                 </StackPanel>
             </ui:CardControl.Header>
             <StackPanel>
-                <TextBlock x:Name="PreviewText" Text="123456789金木水火土齉褨蕧祃蠃櫱瘝滍 你好 Hello 안녕 こんにちは привет" />
+                <TextBlock FontSize="18" x:Name="PreviewText" Text="123456789金木水火土齉褨蕧祃蠃櫱瘝滍 你好 Hello 안녕 こんにちは привет ████ " />
+                <Grid MinHeight="120">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Border
+                Grid.Column="0"
+                Background="{ui:ThemeResource AccentTextFillColorTertiaryBrush}"
+                CornerRadius="8,0,0,8"
+                TextElement.Foreground="{ui:ThemeResource TextFillColorInverseBrush}">
+                        <Grid Margin="12">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <ui:TextBlock
+                        Grid.Row="0"
+                        FontTypography="BodyStrong"
+                        Text="Accent Text / Primary" />
+                            <ui:TextBlock Grid.Row="1" Text="Rest or hover" />
+                            <ui:TextBlock Grid.Row="2" Text="AccentTextFillColorPrimaryBrush" />
+                        </Grid>
+                    </Border>
+                    <Border
+                Grid.Column="1"
+                Background="{ui:ThemeResource AccentTextFillColorSecondaryBrush}"
+                CornerRadius="0"
+                TextElement.Foreground="{ui:ThemeResource TextFillColorInverseBrush}">
+                        <Grid Margin="12">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <ui:TextBlock
+                        Grid.Row="0"
+                        FontTypography="BodyStrong"
+                        Text="Accent Text / Secondary" />
+                            <ui:TextBlock Grid.Row="1" Text="Rest or hover" />
+                            <ui:TextBlock Grid.Row="2" Text="AccentTextFillColorSecondaryBrush" />
+                        </Grid>
+                    </Border>
+                    <Border
+                Grid.Column="2"
+                Background="{ui:ThemeResource AccentTextFillColorTertiaryBrush}"
+                CornerRadius="0,8,8,0"
+                TextElement.Foreground="{ui:ThemeResource TextFillColorInverseBrush}">
+                        <Grid Margin="12">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <ui:TextBlock
+                        Grid.Row="0"
+                        FontTypography="BodyStrong"
+                        Text="Accent Text / Tertiary" />
+                            <ui:TextBlock Grid.Row="1" Text="Pressed only (not accessible)" />
+                            <ui:TextBlock Grid.Row="2" Text="AccentTextFillColorTertiaryBrush" />
+                        </Grid>
+                    </Border>
+                    
+                </Grid>
             </StackPanel>
         </ui:CardControl>
         <ui:CardControl

@@ -81,5 +81,11 @@ namespace NameCube.GlobalVariables.DataClass
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
         public int Height { get; set; } = 50;
+
+        /// <summary>
+        /// (debug)是否显示悬浮球位置
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+        public bool ShowLocation { get; set; } = false;
     }
 }

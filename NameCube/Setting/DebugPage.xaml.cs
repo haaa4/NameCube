@@ -15,6 +15,7 @@ using NameCube.Setting.Debug;
 using Serilog; // 添加Serilog引用
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
@@ -32,6 +33,8 @@ namespace NameCube.Setting
         {
             InitializeComponent();
             _logger.Warning("调试页面被访问");
+            ShowLocationCheckBox.IsChecked = GlobalVariablesData.config.BirdSettings.ShowLocation;
+            CanChange = true;
         }
 
         private void ExitButton_Click(object sender, RoutedEventArgs e)
@@ -255,6 +258,25 @@ namespace NameCube.Setting
         {
             bool get=CredentialHelper.PermissionVerification();
             MessageBoxFunction.ShowMessageBoxInfo(get.ToString());
+        }
+        bool CanChange = false;
+        private void ShowLocationCheckBox_Click(object sender, RoutedEventArgs e)
+        {
+            if (CanChange)
+            {
+                GlobalVariablesData.config.BirdSettings.ShowLocation = ShowLocationCheckBox.IsChecked == true;
+                var Bird = Application.Current.Windows.OfType<Bird>().FirstOrDefault();
+
+                if (Bird == null)
+                {
+                    Bird = new Bird();
+                    _logger.Debug("创建新的悬浮球窗口");
+                }
+
+                Bird.Initialize();
+                _logger.Debug("悬浮球窗口已重新初始化");
+            }
+
         }
     }
 }

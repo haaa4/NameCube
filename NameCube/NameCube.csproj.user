@@ -14,6 +14,12 @@
     <EnableSecurityDebugging>false</EnableSecurityDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Update="FirstUse\Empty.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Function\WindowInitializationSettings\TemplateWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Setting\EasterEgg\Media.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -36,6 +42,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="ToolBox\Welcome.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Setting\WindowsAndRendering.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>

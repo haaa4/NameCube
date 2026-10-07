@@ -56,6 +56,7 @@ namespace NameCube.Setting
             Item10.IsEnabled = true;
             Item11.IsEnabled = true;
             Item12.IsEnabled = true;
+            Item13.IsEnabled = true;
             if (!CredentialHelper.PermissionVerification())
             {
                 Item1.IsEnabled = !GlobalVariablesData.config.PermissionManager.needAdmin[2];
@@ -70,7 +71,7 @@ namespace NameCube.Setting
                 Item10.IsEnabled = !GlobalVariablesData.config.PermissionManager.needAdmin[9];
                 Item11.IsEnabled = !GlobalVariablesData.config.PermissionManager.needAdmin[10];
                 Item12.IsEnabled = !GlobalVariablesData.config.PermissionManager.needAdmin[11];
-                
+                Item13.IsEnabled = !GlobalVariablesData.config.PermissionManager.needAdmin[15];
                 this.Title = "应用设置（权限受限）";
                 TitleBar.Title = "应用设置（权限受限）";
             }
@@ -88,6 +89,7 @@ namespace NameCube.Setting
                 Item10.IsEnabled = true;
                 Item11.IsEnabled = true;
                 Item12.IsEnabled = true;
+                Item13.IsEnabled = true;
                 this.Title = "应用设置";
                 TitleBar.Title = "应用设置";
             }

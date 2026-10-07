@@ -79,7 +79,7 @@
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
             FontSize="200"
-            Foreground="{ui:ThemeResource AccentTextFillColorPrimaryBrush}"
+            Foreground="{ui:ThemeResource AccentTextFillColorTertiaryBrush}"
             RenderTransformOrigin="0.5,0.5"
             Text="XXX">
             <TextBlock.RenderTransform>
@@ -96,7 +96,7 @@
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
             FontSize="200"
-            Foreground="{ui:ThemeResource AccentTextFillColorPrimaryBrush}"
+            Foreground="{ui:ThemeResource AccentTextFillColorTertiaryBrush}"
             Text="XXX"
             Visibility="Hidden" />
         <ui:Button

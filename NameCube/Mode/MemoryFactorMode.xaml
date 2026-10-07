@@ -353,7 +353,7 @@
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"
                 FontSize="150"
-                Foreground="{ui:ThemeResource AccentTextFillColorPrimaryBrush}"
+                Foreground="{ui:ThemeResource AccentTextFillColorTertiaryBrush}"
                 Text="XXX"
                 TextAlignment="Center">
                 <TextBlock.RenderTransform>
@@ -373,7 +373,7 @@
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"
                 FontSize="150"
-                Foreground="{ui:ThemeResource AccentTextFillColorPrimaryBrush}"
+                Foreground="{ui:ThemeResource AccentTextFillColorTertiaryBrush}"
                 Text="XXX"
                 TextAlignment="Center"
                 Visibility="Hidden" />

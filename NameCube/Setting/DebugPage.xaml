@@ -68,5 +68,10 @@
     Margin="10,0,0,0"
     Click="Button_Click_10"
     Content="认证" />
+        <CheckBox
+            Content="显示悬浮球位置"
+            x:Name="ShowLocationCheckBox" 
+            Click="ShowLocationCheckBox_Click"
+            />
     </StackPanel>
 </Page>

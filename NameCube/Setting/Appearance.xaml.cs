@@ -78,7 +78,7 @@ namespace NameCube.Setting
                     {
                         Brush newColor = (Brush)new BrushConverter().ConvertFromInvariantString(ColorTextBox.Text);
                         GlobalVariablesData.config.AllSettings.color = newColor;
-                        ApplicationAccentColorManager.Apply(((SolidColorBrush)newColor).Color);
+                        ApplicationAccentColorManager.Apply(((SolidColorBrush)newColor).Color,ApplicationTheme.Light,true);
                         PreviewText.Foreground = newColor;
                         ColorTextBox.Foreground = newColor;
                         GlobalVariablesData.SaveConfig();
@@ -245,7 +245,7 @@ namespace NameCube.Setting
             {
                 Brush newColor = (Brush)new BrushConverter().ConvertFromInvariantString(ColorTextBox.Text);
                 GlobalVariablesData.config.AllSettings.color = newColor;
-                ApplicationAccentColorManager.Apply(((SolidColorBrush)newColor).Color);
+                ApplicationAccentColorManager.Apply(((SolidColorBrush)newColor).Color, ApplicationTheme.Light, true);
                 PreviewText.Foreground = newColor;
                 ColorTextBox.Foreground = newColor;
                 GlobalVariablesData.SaveConfig();
@@ -271,7 +271,7 @@ namespace NameCube.Setting
                 {
                     Brush newColor = (Brush)new BrushConverter().ConvertFromInvariantString(ColorTextBox.Text);
                     GlobalVariablesData.config.AllSettings.color = newColor;
-                    ApplicationAccentColorManager.Apply(((SolidColorBrush)newColor).Color);
+                    ApplicationAccentColorManager.Apply(((SolidColorBrush)newColor).Color, ApplicationTheme.Light, true);
                     PreviewText.Foreground = newColor;
                     ColorTextBox.Foreground = newColor;
                     GlobalVariablesData.SaveConfig();

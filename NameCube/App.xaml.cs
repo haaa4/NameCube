@@ -17,6 +17,7 @@ using Newtonsoft.Json;
 using Serilog;
 using System;
 using System.IO;
+using System.Net;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows;
@@ -55,6 +56,8 @@ namespace NameCube
         {
             try
             {
+                // 强制启用 TLS 1.2
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
                 // 初始化Serilog日志
                 InitializeSerilog();
 
@@ -252,8 +255,8 @@ namespace NameCube
                 {
                     Log.Error(ex, "清理临时目录失败");
                 }
-
-                StartToDoSomething.GetUpdata();
+                //维护
+                //StartToDoSomething.GetUpdata();
                 Log.Debug("执行GetUpdata完成");
 
                 StartToDoSomething.RunAutomaticProcesses();
@@ -321,7 +324,7 @@ namespace NameCube
                     true // Whether to change accents automatically
                 );
             }
-            ApplicationAccentColorManager.Apply(((SolidColorBrush)GlobalVariablesData.config.AllSettings.color).Color);
+            ApplicationAccentColorManager.Apply(((SolidColorBrush)GlobalVariablesData.config.AllSettings.color).Color, ApplicationTheme.Light, true);
         }
 
         /// <summary>

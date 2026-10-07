@@ -12,6 +12,7 @@
 
 using Masuit.Tools.Files;
 using NameCube.Function;
+using NameCube.Function.WindowInitializationSettings;
 using NameCube.Setting;
 using Serilog;
 using System;
@@ -58,6 +59,13 @@ namespace NameCube.FirstUse
                 }
                 else if (now == 3)
                 {
+                    Log.Information("设置界面");
+                    LoadPage("初始化界面", "为保证窗口能正常显示，我们需要初始化窗口,完成后按继续！", new Empty());
+                    TemplateWindow templateWindow = new();
+                    templateWindow.ShowDialog();
+                }
+                else if (now == 4)
+                {
                     if (GlobalVariablesData.config.AllSettings.NameCubeMode == 0)
                     {
                         Log.Information("加载页面: 悬浮球设置");
@@ -71,7 +79,7 @@ namespace NameCube.FirstUse
                         Log.Information("向导设置已保存");
                     }
                 }
-                else if (now == 4)
+                else if (now == 5)
                 {
                     if (GlobalVariablesData.config.AllSettings.NameCubeMode == 0)
                     {
@@ -84,14 +92,14 @@ namespace NameCube.FirstUse
                         AppFunction.Restart();
                     }
                 }
-                else if (now == 5)
+                else if (now == 6)
                 {
                     Log.Information("加载页面: 完成(悬浮球模式)");
                     LoadPage("完成！", "所有基本设置均已完成，更多设置请在应用设置里查看", new About());
                     GlobalVariablesData.SaveConfig();
                     Log.Information("向导设置已保存");
                 }
-                else if (now == 6)
+                else if (now == 7)
                 {
                     Log.Information("悬浮球模式向导完成，准备重启应用");
                     AppFunction.Restart();

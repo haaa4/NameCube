@@ -115,6 +115,7 @@ namespace NameCube.Setting
                 GlobalVariablesData.config.PermissionManager.needAdmin[12] = CheckBox13.IsChecked == true;
                 GlobalVariablesData.config.PermissionManager.needAdmin[13] = CheckBox14.IsChecked == true;
                 GlobalVariablesData.config.PermissionManager.needAdmin[14] = CheckBox15.IsChecked == true;
+                GlobalVariablesData.config.PermissionManager.needAdmin[15] = CheckBox16.IsChecked == true;
                 GlobalVariablesData.SaveConfig();
             }
         }

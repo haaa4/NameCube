@@ -95,5 +95,6 @@
             VerticalAlignment="Bottom"
             Fill="Blue"
             Visibility="Collapsed" />
+        <TextBlock x:Name="DebugText" Text="Debug" Foreground="Blue" Visibility="Collapsed"/>
     </Grid>
 </Window>

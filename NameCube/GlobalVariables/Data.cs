@@ -102,6 +102,11 @@ namespace NameCube
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
         public PermissionManager PermissionManager { get; set; } = new PermissionManager();
+        /// <summary>
+        /// MainWindow的初始位置与大小
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+        public MainWindowSettings MainWindowSettings { get; set; } = new();
 
 
         /// <summary>
@@ -157,7 +162,7 @@ namespace NameCube
         /// <summary>
         /// 当前版本
         /// </summary>
-        public const string VERSION = "V1.4-Beta-2(#p9#)";
+        public const string VERSION = "V1.4-Beta-3(#p10#)";
         /// <summary>
         /// 当前版本代码
         /// </summary>

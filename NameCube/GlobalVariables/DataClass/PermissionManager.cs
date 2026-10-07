@@ -27,6 +27,6 @@ namespace NameCube.GlobalVariables.DataClass
         /// <summary>
         /// 各部分功能是否需要管理员权限，按照顺序对应请查看PermissionManagerSettings.xaml
         /// </summary>
-        public List<bool> needAdmin { get; set; } = new List<bool> { false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false };
+        public List<bool> needAdmin { get; set; } = new List<bool> { false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false };
     }
 }

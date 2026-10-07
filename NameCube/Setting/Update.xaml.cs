@@ -77,74 +77,75 @@ namespace NameCube.Setting
 
         private async void CheckButton_Click(object sender, RoutedEventArgs e)
         {
-            _logger.Information("开始检查更新");
-            CaseText.Content = "获取最新版本中...";
-            NowProgressBar.IsIndeterminate = true;
-            CheckButton.IsEnabled = false;
-            UpkButton.IsEnabled = false;
+            //维护
+            //_logger.Information("开始检查更新");
+            //CaseText.Content = "获取最新版本中...";
+            //NowProgressBar.IsIndeterminate = true;
+            //CheckButton.IsEnabled = false;
+            //UpkButton.IsEnabled = false;
 
-            string GetVersion = "";
-            try
-            {
-                if (GlobalVariablesData.config.AllSettings.token == "" || GlobalVariablesData.config.AllSettings.token == null)
-                {
-                    _logger.Debug("使用匿名方式检查更新");
-                    if (GlobalVariablesData.config.AllSettings.DownloadWay == 0)
-                    {
-                        GetVersion = await GithubData.GetLatestReleaseVersionAsync("haaa4", "NameCube");
-                    }
-                    else
-                    {
-                        GetVersion = await GiteeData.GerVersion();
-                    }
-                }
-                else
-                {
-                    _logger.Debug("使用Token方式检查更新");
-                    if (GlobalVariablesData.config.AllSettings.DownloadWay == 0)
-                    {
-                        GetVersion = await GithubData.GetLatestReleaseVersionAsync("haaa4", "NameCube", GlobalVariablesData.config.AllSettings.token);
-                    }
-                    else
-                    {
-                        GetVersion = await GiteeData.GerVersion();
-                    }
-                }
+            //string GetVersion = "";
+            //try
+            //{
+            //    if (GlobalVariablesData.config.AllSettings.token == "" || GlobalVariablesData.config.AllSettings.token == null)
+            //    {
+            //        _logger.Debug("使用匿名方式检查更新");
+            //        if (GlobalVariablesData.config.AllSettings.DownloadWay == 0)
+            //        {
+            //            GetVersion = await GithubData.GetLatestReleaseVersionAsync("haaa4", "NameCube");
+            //        }
+            //        else
+            //        {
+            //            GetVersion = await GiteeData.GerVersion();
+            //        }
+            //    }
+            //    else
+            //    {
+            //        _logger.Debug("使用Token方式检查更新");
+            //        if (GlobalVariablesData.config.AllSettings.DownloadWay == 0)
+            //        {
+            //            GetVersion = await GithubData.GetLatestReleaseVersionAsync("haaa4", "NameCube", GlobalVariablesData.config.AllSettings.token);
+            //        }
+            //        else
+            //        {
+            //            GetVersion = await GiteeData.GerVersion();
+            //        }
+            //    }
 
-                GlobalVariablesData.config.AllSettings.UpdataTime = DateTime.Now.ToString("f");
+            //    GlobalVariablesData.config.AllSettings.UpdataTime = DateTime.Now.ToString("f");
 
-                if (ExtractVersionCode(GetVersion) > GlobalVariablesData.VERSIONCODE)
-                {
-                    NowProgressBar.IsIndeterminate = false;
-                    NowProgressBar.Value = NowProgressBar.Maximum;
-                    CaseText.Content = "检测到新的版本：" + GetVersion;
-                    GlobalVariablesData.config.AllSettings.newVersion = GetVersion;
-                    GlobalVariablesData.SaveConfig();
-                    UpkButton.IsEnabled = true;
-                    CheckText.Content = "上次检查时间:" + GlobalVariablesData.config.AllSettings.UpdataTime;
+            //    if (ExtractVersionCode(GetVersion) > GlobalVariablesData.VERSIONCODE)
+            //    {
+            //        NowProgressBar.IsIndeterminate = false;
+            //        NowProgressBar.Value = NowProgressBar.Maximum;
+            //        CaseText.Content = "检测到新的版本：" + GetVersion;
+            //        GlobalVariablesData.config.AllSettings.newVersion = GetVersion;
+            //        GlobalVariablesData.SaveConfig();
+            //        UpkButton.IsEnabled = true;
+            //        CheckText.Content = "上次检查时间:" + GlobalVariablesData.config.AllSettings.UpdataTime;
 
-                    _logger.Information("发现新版本: {NewVersion}, 当前版本: {CurrentVersion}", GetVersion, GlobalVariablesData.VERSION);
-                }
-                else
-                {
-                    GlobalVariablesData.config.AllSettings.newVersion = null;
-                    GlobalVariablesData.SaveConfig();
-                    CaseText.Content = "已是最新版本";
-                    CheckText.Content = "上次检查时间:" + GlobalVariablesData.config.AllSettings.UpdataTime;
-                    _logger.Information("已是最新版本: {CurrentVersion}", GlobalVariablesData.VERSION);
-                }
+            //        _logger.Information("发现新版本: {NewVersion}, 当前版本: {CurrentVersion}", GetVersion, GlobalVariablesData.VERSION);
+            //    }
+            //    else
+            //    {
+            //        GlobalVariablesData.config.AllSettings.newVersion = null;
+            //        GlobalVariablesData.SaveConfig();
+            //        CaseText.Content = "已是最新版本";
+            //        CheckText.Content = "上次检查时间:" + GlobalVariablesData.config.AllSettings.UpdataTime;
+            //        _logger.Information("已是最新版本: {CurrentVersion}", GlobalVariablesData.VERSION);
+            //    }
 
-                NowProgressBar.IsIndeterminate = false;
-                CheckButton.IsEnabled = true;
-            }
-            catch (Exception ex)
-            {
-                _logger.Error(ex, "检查更新时发生异常");
-                SnackBarFunction.ShowSnackBarInSettingWindow(ex.Message, Wpf.Ui.Controls.ControlAppearance.Caution);
-                NowProgressBar.IsIndeterminate = false;
-                CheckButton.IsEnabled = true;
-                CaseText.Content = "检查更新失败";
-            }
+            //    NowProgressBar.IsIndeterminate = false;
+            //    CheckButton.IsEnabled = true;
+            //}
+            //catch (Exception ex)
+            //{
+            //    _logger.Error(ex, "检查更新时发生异常");
+            //    SnackBarFunction.ShowSnackBarInSettingWindow(ex.Message, Wpf.Ui.Controls.ControlAppearance.Caution);
+            //    NowProgressBar.IsIndeterminate = false;
+            //    CheckButton.IsEnabled = true;
+            //    CaseText.Content = "检查更新失败";
+            //}
         }
 
         private void UpdataWayComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -184,109 +185,111 @@ namespace NameCube.Setting
 
         private async Task CardAction_ClickAsync(object sender, RoutedEventArgs e)
         {
-            _logger.Information("开始尝试强制更新");
-            CaseText.Content = "获取最新版本中...";
-            NowProgressBar.IsIndeterminate = true;
-            CheckButton.IsEnabled = false;
-            UpkButton.IsEnabled = false;
+            //维护
+            //_logger.Information("开始尝试强制更新");
+            //CaseText.Content = "获取最新版本中...";
+            //NowProgressBar.IsIndeterminate = true;
+            //CheckButton.IsEnabled = false;
+            //UpkButton.IsEnabled = false;
 
-            string GetVersion = "";
-            try
-            {
-                if (GlobalVariablesData.config.AllSettings.token == "" || GlobalVariablesData.config.AllSettings.token == null)
-                {
-                    _logger.Debug("使用匿名方式检查更新");
-                    GetVersion = await GithubData.GetLatestReleaseVersionAsync("haaa4", "NameCube");
-                }
-                else
-                {
-                    _logger.Debug("使用Token方式检查更新");
-                    GetVersion = await GithubData.GetLatestReleaseVersionAsync("haaa4", "NameCube", GlobalVariablesData.config.AllSettings.token);
-                }
+            //string GetVersion = "";
+            //try
+            //{
+            //    if (GlobalVariablesData.config.AllSettings.token == "" || GlobalVariablesData.config.AllSettings.token == null)
+            //    {
+            //        _logger.Debug("使用匿名方式检查更新");
+            //        GetVersion = await GithubData.GetLatestReleaseVersionAsync("haaa4", "NameCube");
+            //    }
+            //    else
+            //    {
+            //        _logger.Debug("使用Token方式检查更新");
+            //        GetVersion = await GithubData.GetLatestReleaseVersionAsync("haaa4", "NameCube", GlobalVariablesData.config.AllSettings.token);
+            //    }
 
-                GlobalVariablesData.config.AllSettings.UpdataTime = DateTime.Now.ToString("f");
+            //    GlobalVariablesData.config.AllSettings.UpdataTime = DateTime.Now.ToString("f");
 
-                NowProgressBar.IsIndeterminate = false;
-                NowProgressBar.Value = NowProgressBar.Maximum;
-                CaseText.Content = "检测到新的版本：" + GetVersion;
-                GlobalVariablesData.config.AllSettings.newVersion = GetVersion;
-                GlobalVariablesData.SaveConfig();
-                UpkButton.IsEnabled = true;
-                CheckText.Content = "上次检查时间:" + GlobalVariablesData.config.AllSettings.UpdataTime;
+            //    NowProgressBar.IsIndeterminate = false;
+            //    NowProgressBar.Value = NowProgressBar.Maximum;
+            //    CaseText.Content = "检测到新的版本：" + GetVersion;
+            //    GlobalVariablesData.config.AllSettings.newVersion = GetVersion;
+            //    GlobalVariablesData.SaveConfig();
+            //    UpkButton.IsEnabled = true;
+            //    CheckText.Content = "上次检查时间:" + GlobalVariablesData.config.AllSettings.UpdataTime;
 
-                _logger.Information("发现新版本: {NewVersion}, 当前版本: {CurrentVersion}", GetVersion, GlobalVariablesData.VERSION);
+            //    _logger.Information("发现新版本: {NewVersion}, 当前版本: {CurrentVersion}", GetVersion, GlobalVariablesData.VERSION);
 
-                NowProgressBar.IsIndeterminate = false;
-                CheckButton.IsEnabled = true;
-            }
-            catch (Exception ex)
-            {
-                _logger.Error(ex, "检查更新时发生异常");
-                SnackBarFunction.ShowSnackBarInSettingWindow(ex.Message, Wpf.Ui.Controls.ControlAppearance.Caution);
-                NowProgressBar.IsIndeterminate = false;
-                CheckButton.IsEnabled = true;
-                CaseText.Content = "检查更新失败";
-            }
+            //    NowProgressBar.IsIndeterminate = false;
+            //    CheckButton.IsEnabled = true;
+            //}
+            //catch (Exception ex)
+            //{
+            //    _logger.Error(ex, "检查更新时发生异常");
+            //    SnackBarFunction.ShowSnackBarInSettingWindow(ex.Message, Wpf.Ui.Controls.ControlAppearance.Caution);
+            //    NowProgressBar.IsIndeterminate = false;
+            //    CheckButton.IsEnabled = true;
+            //    CaseText.Content = "检查更新失败";
+            //}
         }
 
         private async void CardAction_Click(object sender, RoutedEventArgs e)
         {
-            _logger.Information("开始强制更新");
-            CaseText.Content = "获取最新版本中...";
-            NowProgressBar.IsIndeterminate = true;
-            CheckButton.IsEnabled = false;
-            UpkButton.IsEnabled = false;
+            //维护
+            //_logger.Information("开始强制更新");
+            //CaseText.Content = "获取最新版本中...";
+            //NowProgressBar.IsIndeterminate = true;
+            //CheckButton.IsEnabled = false;
+            //UpkButton.IsEnabled = false;
 
-            string GetVersion = "";
-            try
-            {
-                if (GlobalVariablesData.config.AllSettings.token == "" || GlobalVariablesData.config.AllSettings.token == null)
-                {
-                    _logger.Debug("使用匿名方式检查更新");
-                    if (GlobalVariablesData.config.AllSettings.DownloadWay == 0)
-                    {
-                        GetVersion = await GithubData.GetLatestReleaseVersionAsync("haaa4", "NameCube");
-                    }
-                    else
-                    {
-                        GetVersion = await GiteeData.GerVersion();
-                    }
-                }
-                else
-                {
-                    _logger.Debug("使用Token方式检查更新");
-                    if (GlobalVariablesData.config.AllSettings.DownloadWay == 0)
-                    {
-                        GetVersion = await GithubData.GetLatestReleaseVersionAsync("haaa4", "NameCube", GlobalVariablesData.config.AllSettings.token);
-                    }
-                    else
-                    {
-                        GetVersion = await GiteeData.GerVersion();
-                    }
+            //string GetVersion = "";
+            //try
+            //{
+            //    if (GlobalVariablesData.config.AllSettings.token == "" || GlobalVariablesData.config.AllSettings.token == null)
+            //    {
+            //        _logger.Debug("使用匿名方式检查更新");
+            //        if (GlobalVariablesData.config.AllSettings.DownloadWay == 0)
+            //        {
+            //            GetVersion = await GithubData.GetLatestReleaseVersionAsync("haaa4", "NameCube");
+            //        }
+            //        else
+            //        {
+            //            GetVersion = await GiteeData.GerVersion();
+            //        }
+            //    }
+            //    else
+            //    {
+            //        _logger.Debug("使用Token方式检查更新");
+            //        if (GlobalVariablesData.config.AllSettings.DownloadWay == 0)
+            //        {
+            //            GetVersion = await GithubData.GetLatestReleaseVersionAsync("haaa4", "NameCube", GlobalVariablesData.config.AllSettings.token);
+            //        }
+            //        else
+            //        {
+            //            GetVersion = await GiteeData.GerVersion();
+            //        }
 
-                    GlobalVariablesData.config.AllSettings.UpdataTime = DateTime.Now.ToString("f");
-                }
-                NowProgressBar.IsIndeterminate = false;
-                NowProgressBar.Value = NowProgressBar.Maximum;
-                CaseText.Content = "检测到新的版本：" + GetVersion;
-                GlobalVariablesData.config.AllSettings.newVersion = GetVersion;
-                GlobalVariablesData.SaveConfig();
-                UpkButton.IsEnabled = true;
-                CheckText.Content = "上次检查时间:" + GlobalVariablesData.config.AllSettings.UpdataTime;
+            //        GlobalVariablesData.config.AllSettings.UpdataTime = DateTime.Now.ToString("f");
+            //    }
+            //    NowProgressBar.IsIndeterminate = false;
+            //    NowProgressBar.Value = NowProgressBar.Maximum;
+            //    CaseText.Content = "检测到新的版本：" + GetVersion;
+            //    GlobalVariablesData.config.AllSettings.newVersion = GetVersion;
+            //    GlobalVariablesData.SaveConfig();
+            //    UpkButton.IsEnabled = true;
+            //    CheckText.Content = "上次检查时间:" + GlobalVariablesData.config.AllSettings.UpdataTime;
 
-                _logger.Information("发现版本: {NewVersion}, 当前版本: {CurrentVersion}", GetVersion, GlobalVariablesData.VERSION);
+            //    _logger.Information("发现版本: {NewVersion}, 当前版本: {CurrentVersion}", GetVersion, GlobalVariablesData.VERSION);
 
-                NowProgressBar.IsIndeterminate = false;
-                CheckButton.IsEnabled = true;
-            }
-            catch (Exception ex)
-            {
-                _logger.Error(ex, "检查更新时发生异常");
-                SnackBarFunction.ShowSnackBarInSettingWindow(ex.Message, Wpf.Ui.Controls.ControlAppearance.Caution);
-                NowProgressBar.IsIndeterminate = false;
-                CheckButton.IsEnabled = true;
-                CaseText.Content = "检查更新失败";
-            }
+            //    NowProgressBar.IsIndeterminate = false;
+            //    CheckButton.IsEnabled = true;
+            //}
+            //catch (Exception ex)
+            //{
+            //    _logger.Error(ex, "检查更新时发生异常");
+            //    SnackBarFunction.ShowSnackBarInSettingWindow(ex.Message, Wpf.Ui.Controls.ControlAppearance.Caution);
+            //    NowProgressBar.IsIndeterminate = false;
+            //    CheckButton.IsEnabled = true;
+            //    CaseText.Content = "检查更新失败";
+            //}
         }
 
         private void UpkButton_Click(object sender, RoutedEventArgs e)

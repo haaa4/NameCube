@@ -83,8 +83,11 @@ namespace NameCube.Mode
                                 resultText = NowNumberText.Text;
                             });
                             Log.Information("单抽模式结束，结果: {Result}", resultText);
-                            _speechSynthesizer?.SpeakAsync(resultText);
-                        }
+                            try
+                            {
+                                _speechSynthesizer?.SpeakAsync(resultText);
+                    } catch { /* 忽略 */ }
+        }
                     });
                     timer.Stop();
                     Log.Information("单抽模式结束，结果: {Result}", NowNumberText.Text);
@@ -114,7 +117,7 @@ namespace NameCube.Mode
             try
             {
                 StartButton.IsEnabled = false;
-                _speechSynthesizer?.SpeakAsyncCancelAll();
+                try { _speechSynthesizer?.SpeakAsyncCancelAll(); } catch { /* 忽略 Win7 的 COM 异常 */ }
 
                 if (GlobalVariablesData.config.AllSettings.Name.Count == 0)
                 {
@@ -172,7 +175,11 @@ namespace NameCube.Mode
                         if (GlobalVariablesData.config.OnePeopleModeSettings.Speech)
                         {
                             Log.Debug("语音播报结果: {Name}", Text);
-                            _speechSynthesizer?.SpeakAsync(Text);
+                            try
+                            {
+                                _speechSynthesizer?.SpeakAsync(Text);
+                            }
+                            catch { /* 忽略 */ }
                         }
 
                         FinishText.Text = Text;
@@ -229,12 +236,18 @@ namespace NameCube.Mode
 
                 if (!GlobalVariablesData.config.AllSettings.SystemSpeech)
                 {
-                    _speechSynthesizer?.SelectVoiceByHints(VoiceGender.Female, VoiceAge.Adult);
-                    _speechSynthesizer.Rate = GlobalVariablesData.config.AllSettings.Speed;
-                    _speechSynthesizer.Volume = GlobalVariablesData.config.AllSettings.Volume;
-                    Log.Debug("配置语音合成器: 性别=Female, 音量={Volume}, 语速={Speed}",
-                        GlobalVariablesData.config.AllSettings.Volume,
-                        GlobalVariablesData.config.AllSettings.Speed);
+                    try
+                    {
+                        _speechSynthesizer = new SpeechSynthesizer();
+                        _speechSynthesizer.SelectVoiceByHints(VoiceGender.Female, VoiceAge.Adult);
+                        _speechSynthesizer.Rate = GlobalVariablesData.config.AllSettings.Speed;
+                        _speechSynthesizer.Volume = GlobalVariablesData.config.AllSettings.Volume;
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.Warning("Win7 语音组件初始化失败，将禁用语音播报: " + ex.Message);
+                        _speechSynthesizer = null; // 标记为 null，后续调用直接跳过
+                    }
                 }
 
                 //NowNumberText.FontFamily = GlobalVariablesData.config.AllSettings.Font;

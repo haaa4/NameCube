@@ -59,7 +59,7 @@
                     TargetPageType="{x:Type local:Appearance}" />
                 <ui:NavigationViewItem
                     x:Name="Item4"
-                    Content="讲述人"
+                    Content="TTS"
                     Icon="{ui:SymbolIcon Symbol=PersonVoice24}"
                     TargetPageType="{x:Type local:Speech}" />
                 <ui:NavigationViewItem
@@ -92,6 +92,11 @@
                     Content="更新"
                     Icon="{ui:SymbolIcon Symbol=ArrowUpload24}"
                     TargetPageType="{x:Type local:Updata}" />
+                <ui:NavigationViewItem
+                    x:Name="Item13"
+                    Content="窗口与渲染"
+                    Icon="{ui:SymbolIcon Symbol=WindowWrench24}"
+                    TargetPageType="{x:Type local:WindowsAndRendering}" />
                 <ui:NavigationViewItem
                     x:Name="Item11"
                     Content="其他"

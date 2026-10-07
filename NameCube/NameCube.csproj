@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
 	  <DisableWinMdReference>true</DisableWinMdReference>
-	  <TargetFramework>net8.0-windows10.0.17763.0</TargetFramework>
+	  <TargetFramework>net6.0-windows7.0</TargetFramework>
     <OutputType>WinExe</OutputType>
     <AssemblyName>点鸣魔方</AssemblyName>
     <IsWebBootstrapper>false</IsWebBootstrapper>
@@ -31,10 +31,10 @@
     <GenerateManifests>false</GenerateManifests>
     <SignManifests>false</SignManifests>
     <TargetZone>LocalIntranet</TargetZone>
-    <SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
+    <SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
     <StartupObject></StartupObject>
-    <FileVersion>1.3.0.2</FileVersion>
-    <AssemblyVersion>1.3.0.2</AssemblyVersion>
+    <FileVersion>1.3.3.0</FileVersion>
+    <AssemblyVersion>1.3.3.0</AssemblyVersion>
     <Version>$(VersionPrefix)</Version>
     <Copyright>Copyright (C) 2025-2026 haaa4</Copyright>
     <PackageOutputPath>bin\Release</PackageOutputPath>
@@ -52,6 +52,7 @@
     </DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="Image\emmm.gif" />
     <None Remove="Image\HeadMap\Photo4.png" />
     <None Remove="Image\HeadMap\Photo5.png" />
     <None Remove="Image\HeadMap\Photo6.png" />
@@ -69,6 +70,12 @@
     <PackageReference Include="Masuit.Tools.Abstractions" />
     <PackageReference Include="Masuit.Tools.Core" />
     <PackageReference Include="Microsoft.CSharp" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Memory" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
     <PackageReference Include="NAudio" />
     <PackageReference Include="Newtonsoft.Json" />
@@ -78,9 +85,13 @@
     <PackageReference Include="Serilog.Sinks.File" />
     <PackageReference Include="SharpCompress" />
     <PackageReference Include="StackExchange.Redis" />
+    <PackageReference Include="System.CodeDom" />
+    <PackageReference Include="System.Collections.Immutable" />
     <PackageReference Include="System.ComponentModel.Composition" />
     <PackageReference Include="System.Data.DataSetExtensions" />
+    <PackageReference Include="System.IO.Hashing" />
     <PackageReference Include="System.IO.Pipelines" />
+    <PackageReference Include="System.Management" />
     <PackageReference Include="System.Speech" />
     <PackageReference Include="WPF-UI" />
     <PackageReference Include="WPF-UI.Markdown" />
@@ -117,6 +128,7 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="BallPicture.png" />
+    <Resource Include="Image\emmm.gif" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Image\海报.png" />

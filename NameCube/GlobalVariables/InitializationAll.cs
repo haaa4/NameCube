@@ -214,6 +214,10 @@ namespace NameCube.GlobalVariables
             {
                 GlobalVariablesData.config.PermissionManager.needAdmin = new List<bool> { false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false };
             }
+            if(GlobalVariablesData.config.MainWindowSettings == null)
+            {
+                GlobalVariablesData.config.MainWindowSettings = new MainWindowSettings();
+            }
             //未来的开发请注意！！！！
             GlobalVariablesData.config.AllSettings.LowMemoryMode = false;
         }

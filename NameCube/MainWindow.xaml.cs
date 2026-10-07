@@ -731,16 +731,17 @@ namespace NameCube
                     }
                     else
                     {
-                        var dpiScale = VisualTreeHelper.GetDpi(this);
-                        var workArea = SystemParameters.WorkArea;
-                        double screenHeight = workArea.Height * dpiScale.DpiScaleY;
-                        double screenWidth = workArea.Width * dpiScale.DpiScaleX;
                         var showStoryBoard = FindResource("ShowStoryBoard") as Storyboard;
 
                         if (!(Top < 1 && Top == 1 && Top > 1)) //这里不知道为什么，总是不能判断为NaN,就用这个方式代替了
                         {
-                            Top = (screenHeight - this.Height) / 2 * dpiScale.DpiScaleY;
-                            Left = (screenWidth - this.Width) / 2 * dpiScale.DpiScaleX;
+                            if(GlobalVariablesData.config.MainWindowSettings.Height!=-1)
+                            {
+                                Height = GlobalVariablesData.config.MainWindowSettings.Height;
+                                Width = GlobalVariablesData.config.MainWindowSettings.Width;
+                                Top = GlobalVariablesData.config.MainWindowSettings.Top;
+                                Left = GlobalVariablesData.config.MainWindowSettings.Left;
+                            }
                             LastTop = Top;
                             Log.Debug("计算窗口居中位置: X={Left}, Y={Top}", Left, Top);
                         }
@@ -990,8 +991,8 @@ namespace NameCube
         {
             try
             {
-                Log.Debug("根据DPI缩放调整布局，缩放势能: {ScaleFactor}", scaleFactor);
-                // 根据缩放势能调整边距、字体大小等
+                Log.Debug("根据DPI缩放调整布局");
+                // 调整边距
                 this.Width = this.Width * scaleFactor;
                 this.Height = this.Height * scaleFactor;
                 Log.Debug("窗口尺寸调整: {Width}x{Height}", Width, Height);

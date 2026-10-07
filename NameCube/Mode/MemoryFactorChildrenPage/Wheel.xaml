@@ -65,7 +65,7 @@
                         VerticalAlignment="Center"
                         FontSize="40"
                         FontWeight="SemiBold"
-                        Foreground="{ui:ThemeResource AccentTextFillColorPrimaryBrush}"
+                        Foreground="{ui:ThemeResource AccentTextFillColorTertiaryBrush}"
                         Text="点击开始旋转" />
                 </StackPanel>
             </ui:Border>
@@ -155,7 +155,7 @@
                     HorizontalAlignment="Center"
                     VerticalAlignment="Top"
                     Data="M0,10 L-10,-10 L10,-10 Z"
-                    Fill="{ui:ThemeResource AccentTextFillColorPrimaryBrush}"
+                    Fill="{ui:ThemeResource AccentTextFillColorTertiaryBrush}"
                     RenderTransformOrigin="0.5,0.5"
                     Stretch="Fill" />
             </Grid>

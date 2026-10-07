@@ -346,7 +346,7 @@ namespace NameCube.Mode
                     // 开始轮播
                     Log.Information("开始轮播");
                     StartButton.IsEnabled = false;
-                    _speechSynthesizer?.SpeakAsyncCancelAll();
+                    try { _speechSynthesizer?.SpeakAsyncCancelAll(); } catch { /* 忽略 Win7 的 COM 异常 */ }
                     FinishNumberText.Visibility = Visibility.Hidden;
                     NowNumberText.Visibility = Visibility.Visible;
                     StartButton.Content = "结束";
@@ -453,7 +453,11 @@ namespace NameCube.Mode
 
                     // 语音播报
                     if (GlobalVariablesData.config.MemoryFactorModeSettings.Speech)
-                        _speechSynthesizer?.SpeakAsync(FinishNumberText.Text);
+                        try
+                        {
+                            _speechSynthesizer?.SpeakAsync(FinishNumberText.Text);
+                        }
+                        catch { /* 忽略 */ }
 
                     // 保存设置
                     SaveSettings();
@@ -607,18 +611,27 @@ namespace NameCube.Mode
             Canvas.SetTop(No6Factor, originalTops[No6Factor]);
 
             // 更新文本内容
-            No1Name.Text = sortedList[0].Name;
-            No2Name.Text = sortedList[1].Name;
-            No3Name.Text = sortedList[2].Name;
-            No4Name.Text = sortedList[3].Name;
-            No5Name.Text = sortedList[4].Name;
-            No6Name.Text = sortedList[5].Name;
-            No1Factor.Text = sortedList[0].Factor.ToString();
-            No2Factor.Text = sortedList[1].Factor.ToString();
-            No3Factor.Text = sortedList[2].Factor.ToString();
-            No4Factor.Text = sortedList[3].Factor.ToString();
-            No5Factor.Text = sortedList[4].Factor.ToString();
-            No6Factor.Text = sortedList[5].Factor.ToString();
+            if(sortedList.Count < 6)
+            {
+                Log.Warning("排序列表不足6个元素，实际数量: {Count}", sortedList.Count);
+                return;
+            }
+            else
+            {
+                No1Name.Text = sortedList[0].Name;
+                No2Name.Text = sortedList[1].Name;
+                No3Name.Text = sortedList[2].Name;
+                No4Name.Text = sortedList[3].Name;
+                No5Name.Text = sortedList[4].Name;
+                No6Name.Text = sortedList[5].Name;
+                No1Factor.Text = sortedList[0].Factor.ToString();
+                No2Factor.Text = sortedList[1].Factor.ToString();
+                No3Factor.Text = sortedList[2].Factor.ToString();
+                No4Factor.Text = sortedList[3].Factor.ToString();
+                No5Factor.Text = sortedList[4].Factor.ToString();
+                No6Factor.Text = sortedList[5].Factor.ToString();
+            }
+
 
             // 移除动态添加的TextBlock
             foreach (var tb in addedTextBlocks)

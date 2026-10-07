@@ -92,7 +92,7 @@
                 <CheckBox Content="档案编辑" x:Name="CheckBox3" Click="CheckBox_Checked"/>
                 <CheckBox Content="模式设置" x:Name="CheckBox4" Click="CheckBox_Checked"/>
                 <CheckBox Content="外观" x:Name="CheckBox5" Click="CheckBox_Checked"/>
-                <CheckBox Content="讲述人" x:Name="CheckBox6" Click="CheckBox_Checked"/>
+                <CheckBox Content="TTS" x:Name="CheckBox6" Click="CheckBox_Checked"/>
                 <CheckBox Content="悬浮球" x:Name="CheckBox7" Click="CheckBox_Checked"/>
                 <CheckBox Content="快捷键" x:Name="CheckBox8" Click="CheckBox_Checked"/>
                 <CheckBox
@@ -105,6 +105,7 @@
                     IsEnabled="False" />
                 <CheckBox Content="日志" x:Name="CheckBox9" Click="CheckBox_Checked"/>
                 <CheckBox Content="更新" x:Name="CheckBox10" Click="CheckBox_Checked"/>
+                <CheckBox Content="窗口与渲染" x:Name="CheckBox16" Click="CheckBox_Checked"/>
                 <CheckBox Content="其他" x:Name="CheckBox11" Click="CheckBox_Checked"/>
                 <CheckBox Content="关于" x:Name="CheckBox12" Click="CheckBox_Checked"/>
                 <CheckBox Content="自定义朗读" x:Name="CheckBox13" Click="CheckBox_Checked"/>

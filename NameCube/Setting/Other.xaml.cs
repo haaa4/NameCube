@@ -41,12 +41,10 @@ namespace NameCube.Setting
 
             CanChange = false;
             StartCheck.IsChecked = IsStartupApplication("NameCube");
-            TopCheck.IsChecked = GlobalVariablesData.config.AllSettings.Top;
             ModeCombox.SelectedIndex = GlobalVariablesData.config.AllSettings.NameCubeMode;
             UpdataWayGetComboBox.SelectedIndex = GlobalVariablesData.config.AllSettings.DownloadWay;
-            DisabledAnimationCheck.IsChecked = GlobalVariablesData.config.AllSettings.DisableTheDisplayAnimationOfTheMainWindow;
+
             DefalultPageComboBox.SelectedIndex = GlobalVariablesData.config.AllSettings.DefaultPage;
-            MaxSizeCheck.IsChecked = GlobalVariablesData.config.AllSettings.DefaultToMaximumSize;
 
             if (GlobalVariablesData.config.AllSettings.Recommend == "None")
             {
@@ -60,13 +58,11 @@ namespace NameCube.Setting
             if (GlobalVariablesData.config.AllSettings.NameCubeMode == 1)
             {
                 StartActionCard.Visibility = Visibility.Collapsed;
-                TopActionCard.Visibility = Visibility.Collapsed;
             }
 
             CanChange = true;
-            _logger.Information("其他设置加载完成，开机启动: {Startup}, 窗口置顶: {Top}, 模式: {Mode}",
+            _logger.Information("其他设置加载完成，开机启动: {Startup},模式: {Mode}",
                 StartCheck.IsChecked,
-                TopCheck.IsChecked,
                 ModeCombox.SelectedIndex);
         }
 
@@ -136,15 +132,6 @@ namespace NameCube.Setting
             }
         }
 
-        private void TopCheck_Click(object sender, RoutedEventArgs e)
-        {
-            if (CanChange)
-            {
-                GlobalVariablesData.config.AllSettings.Top = TopCheck.IsChecked.Value;
-                GlobalVariablesData.SaveConfig();
-                _logger.Information("窗口置顶修改为: {Top}", TopCheck.IsChecked.Value);
-            }
-        }
 
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -258,26 +245,6 @@ namespace NameCube.Setting
             }
         }
 
-        private void DisabledAnimationCheck_Click(object sender, RoutedEventArgs e)
-        {
-            if (CanChange)
-            {
-                GlobalVariablesData.config.AllSettings.DisableTheDisplayAnimationOfTheMainWindow = DisabledAnimationCheck.IsChecked.Value;
-                GlobalVariablesData.SaveConfig();
-                _logger.Information("主窗口显示动画修改为: {Disabled}", DisabledAnimationCheck.IsChecked.Value);
-            }
-        }
-
-        private void MaxSizeCheck_Click(object sender, RoutedEventArgs e)
-        {
-            if (CanChange)
-            {
-                GlobalVariablesData.config.AllSettings.DefaultToMaximumSize = MaxSizeCheck.IsChecked.Value;
-                GlobalVariablesData.SaveConfig();
-
-                _logger.Information("默认最大化已改为{value}", MaxSizeCheck.IsChecked.Value);
-            }
-        }
 
         private void UpdataWayGetComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
