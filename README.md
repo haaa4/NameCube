@@ -7,11 +7,6 @@
 >
 >  This project is independently created by a beginner and may present some challenging issues and code logic that are difficult to understand. Your understanding is appreciated. Meanwhile, the project currently does not support any languages other than Chinese.
 
->[!WARNING]
->该项目处于**停更**状态，预计6或7月恢复更新
->
->The project is currently on hold and is expected to resume updates in June or July
-
 
 
 <div align="center">
@@ -41,21 +36,19 @@
 ## 小工具
 - 小工具提供了一些对平时使用有用的功能（也许🤔）
 ![image](https://github.com/user-attachments/assets/a552c844-cfea-4de4-a81f-721b0a6230bc)
-- [x] 自定义朗读
-- [x] 内存
-- [x] 自动关机（**已合并**）
-- [x] 更好的快捷键
+- [x] 内存整理
 - [x] 自动流程
-## 未来可能发布的功能
-- [ ] 自定义背景
+## 未来可能发布的功能（大饼）
 - [ ] 自定义悬浮球
 - [ ] 条件模式
 ## 制作人员
 - [哈阿斯(haaa4)](https://github.com/haaa4)
 ## 开始
 **请保证您的电脑满足以下要求**
-- Windows 10及以上
-- 64位系统
+- Windows 7 64位及以上
+- 4GB以上内存
+- 已安装[.NET Framework4.8](https://dotnet.microsoft.com/zh-cn/download/dotnet-framework/thank-you/net48-nor)版本及以上运行时（Win7系统可能需要手动安装）
+- 已安装[.NET 6.0运行时](https://dotnet.microsoft.com/zh-cn/download/dotnet/thank-you/runtime-desktop-6.0.36-windows-x64-installer)(安装程序将自动安装)
 > 待补充...
 ## 调试
 在**关于**界面上，重复点击上方图片可输入调试密码，打开对应的调试功能。**请注意：调试所造成的任何后果作者均不负责，同时调试引起的各种Bug不在修复范围内**
@@ -72,13 +65,12 @@
 - 邮件联系作者 haaa444@163.com
 
 ## 许可证
-[![许可证](https://img.shields.io/badge/license-MIT-blue.svg)]([https://github.com/ldqk/Masuit.Tools/blob/master/LICENSE](https://github.com/haaa4/NameCube/blob/main/LICENSE))
+[GNU General Public License v3.0](https://github.com/haaa4/NameCube/blob/main/LICENSE)
 ## 主要依赖库
 - 见应用设置-关于-支持库
 ## 你需要知道的
 - 作者是第一次写此类程序，程序可能不稳定
 - 作者作为初学者，代码可能有难懂的部分，请谅解
 - 本软件不定期更新
-- 作者还是**初中生**，请不要施压
+- 作者还是**高中生**，时间只会越来越少
 - 作者写该程序只为锻炼自己，不为别的
-- 该项目当前暂无计划支持32位系统
