@@ -36,9 +36,13 @@ namespace NameCube.Setting.PermissionManager
     /// </summary>
     public partial class AuthenticationWindow
     {
-        public AuthenticationWindow()
+        public AuthenticationWindow(bool RestrictedModeDisplay = false)
         {
             InitializeComponent();
+            if(RestrictedModeDisplay)
+            {
+                CancleButton.Content="进入受限模式";
+            }
         }
         bool USBAuthenticationSuccessful = false;
 

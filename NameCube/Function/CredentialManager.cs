@@ -75,13 +75,13 @@ namespace NameCube.Function
             }
         }
         
-        public static bool PermissionVerification()
+        public static bool PermissionVerification(bool RestrictedModeDisplay = false)
         {
             if(GlobalVariablesData.creds==null)
             {
                 return true;
             }
-            AuthenticationWindow authManager = new();
+            AuthenticationWindow authManager = new(RestrictedModeDisplay);
             bool? get=authManager.ShowDialog();
             if(get.HasValue==false)
             {

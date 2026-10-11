@@ -73,5 +73,6 @@
             x:Name="ShowLocationCheckBox" 
             Click="ShowLocationCheckBox_Click"
             />
+        <Button Content="获取更新示例数据" Click="Button_Click_11"/>
     </StackPanel>
 </Page>

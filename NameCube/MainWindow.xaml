@@ -39,8 +39,10 @@
         </Storyboard>
 
         <!--  修改后的 LoadPageStoryBoard（添加新动画）  -->
-        <Storyboard x:Key="LoadPageStoryBoard">
-            <!--  原 border 淡入动画  -->
+        <!--<Storyboard x:Key="LoadPageStoryBoard">
+        -->
+        <!--  原 border 淡入动画  -->
+        <!--
             <DoubleAnimationUsingKeyFrames Storyboard.TargetName="border" Storyboard.TargetProperty="(UIElement.Opacity)">
                 <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0" />
                 <EasingDoubleKeyFrame KeyTime="00:00:00.6" Value="1">
@@ -49,7 +51,9 @@
                     </EasingDoubleKeyFrame.EasingFunction>
                 </EasingDoubleKeyFrame>
             </DoubleAnimationUsingKeyFrames>
-            <!--  原图像旋转动画  -->
+        -->
+        <!--  原图像旋转动画  -->
+        <!--
             <DoubleAnimationUsingKeyFrames Storyboard.TargetName="image" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[2].(RotateTransform.Angle)">
                 <EasingDoubleKeyFrame KeyTime="00:00:00" Value="360">
                     <EasingDoubleKeyFrame.EasingFunction>
@@ -62,7 +66,9 @@
                     </EasingDoubleKeyFrame.EasingFunction>
                 </EasingDoubleKeyFrame>
             </DoubleAnimationUsingKeyFrames>
-            <!--  原图像 X 位移动画  -->
+        -->
+        <!--  原图像 X 位移动画  -->
+        <!--
             <DoubleAnimationUsingKeyFrames Storyboard.TargetName="image" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)">
                 <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0">
                     <EasingDoubleKeyFrame.EasingFunction>
@@ -75,7 +81,9 @@
                     </EasingDoubleKeyFrame.EasingFunction>
                 </EasingDoubleKeyFrame>
             </DoubleAnimationUsingKeyFrames>
-            <!--  原图像 Y 位移动画  -->
+        -->
+        <!--  原图像 Y 位移动画  -->
+        <!--
             <DoubleAnimationUsingKeyFrames Storyboard.TargetName="image" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)">
                 <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0">
                     <EasingDoubleKeyFrame.EasingFunction>
@@ -89,7 +97,9 @@
                 </EasingDoubleKeyFrame>
             </DoubleAnimationUsingKeyFrames>
 
-            <!--  新增：进度条前景宽度动画（模拟进度从0到300）  -->
+        -->
+        <!--  新增：进度条前景宽度动画（模拟进度从0到300）  -->
+        <!--
             <DoubleAnimationUsingKeyFrames Storyboard.TargetName="ProgressFill" Storyboard.TargetProperty="Width">
                 <EasingDoubleKeyFrame KeyTime="00:00:00" Value="0" />
                 <EasingDoubleKeyFrame KeyTime="00:00:00.6" Value="300">
@@ -99,7 +109,9 @@
                 </EasingDoubleKeyFrame>
             </DoubleAnimationUsingKeyFrames>
 
-            <!--  新增：百分比文本变化（离散关键帧）  -->
+        -->
+        <!--  新增：百分比文本变化（离散关键帧）  -->
+        <!--
             <ObjectAnimationUsingKeyFrames Storyboard.TargetName="PercentText" Storyboard.TargetProperty="Text">
                 <DiscreteObjectKeyFrame KeyTime="00:00:00" Value="0%" />
                 <DiscreteObjectKeyFrame KeyTime="00:00:00.15" Value="25%" />
@@ -108,7 +120,9 @@
                 <DiscreteObjectKeyFrame KeyTime="00:00:00.6" Value="100%" />
             </ObjectAnimationUsingKeyFrames>
 
-            <!--  新增：四个圆点的缩放动画（制造跳动效果）  -->
+        -->
+        <!--  新增：四个圆点的缩放动画（制造跳动效果）  -->
+        <!--
             <DoubleAnimationUsingKeyFrames Storyboard.TargetName="Dot1" Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)">
                 <EasingDoubleKeyFrame KeyTime="00:00:00" Value="1" />
                 <EasingDoubleKeyFrame KeyTime="00:00:00.3" Value="1.5" />
@@ -119,8 +133,10 @@
                 <EasingDoubleKeyFrame KeyTime="00:00:00.3" Value="1.5" />
                 <EasingDoubleKeyFrame KeyTime="00:00:00.6" Value="1" />
             </DoubleAnimationUsingKeyFrames>
-            <!--  其他圆点类似，错开时间或使用不同关键帧以达到趣味效果，此处省略重复代码  -->
-            <!--  为简化，所有圆点使用相同动画，实际可差异化  -->
+        -->
+        <!--  其他圆点类似，错开时间或使用不同关键帧以达到趣味效果，此处省略重复代码  -->
+        <!--  为简化，所有圆点使用相同动画，实际可差异化  -->
+        <!--
             <DoubleAnimationUsingKeyFrames Storyboard.TargetName="Dot2" Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)">
                 <EasingDoubleKeyFrame KeyTime="00:00:00.1" Value="1" />
                 <EasingDoubleKeyFrame KeyTime="00:00:00.4" Value="1.5" />
@@ -131,7 +147,9 @@
                 <EasingDoubleKeyFrame KeyTime="00:00:00.4" Value="1.5" />
                 <EasingDoubleKeyFrame KeyTime="00:00:00.7" Value="1" />
             </DoubleAnimationUsingKeyFrames>
-            <!--  同理 Dot3、Dot4 可设置不同延迟，此处省略以保持简洁  -->
+        -->
+        <!--  同理 Dot3、Dot4 可设置不同延迟，此处省略以保持简洁  -->
+        <!--
         </Storyboard>
 
         <Storyboard x:Key="LoadedPageStoryBoard">
@@ -144,7 +162,7 @@
                     </EasingDoubleKeyFrame.EasingFunction>
                 </EasingDoubleKeyFrame>
             </DoubleAnimationUsingKeyFrames>
-        </Storyboard>
+        </Storyboard>-->
     </ui:FluentWindow.Resources>
 
     <Grid x:Name="RootGrid">
@@ -152,7 +170,7 @@
             <RowDefinition Height="50" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <Image Grid.RowSpan="2" x:Name="BackgroundImage" />
+        <Image x:Name="BackgroundImage" Grid.RowSpan="2" />
         <!--  简化标题栏，版本号放在其他地方  -->
         <ui:TitleBar
             Title="点鸣魔方"
@@ -178,55 +196,56 @@
             Visibility="Collapsed" />
 
         <ui:NavigationView
-                x:Name="NavigationMenu"
-                Grid.Row="1"
-                Margin="0"
-                IsBackButtonVisible="Auto"
-                IsPaneToggleVisible="True"
-                OpenPaneLength="260"
-                PaneDisplayMode="Left"
-                Background="Transparent"
-                Foreground="{ui:ThemeResource TextFillColorPrimaryBrush}"
-                >
+            x:Name="NavigationMenu"
+            Grid.Row="1"
+            Margin="0"
+            Background="Transparent"
+            Foreground="{ui:ThemeResource TextFillColorPrimaryBrush}"
+            IsBackButtonVisible="Auto"
+            IsPaneToggleVisible="True"
+            OpenPaneLength="260"
+            Navigating="NavigationMenu_Navigating"
+            Navigated="NavigationMenu_Navigated"
+            PaneDisplayMode="Left">
 
 
             <!--  优化菜单项样式  -->
             <ui:NavigationView.MenuItems>
                 <ui:NavigationViewItem
                     Margin="0,2"
-                    Click="NavigationViewItem_Click"
                     Content="主页"
-                    Icon="{ui:SymbolIcon Symbol=Home24}" />
+                    Icon="{ui:SymbolIcon Symbol=Home24}"
+                    TargetPageType="{x:Type mode:Home}" />
                 <ui:NavigationViewItem
                     Margin="0,2"
-                    Click="NavigationViewItem_Click_1"
                     Content="单人模式"
-                    Icon="{ui:SymbolIcon Symbol=Accessibility16}" />
+                    Icon="{ui:SymbolIcon Symbol=Accessibility16}"
+                    TargetPageType="{x:Type mode:OnePeopleMode}" />
                 <ui:NavigationViewItem
                     Margin="0,2"
-                    Click="NavigationViewItem_Click_2"
                     Content="势能模式"
-                    Icon="{ui:SymbolIcon Symbol=PeopleSettings24}" />
+                    Icon="{ui:SymbolIcon Symbol=PeopleSettings24}"
+                    TargetPageType="{x:Type mode:MemoryFactorMode}" />
                 <ui:NavigationViewItem
                     Margin="0,2"
-                    Click="NavigationViewItem_Click_3"
                     Content="批量模式"
-                    Icon="{ui:SymbolIcon Symbol=PeopleCommunity24}" />
+                    Icon="{ui:SymbolIcon Symbol=PeopleCommunity24}"
+                    TargetPageType="{x:Type mode:BatchMode}" />
                 <ui:NavigationViewItem
                     Margin="0,2"
-                    Click="NavigationViewItem_Click_4"
                     Content="数字模式"
-                    Icon="{ui:SymbolIcon Symbol=NumberSymbol24}" />
+                    Icon="{ui:SymbolIcon Symbol=NumberSymbol24}"
+                    TargetPageType="{x:Type mode:NumberMode}" />
                 <ui:NavigationViewItem
                     Margin="0,2"
-                    Click="NavigationViewItem_Click_5"
                     Content="预备模式"
-                    Icon="{ui:SymbolIcon Symbol=Run24}" />
+                    Icon="{ui:SymbolIcon Symbol=Run24}"
+                    TargetPageType="{x:Type mode:PrepareMode}" />
                 <ui:NavigationViewItem
                     Margin="0,2"
-                    Click="NavigationViewItem_Click_6"
                     Content="记忆模式"
-                    Icon="{ui:SymbolIcon Symbol=BrainCircuit24}" />
+                    Icon="{ui:SymbolIcon Symbol=BrainCircuit24}"
+                    TargetPageType="{x:Type mode:MemoryMode}" />
             </ui:NavigationView.MenuItems>
 
             <!--  优化底部按钮区域，添加版本号显示  -->
@@ -272,11 +291,24 @@
                     </StackPanel>
                 </StackPanel>
             </ui:NavigationView.PaneFooter>
-            
+
         </ui:NavigationView>
+        <ProgressBar
+    x:Name="PageLoadingBar"
+    Grid.Row="1"
+    Height="3"
+    Margin="0"
+    HorizontalAlignment="Stretch"
+    VerticalAlignment="Top"
+    Panel.ZIndex="100"
+    Background="Transparent"
+    BorderThickness="0"
+    Foreground="{ui:ThemeResource AccentTextFillColorPrimaryBrush}"
+    IsIndeterminate="True"
+    Visibility="Collapsed" />
 
         <!--  优化启动动画容器  -->
-        <Border
+        <!--<Border
             x:Name="border"
             Grid.Row="1"
             Margin="260,0,0,0"
@@ -298,7 +330,9 @@
                         </TransformGroup>
                     </Canvas.RenderTransform>
 
-                    <!--  原图像  -->
+        -->
+        <!--  原图像  -->
+        <!--
                     <Image
                         x:Name="image"
                         Canvas.Left="210.188"
@@ -318,13 +352,15 @@
                         </Image.RenderTransform>
                     </Image>
 
-                    <!--  新增：加载提示文字（带脉冲效果）  -->
+        -->
+        <!--  新增：加载提示文字（带脉冲效果）  -->
+        <!--
                     <TextBlock
                         x:Name="LoadingText"
                         Canvas.Left="260"
                         Canvas.Top="420"
                         FontSize="24"
-                        FontWeight="SemiBold" 
+                        FontWeight="SemiBold"
                         Foreground="{ui:ThemeResource AccentTextFillColorTertiaryBrush}"
                         Text="Loading...">
                         <TextBlock.RenderTransform>
@@ -332,7 +368,9 @@
                         </TextBlock.RenderTransform>
                     </TextBlock>
 
-                    <!--  新增：进度条背景（圆角矩形）  -->
+        -->
+        <!--  新增：进度条背景（圆角矩形）  -->
+        <!--
                     <Rectangle
                         x:Name="ProgressBackground"
                         Canvas.Left="240"
@@ -343,7 +381,9 @@
                         RadiusX="6"
                         RadiusY="6" />
 
-                    <!--  新增：进度条前景（动态宽度，初始0）  -->
+        -->
+        <!--  新增：进度条前景（动态宽度，初始0）  -->
+        <!--
                     <Rectangle
                         x:Name="ProgressFill"
                         Canvas.Left="240"
@@ -359,7 +399,9 @@
                         </Rectangle.RenderTransform>
                     </Rectangle>
 
-                    <!--  新增：百分比文本  -->
+        -->
+        <!--  新增：百分比文本  -->
+        <!--
                     <TextBlock
                         x:Name="PercentText"
                         Canvas.Left="550"
@@ -369,7 +411,9 @@
                         Foreground="{ui:ThemeResource AccentTextFillColorTertiaryBrush}"
                         Text="0%" />
 
-                    <!--  新增：四个装饰性圆点（围绕图像）  -->
+        -->
+        <!--  新增：四个装饰性圆点（围绕图像）  -->
+        <!--
                     <Ellipse
                         x:Name="Dot1"
                         Canvas.Left="380"
@@ -420,7 +464,7 @@
                     </Ellipse>
                 </Canvas>
             </Viewbox>
-        </Border>
+        </Border>-->
 
         <!--  优化启动画面  -->
         <Border

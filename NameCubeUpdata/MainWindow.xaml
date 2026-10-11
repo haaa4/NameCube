@@ -611,7 +611,7 @@
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"
                     FontSize="14"
-                    TextWrapping="Wrap"><Run Text="引导程序版本：" /><Run Language="zh-cn" Text="V0.3" /></TextBlock>
+                    TextWrapping="Wrap"><Run Text="引导程序版本：" /><Run Language="zh-cn" Text="V0.4" /></TextBlock>
                 <TextBlock
                     Canvas.Left="331"
                     Canvas.Top="102.22"
@@ -809,7 +809,7 @@
                 Canvas.Left="174"
                 Canvas.Top="134.09"
                 Width="252"
-                Height="50"
+                Height="100"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 FontSize="22"

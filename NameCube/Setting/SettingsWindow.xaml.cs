@@ -57,21 +57,21 @@ namespace NameCube.Setting
             Item11.IsEnabled = true;
             Item12.IsEnabled = true;
             Item13.IsEnabled = true;
-            if (!CredentialHelper.PermissionVerification())
+            if (!CredentialHelper.PermissionVerification(true))
             {
-                Item1.IsEnabled = !GlobalVariablesData.config.PermissionManager.needAdmin[2];
-                Item2.IsEnabled = !GlobalVariablesData.config.PermissionManager.needAdmin[3];
-                Item3.IsEnabled = !GlobalVariablesData.config.PermissionManager.needAdmin[4];
-                Item4.IsEnabled = !GlobalVariablesData.config.PermissionManager.needAdmin[5];
-                Item5.IsEnabled = !GlobalVariablesData.config.PermissionManager.needAdmin[6];
-                Item6.IsEnabled = !GlobalVariablesData.config.PermissionManager.needAdmin[7];
+                Item1.IsEnabled = !GlobalVariablesData.config.PermissionManager.needAdminUser["Archives"];
+                Item2.IsEnabled = !GlobalVariablesData.config.PermissionManager.needAdminUser["ModeSetting"];
+                Item3.IsEnabled = !GlobalVariablesData.config.PermissionManager.needAdminUser["Appearance"];
+                Item4.IsEnabled = !GlobalVariablesData.config.PermissionManager.needAdminUser["Speech"];
+                Item5.IsEnabled = !GlobalVariablesData.config.PermissionManager.needAdminUser["BirdSetting"];
+                Item6.IsEnabled = !GlobalVariablesData.config.PermissionManager.needAdminUser["ShortCutKeySetting"];
                 Item7.IsEnabled = false;
                 Item8.IsEnabled = false;
-                Item9.IsEnabled =! GlobalVariablesData.config.PermissionManager.needAdmin[8];
-                Item10.IsEnabled = !GlobalVariablesData.config.PermissionManager.needAdmin[9];
-                Item11.IsEnabled = !GlobalVariablesData.config.PermissionManager.needAdmin[10];
-                Item12.IsEnabled = !GlobalVariablesData.config.PermissionManager.needAdmin[11];
-                Item13.IsEnabled = !GlobalVariablesData.config.PermissionManager.needAdmin[15];
+                Item9.IsEnabled =! GlobalVariablesData.config.PermissionManager.needAdminUser["LogSetting"];
+                Item10.IsEnabled = !GlobalVariablesData.config.PermissionManager.needAdminUser["UpData"];
+                Item11.IsEnabled = !GlobalVariablesData.config.PermissionManager.needAdminUser["WindowsAndRendering"];
+                Item12.IsEnabled = !GlobalVariablesData.config.PermissionManager.needAdminUser["Other"];
+                Item13.IsEnabled = !GlobalVariablesData.config.PermissionManager.needAdminUser["AutomaticProcess"];
                 this.Title = "应用设置（权限受限）";
                 TitleBar.Title = "应用设置（权限受限）";
             }

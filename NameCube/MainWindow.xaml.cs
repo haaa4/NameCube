@@ -19,13 +19,14 @@ using NameCube.Setting;
 using NameCube.ToolBox;
 using NameCube.ToolBox.AutomaticProcessPages;
 using NAudio.CoreAudioApi;
-using Serilog; 
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
@@ -312,7 +313,7 @@ namespace NameCube
             {
                 var SettingWindow = Application.Current.Windows.OfType<SettingsWindow>().FirstOrDefault();
                 var ToolBoxWindow = Application.Current.Windows.OfType<ToolboxWindow>().FirstOrDefault();
-                if((SettingWindow!=null&&SettingWindow.Visibility==Visibility.Visible)||(ToolBoxWindow!=null&&ToolBoxWindow.Visibility==Visibility.Visible))
+                if ((SettingWindow != null && SettingWindow.Visibility == Visibility.Visible) || (ToolBoxWindow != null && ToolBoxWindow.Visibility == Visibility.Visible))
                 {
                     this.Topmost = false;
                     Log.Debug("检测到其他窗口，MainWindow不进行窗口置顶");
@@ -331,7 +332,7 @@ namespace NameCube
             {
                 Log.Error(ex, "窗口置顶检查定时器处理时发生错误");
             }
-            if (GlobalVariablesData.config.AllSettings.newVersion == null||GlobalVariablesData.config.AllSettings.newVersion==GlobalVariablesData.VERSION)
+            if (GlobalVariablesData.config.AllSettings.newVersion == null || GlobalVariablesData.config.AllSettings.newVersion == GlobalVariablesData.VERSION)
             {
                 UpdateWarn.Visibility = Visibility.Collapsed;
             }
@@ -355,7 +356,7 @@ namespace NameCube
                     Log.Information("悬浮球模式，隐藏主窗口");
                     e.Cancel = true;
                     this.Hide();
-                    if(GlobalVariablesData.config.StartToDo.AlwaysCleanMemory)
+                    if (GlobalVariablesData.config.StartToDo.AlwaysCleanMemory)
                         Masuit.Tools.Win32.Windows.ClearMemory();
                 }
             }
@@ -564,41 +565,47 @@ namespace NameCube
                 if (!isChoosing)
                 {
                     Log.Information("执行快捷键操作，打开方式: {OpenWay}", shortCut.openWay);
-                    ShowThisWindow();
                     switch (shortCut.openWay)
                     {
                         case 1:
                             NavigationMenu.Navigate(typeof(Mode.OnePeopleMode));
+                            ShowThisWindow();
                             Log.Information("导航到单人模式");
                             break;
 
                         case 2:
                             NavigationMenu.Navigate(typeof(Mode.MemoryFactorMode));
+                            ShowThisWindow();
                             Log.Information("导航到记忆势能模式");
                             break;
 
                         case 3:
                             NavigationMenu.Navigate(typeof(Mode.BatchMode));
+                            ShowThisWindow();
                             Log.Information("导航到批量模式");
                             break;
 
                         case 4:
                             NavigationMenu.Navigate(typeof(Mode.NumberMode));
+                            ShowThisWindow();
                             Log.Information("导航到数字模式");
                             break;
 
                         case 5:
                             NavigationMenu.Navigate(typeof(Mode.PrepareMode));
-                            Log.Information("导航到准备模式");
+                            ShowThisWindow();
+                            Log.Information("导航到预备模式");
                             break;
 
                         case 6:
                             NavigationMenu.Navigate(typeof(Mode.MemoryMode));
+                            ShowThisWindow();
                             Log.Information("导航到记忆模式");
                             break;
 
                         case 7:
                             NavigationMenu.Navigate(typeof(Mode.Home));
+                            ShowThisWindow();
                             Log.Information("导航到主页");
                             break;
 
@@ -703,7 +710,7 @@ namespace NameCube
 
         public void ShowThisWindow()
         {
-            if (GlobalVariablesData.config.PermissionManager.needAdmin[1] && (!CredentialHelper.PermissionVerification()))
+            if (GlobalVariablesData.config.PermissionManager.needAdminUser["MainWindow"] && (!CredentialHelper.PermissionVerification()))
             {
                 this.Hide();
                 return;
@@ -735,7 +742,7 @@ namespace NameCube
 
                         if (!(Top < 1 && Top == 1 && Top > 1)) //这里不知道为什么，总是不能判断为NaN,就用这个方式代替了
                         {
-                            if(GlobalVariablesData.config.MainWindowSettings.Height!=-1)
+                            if (GlobalVariablesData.config.MainWindowSettings.Height != -1)
                             {
                                 Height = GlobalVariablesData.config.MainWindowSettings.Height;
                                 Width = GlobalVariablesData.config.MainWindowSettings.Width;
@@ -811,147 +818,26 @@ namespace NameCube
             }
         }
 
-        Storyboard loadPageStoryBoard;
-        Storyboard loadedPageStoryBoard;
 
-        public void LoadPage(Page page)
+        public async void LoadPage(Page page)
         {
+            Log.Information("加载页面: {PageType}", page.GetType().Name);
+
+            await ShowLoadingBarAsync();   // 先让进度条出现
+
             try
             {
-                Log.Information("加载页面: {PageType}", page.GetType().Name);
-                NavigationMenu.IsEnabled = false;
                 NavigationMenu.ReplaceContent(null);
-                // 清理之前的事件处理程序
-
-                border.Visibility = Visibility.Visible;
-
-                EventHandler loadCompletedHandler = null;
-                EventHandler loadedCompletedHandler = null;
-
-                loadCompletedHandler = (s, e) =>
-                {
-                    try
-                    {
-                        loadPageStoryBoard.Completed -= loadCompletedHandler;
-                        NavigationMenu.Navigate(page.GetType());
-                        Log.Debug("导航到页面: {PageType}", page.GetType().Name);
-
-                        loadedCompletedHandler = (s1, e1) =>
-                        {
-                            loadedPageStoryBoard.Completed -= loadedCompletedHandler;
-                            border.Visibility = Visibility.Collapsed;
-                            NavigationMenu.IsEnabled = true;
-                            Log.Debug("页面加载完成");
-                        };
-
-                        loadedPageStoryBoard.Completed += loadedCompletedHandler;
-                        loadedPageStoryBoard.Begin();
-                    }
-                    catch (Exception ex)
-                    {
-                        Log.Error(ex, "页面加载回调处理时发生错误");
-                    }
-                };
-
-                loadPageStoryBoard.Completed += loadCompletedHandler;
-                loadPageStoryBoard.Begin();
+                NavigationMenu.Navigate(page.GetType());
+                Log.Debug("导航到页面: {PageType}", page.GetType().Name);
             }
-            catch (Exception ex)
+            finally
             {
-                Log.Error(ex, "加载页面时发生错误");
+                HideLoadingBar();          
             }
         }
 
-        private void NavigationViewItem_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                Log.Information("导航到主页");
-                LoadPage(new Home());
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex, "导航到主页时发生错误");
-            }
-        }
 
-        private void NavigationViewItem_Click_1(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                Log.Information("导航到单人模式");
-                LoadPage(new OnePeopleMode());
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex, "导航到单人模式时发生错误");
-            }
-        }
-
-        private void NavigationViewItem_Click_2(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                Log.Information("导航到记忆势能模式");
-                LoadPage(new MemoryFactorMode());
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex, "导航到记忆势能模式时发生错误");
-            }
-        }
-
-        private void NavigationViewItem_Click_3(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                Log.Information("导航到批量模式");
-                LoadPage(new BatchMode());
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex, "导航到批量模式时发生错误");
-            }
-        }
-
-        private void NavigationViewItem_Click_4(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                Log.Information("导航到数字模式");
-                LoadPage(new NumberMode());
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex, "导航到数字模式时发生错误");
-            }
-        }
-
-        private void NavigationViewItem_Click_5(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                Log.Information("导航到准备模式");
-                LoadPage(new PrepareMode());
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex, "导航到准备模式时发生错误");
-            }
-        }
-
-        private void NavigationViewItem_Click_6(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                Log.Information("导航到记忆模式");
-                LoadPage(new MemoryMode());
-            }
-            catch (Exception ex)
-            {
-                Log.Error(ex, "导航到记忆模式时发生错误");
-            }
-        }
 
         private void fluentWindow_Loaded(object sender, RoutedEventArgs e)
         {
@@ -977,8 +863,6 @@ namespace NameCube
                 }
 
                 StartMonitoring();
-                loadPageStoryBoard = FindResource("LoadPageStoryBoard") as Storyboard;
-                loadedPageStoryBoard = FindResource("LoadedPageStoryBoard") as Storyboard;
                 Log.Debug("页面加载故事板资源已获取");
             }
             catch (Exception ex)
@@ -1041,9 +925,9 @@ namespace NameCube
                     BackgroundImage.Stretch = GlobalVariablesData.config.AllSettings.BackgroundImageStretch ?? Stretch.Fill;
                     BackgroundImage.Opacity = (GlobalVariablesData.config.AllSettings.BackgroundOpacity ?? 100).ToDouble() / 100;
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
-                    MessageBoxFunction.ShowMessageBoxWarning("获取主界面背景的图片文件时出错，请前往设置重新选择\n"+ex.Message);
+                    MessageBoxFunction.ShowMessageBoxWarning("获取主界面背景的图片文件时出错，请前往设置重新选择\n" + ex.Message);
                     GlobalVariablesData.config.AllSettings.HaveBackgroundImage = false;
                     GlobalVariablesData.SaveConfig();
                     return;
@@ -1052,6 +936,47 @@ namespace NameCube
             else
             {
                 BackgroundImage.Source = null;
+            }
+        }
+
+        private async void NavigationMenu_Navigating(Wpf.Ui.Controls.NavigationView sender, Wpf.Ui.Controls.NavigatingCancelEventArgs args)
+        {
+            await ShowLoadingBarAsync();
+        }
+
+        private void NavigationMenu_Navigated(Wpf.Ui.Controls.NavigationView sender, Wpf.Ui.Controls.NavigatedEventArgs args)
+        {
+            HideLoadingBar();
+        }
+        /// <summary>
+        /// 显示加载进度条，并强制 UI 先渲染一帧，让进度条真正出现在屏幕上
+        /// </summary>
+        private async Task ShowLoadingBarAsync()
+        {
+            try
+            {
+                PageLoadingBar.Visibility = Visibility.Visible;
+                // 把调度权交还渲染管线，确保进度条在阻塞前已经呈现
+                await Dispatcher.Yield(DispatcherPriority.Render);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "显示加载进度条时出错");
+            }
+        }
+
+        /// <summary>
+        /// 隐藏加载进度条
+        /// </summary>
+        private void HideLoadingBar()
+        {
+            try
+            {
+                PageLoadingBar.Visibility = Visibility.Collapsed;
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "隐藏加载进度条时出错");
             }
         }
     }

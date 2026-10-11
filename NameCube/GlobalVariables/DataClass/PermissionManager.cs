@@ -27,6 +27,41 @@ namespace NameCube.GlobalVariables.DataClass
         /// <summary>
         /// 各部分功能是否需要管理员权限，按照顺序对应请查看PermissionManagerSettings.xaml
         /// </summary>
-        public List<bool> needAdmin { get; set; } = new List<bool> { false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false };
+        public Dictionary<string,bool> needAdminUser { get; set; }= new Dictionary<string, bool>()
+        {
+            {"Restart",false},
+            {"MainWindow",false},
+            {"Archives",false},
+            {"ModeSetting",false},
+            {"Appearance",false},
+            {"Speech",false},
+            {"BirdSetting",false},
+            {"ShortCutKeySetting",false},
+            {"LogSetting",false},
+            {"UpData",false},
+            {"WindowsAndRendering",false},
+            {"Other",false},
+            {"About",false},
+            {"MemoryToolbox",false},
+            {"AutomaticProcess",false},
+        };
+        /*
+         * 
+            "Restart"
+            "MainWindow"
+            "Archives"
+            "ModeSetting
+            "Appearance"
+            "Speech"
+            "BirdSetting"
+            "ShortCutKeySetting"
+            "LogSetting"
+            "UpData"
+            "WindowsAndRendering"
+            "Other"
+            "About"
+            "MemoryToolbox"
+            "AutomaticProcess"
+         */
     }
 }

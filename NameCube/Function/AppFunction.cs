@@ -22,7 +22,7 @@ namespace NameCube.Function
     {
         public static void Restart()
         {
-            if(GlobalVariablesData.config.PermissionManager.needAdmin[0]&&(!CredentialHelper.PermissionVerification()))
+            if(GlobalVariablesData.config.PermissionManager.needAdminUser["Restart"]&&(!CredentialHelper.PermissionVerification()))
             {
                 return;
             }

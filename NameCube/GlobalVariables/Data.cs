@@ -166,7 +166,7 @@ namespace NameCube
         /// <summary>
         /// 当前版本代码
         /// </summary>
-        public const int VERSIONCODE = 9;
+        public const int VERSIONCODE = 10;
         /// <summary>
         /// 当前是否为测试版本
         /// </summary>

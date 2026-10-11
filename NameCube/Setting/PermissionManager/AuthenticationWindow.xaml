@@ -35,6 +35,7 @@
             Content="确认" />
             <Button
 Margin="0,10"
+                x:Name="CancleButton"
 Click="Button2_Click"
 Content="取消" />
         </StackPanel>

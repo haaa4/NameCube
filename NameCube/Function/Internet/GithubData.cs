@@ -154,58 +154,58 @@
 //                }
 //            }
 //        }
-//    }
+//    //}
 
-//    public class DownloadHelper
-//    {
-//        private readonly HttpClient _client;
-//        private CancellationTokenSource _cts = new CancellationTokenSource();
-//        private Stopwatch _stopwatch = new Stopwatch();
-//        private long _totalBytes = 0;
-//        private long _bytesRead = 0;
+//    //public class DownloadHelper
+//    //{
+//    //    private readonly HttpClient _client;
+//    //    private CancellationTokenSource _cts = new CancellationTokenSource();
+//    //    private Stopwatch _stopwatch = new Stopwatch();
+//    //    private long _totalBytes = 0;
+//    //    private long _bytesRead = 0;
 
-//        public event Action<long, long, double, double> ProgressChanged;
+//    //    public event Action<long, long, double, double> ProgressChanged;
 
-//        public DownloadHelper()
-//        {
-//            Log.Debug("初始化DownloadHelper");
-//            _client = new HttpClient { Timeout = TimeSpan.FromMinutes(30) };
-//        }
+//    //    public DownloadHelper()
+//    //    {
+//    //        Log.Debug("初始化DownloadHelper");
+//    //        _client = new HttpClient { Timeout = TimeSpan.FromMinutes(30) };
+//    //    }
 
-//        private void ReportProgress()
-//        {
-//            try
-//            {
-//                var speed = _bytesRead / _stopwatch.Elapsed.TotalSeconds; // 字节/秒
-//                var progress = _totalBytes > 0 ? (double)_bytesRead / _totalBytes * 100 : 0;
+//    //    private void ReportProgress()
+//    //    {
+//    //        try
+//    //        {
+//    //            var speed = _bytesRead / _stopwatch.Elapsed.TotalSeconds; // 字节/秒
+//    //            var progress = _totalBytes > 0 ? (double)_bytesRead / _totalBytes * 100 : 0;
 
-//                Log.Debug("下载进度: {BytesRead}/{TotalBytes} ({Progress:F1}%)，速度: {Speed:F1} B/s",
-//                    _bytesRead, _totalBytes, progress, speed);
+//    //            Log.Debug("下载进度: {BytesRead}/{TotalBytes} ({Progress:F1}%)，速度: {Speed:F1} B/s",
+//    //                _bytesRead, _totalBytes, progress, speed);
 
-//                ProgressChanged?.Invoke(
-//                    _bytesRead,
-//                    _totalBytes,
-//                    speed,
-//                    progress
-//                );
-//            }
-//            catch (Exception ex)
-//            {
-//                Log.Error(ex, "报告下载进度时发生错误");
-//            }
-//        }
+//    //            ProgressChanged?.Invoke(
+//    //                _bytesRead,
+//    //                _totalBytes,
+//    //                speed,
+//    //                progress
+//    //            );
+//    //        }
+//    //        catch (Exception ex)
+//    //        {
+//    //            Log.Error(ex, "报告下载进度时发生错误");
+//    //        }
+//    //    }
 
-//        public void Cancel()
-//        {
-//            try
-//            {
-//                Log.Information("取消下载");
-//                _cts?.Cancel();
-//            }
-//            catch (Exception ex)
-//            {
-//                Log.Error(ex, "取消下载时发生错误");
-//            }
-//        }
+//    //    public void Cancel()
+//    //    {
+//    //        try
+//    //        {
+//    //            Log.Information("取消下载");
+//    //            _cts?.Cancel();
+//    //        }
+//    //        catch (Exception ex)
+//    //        {
+//    //            Log.Error(ex, "取消下载时发生错误");
+//    //        }
+//    //    }
 //    }
 //}

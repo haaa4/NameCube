@@ -108,7 +108,6 @@
                 <CheckBox Content="窗口与渲染" x:Name="CheckBox16" Click="CheckBox_Checked"/>
                 <CheckBox Content="其他" x:Name="CheckBox11" Click="CheckBox_Checked"/>
                 <CheckBox Content="关于" x:Name="CheckBox12" Click="CheckBox_Checked"/>
-                <CheckBox Content="自定义朗读" x:Name="CheckBox13" Click="CheckBox_Checked"/>
                 <CheckBox Content="内存整理" x:Name="CheckBox14" Click="CheckBox_Checked"/>
                 <CheckBox Content="自动流程" x:Name="CheckBox15" Click="CheckBox_Checked"/>
 

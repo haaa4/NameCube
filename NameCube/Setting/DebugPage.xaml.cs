@@ -11,7 +11,9 @@
 //  * but WITHOUT ANY WARRANTY
 
 using NameCube.Function;
+using NameCube.Function.Internet;
 using NameCube.Setting.Debug;
+using Newtonsoft.Json;
 using Serilog; // 添加Serilog引用
 using System;
 using System.Collections.Generic;
@@ -19,6 +21,9 @@ using System.Linq;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
+using Wpf.Ui.Controls;
+using static System.Net.Mime.MediaTypeNames;
+using Application = System.Windows.Application;
 
 namespace NameCube.Setting
 {
@@ -250,13 +255,13 @@ namespace NameCube.Setting
 
         private void Button_Click_9(object sender, RoutedEventArgs e)
         {
-            NameCube.Setting.UpdateGuide.UpdateGuideWindow updateGuideWindow= new(GuideTag.Text);
+            NameCube.Setting.UpdateGuide.UpdateGuideWindow updateGuideWindow = new(GuideTag.Text);
             updateGuideWindow.Show();
         }
 
         private void Button_Click_10(object sender, RoutedEventArgs e)
         {
-            bool get=CredentialHelper.PermissionVerification();
+            bool get = CredentialHelper.PermissionVerification();
             MessageBoxFunction.ShowMessageBoxInfo(get.ToString());
         }
         bool CanChange = false;
@@ -277,6 +282,24 @@ namespace NameCube.Setting
                 _logger.Debug("悬浮球窗口已重新初始化");
             }
 
+        }
+
+        private void Button_Click_11(object sender, RoutedEventArgs e)
+        {
+            NewVersionInformationClass data = new NewVersionInformationClass
+            {
+                PreReleaseVersionName = "PreReleaseVersionName",
+                PreReleaseVersionCode=0,
+                PreReleaseVersionReleaseFromGithubUrl = "PreReleaseVersionReleaseFromGithubUrl",
+                PreReleaseVersionReleaseFromGiteeUrl = "PreReleaseVersionReleaseFromGiteeUrl",
+                LatestVersionName = "LatestVersionName",
+                LatestVersionCode = 0,
+                LatestVersionReleaseFromGithubUrl = "LatestVersionReleaseFromGithubUrl",
+                LatestVersionReleaseFromGiteeUrl = "LatestVersionReleaseFromGiteeUrl"
+            };
+            string jsonString = JsonConvert.SerializeObject(data, Formatting.Indented);
+            Clipboard.SetText(jsonString);
+            SnackBarFunction.ShowSnackBarInSettingWindow("已复制到剪贴板", ControlAppearance.Primary);
         }
     }
 }

@@ -36,7 +36,6 @@ namespace NameCube
         private double SnapThreshold = 60; // 吸附阈值
 
         private DispatcherTimer _longPressTimer;
-        private Point _dragOffset;
         private bool _isDragging;
         private Storyboard LongPressAnimation;
         private POINT LastPosition;

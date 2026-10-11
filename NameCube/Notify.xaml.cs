@@ -429,7 +429,7 @@ namespace NameCube
         {
             try
             {
-                if (GlobalVariablesData.config.PermissionManager.needAdmin[0] && (!CredentialHelper.PermissionVerification()))
+                if (GlobalVariablesData.config.PermissionManager.needAdminUser["Restart"] && (!CredentialHelper.PermissionVerification()))
                 {
                     return;
                 }

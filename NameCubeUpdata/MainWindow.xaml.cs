@@ -15,15 +15,19 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
+using System.Net;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Media.Animation;
+using Microsoft.Win32;
 using Application = System.Windows.Application;
 using File = System.IO.File;
 using Path = System.IO.Path;
+using OpenFileDialog = System.Windows.Forms.OpenFileDialog;
+using MessageBox = System.Windows.MessageBox;
 
 namespace NameCubeUpdata
 {
@@ -38,6 +42,19 @@ namespace NameCubeUpdata
         }
 
         private int updateMode = 1;
+
+        // ============ 环境检测相关常量 ============
+        /// <summary>.NET 6 桌面运行时下载地址（微软官方 aka.ms 短链，始终指向最新的 6.0 补丁版本）</summary>
+        private const string Net6DownloadUrl = "https://aka.ms/dotnet/6.0/windowsdesktop-runtime-win-x64.exe";
+
+        /// <summary>.NET 6 桌面运行时在注册表中的检测路径（多路径兜底）</summary>
+        private static readonly string[] Net6RegistryPaths = new[]
+        {
+            @"SOFTWARE\dotnet\Setup\InstalledVersions\x64\sharedfx\Microsoft.WindowsDesktop.App",
+            @"SOFTWARE\dotnet\Setup\InstalledVersions\x86\sharedfx\Microsoft.WindowsDesktop.App",
+            @"SOFTWARE\WOW6432Node\dotnet\Setup\InstalledVersions\x64\sharedfx\Microsoft.WindowsDesktop.App",
+            @"SOFTWARE\WOW6432Node\dotnet\Setup\InstalledVersions\x86\sharedfx\Microsoft.WindowsDesktop.App"
+        };
 
         private void button_Click(object sender, RoutedEventArgs e)
         {
@@ -194,7 +211,6 @@ namespace NameCubeUpdata
             // 创建进度报告器，自动将回调封送到UI线程
             var progress = new Progress<double>(percent =>
             {
-                // 假设progressBar.Value为int类型（0-100），WPF中可能是double（0-100）
                 progressBar.Value = (int)(percent * 100);
             });
 
@@ -250,8 +266,213 @@ namespace NameCubeUpdata
             }
         }
 
-        private void button3_Click(object sender, RoutedEventArgs e)
+        // ================== 环境检测辅助方法 ==================
+
+        /// <summary>
+        /// 判断操作系统是否为 Windows 7 (6.1) 及以上
+        /// </summary>
+        private static bool IsWindows7OrLater()
         {
+            Version v = Environment.OSVersion.Version;
+            // Windows 7 = 6.1，Vista = 6.0，XP = 5.1
+            return v.Major > 6 || (v.Major == 6 && v.Minor >= 1);
+        }
+
+        /// <summary>
+        /// 检测 .NET 6 桌面运行时是否已安装（通过注册表子键版本号判断）
+        /// </summary>
+        private static bool IsNet6RuntimeInstalled()
+        {
+            try
+            {
+                // 1. 直接定位 dotnet.exe
+                string[] dotnetExePaths = {
+            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "dotnet", "dotnet.exe"),
+            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), "dotnet", "dotnet.exe")
+        };
+
+                string dotnetExe = null;
+                foreach (string p in dotnetExePaths)
+                {
+                    if (File.Exists(p)) { dotnetExe = p; break; }
+                }
+
+                // 如果连 dotnet.exe 都没有，那肯定没装
+                if (dotnetExe == null) return false;
+
+                // 2. 执行 dotnet --list-runtimes 命令
+                var psi = new ProcessStartInfo
+                {
+                    FileName = dotnetExe,
+                    Arguments = "--list-runtimes",
+                    UseShellExecute = false,
+                    RedirectStandardOutput = true,
+                    CreateNoWindow = true
+                };
+
+                using (var process = Process.Start(psi))
+                {
+                    string output = process.StandardOutput.ReadToEnd();
+                    process.WaitForExit();
+
+                    // 3. 在输出结果中查找 Microsoft.WindowsDesktop.App 6.
+                    // 这个命令的输出最准确，不受注册表和文件目录结构变化的影响
+                    return output.Contains("Microsoft.WindowsDesktop.App 6.");
+                }
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// 下载并静默安装 .NET 6 桌面运行时，下载进度绑定到 progressBar
+        /// </summary>
+        /// <returns>是否安装成功</returns>
+        private async Task<bool> DownloadAndInstallNet6Async()
+        {
+            string tempFile = Path.Combine(Path.GetTempPath(), "windowsdesktop-runtime-6.0-win-x64.exe");
+
+            try
+            {
+                // === 1. 隐藏背景中其他的控件（解决问题1） ===
+                button2.Visibility = Visibility.Collapsed;
+                textBox.Visibility = Visibility.Collapsed;
+                textBlock2.Visibility = Visibility.Collapsed;
+                button3.Visibility = Visibility.Collapsed;
+                button4.Visibility = Visibility.Collapsed;
+
+                // 显示进度条和提示文字
+                progressBar.Visibility = Visibility.Visible;
+                progressBar.Opacity = 1;
+                progressBar.Value = 0;
+                progressBar.IsIndeterminate = false; // 下载阶段使用确定进度
+                textBlock3.Visibility = Visibility.Visible;
+                textBlock3.Opacity = 1;
+                textBlock3.Text = "正在下载 .NET 6 运行时...";
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+                ServicePointManager.ServerCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true;
+                // ===== 下载（WebClient 会上报进度）=====
+                using (var client = new WebClient())
+                {
+                    var tcs = new TaskCompletionSource<bool>();
+                    client.DownloadProgressChanged += (s, ev) =>
+                    {
+                        // 进度绑定到进度条
+                        progressBar.Value = ev.ProgressPercentage;
+                    };
+                    client.DownloadFileCompleted += (s, ev) =>
+                    {
+                        if (ev.Error != null) tcs.TrySetException(ev.Error);
+                        else tcs.TrySetResult(true);
+                    };
+                    client.DownloadFileAsync(new Uri(Net6DownloadUrl), tempFile);
+                    await tcs.Task;
+                }
+
+                // ===== 2. 安装阶段（解决问题2）=====
+                // 切换提示文字
+                textBlock3.Text = "正在安装 .NET 6 运行时...\n这可能需要几分钟，请耐心等待，切勿关闭程序";
+                // 切换为跑马灯（不确定进度）状态
+                progressBar.IsIndeterminate = true;
+
+                var psi = new ProcessStartInfo
+                {
+                    FileName = tempFile,
+                    Arguments = "/install /quiet /norestart",
+                    UseShellExecute = false,
+                    CreateNoWindow = true
+                };
+
+                using (var process = Process.Start(psi))
+                {
+                    // 将同步等待放入后台线程，避免阻塞 UI 线程，从而让跑马灯动画正常播放
+                    await Task.Run(() => process.WaitForExit());
+
+                    // 0 = 成功，3010 = 成功但需要重启
+                    return process.ExitCode == 0 || process.ExitCode == 3010;
+                }
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show($"下载或安装 .NET 6 运行时失败：{ex.Message}\n请手动安装后重试。\n\n下载地址：https://dotnet.microsoft.com/download/dotnet/6.0", "安装失败", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+            finally
+            {
+                // 恢复 UI 状态，保证后续 ShowProcessRing 动画从初始状态开始
+                progressBar.IsIndeterminate = false;
+                progressBar.Value = 0;
+                progressBar.Opacity = 0;
+                progressBar.Visibility = Visibility.Collapsed;
+
+                textBlock3.Text = "正在安装中...";
+                textBlock3.Opacity = 0;
+                textBlock3.Visibility = Visibility.Collapsed;
+
+                // 删除临时安装包
+                if (File.Exists(tempFile))
+                {
+                    try { File.Delete(tempFile); } catch { }
+                }
+            }
+        }
+
+        // ================== 主安装按钮 ==================
+
+        private async void button3_Click(object sender, RoutedEventArgs e)
+        {
+            // ========== 快速安装模式：先做环境检查 ==========
+            if (updateMode == 1)
+            {
+                // 1) 检查操作系统版本（Win7 及以上）
+                if (!IsWindows7OrLater())
+                {
+                    System.Windows.MessageBox.Show(
+                        "您的操作系统版本过低，本程序需要 Windows 7 或更高版本才能运行。\n\n安装程序即将退出。",
+                        "不兼容的操作系统",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Error);
+                    Application.Current.Shutdown();
+                    return;
+                }
+
+                // 2) 检查 .NET 6 桌面运行时
+                if (!IsNet6RuntimeInstalled())
+                {
+                    var choice = System.Windows.MessageBox.Show(
+                        "检测到您的电脑未安装 .NET 6 运行时，应用程序需要它才能运行。\n\n是否现在自动从官网下载并安装？\n（如选择“否”，安装程序将退出）",
+                        "缺少 .NET 6 运行时",
+                        MessageBoxButton.YesNo,
+                        MessageBoxImage.Question);
+
+                    if (choice != MessageBoxResult.Yes)
+                    {
+                        // 用户拒绝安装 → 退出安装程序
+                        Application.Current.Shutdown();
+                        return;
+                    }
+
+                    // 临时禁用按钮，防止重复触发
+                    button3.IsEnabled = false;
+                    bool installed = await DownloadAndInstallNet6Async();
+                    button3.IsEnabled = true;
+
+                    if (!installed)
+                    {
+                        System.Windows.MessageBox.Show(
+                            "安装 .NET 6 运行时失败，请手动安装后重试。\n\n下载地址：https://dotnet.microsoft.com/download/dotnet/6.0",
+                            "安装失败",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Error);
+                        Application.Current.Shutdown();
+                        return;
+                    }
+                }
+            }
+
+            // ========== 以下为原有的安装流程，保持不变 ==========
             var startStoryBoard = FindResource("ShowProcessRing") as Storyboard;
             progressBar.Visibility = Visibility.Visible;
             textBlock3.Visibility = Visibility.Visible;
@@ -377,7 +598,7 @@ namespace NameCubeUpdata
 
                 return true;
             }
-            catch 
+            catch
             {
                 return false;
             }

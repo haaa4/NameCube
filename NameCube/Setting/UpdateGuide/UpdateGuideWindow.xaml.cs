@@ -11,6 +11,7 @@
 //  * but WITHOUT ANY WARRANTY
 
 using NameCube.Function;
+using NameCube.Function.Internet;
 using Serilog;
 using System;
 using System.Diagnostics;
@@ -106,14 +107,29 @@ namespace NameCube.Setting.UpdateGuide
             try
             {
                 Directory.CreateDirectory(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Update"));
-                if (GlobalVariablesData.config.AllSettings.DownloadWay == 0)
+                if(GlobalVariablesData.config.AllSettings.UpdataGet==1)
                 {
-                    await DownloadFileAsync("https://github.com/haaa4/NameCube/releases/download/" + url + "/NameCubeSetupX64.exe", localPath);
+                    if (GlobalVariablesData.config.AllSettings.DownloadWay == 0)
+                    {
+                        await DownloadFileAsync(GetInternetData.NewVersionInformationClass.PreReleaseVersionReleaseFromGithubUrl, localPath);
+                    }
+                    else
+                    {
+                        await DownloadFileAsync(GetInternetData.NewVersionInformationClass.PreReleaseVersionReleaseFromGiteeUrl, localPath);
+                    }
                 }
                 else
                 {
-                    await DownloadFileAsync("https://gitee.com/haaa4/NameCube/releases/download/" + url + "/NameCubeSetupX64.exe", localPath);
+                    if (GlobalVariablesData.config.AllSettings.DownloadWay == 0)
+                    {
+                        await DownloadFileAsync(GetInternetData.NewVersionInformationClass.LatestVersionReleaseFromGithubUrl, localPath);
+                    }
+                    else
+                    {
+                        await DownloadFileAsync(GetInternetData.NewVersionInformationClass.LatestVersionReleaseFromGiteeUrl, localPath);
+                    }
                 }
+
             }
             catch (Exception ex)
             {

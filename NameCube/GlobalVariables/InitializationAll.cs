@@ -210,9 +210,26 @@ namespace NameCube.GlobalVariables
             {
                 GlobalVariablesData.config.PermissionManager = new PermissionManager();
             }   
-            if(GlobalVariablesData.config.PermissionManager.needAdmin == null)
+            if(GlobalVariablesData.config.PermissionManager.needAdminUser == null)
             {
-                GlobalVariablesData.config.PermissionManager.needAdmin = new List<bool> { false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false };
+                GlobalVariablesData.config.PermissionManager.needAdminUser = new Dictionary<string, bool>
+                {
+                   ["Restart"] = false,
+                   ["MainWindow"] = false,
+                   ["Archives"] = false,
+                   ["ModeSetting"] = false,
+                   ["Appearance"] = false,
+                   ["Speech"] = false,
+                   ["BirdSetting"] = false,
+                   ["ShortCutKeySetting"] = false,
+                   ["LogSetting"] = false,
+                   ["UpData"] = false,
+                   ["WindowsAndRendering"] = false,
+                   ["Other"] = false,
+                   ["About"] = false,
+                   ["MemoryToolbox"] = false,
+                   ["AutomaticProcess"] = false
+                };
             }
             if(GlobalVariablesData.config.MainWindowSettings == null)
             {

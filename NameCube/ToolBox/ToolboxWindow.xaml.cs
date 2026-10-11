@@ -58,20 +58,17 @@ namespace NameCube.ToolBox
             };
 
             showStoryBoard.Begin();
-            Item1.IsEnabled = true;
             Item2.IsEnabled = true;
             Item3.IsEnabled = true;
-            if (!CredentialHelper.PermissionVerification())
+            if (!CredentialHelper.PermissionVerification(true))
             {
-                Item1.IsEnabled = !GlobalVariablesData.config.PermissionManager.needAdmin[12];
-                Item2.IsEnabled = !GlobalVariablesData.config.PermissionManager.needAdmin[13];
-                Item3.IsEnabled = !GlobalVariablesData.config.PermissionManager.needAdmin[14];
+                Item2.IsEnabled = !GlobalVariablesData.config.PermissionManager.needAdminUser["MemoryToolbox"];
+                Item3.IsEnabled = !GlobalVariablesData.config.PermissionManager.needAdminUser["AutomaticProcess"];
                 this.Title = "小工具（权限受限）";
                 TitleBar.Title= "小工具（权限受限）";
             }
             else
             {
-                Item1.IsEnabled = true;
                 Item2.IsEnabled = true;
                 Item3.IsEnabled = true;
                 this.Title = "小工具";

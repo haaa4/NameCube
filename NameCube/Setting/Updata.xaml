@@ -12,7 +12,7 @@
     FontFamily="{StaticResource AppFont}"
     mc:Ignorable="d">
     <Grid>
-        <Grid IsEnabled="False">
+        <Grid>
             <StackPanel>
                 <Label
             HorizontalAlignment="Center"
@@ -64,7 +64,7 @@
                             <ui:TextBlock
                         Margin="0"
                         FontTypography="BodyStrong"
-                        Text="更新获取"
+                        Text="更新通道"
                         TextWrapping="WrapWithOverflow" />
                             <ui:TextBlock
                         Appearance="Secondary"
@@ -138,15 +138,6 @@
             Icon="{ui:SymbolIcon Link24}"
             NavigateUri="https://docs.qq.com/doc/DZmhXS3BvYnZHWnRy" />
             </StackPanel>
-        </Grid>
-        <Grid>
-            <Rectangle Fill="{ui:ThemeResource AccentTextFillColorDisabledBrush}" Opacity="0.4" />
-            <ui:Card HorizontalAlignment="Center" VerticalAlignment="Center">
-                <StackPanel Orientation="Vertical">
-                    <ui:TextBlock Text="更新维护中..." FontSize="24"/>
-                    <ui:Image Source="/Image/emmm.gif" Width="150"/>
-                </StackPanel>
-            </ui:Card>
         </Grid>
     </Grid>
 </Page>

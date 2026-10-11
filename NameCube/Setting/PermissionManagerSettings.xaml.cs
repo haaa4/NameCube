@@ -45,21 +45,21 @@ namespace NameCube.Setting
             {
                 StartCheck.IsChecked = true;
             }
-            CheckBox1.IsChecked = GlobalVariablesData.config.PermissionManager.needAdmin[0];
-            CheckBox2.IsChecked = GlobalVariablesData.config.PermissionManager.needAdmin[1];
-            CheckBox3.IsChecked = GlobalVariablesData.config.PermissionManager.needAdmin[2];
-            CheckBox4.IsChecked = GlobalVariablesData.config.PermissionManager.needAdmin[3];
-            CheckBox5.IsChecked = GlobalVariablesData.config.PermissionManager.needAdmin[4];
-            CheckBox6.IsChecked = GlobalVariablesData.config.PermissionManager.needAdmin[5];
-            CheckBox7.IsChecked = GlobalVariablesData.config.PermissionManager.needAdmin[6];
-            CheckBox8.IsChecked = GlobalVariablesData.config.PermissionManager.needAdmin[7];
-            CheckBox9.IsChecked = GlobalVariablesData.config.PermissionManager.needAdmin[8];
-            CheckBox10.IsChecked = GlobalVariablesData.config.PermissionManager.needAdmin[9];
-            CheckBox11.IsChecked = GlobalVariablesData.config.PermissionManager.needAdmin[10];
-            CheckBox12.IsChecked = GlobalVariablesData.config.PermissionManager.needAdmin[11];
-            CheckBox13.IsChecked = GlobalVariablesData.config.PermissionManager.needAdmin[12];
-            CheckBox14.IsChecked = GlobalVariablesData.config.PermissionManager.needAdmin[13];
-            CheckBox15.IsChecked = GlobalVariablesData.config.PermissionManager.needAdmin[14];
+            CheckBox1.IsChecked = GlobalVariablesData.config.PermissionManager.needAdminUser["Restart"];
+            CheckBox2.IsChecked = GlobalVariablesData.config.PermissionManager.needAdminUser["MainWindow"];
+            CheckBox3.IsChecked = GlobalVariablesData.config.PermissionManager.needAdminUser["Archives"];
+            CheckBox4.IsChecked = GlobalVariablesData.config.PermissionManager.needAdminUser["ModeSetting"];
+            CheckBox5.IsChecked = GlobalVariablesData.config.PermissionManager.needAdminUser["Appearance"];
+            CheckBox6.IsChecked = GlobalVariablesData.config.PermissionManager.needAdminUser["Speech"];
+            CheckBox7.IsChecked = GlobalVariablesData.config.PermissionManager.needAdminUser["BirdSetting"];
+            CheckBox8.IsChecked = GlobalVariablesData.config.PermissionManager.needAdminUser["ShortCutKeySetting"];
+            CheckBox9.IsChecked = GlobalVariablesData.config.PermissionManager.needAdminUser["LogSetting"];
+            CheckBox10.IsChecked = GlobalVariablesData.config.PermissionManager.needAdminUser["UpData"];
+            CheckBox16.IsChecked = GlobalVariablesData.config.PermissionManager.needAdminUser["WindowsAndRendering"];
+            CheckBox11.IsChecked = GlobalVariablesData.config.PermissionManager.needAdminUser["Other"];
+            CheckBox12.IsChecked = GlobalVariablesData.config.PermissionManager.needAdminUser["About"];
+            CheckBox14.IsChecked = GlobalVariablesData.config.PermissionManager.needAdminUser["MemoryToolbox"];
+            CheckBox15.IsChecked = GlobalVariablesData.config.PermissionManager.needAdminUser["AutomaticProcess"]; 
             canChange = true;
         }
 
@@ -100,22 +100,21 @@ namespace NameCube.Setting
         {
             if(canChange)
             {
-                GlobalVariablesData.config.PermissionManager.needAdmin[0] = CheckBox1.IsChecked == true;
-                GlobalVariablesData.config.PermissionManager.needAdmin[1] = CheckBox2.IsChecked == true;
-                GlobalVariablesData.config.PermissionManager.needAdmin[2] = CheckBox3.IsChecked == true;
-                GlobalVariablesData.config.PermissionManager.needAdmin[3] = CheckBox4.IsChecked == true;
-                GlobalVariablesData.config.PermissionManager.needAdmin[4] = CheckBox5.IsChecked == true;
-                GlobalVariablesData.config.PermissionManager.needAdmin[5] = CheckBox6.IsChecked == true;
-                GlobalVariablesData.config.PermissionManager.needAdmin[6] = CheckBox7.IsChecked == true;
-                GlobalVariablesData.config.PermissionManager.needAdmin[7] = CheckBox8.IsChecked == true;
-                GlobalVariablesData.config.PermissionManager.needAdmin[8] = CheckBox9.IsChecked == true;
-                GlobalVariablesData.config.PermissionManager.needAdmin[9] = CheckBox10.IsChecked == true;
-                GlobalVariablesData.config.PermissionManager.needAdmin[10] = CheckBox11.IsChecked == true;
-                GlobalVariablesData.config.PermissionManager.needAdmin[11] = CheckBox12.IsChecked == true;
-                GlobalVariablesData.config.PermissionManager.needAdmin[12] = CheckBox13.IsChecked == true;
-                GlobalVariablesData.config.PermissionManager.needAdmin[13] = CheckBox14.IsChecked == true;
-                GlobalVariablesData.config.PermissionManager.needAdmin[14] = CheckBox15.IsChecked == true;
-                GlobalVariablesData.config.PermissionManager.needAdmin[15] = CheckBox16.IsChecked == true;
+                GlobalVariablesData.config.PermissionManager.needAdminUser["Restart"] = CheckBox1.IsChecked == true;
+                GlobalVariablesData.config.PermissionManager.needAdminUser["MainWindow"] = CheckBox2.IsChecked == true;
+                GlobalVariablesData.config.PermissionManager.needAdminUser["Archives"] = CheckBox3.IsChecked == true;
+                GlobalVariablesData.config.PermissionManager.needAdminUser["ModeSetting"] = CheckBox4.IsChecked == true;
+                GlobalVariablesData.config.PermissionManager.needAdminUser["Appearance"] = CheckBox5.IsChecked == true;
+                GlobalVariablesData.config.PermissionManager.needAdminUser["Speech"] = CheckBox6.IsChecked == true;
+                GlobalVariablesData.config.PermissionManager.needAdminUser["BirdSetting"] = CheckBox7.IsChecked == true;
+                GlobalVariablesData.config.PermissionManager.needAdminUser["ShortCutKeySetting"] = CheckBox8.IsChecked == true;
+                GlobalVariablesData.config.PermissionManager.needAdminUser["LogSetting"] = CheckBox9.IsChecked == true;
+                GlobalVariablesData.config.PermissionManager.needAdminUser["UpData"] = CheckBox10.IsChecked == true;
+                GlobalVariablesData.config.PermissionManager.needAdminUser["WindowsAndRendering"] = CheckBox16.IsChecked == true;
+                GlobalVariablesData.config.PermissionManager.needAdminUser["Other"] = CheckBox11.IsChecked == true;
+                GlobalVariablesData.config.PermissionManager.needAdminUser["About"] = CheckBox12.IsChecked == true;
+                GlobalVariablesData.config.PermissionManager.needAdminUser["MemoryToolbox"] = CheckBox14.IsChecked == true;
+                GlobalVariablesData.config.PermissionManager.needAdminUser["AutomaticProcess"] = CheckBox15.IsChecked == true;
                 GlobalVariablesData.SaveConfig();
             }
         }
@@ -133,18 +132,18 @@ namespace NameCube.Setting
                     jsonString = jsonString.Substring(1);
                     Log.Debug("配置文件解密成功");
                     Clipboard.SetText(jsonString);
-                    MessageBoxFunction.ShowMessageBoxInfo("恭喜！配置文件解密成功，已复制到剪贴板了喵。覆盖现在的config.json就可以了（记得关软件哦）");
+                    MessageBoxFunction.ShowMessageBoxInfo("恭喜！配置文件解密成功，已复制到剪贴板了。覆盖现在的config.json就可以了（记得关软件哦）");
                 }
                 else
                 {
-                    var errorMsg = "配置文件解密失败，可能是由于密码错误或文件损坏导致的。实在没办法也只能放弃了喵......";
+                    var errorMsg = "配置文件解密失败，可能是由于密码错误或文件损坏导致的。实在没办法也只能放弃了......";
                     Log.Error(errorMsg);
                     MessageBoxFunction.ShowMessageBoxError(errorMsg);
                 }
             }
             catch (Exception ex)
             {
-                var errorMsg = "配置文件解密失败，可能是由于密码错误或文件损坏导致的。实在没办法也只能放弃了喵......";
+                var errorMsg = "配置文件解密失败，可能是由于密码错误或文件损坏导致的。实在没办法也只能放弃了......";
                 Log.Error(ex, errorMsg);
                 MessageBoxFunction.ShowMessageBoxError(errorMsg, true, ex);
             }

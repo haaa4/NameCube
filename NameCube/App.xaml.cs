@@ -255,8 +255,8 @@ namespace NameCube
                 {
                     Log.Error(ex, "清理临时目录失败");
                 }
-                //维护
-                //StartToDoSomething.GetUpdata();
+                
+                StartToDoSomething.GetUpdata();
                 Log.Debug("执行GetUpdata完成");
 
                 StartToDoSomething.RunAutomaticProcesses();
