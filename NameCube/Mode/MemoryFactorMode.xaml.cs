@@ -1,4 +1,4 @@
-﻿// /*
+// /*
 //  * NameCube-<点名器>
 //  * Copyright (C) 2025-2026 haaa4
 //  *
@@ -24,7 +24,6 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using System.Speech.Synthesis;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -79,7 +78,6 @@ namespace NameCube.Mode
 
         // ---------- 私有字段 ----------
         private readonly System.Timers.Timer _timer = new System.Timers.Timer();
-        private readonly SpeechSynthesizer _speechSynthesizer = new SpeechSynthesizer();
         private readonly MemoryFactorModeSettingsJson _settings = new MemoryFactorModeSettingsJson();
         private readonly List<int> _incidentPool = new List<int>();      // 事件概率池
         private readonly Dictionary<string, int> _factorCache = new Dictionary<string, int>(); // Name -> Factor 快速查找
@@ -138,14 +136,6 @@ namespace NameCube.Mode
                     GetTraning.Visibility = Visibility.Collapsed;
                     DebugCheck.Visibility = Visibility.Collapsed;
                     OpenWheel.Visibility = Visibility.Collapsed;
-                }
-
-                // 语音合成配置
-                if (!GlobalVariablesData.config.AllSettings.SystemSpeech)
-                {
-                    _speechSynthesizer?.SelectVoiceByHints(VoiceGender.Female, VoiceAge.Adult);
-                    _speechSynthesizer.Rate = GlobalVariablesData.config.AllSettings.Speed;
-                    _speechSynthesizer.Volume = GlobalVariablesData.config.AllSettings.Volume;
                 }
 
 
@@ -346,7 +336,7 @@ namespace NameCube.Mode
                     // 开始轮播
                     Log.Information("开始轮播");
                     StartButton.IsEnabled = false;
-                    try { _speechSynthesizer?.SpeakAsyncCancelAll(); } catch { /* 忽略 Win7 的 COM 异常 */ }
+                    SpeechService.Instance.CancelAll();
                     FinishNumberText.Visibility = Visibility.Hidden;
                     NowNumberText.Visibility = Visibility.Visible;
                     StartButton.Content = "结束";
@@ -453,11 +443,7 @@ namespace NameCube.Mode
 
                     // 语音播报
                     if (GlobalVariablesData.config.MemoryFactorModeSettings.Speech)
-                        try
-                        {
-                            _speechSynthesizer?.SpeakAsync(FinishNumberText.Text);
-                        }
-                        catch { /* 忽略 */ }
+                        SpeechService.Instance.Speak(FinishNumberText.Text);
 
                     // 保存设置
                     SaveSettings();
@@ -891,7 +877,7 @@ namespace NameCube.Mode
         private void NavigateToWheel()
         {
             if (GlobalVariablesData.config.MemoryFactorModeSettings.Speech)
-                WheelFrame.Navigate(new MemoryFactorChildrenPage.Wheel(_settings.otherSettings.NamesInWheel, _speechSynthesizer));
+                WheelFrame.Navigate(new MemoryFactorChildrenPage.Wheel(_settings.otherSettings.NamesInWheel, SpeechService.Instance));
             else
                 WheelFrame.Navigate(new MemoryFactorChildrenPage.Wheel(_settings.otherSettings.NamesInWheel, null));
             WheelFrame.Navigated += WheelFrame_Navigated;
@@ -1020,14 +1006,21 @@ namespace NameCube.Mode
             if (_disposed) return;
             _timer?.Stop();
             _timer?.Dispose();
-            _speechSynthesizer?.Dispose();
+            // 语音引擎是全局单例，不在页面里释放（否则下次进入页面就没声音了），统一由 App.OnExit 释放
             _disposed = true;
             GC.SuppressFinalize(this);
         }
 
         ~MemoryFactorMode()
         {
-            Dispose();
+            try
+            {
+                Dispose();
+            }
+            catch
+            {
+                // 终结器线程上抛出异常会直接终止进程，所以这里必须兜底
+            }
         }
 
         private async void SynchronizationButton_Click(object sender, RoutedEventArgs e)

@@ -1,4 +1,4 @@
-﻿// /*
+// /*
 //  * NameCube-<点名器>
 //  * Copyright (C) 2025-2026 haaa4
 //  *
@@ -22,7 +22,6 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using Wpf.Ui.Controls;
-using static System.Net.Mime.MediaTypeNames;
 using Application = System.Windows.Application;
 
 namespace NameCube.Setting
@@ -292,10 +291,14 @@ namespace NameCube.Setting
                 PreReleaseVersionCode=0,
                 PreReleaseVersionReleaseFromGithubUrl = "PreReleaseVersionReleaseFromGithubUrl",
                 PreReleaseVersionReleaseFromGiteeUrl = "PreReleaseVersionReleaseFromGiteeUrl",
+                PreReleaseVersionReleaseFromGithubUrlX86 = "PreReleaseVersionReleaseFromGithubUrlX86",
+                PreReleaseVersionReleaseFromGiteeUrlX86 = "PreReleaseVersionReleaseFromGiteeUrlX86",
                 LatestVersionName = "LatestVersionName",
                 LatestVersionCode = 0,
                 LatestVersionReleaseFromGithubUrl = "LatestVersionReleaseFromGithubUrl",
-                LatestVersionReleaseFromGiteeUrl = "LatestVersionReleaseFromGiteeUrl"
+                LatestVersionReleaseFromGiteeUrl = "LatestVersionReleaseFromGiteeUrl",
+                LatestVersionReleaseFromGithubUrlX86 = "LatestVersionReleaseFromGithubUrlX86",
+                LatestVersionReleaseFromGiteeUrlX86 = "LatestVersionReleaseFromGiteeUrlX86"
             };
             string jsonString = JsonConvert.SerializeObject(data, Formatting.Indented);
             Clipboard.SetText(jsonString);

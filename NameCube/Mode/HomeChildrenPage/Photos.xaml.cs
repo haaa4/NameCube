@@ -56,12 +56,6 @@ namespace NameCube.Mode.HomeChildrenPage
         {
             "NameCube.Image.HeadMap.Photo1.png",
             "NameCube.Image.HeadMap.Photo2.png",
-            "NameCube.Image.HeadMap.Photo4.png",
-            "NameCube.Image.HeadMap.Photo5.png",
-            "NameCube.Image.HeadMap.Photo6.png",
-            "NameCube.Image.HeadMap.Photo7.png",
-            "NameCube.Image.HeadMap.Photo8.png",
-            "NameCube.Image.HeadMap.Photo9.png",
             "online"//占位符，表示该图片从网络获取
         };
 

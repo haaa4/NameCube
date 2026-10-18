@@ -13,12 +13,6 @@
 using CredentialManagement;
 using NameCube.Setting.PermissionManager;
 using Serilog;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NameCube.Function
 {

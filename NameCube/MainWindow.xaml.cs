@@ -1,4 +1,4 @@
-﻿// /*
+// /*
 //  * NameCube-<点名器>
 //  * Copyright (C) 2025-2026 haaa4
 //  *
@@ -11,10 +11,8 @@
 //  * but WITHOUT ANY WARRANTY
 
 using Masuit.Tools;
-using Masuit.Tools.Win32;
 using NameCube.Function;
 using NameCube.GlobalVariables.DataClass;
-using NameCube.Mode;
 using NameCube.Setting;
 using NameCube.ToolBox;
 using NameCube.ToolBox.AutomaticProcessPages;
@@ -22,7 +20,6 @@ using NAudio.CoreAudioApi;
 using Serilog;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -35,7 +32,6 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
-using Wpf.Ui.Appearance;
 using Application = System.Windows.Application;
 using Timer = System.Windows.Forms.Timer;
 
@@ -55,6 +51,12 @@ namespace NameCube
         private const int WM_SYSKEYDOWN = 0x0104;
         public bool CanUseShortCutKey = true;
         public string version { get; set; }
+
+        /// <summary>
+        /// 进程位数标签。同一份代码现在分别发布 64 位 / 32 位安装包，
+        /// 在主界面版本号后面标一下，用户报问题时一眼能看出装的是哪个。
+        /// </summary>
+        private static readonly string ArchitectureTag = Environment.Is64BitProcess ? "X64" : "X86";
         [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         private static extern IntPtr SetWindowsHookEx(
             int idHook,
@@ -281,19 +283,22 @@ namespace NameCube
                     }
                     Log.Debug("主窗口加载完成，导航到主页");
                 };
-                this.DataContext = this;
                 if (GlobalVariablesData.ISBETA)
                 {
 #pragma warning disable CS0162 // 检测到无法访问的代码
-                    version = "测试版:" + GlobalVariablesData.VERSION;
+                    version = "测试版:" + GlobalVariablesData.VERSION + " · " + ArchitectureTag;
 #pragma warning restore CS0162 // 检测到无法访问的代码
                 }
                 else
                 {
 #pragma warning disable CS0162 // 检测到无法访问的代码
-                    version = "正式版:" + GlobalVariablesData.VERSION;
+                    version = "正式版:" + GlobalVariablesData.VERSION + " · " + ArchitectureTag;
 #pragma warning restore CS0162 // 检测到无法访问的代码
                 }
+
+                // 版本号是普通属性（没有 INotifyPropertyChanged），绑定只会在 DataContext 变化时取一次值，
+                // 所以这里要等 version 赋完值后再设一次 DataContext，否则界面上取到的是 null
+                this.DataContext = this;
                 Log.Information("主窗口初始化完成");
             }
             catch (Exception ex)

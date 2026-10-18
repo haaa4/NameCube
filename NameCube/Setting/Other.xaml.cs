@@ -17,7 +17,6 @@ using Serilog; // 添加Serilog引用
 using System;
 using System.Diagnostics;
 using System.IO;
-using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;

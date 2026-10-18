@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
 	  <DisableWinMdReference>true</DisableWinMdReference>
 	  <TargetFramework>net6.0-windows7.0</TargetFramework>
@@ -33,19 +33,24 @@
     <TargetZone>LocalIntranet</TargetZone>
     <SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
     <StartupObject></StartupObject>
-    <FileVersion>1.3.3.0</FileVersion>
-    <AssemblyVersion>1.3.3.0</AssemblyVersion>
+    <FileVersion>1.3.4.0</FileVersion>
+    <AssemblyVersion>1.3.4.0</AssemblyVersion>
     <Version>$(VersionPrefix)</Version>
     <Copyright>Copyright (C) 2025-2026 haaa4</Copyright>
     <PackageOutputPath>bin\Release</PackageOutputPath>
     <BaseOutputPath>bin</BaseOutputPath>
   </PropertyGroup>
+  <PropertyGroup>
+    <!-- 目标平台跟着发布 RID 走：dotnet publish -r win-x86 / -r win-x64。
+         这里写死 x64 会让 -r win-x86 直接报 NETSDK1032（RID 与 PlatformTarget 不兼容） -->
+    <PlatformTarget Condition="'$(RuntimeIdentifier)' == 'win-x86'">x86</PlatformTarget>
+    <PlatformTarget Condition="'$(RuntimeIdentifier)' == 'win-x64'">x64</PlatformTarget>
+    <PlatformTarget Condition="'$(RuntimeIdentifier)' == ''">AnyCPU</PlatformTarget>
+  </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>x64</PlatformTarget>
     <OutputPath>bin\Debug\</OutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>x64</PlatformTarget>
     <DebugType>none</DebugType>
     <OutputPath>bin\Release\</OutputPath>
     <DocumentationFile>
@@ -53,12 +58,6 @@
   </PropertyGroup>
   <ItemGroup>
     <None Remove="Image\emmm.gif" />
-    <None Remove="Image\HeadMap\Photo4.png" />
-    <None Remove="Image\HeadMap\Photo5.png" />
-    <None Remove="Image\HeadMap\Photo6.png" />
-    <None Remove="Image\HeadMap\Photo7.png" />
-    <None Remove="Image\HeadMap\Photo8.png" />
-    <None Remove="Image\HeadMap\Photo9.png" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Speech" />
@@ -100,12 +99,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Fonts\MiSans-Medium.ttf" />
-    <EmbeddedResource Include="Image\HeadMap\Photo4.png" />
-    <EmbeddedResource Include="Image\HeadMap\Photo5.png" />
-    <EmbeddedResource Include="Image\HeadMap\Photo6.png" />
-    <EmbeddedResource Include="Image\HeadMap\Photo7.png" />
-    <EmbeddedResource Include="Image\HeadMap\Photo8.png" />
-    <EmbeddedResource Include="Image\HeadMap\Photo9.png" />
     <EmbeddedResource Include="MarkDown\NewVersion.md" />
   </ItemGroup>
   <ItemGroup>

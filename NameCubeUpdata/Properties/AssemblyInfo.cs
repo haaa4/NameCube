@@ -18,7 +18,7 @@ using System.Windows;
 // 控制。更改这些特性值可修改
 // 与程序集关联的信息。
 [assembly: AssemblyTitle("NameCubeUpdata")]
-[assembly: AssemblyDescription("学名魔方的安装/更新程序")]
+[assembly: AssemblyDescription("点鸣魔方的安装/更新程序")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("哈阿斯")]
 [assembly: AssemblyProduct("NameCubeSetup")]
@@ -56,5 +56,5 @@ using System.Windows;
 //      生成号
 //      修订号
 //
-[assembly: AssemblyVersion("0.3.0.0")]
-[assembly: AssemblyFileVersion("1.3.3.0")]
+[assembly: AssemblyVersion("0.5.0.0")]
+[assembly: AssemblyFileVersion("1.3.4.0")]

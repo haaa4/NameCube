@@ -96,11 +96,6 @@ namespace NameCube.GlobalVariables.DataClass
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
         public bool LowMemoryMode { get; set; }
 
-        /// <summary>
-        /// 用户更新token
-        /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
-        public string token { get; set; }
 
         /// <summary>
         /// 新版本号

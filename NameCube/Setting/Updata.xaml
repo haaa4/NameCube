@@ -15,61 +15,61 @@
         <Grid>
             <StackPanel>
                 <Label
-            HorizontalAlignment="Center"
-            Content="当前版本"
-            FontSize="30" />
+                    HorizontalAlignment="Center"
+                    Content="当前版本"
+                    FontSize="30" />
                 <Label
-            x:Name="VersionText"
-            HorizontalAlignment="Center"
-            Content="Unknow"
-            FontSize="50" />
+                    x:Name="VersionText"
+                    HorizontalAlignment="Center"
+                    Content="Unknow"
+                    FontSize="50" />
                 <ProgressBar
-            x:Name="NowProgressBar"
-            Height="10"
-            Margin="10,0"
-            Maximum="100"
-            Minimum="0"
-            Value="100" />
+                    x:Name="NowProgressBar"
+                    Height="10"
+                    Margin="10,0"
+                    Maximum="100"
+                    Minimum="0"
+                    Value="100" />
                 <Label
-            x:Name="CaseText"
-            Margin="10,0"
-            Content="当前已是最新版本"
-            FontSize="20" />
+                    x:Name="CaseText"
+                    Margin="10,0"
+                    Content="当前已是最新版本"
+                    FontSize="20" />
                 <Label
-            x:Name="CheckText"
-            Margin="10,0"
-            Content="上次检查时间：Unknow"
-            FontSize="20" />
+                    x:Name="CheckText"
+                    Margin="10,0"
+                    Content="上次检查时间：Unknow"
+                    FontSize="20" />
                 <ui:Button
-            x:Name="CheckButton"
-            Margin="10"
-            Appearance="Primary"
-            Click="CheckButton_Click"
-            Content="检查更新"
-            FontWeight="Black" />
+                    x:Name="CheckButton"
+                    Margin="10"
+                    Appearance="Primary"
+                    Click="CheckButton_Click"
+                    Content="检查更新"
+                    FontWeight="Black" />
                 <ui:Button
-            x:Name="UpkButton"
-            Margin="10,0,0,10"
-            Appearance="Primary"
-            Click="UpkButton_Click"
-            Content="启动更新引导"
-            FontWeight="Black"
-            IsEnabled="False" />
+                    x:Name="UpkButton"
+                    Margin="10,0,0,10"
+                    Appearance="Primary"
+                    Click="UpkButton_Click"
+                    Content="启动更新引导"
+                    FontWeight="Black"
+                    IsEnabled="False" />
                 <ui:CardControl
-            Margin="4"
-            Padding="20,10,20,10"
-            Icon="{ui:SymbolIcon Symbol=DualScreenUpdate24}">
+                    Margin="5"
+                    Padding="20,10,20,10"
+                    Icon="{ui:SymbolIcon Symbol=DualScreenUpdate24}">
                     <ui:CardControl.Header>
                         <StackPanel>
                             <ui:TextBlock
-                        Margin="0"
-                        FontTypography="BodyStrong"
-                        Text="更新通道"
-                        TextWrapping="WrapWithOverflow" />
+                                Margin="0"
+                                FontTypography="BodyStrong"
+                                Text="更新通道"
+                                TextWrapping="WrapWithOverflow" />
                             <ui:TextBlock
-                        Appearance="Secondary"
-                        Text="测试版本包括未完成的功能，请谨慎选择"
-                        TextWrapping="WrapWithOverflow" />
+                                Appearance="Secondary"
+                                Text="测试版本包括未完成的功能，请谨慎选择"
+                                TextWrapping="WrapWithOverflow" />
                         </StackPanel>
                     </ui:CardControl.Header>
                     <ComboBox x:Name="UpdataWayComboBox" SelectionChanged="UpdataWayComboBox_SelectionChanged">
@@ -80,63 +80,44 @@
 
 
                 <ui:InfoBar
-            x:Name="WarningInfo"
-            Title="注意"
-            Message="在测试版本中更新，可能会更新至之前的正式版本，请注意版本号"
-            Severity="Warning" />
+                    x:Name="WarningInfo"
+                    Title="注意"
+                    Message="在测试版本中更新，可能会更新至之前的正式版本，请注意版本号"
+                    Severity="Warning" />
                 <ui:CardControl
-            Margin="4"
-            Padding="20,10,20,10"
-            Icon="{ui:SymbolIcon Symbol=Alert20}">
+                    Margin="5"
+                    Padding="20,10,20,10"
+                    Icon="{ui:SymbolIcon Symbol=Alert20}">
                     <ui:CardControl.Header>
                         <StackPanel>
                             <ui:TextBlock
-                        Margin="0"
-                        FontTypography="BodyStrong"
-                        Text="自动检查"
-                        TextWrapping="WrapWithOverflow" />
+                                Margin="0"
+                                FontTypography="BodyStrong"
+                                Text="自动检查"
+                                TextWrapping="WrapWithOverflow" />
                             <ui:TextBlock
-                        Appearance="Secondary"
-                        Text="应用启动时，将会自动检测最新版本"
-                        TextWrapping="WrapWithOverflow" />
+                                Appearance="Secondary"
+                                Text="应用启动时，将会自动检测最新版本"
+                                TextWrapping="WrapWithOverflow" />
                         </StackPanel>
                     </ui:CardControl.Header>
                     <ui:ToggleSwitch
-                x:Name="AutoStart"
-                HorizontalContentAlignment="Left"
-                Click="AutoStart_Click"
-                IsEnabled="True"
-                OffContent="关"
-                OnContent="开" />
-                </ui:CardControl>
-                <ui:CardControl
-            Margin="4"
-            Padding="20,10,20,10"
-            Icon="{ui:SymbolIcon Symbol=DocumentPageTopCenter24}">
-                    <ui:CardControl.Header>
-                        <StackPanel>
-                            <ui:TextBlock
-                        Margin="0"
-                        FontTypography="BodyStrong"
-                        Text="自定义用户令牌"
-                        TextWrapping="WrapWithOverflow" />
-                            <ui:TextBlock Appearance="Secondary" TextWrapping="WrapWithOverflow" />
-                        </StackPanel>
-                    </ui:CardControl.Header>
-                    <ui:TextBox
-                x:Name="tokenText"
-                Width="200"
-                TextChanged="tokenText_TextChanged" />
+                        x:Name="AutoStart"
+                        HorizontalContentAlignment="Left"
+                        Click="AutoStart_Click"
+                        IsEnabled="True"
+                        OffContent="关"
+                        OnContent="开" />
                 </ui:CardControl>
                 <ui:CardAction
-            Margin="5,0"
-            Click="CardAction_Click"
-            Content="强制更新最新版本"
-            Icon="{ui:SymbolIcon Symbol=ArrowOutlineUpRight24}" />
+                    Margin="5,0"
+                    Click="CardAction_Click"
+                    Content="强制更新最新版本"
+                    Icon="{ui:SymbolIcon Symbol=ArrowOutlineUpRight24}" />
                 <ui:HyperlinkButton
-            Content="无法连接？"
-            Icon="{ui:SymbolIcon Link24}"
-            NavigateUri="https://docs.qq.com/doc/DZmhXS3BvYnZHWnRy" />
+                    Content="无法连接？"
+                    Icon="{ui:SymbolIcon Link24}"
+                    NavigateUri="https://docs.qq.com/doc/DZmhXS3BvYnZHWnRy" />
             </StackPanel>
         </Grid>
     </Grid>

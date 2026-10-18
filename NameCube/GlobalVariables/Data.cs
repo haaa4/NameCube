@@ -10,7 +10,6 @@
 //  * This program is distributed in the hope that it will be useful,
 //  * but WITHOUT ANY WARRANTY
 
-using CredentialManagement;
 using Masuit.Tools.Logging;
 using NameCube.Function;
 using NameCube.GlobalVariables.DataClass;
@@ -162,11 +161,11 @@ namespace NameCube
         /// <summary>
         /// 当前版本
         /// </summary>
-        public const string VERSION = "V1.4-Beta-3(#p10#)";
+        public const string VERSION = "V1.4-Beta-4(#p11#)";
         /// <summary>
         /// 当前版本代码
         /// </summary>
-        public const int VERSIONCODE = 10;
+        public const int VERSIONCODE = 11;
         /// <summary>
         /// 当前是否为测试版本
         /// </summary>

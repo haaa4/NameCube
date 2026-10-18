@@ -10,12 +10,10 @@
 //  * This program is distributed in the hope that it will be useful,
 //  * but WITHOUT ANY WARRANTY
 
-using NameCube.Function;
 using NameCube.Function.Internet;
 using NameCube.ToolBox.AutomaticProcessPages;
 using Serilog;  // 添加Serilog命名空间
 using System;
-using System.Text.RegularExpressions;
 using System.Windows;
 
 namespace NameCube

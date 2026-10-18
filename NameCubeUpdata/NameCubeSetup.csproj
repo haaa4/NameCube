@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -7,7 +7,6 @@
     <ProjectGuid>{BC2134DD-155B-41B3-A257-E307F64EF267}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>NameCubeSetup</RootNamespace>
-    <AssemblyName>NameCubeSetupX64</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -32,7 +31,6 @@
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>x64</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -40,23 +38,32 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>x64</PlatformTarget>
     <DebugType>none</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'X64|AnyCPU'">
     <OutputPath>bin\X64\</OutputPath>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
-  <PropertyGroup />
+  <!-- ================= 目标架构：一个工程出两个安装器 =================
+       x64：msbuild NameCubeSetup.csproj /p:Configuration=Release
+       x86：msbuild NameCubeSetup.csproj /p:Configuration=Release /p:TargetArch=x86
+       产物分别为 NameCubeSetupX64.exe / NameCubeSetupX86.exe。
+       放在配置分组之后，避免 DefineConstants 被 DEBUG;TRACE / TRACE 覆盖掉 X86 -->
+  <PropertyGroup>
+    <TargetArch Condition="'$(TargetArch)' == ''">x64</TargetArch>
+    <PlatformTarget>$(TargetArch)</PlatformTarget>
+    <Prefer32Bit Condition="'$(TargetArch)' == 'x86'">true</Prefer32Bit>
+    <AssemblyName Condition="'$(TargetArch)' == 'x86'">NameCubeSetupX86</AssemblyName>
+    <AssemblyName Condition="'$(TargetArch)' == 'x64'">NameCubeSetupX64</AssemblyName>
+    <DefineConstants Condition="'$(TargetArch)' == 'x86'">$(DefineConstants);X86</DefineConstants>
+  </PropertyGroup>
   <PropertyGroup>
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
@@ -65,7 +72,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Interop.IWshRuntimeLibrary">
-      <HintPath>..\NameCube\obj\Debug\net8.0-windows10.0.17763.0\Interop.IWshRuntimeLibrary.dll</HintPath>
+      <HintPath>..\NameCube\obj\$(Configuration)\net6.0-windows7.0\Interop.IWshRuntimeLibrary.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="System" />
@@ -134,7 +141,16 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Packet\Packet.zip" />
+    <!-- 安装载荷（被解压到目标目录的那包程序本体）。
+         同时放 PacketX64.zip / PacketX86.zip 时，按 TargetArch 自动二选一，
+         两个安装器就不会互相拿错载荷；只放一个 Packet.zip 时保持老行为。
+         三个文件的逻辑资源名都是 NameCubeSetup.Packet.Packet.zip，代码不用改。 -->
+    <EmbeddedResource Include="Packet\PacketX64.zip" Condition="'$(TargetArch)' != 'x86' and Exists('Packet\PacketX64.zip')">
+      <LogicalName>NameCubeSetup.Packet.Packet.zip</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Packet\PacketX86.zip" Condition="'$(TargetArch)' == 'x86' and Exists('Packet\PacketX86.zip')">
+      <LogicalName>NameCubeSetup.Packet.Packet.zip</LogicalName>
+    </EmbeddedResource>
     <None Include=".editorconfig" />
     <None Include="app.manifest" />
     <None Include="packages.config" />
@@ -182,5 +198,11 @@
   <ItemGroup>
     <Resource Include="icon.ico" />
   </ItemGroup>
+  <!-- 防呆：两个架构包只放了一个时，另一架构的构建会「没有载荷」，那时要等到运行期解压
+       才报错。这里在编译期直接拦住，省得打出一个装不上东西的安装器。 -->
+  <Target Name="ValidatePacketPayload" BeforeTargets="BeforeBuild">
+    <Error Condition="'$(TargetArch)' == 'x86' and !Exists('Packet\PacketX86.zip') and Exists('Packet\PacketX64.zip')" Text="找不到 Packet\PacketX86.zip：x86 构建不能只放 PacketX64.zip，请补上 32 位载荷；若仍用单包流程，请删掉两个架构包、只保留 Packet.zip。" />
+    <Error Condition="'$(TargetArch)' != 'x86' and !Exists('Packet\PacketX64.zip') and Exists('Packet\PacketX86.zip')" Text="找不到 Packet\PacketX64.zip：x64 构建不能只放 PacketX86.zip，请补上 64 位载荷；若仍用单包流程，请删掉两个架构包、只保留 Packet.zip。" />
+  </Target>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

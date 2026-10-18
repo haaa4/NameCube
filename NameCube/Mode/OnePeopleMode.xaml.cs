@@ -1,4 +1,4 @@
-﻿// /*
+// /*
 //  * NameCube-<点名器>
 //  * Copyright (C) 2025-2026 haaa4
 //  *
@@ -14,7 +14,6 @@ using Masuit.Tools;
 using NameCube.Function;
 using Serilog;
 using System;
-using System.Speech.Synthesis;
 using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
@@ -36,7 +35,6 @@ namespace NameCube.Mode
         public System.Timers.Timer timer;
         private int NowIndex = 0;
         private bool IsReadyToStop;
-        private SpeechSynthesizer _speechSynthesizer = new SpeechSynthesizer();
 
         public OnePeopleMode()
         {
@@ -83,11 +81,8 @@ namespace NameCube.Mode
                                 resultText = NowNumberText.Text;
                             });
                             Log.Information("单抽模式结束，结果: {Result}", resultText);
-                            try
-                            {
-                                _speechSynthesizer?.SpeakAsync(resultText);
-                    } catch { /* 忽略 */ }
-        }
+                            SpeechService.Instance.Speak(resultText);
+                        }
                     });
                     timer.Stop();
                     Log.Information("单抽模式结束，结果: {Result}", NowNumberText.Text);
@@ -117,7 +112,7 @@ namespace NameCube.Mode
             try
             {
                 StartButton.IsEnabled = false;
-                try { _speechSynthesizer?.SpeakAsyncCancelAll(); } catch { /* 忽略 Win7 的 COM 异常 */ }
+                SpeechService.Instance.CancelAll();
 
                 if (GlobalVariablesData.config.AllSettings.Name.Count == 0)
                 {
@@ -175,11 +170,7 @@ namespace NameCube.Mode
                         if (GlobalVariablesData.config.OnePeopleModeSettings.Speech)
                         {
                             Log.Debug("语音播报结果: {Name}", Text);
-                            try
-                            {
-                                _speechSynthesizer?.SpeakAsync(Text);
-                            }
-                            catch { /* 忽略 */ }
+                            SpeechService.Instance.Speak(Text);
                         }
 
                         FinishText.Text = Text;
@@ -232,22 +223,6 @@ namespace NameCube.Mode
                 {
                     Log.Debug("重置速度为默认值20");
                     GlobalVariablesData.config.OnePeopleModeSettings.Speed = 20;
-                }
-
-                if (!GlobalVariablesData.config.AllSettings.SystemSpeech)
-                {
-                    try
-                    {
-                        _speechSynthesizer = new SpeechSynthesizer();
-                        _speechSynthesizer.SelectVoiceByHints(VoiceGender.Female, VoiceAge.Adult);
-                        _speechSynthesizer.Rate = GlobalVariablesData.config.AllSettings.Speed;
-                        _speechSynthesizer.Volume = GlobalVariablesData.config.AllSettings.Volume;
-                    }
-                    catch (Exception ex)
-                    {
-                        Log.Warning("Win7 语音组件初始化失败，将禁用语音播报: " + ex.Message);
-                        _speechSynthesizer = null; // 标记为 null，后续调用直接跳过
-                    }
                 }
 
                 //NowNumberText.FontFamily = GlobalVariablesData.config.AllSettings.Font;

@@ -11,7 +11,6 @@
 //  * but WITHOUT ANY WARRANTY
 
 using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 
 namespace NameCube.GlobalVariables.DataClass

@@ -25,7 +25,6 @@ using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Xps.Packaging;
 using Wpf.Ui.Appearance;
 using Wpf.Ui.Controls;
 using Brush = System.Windows.Media.Brush;

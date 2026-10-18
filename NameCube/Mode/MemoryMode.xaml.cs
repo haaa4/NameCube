@@ -1,4 +1,4 @@
-﻿// /*
+// /*
 //  * NameCube-<点名器>
 //  * Copyright (C) 2025-2026 haaa4
 //  *
@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-using System.Speech.Synthesis;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -39,7 +38,6 @@ namespace NameCube.Mode
         public ObservableCollection<string> AllNames { get; set; } = new ObservableCollection<string>();
         bool CanChange;
         public System.Timers.Timer timer = new System.Timers.Timer();
-        private SpeechSynthesizer _speechSynthesizer = new SpeechSynthesizer();
         int now = 0;
 
         public MemoryMode()
@@ -86,7 +84,7 @@ namespace NameCube.Mode
         {
             try
             {
-                try { _speechSynthesizer?.SpeakAsyncCancelAll(); } catch { /* 忽略 Win7 的 COM 异常 */ }
+                SpeechService.Instance.CancelAll();
                 StartButton.IsEnabled = false;
                 var jumpStoryBoard = FindResource("JumpStoryBoard") as Storyboard;
                 var flicker = FindResource("flicker") as Storyboard;
@@ -141,11 +139,8 @@ namespace NameCube.Mode
                     if (GlobalVariablesData.config.MemoryModeSettings.Speak)
                     {
                         Log.Debug("语音播报: {Name}", get);
-                        try
-                        {
-                            _speechSynthesizer?.SpeakAsync(get);
-                    } catch { /* 忽略 */ }
-        }
+                        SpeechService.Instance.Speak(get);
+                    }
 
                     AllNames.Remove(get);
                     GlobalVariablesData.config.MemoryModeSettings.LastName = get;
@@ -480,22 +475,6 @@ namespace NameCube.Mode
                 {
                     Log.Debug("重置轮播速度为默认值20");
                     GlobalVariablesData.config.MemoryModeSettings.Speed = 20;
-                }
-
-                if (!GlobalVariablesData.config.AllSettings.SystemSpeech)
-                {
-                    try
-                    {
-                        _speechSynthesizer = new SpeechSynthesizer();
-                        _speechSynthesizer.SelectVoiceByHints(VoiceGender.Female, VoiceAge.Adult);
-                        _speechSynthesizer.Rate = GlobalVariablesData.config.AllSettings.Speed;
-                        _speechSynthesizer.Volume = GlobalVariablesData.config.AllSettings.Volume;
-                    }
-                    catch (Exception ex)
-                    {
-                        Log.Warning("Win7 语音组件初始化失败，将禁用语音播报: " + ex.Message);
-                        _speechSynthesizer = null; // 标记为 null，后续调用直接跳过
-                    }
                 }
 
                 if (GlobalVariablesData.config.MemoryModeSettings.Locked)

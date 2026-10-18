@@ -203,9 +203,9 @@
             Foreground="{ui:ThemeResource TextFillColorPrimaryBrush}"
             IsBackButtonVisible="Auto"
             IsPaneToggleVisible="True"
-            OpenPaneLength="260"
-            Navigating="NavigationMenu_Navigating"
             Navigated="NavigationMenu_Navigated"
+            Navigating="NavigationMenu_Navigating"
+            OpenPaneLength="260"
             PaneDisplayMode="Left">
 
 
@@ -294,18 +294,18 @@
 
         </ui:NavigationView>
         <ProgressBar
-    x:Name="PageLoadingBar"
-    Grid.Row="1"
-    Height="3"
-    Margin="0"
-    HorizontalAlignment="Stretch"
-    VerticalAlignment="Top"
-    Panel.ZIndex="100"
-    Background="Transparent"
-    BorderThickness="0"
-    Foreground="{ui:ThemeResource AccentTextFillColorPrimaryBrush}"
-    IsIndeterminate="True"
-    Visibility="Collapsed" />
+            x:Name="PageLoadingBar"
+            Grid.Row="1"
+            Height="3"
+            Margin="0"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Top"
+            Panel.ZIndex="100"
+            Background="Transparent"
+            BorderThickness="0"
+            Foreground="{ui:ThemeResource AccentTextFillColorPrimaryBrush}"
+            IsIndeterminate="True"
+            Visibility="Collapsed" />
 
         <!--  优化启动动画容器  -->
         <!--<Border

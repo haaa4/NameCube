@@ -1,4 +1,4 @@
-﻿// /*
+// /*
 //  * NameCube-<点名器>
 //  * Copyright (C) 2025-2026 haaa4
 //  *
@@ -22,7 +22,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Media.Animation;
-using Microsoft.Win32;
 using Application = System.Windows.Application;
 using File = System.IO.File;
 using Path = System.IO.Path;
@@ -43,18 +42,19 @@ namespace NameCubeUpdata
 
         private int updateMode = 1;
 
+        // ============ 架构信息 ============
+        // 工程会用 /p:TargetArch=x86 再编译一份，产物名 NameCubeSetupX86.exe；
+        // 装进去的 .NET 6 运行时位数必须和主程序一致，否则 32 位程序在 64 位系统上无法加载 64 位运行时。
+#if X86
+        private const string TargetArch = "x86";
+#else
+        private const string TargetArch = "x64";
+#endif
+
         // ============ 环境检测相关常量 ============
         /// <summary>.NET 6 桌面运行时下载地址（微软官方 aka.ms 短链，始终指向最新的 6.0 补丁版本）</summary>
-        private const string Net6DownloadUrl = "https://aka.ms/dotnet/6.0/windowsdesktop-runtime-win-x64.exe";
-
-        /// <summary>.NET 6 桌面运行时在注册表中的检测路径（多路径兜底）</summary>
-        private static readonly string[] Net6RegistryPaths = new[]
-        {
-            @"SOFTWARE\dotnet\Setup\InstalledVersions\x64\sharedfx\Microsoft.WindowsDesktop.App",
-            @"SOFTWARE\dotnet\Setup\InstalledVersions\x86\sharedfx\Microsoft.WindowsDesktop.App",
-            @"SOFTWARE\WOW6432Node\dotnet\Setup\InstalledVersions\x64\sharedfx\Microsoft.WindowsDesktop.App",
-            @"SOFTWARE\WOW6432Node\dotnet\Setup\InstalledVersions\x86\sharedfx\Microsoft.WindowsDesktop.App"
-        };
+        private static readonly string Net6DownloadUrl =
+            "https://aka.ms/dotnet/6.0/windowsdesktop-runtime-win-" + TargetArch + ".exe";
 
         private void button_Click(object sender, RoutedEventArgs e)
         {
@@ -279,26 +279,23 @@ namespace NameCubeUpdata
         }
 
         /// <summary>
-        /// 检测 .NET 6 桌面运行时是否已安装（通过注册表子键版本号判断）
+        /// 检测 .NET 6 桌面运行时是否已安装（执行同位数 dotnet.exe --list-runtimes 判断）
         /// </summary>
         private static bool IsNet6RuntimeInstalled()
         {
             try
             {
-                // 1. 直接定位 dotnet.exe
-                string[] dotnetExePaths = {
-            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "dotnet", "dotnet.exe"),
-            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), "dotnet", "dotnet.exe")
-        };
-
-                string dotnetExe = null;
-                foreach (string p in dotnetExePaths)
-                {
-                    if (File.Exists(p)) { dotnetExe = p; break; }
-                }
+                // 1. 定位与本安装包同一位数的 dotnet.exe
+                //    64 位系统上 x64 运行时在 Program Files\dotnet，x86 运行时在 Program Files (x86)\dotnet，
+                //    而 dotnet --list-runtimes 只列本 host 看得到的那些；拿错了就会把「已装」误判成「没装」。
+                string dotnetExe = Path.Combine(
+                    Environment.GetFolderPath(TargetArch == "x86"
+                        ? Environment.SpecialFolder.ProgramFilesX86
+                        : Environment.SpecialFolder.ProgramFiles),
+                    "dotnet", "dotnet.exe");
 
                 // 如果连 dotnet.exe 都没有，那肯定没装
-                if (dotnetExe == null) return false;
+                if (!File.Exists(dotnetExe)) return false;
 
                 // 2. 执行 dotnet --list-runtimes 命令
                 var psi = new ProcessStartInfo
@@ -332,7 +329,7 @@ namespace NameCubeUpdata
         /// <returns>是否安装成功</returns>
         private async Task<bool> DownloadAndInstallNet6Async()
         {
-            string tempFile = Path.Combine(Path.GetTempPath(), "windowsdesktop-runtime-6.0-win-x64.exe");
+            string tempFile = Path.Combine(Path.GetTempPath(), $"windowsdesktop-runtime-6.0-win-{TargetArch}.exe");
 
             try
             {
@@ -437,6 +434,20 @@ namespace NameCubeUpdata
                     Application.Current.Shutdown();
                     return;
                 }
+
+#if !X86
+                // 1.5) 64 位安装包不能装在 32 位系统上（32 位安装包可装在 64 位系统，走 WOW64）
+                if (!Environment.Is64BitOperatingSystem)
+                {
+                    System.Windows.MessageBox.Show(
+                        "当前系统是 32 位 Windows，无法安装 64 位版本。\n\n请下载并运行 32 位安装包（NameCubeSetupX86.exe）。\n\n安装程序即将退出。",
+                        "架构不匹配",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Warning);
+                    Application.Current.Shutdown();
+                    return;
+                }
+#endif
 
                 // 2) 检查 .NET 6 桌面运行时
                 if (!IsNet6RuntimeInstalled())

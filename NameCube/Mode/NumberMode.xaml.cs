@@ -1,4 +1,4 @@
-﻿// /*
+// /*
 //  * NameCube-<点名器>
 //  * Copyright (C) 2025-2026 haaa4
 //  *
@@ -11,9 +11,9 @@
 //  * but WITHOUT ANY WARRANTY
 
 using Masuit.Tools;
+using NameCube.Function;
 using Serilog;
 using System;
-using System.Speech.Synthesis;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Animation;
@@ -28,7 +28,6 @@ namespace NameCube.Mode
         private bool CanChange;
         public System.Timers.Timer timer = new System.Timers.Timer();
         private Random Random = new Random();
-        private SpeechSynthesizer _speechSynthesizer = new SpeechSynthesizer();
 
         public NumberMode()
         {
@@ -120,7 +119,7 @@ namespace NameCube.Mode
             {
                 var flicker = FindResource("flicker") as Storyboard;
                 flicker.Begin();
-                try { _speechSynthesizer?.SpeakAsyncCancelAll(); } catch { /* 忽略 Win7 的 COM 异常 */ }
+                SpeechService.Instance.CancelAll();
                 StartButton.IsEnabled = false;
                 var jumpStoryBoard = FindResource("JumpStoryBoard") as Storyboard;
 
@@ -150,12 +149,7 @@ namespace NameCube.Mode
                     if (GlobalVariablesData.config.NumberModeSettings.Speak)
                     {
                         Log.Debug("语音播报数字: {Number}", get);
-                        try
-                        {
-                            _speechSynthesizer?.SpeakAsync(get);
-                                }
-                        catch { /* 忽略 */ }
-                        ;
+                        SpeechService.Instance.Speak(get);
                     }
 
                     GlobalVariablesData.config.NumberModeSettings.LastName = get;
@@ -186,22 +180,6 @@ namespace NameCube.Mode
                 {
                     Log.Debug("重置速度为默认值20");
                     GlobalVariablesData.config.NumberModeSettings.Speed = 20;
-                }
-
-                if (!GlobalVariablesData.config.AllSettings.SystemSpeech)
-                {
-                    try
-                    {
-                        _speechSynthesizer = new SpeechSynthesizer();
-                        _speechSynthesizer.SelectVoiceByHints(VoiceGender.Female, VoiceAge.Adult);
-                        _speechSynthesizer.Rate = GlobalVariablesData.config.AllSettings.Speed;
-                        _speechSynthesizer.Volume = GlobalVariablesData.config.AllSettings.Volume;
-                    }
-                    catch (Exception ex)
-                    {
-                        Log.Warning("Win7 语音组件初始化失败，将禁用语音播报: " + ex.Message);
-                        _speechSynthesizer = null; // 标记为 null，后续调用直接跳过
-                    }
                 }
 
                 if (GlobalVariablesData.config.NumberModeSettings.Locked)

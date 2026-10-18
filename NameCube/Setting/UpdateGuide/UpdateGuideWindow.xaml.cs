@@ -1,4 +1,4 @@
-﻿// /*
+// /*
 //  * NameCube-<点名器>
 //  * Copyright (C) 2025-2026 haaa4
 //  *
@@ -33,6 +33,13 @@ namespace NameCube.Setting.UpdateGuide
         private string version;
         private bool isError = false;
 
+        /// <summary>
+        /// 当前位数对应的安装器文件名。32 位程序只能装 32 位安装器（反向同理），
+        /// 所以这里不能用「x64 缺失就退回 x64」那种兜底。
+        /// </summary>
+        private static readonly string SetupFileName =
+            Environment.Is64BitProcess ? "NameCubeSetupX64.exe" : "NameCubeSetupX86.exe";
+
         public UpdateGuideWindow(string version)
         {
             InitializeComponent();
@@ -40,6 +47,7 @@ namespace NameCube.Setting.UpdateGuide
         }
 
         //example:https://github.com/haaa4/NameCube/releases/download/V1.3-Beta-2.1(%23p0%23)/NameCubeSetupX64.exe
+        //32 位系统对应 NameCubeSetupX86.exe
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
             if (version == "Error")
@@ -103,33 +111,25 @@ namespace NameCube.Setting.UpdateGuide
             //尝试下载更新文件，并实时更新进度条和下载速度
             Text1st.Foreground = Brushes.Blue;
             string url = version.Replace("#", "%23");
-            string localPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Update", "NameCubeSetupX64.exe");
+            string localPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Update", SetupFileName);
             try
             {
                 Directory.CreateDirectory(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Update"));
-                if(GlobalVariablesData.config.AllSettings.UpdataGet==1)
-                {
-                    if (GlobalVariablesData.config.AllSettings.DownloadWay == 0)
-                    {
-                        await DownloadFileAsync(GetInternetData.NewVersionInformationClass.PreReleaseVersionReleaseFromGithubUrl, localPath);
-                    }
-                    else
-                    {
-                        await DownloadFileAsync(GetInternetData.NewVersionInformationClass.PreReleaseVersionReleaseFromGiteeUrl, localPath);
-                    }
-                }
-                else
-                {
-                    if (GlobalVariablesData.config.AllSettings.DownloadWay == 0)
-                    {
-                        await DownloadFileAsync(GetInternetData.NewVersionInformationClass.LatestVersionReleaseFromGithubUrl, localPath);
-                    }
-                    else
-                    {
-                        await DownloadFileAsync(GetInternetData.NewVersionInformationClass.LatestVersionReleaseFromGiteeUrl, localPath);
-                    }
-                }
 
+                // 四个原始地址（x64）与四个新增地址（x86），按「测试版/正式版」×「Github/Gitee」选
+                bool isPreRelease = GlobalVariablesData.config.AllSettings.UpdataGet == 1;
+                bool fromGithub = GlobalVariablesData.config.AllSettings.DownloadWay == 0;
+                NewVersionInformationClass info = GetInternetData.NewVersionInformationClass;
+
+                string x64Url = isPreRelease
+                    ? (fromGithub ? info.PreReleaseVersionReleaseFromGithubUrl : info.PreReleaseVersionReleaseFromGiteeUrl)
+                    : (fromGithub ? info.LatestVersionReleaseFromGithubUrl : info.LatestVersionReleaseFromGiteeUrl);
+                string x86Url = isPreRelease
+                    ? (fromGithub ? info.PreReleaseVersionReleaseFromGithubUrlX86 : info.PreReleaseVersionReleaseFromGiteeUrlX86)
+                    : (fromGithub ? info.LatestVersionReleaseFromGithubUrlX86 : info.LatestVersionReleaseFromGiteeUrlX86);
+
+                // 由 SelectReleaseUrl 决定取哪个；32 位取不到会抛异常，走下面的 catch 提示用户
+                await DownloadFileAsync(NewVersionInformationClass.SelectReleaseUrl(x64Url, x86Url), localPath);
             }
             catch (Exception ex)
             {
@@ -286,7 +286,7 @@ namespace NameCube.Setting.UpdateGuide
             {
                 ProcessStartInfo process = new ProcessStartInfo
                 {
-                    FileName = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Update", "NameCubeSetupX64.exe"),
+                    FileName = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Update", SetupFileName),
                     Arguments = "UpdateMode",
                     UseShellExecute = true // 使用操作系统的shell来启动程序，这样可以正确处理文件关联和权限问题
                 };

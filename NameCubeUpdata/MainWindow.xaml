@@ -611,7 +611,7 @@
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"
                     FontSize="14"
-                    TextWrapping="Wrap"><Run Text="引导程序版本：" /><Run Language="zh-cn" Text="V0.4" /></TextBlock>
+                    TextWrapping="Wrap"><Run Text="引导程序版本："/><Run Text="V0."/><Run Language="zh-cn" Text="5"/></TextBlock>
                 <TextBlock
                     Canvas.Left="331"
                     Canvas.Top="102.22"
@@ -620,7 +620,7 @@
                     VerticalAlignment="Center"
                     FontSize="14"
                     TextAlignment="Right"
-                    TextWrapping="Wrap"><Run Text="携带应用版本："/><Run Text="V1.4-Beta-"/><Run Language="zh-cn" Text="3"/></TextBlock>
+                    TextWrapping="Wrap"><Run Text="携带应用版本："/><Run Text="V1.4-Beta-"/><Run Language="zh-cn" Text="4"/></TextBlock>
             </Canvas>
         </Border>
         <Canvas Height="280">

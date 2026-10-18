@@ -13,7 +13,6 @@
 using Masuit.Tools;
 using Masuit.Tools.DateTimeExt;
 using NameCube.GlobalVariables.DataClass;
-using NameCube.Setting;
 using Serilog;
 using System;
 using System.Collections.Generic;
@@ -22,7 +21,6 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 using Application = System.Windows.Application;
 
 namespace NameCube.ToolBox.AutomaticProcessPages

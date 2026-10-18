@@ -24,7 +24,6 @@ using System.Windows.Forms;
 using System.Windows.Media.Animation;
 using Wpf.Ui.Controls;
 using Application = System.Windows.Application;
-using Path = System.IO.Path;
 
 namespace NameCube.FirstUse
 {

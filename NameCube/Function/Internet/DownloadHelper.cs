@@ -11,11 +11,8 @@
 //  * but WITHOUT ANY WARRANTY
 
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace NameCube.Function.Internet
@@ -47,6 +44,7 @@ namespace NameCube.Function.Internet
                 }
             }
         }
+        private static readonly HttpClient httpClient = new HttpClient();
         /// <summary>
         /// 异步下载文件至字符串。
         /// </summary>
@@ -54,9 +52,14 @@ namespace NameCube.Function.Internet
         /// <param name="localPath">本地保存路径</param>
         public static async Task<string> DownloadFileAsyncToString(string url)
         {
-            using (var httpClient = new HttpClient())
+            try
             {
                 return await httpClient.GetStringAsync(url);
+            }
+            catch (Exception ex)
+            {
+                // 处理异常，例如记录日志或抛出自定义异常
+                throw new Exception($"下载文件失败: {ex.Message}", ex);
             }
         }
     }

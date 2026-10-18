@@ -16,7 +16,6 @@ using Serilog; // 添加Serilog引用
 using System;
 using System.Diagnostics;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -41,7 +40,6 @@ namespace NameCube.Setting
             VersionText.Content = GlobalVariablesData.VERSION;
             UpdataWayComboBox.SelectedIndex = GlobalVariablesData.config.AllSettings.UpdataGet;
             AutoStart.IsChecked = GlobalVariablesData.config.StartToDo.AutoUpdata;
-            tokenText.Text = GlobalVariablesData.config.AllSettings.token;
             Canchange = true;
 
             if (GlobalVariablesData.config.AllSettings.UpdataTime != null)
@@ -88,7 +86,7 @@ namespace NameCube.Setting
             int GetVersionCode = 0;
             try
             {
-                GetInternetData.RefreshNewVersionInformationClass();
+                GetInternetData.RefreshNewVersionInformationClass(true);
                 if (GlobalVariablesData.config.AllSettings.UpdataGet == 0)
                 {
                     GetVersion = GetInternetData.NewVersionInformationClass.LatestVersionName;
@@ -156,15 +154,6 @@ namespace NameCube.Setting
             }
         }
 
-        private void tokenText_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (Canchange)
-            {
-                GlobalVariablesData.config.AllSettings.token = tokenText.Text;
-                GlobalVariablesData.SaveConfig();
-                _logger.Debug("GitHub Token已更新");
-            }
-        }
 
         private void HyperlinkButton_Click_1(object sender, RoutedEventArgs e)
         {
@@ -224,7 +213,7 @@ namespace NameCube.Setting
             string GetVersion = "";
             try
             {
-                GetInternetData.RefreshNewVersionInformationClass();
+                GetInternetData.RefreshNewVersionInformationClass(true);
                 if (GlobalVariablesData.config.AllSettings.UpdataGet == 0)
                 {
                     GetVersion = GetInternetData.NewVersionInformationClass.LatestVersionName;

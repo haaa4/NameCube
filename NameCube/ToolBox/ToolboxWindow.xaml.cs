@@ -1,4 +1,4 @@
-﻿// /*
+// /*
 //  * NameCube-<点名器>
 //  * Copyright (C) 2025-2026 haaa4
 //  *
@@ -11,13 +11,10 @@
 //  * but WITHOUT ANY WARRANTY
 
 using NameCube.Function;
-using NameCube.Setting;
 using Serilog;
 using System.Diagnostics;
 using System.Linq;
-using System.Speech.Synthesis;
 using System.Windows;
-using System.Windows.Media;
 using System.Windows.Media.Animation;
 using Wpf.Ui.Controls;
 
@@ -29,7 +26,6 @@ namespace NameCube.ToolBox
     public partial class ToolboxWindow
     {
         private static readonly ILogger _logger = Log.ForContext<ToolboxWindow>();
-        private SpeechSynthesizer _speechSynthesizer = new SpeechSynthesizer();
         public ToolboxWindow()
         {
             InitializeComponent();

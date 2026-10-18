@@ -10,11 +10,7 @@
 //  * This program is distributed in the hope that it will be useful,
 //  * but WITHOUT ANY WARRANTY
 
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NameCube.GlobalVariables.DataClass
 {

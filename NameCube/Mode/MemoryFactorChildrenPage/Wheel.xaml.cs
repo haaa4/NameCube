@@ -1,4 +1,4 @@
-﻿// /*
+// /*
 //  * NameCube-<点名器>
 //  * Copyright (C) 2025-2026 haaa4
 //  *
@@ -10,10 +10,10 @@
 //  * This program is distributed in the hope that it will be useful,
 //  * but WITHOUT ANY WARRANTY
 
+using NameCube.Function;
 using Serilog;
 using System;
 using System.Collections.Generic;
-using System.Speech.Synthesis;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -37,19 +37,16 @@ namespace NameCube.Mode.MemoryFactorChildrenPage
         private Random _random = new Random();
         private bool _isSpinning = false;
         private bool isRotate = false;
-        SpeechSynthesizer speechSynthesizer;
+        private readonly ISpeechService _speech;
         private List<string> names;
-        public Wheel(List<string> names, SpeechSynthesizer speechSynthesizer)
+        public Wheel(List<string> names, ISpeechService speech)
         {
             InitializeComponent();
             Loaded += MainWindow_Loaded;
             this.names = names;
             GodChooesName.Text = names[0];
             UpdateItems(names);
-            if (speechSynthesizer != null)
-            {
-                this.speechSynthesizer = speechSynthesizer;
-            }
+            _speech = speech;
         }
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
@@ -106,11 +103,7 @@ namespace NameCube.Mode.MemoryFactorChildrenPage
 
                     string selectedItem = DetermineSelectedItem(finalAngle);
                     ResultTextBlock.Text = selectedItem;
-                    try
-                    {
-                        speechSynthesizer?.SpeakAsync(selectedItem);
-                    }
-                    catch { /* 忽略 */ }
+                    _speech?.Speak(selectedItem);
                     Log.Information("抽取结果: {Result}", selectedItem);
                     DataSubmitted?.Invoke(this, selectedItem);
                     UpdateItems(names);

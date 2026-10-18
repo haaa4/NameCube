@@ -1,4 +1,4 @@
-﻿// /*
+// /*
 //  * NameCube-<点名器>
 //  * Copyright (C) 2025-2026 haaa4
 //  *
@@ -370,6 +370,9 @@ namespace NameCube
         protected override void OnExit(ExitEventArgs e)
         {
             Log.Information("应用程序退出，退出代码: {ExitCode}", e.ApplicationExitCode);
+
+            // 释放全局语音引擎（必须在日志关闭之前，内部还要打日志）
+            SpeechService.Instance.Dispose();
 
             // 确保日志被刷新
             Log.CloseAndFlush();
