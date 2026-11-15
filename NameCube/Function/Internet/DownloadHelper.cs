@@ -1,4 +1,4 @@
-﻿// /*
+// /*
 //  * NameCube-<点名器>
 //  * Copyright (C) 2025-2026 haaa4
 //  *
@@ -13,12 +13,28 @@
 using System;
 using System.IO;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace NameCube.Function.Internet
 {
     internal static class DownloadHelper
     {
+        // 复用同一个 HttpClient：每次 new 一个会不断堆积 TIME_WAIT 的 socket，
+        // 超时也统一在这里设置，网络异常时不会无限期等待。
+        private static readonly HttpClient httpClient = CreateHttpClient();
+
+        private static HttpClient CreateHttpClient()
+        {
+            var client = new HttpClient
+            {
+                Timeout = TimeSpan.FromSeconds(20)
+            };
+            // 部分 CDN 对没有 User-Agent 的请求更严格，这里带上一个固定的客户端标识。
+            client.DefaultRequestHeaders.UserAgent.ParseAdd("NameCube-Update-Client/1.0");
+            return client;
+        }
+
         /// <summary>
         /// 异步下载文件至本地。
         /// </summary>
@@ -26,7 +42,6 @@ namespace NameCube.Function.Internet
         /// <param name="localPath">本地保存路径</param>
         public static async Task DownloadFileAsync(string url, string localPath)
         {
-            using (var httpClient = new HttpClient())
             using (var response = await httpClient.GetAsync(url, HttpCompletionOption.ResponseHeadersRead))
             {
                 response.EnsureSuccessStatusCode();
@@ -34,32 +49,31 @@ namespace NameCube.Function.Internet
                 using (var contentStream = await response.Content.ReadAsStreamAsync())
                 using (var fileStream = new FileStream(localPath, FileMode.Create, FileAccess.Write, FileShare.None, 8192, true))
                 {
-                    var buffer = new byte[8192];
-                    int bytesRead;
-
-                    while ((bytesRead = await contentStream.ReadAsync(buffer, 0, buffer.Length)) > 0)
-                    {
-                        await fileStream.WriteAsync(buffer, 0, bytesRead);
-                    }
+                    await contentStream.CopyToAsync(fileStream);
                 }
             }
         }
-        private static readonly HttpClient httpClient = new HttpClient();
+
         /// <summary>
         /// 异步下载文件至字符串。
+        /// 失败时抛出原始的网络异常（HttpRequestException 等），由调用方决定如何降级，
+        /// 不再包装成无法区分的 Exception。
         /// </summary>
         /// <param name="url">文件URL</param>
-        /// <param name="localPath">本地保存路径</param>
-        public static async Task<string> DownloadFileAsyncToString(string url)
+        /// <param name="cancellationToken">取消令牌</param>
+        public static async Task<string> DownloadFileAsyncToString(string url, CancellationToken cancellationToken = default)
         {
-            try
+            using (var response = await httpClient.GetAsync(url, HttpCompletionOption.ResponseContentRead, cancellationToken))
             {
-                return await httpClient.GetStringAsync(url);
-            }
-            catch (Exception ex)
-            {
-                // 处理异常，例如记录日志或抛出自定义异常
-                throw new Exception($"下载文件失败: {ex.Message}", ex);
+                if (!response.IsSuccessStatusCode)
+                {
+                    throw new HttpRequestException(
+                        $"服务器返回 {(int)response.StatusCode} {response.ReasonPhrase}",
+                        null,
+                        response.StatusCode);
+                }
+
+                return await response.Content.ReadAsStringAsync(cancellationToken);
             }
         }
     }

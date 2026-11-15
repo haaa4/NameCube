@@ -1,4 +1,4 @@
-﻿// /*
+// /*
 //  * NameCube-<点名器>
 //  * Copyright (C) 2025-2026 haaa4
 //  *
@@ -126,6 +126,11 @@ namespace NameCube.GlobalVariables.DataClass
         /// 布尔值数据
         /// </summary>
         public bool boolData;
+
+        /// <summary>
+        /// 关机倒计时（秒），仅 shutDown 流程使用，小于 5 时使用默认值
+        /// </summary>
+        public int shutDownCountdownSeconds = 0;
     }
 
     public enum ProcessState

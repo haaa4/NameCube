@@ -31,6 +31,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Navigation;
 using Wpf.Ui.Controls;
+using Wpf.Ui.Markup;
 using TextBlock = System.Windows.Controls.TextBlock;
 
 namespace NameCube.Mode
@@ -345,6 +346,7 @@ namespace NameCube.Mode
                     jump?.Begin();
                     _timer.Start();
                     StartButton.IsEnabled = true;
+                    FinishNumberText.Foreground = NowNumberText.Foreground;
                 }
                 else if (StartButton.Content.ToString() == "结束")
                 {

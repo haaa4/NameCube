@@ -57,4 +57,4 @@ using System.Windows;
 //      修订号
 //
 [assembly: AssemblyVersion("0.5.0.0")]
-[assembly: AssemblyFileVersion("1.3.4.0")]
+[assembly: AssemblyFileVersion("1.3.5.0")]

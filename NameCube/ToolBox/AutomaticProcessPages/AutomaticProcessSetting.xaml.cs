@@ -1,4 +1,4 @@
-﻿// /*
+// /*
 //  * NameCube-<点名器>
 //  * Copyright (C) 2025-2026 haaa4
 //  *
@@ -131,14 +131,22 @@ namespace NameCube.ToolBox.AutomaticProcessPages
                         return "清理内存";
 
                     case ProcessState.shutDown:
+                        string wayName;
                         if (processData.doubleData == 0)
-                            return "立即关机";
+                            wayName = "立即关机";
                         else if (processData.doubleData == 1)
-                            return "一般关机";
+                            wayName = "一般关机";
                         else if (processData.doubleData == 2)
-                            return "强制关机";
+                            wayName = "强制关机";
                         else
-                            return "?";
+                            wayName = "?";
+
+                        if (!string.IsNullOrWhiteSpace(processData.stringData1))
+                        {
+                            return wayName + " · " + GetMaxName(processData.stringData1.Trim());
+                        }
+
+                        return wayName;
 
                     default:
                         return "?";
@@ -431,6 +439,7 @@ namespace NameCube.ToolBox.AutomaticProcessPages
                         selectedProcessData.stringData2 = null;
                         selectedProcessData.doubleData = double.NaN;
                         selectedProcessData.boolData = false;
+                        selectedProcessData.shutDownCountdownSeconds = 0;
                         object getPageContent = MainFrame.Content;
                         if (getPageContent is ProcessSettingPages.StartSettingPage startPage)
                         {
@@ -467,8 +476,14 @@ namespace NameCube.ToolBox.AutomaticProcessPages
                         else if (getPageContent is ProcessSettingPages.ShutDownSettingPage shutDownSettingPage)
                         {
                             selectedProcessData.doubleData = (int)shutDownSettingPage.shutDownWay;
-                            Log.Debug("更新关机设置，关机方式: {ShutDownWay}",
-                                (int)shutDownSettingPage.shutDownWay);
+                            selectedProcessData.stringData1 = string.IsNullOrWhiteSpace(shutDownSettingPage.remindText)
+                                ? null
+                                : shutDownSettingPage.remindText.Trim();
+                            selectedProcessData.shutDownCountdownSeconds = shutDownSettingPage.countdownSeconds;
+                            Log.Debug("更新关机设置，关机方式: {ShutDownWay}, 提醒长度: {RemindLength}, 倒计时: {Countdown}秒",
+                                (int)shutDownSettingPage.shutDownWay,
+                                selectedProcessData.stringData1?.Length ?? 0,
+                                selectedProcessData.shutDownCountdownSeconds);
                         }
                         try
                         {
@@ -734,7 +749,7 @@ namespace NameCube.ToolBox.AutomaticProcessPages
             {
                 ProcessesListViewContextMenu.Visibility = Visibility.Collapsed;
             }
-            else if (ProcessesListView.SelectedItem.ToString() == "立即关机" || ProcessesListView.SelectedItem.ToString() == "一般关机" || ProcessesListView.SelectedItem.ToString() == "强制关机")
+            else if (IsSelectedProcessShutDown())
             {
                 ProcessesListViewContextMenu.Visibility = Visibility.Visible;
                 UpMove.IsEnabled = false;
@@ -763,6 +778,28 @@ namespace NameCube.ToolBox.AutomaticProcessPages
                 Log.Debug("流程上下文菜单，向上移动={UpMoveEnabled}, 向下移动={DownMoveEnabled}",
                     UpMove.IsEnabled, DownMove.IsEnabled);
             }
+        }
+
+        private bool IsSelectedProcessShutDown()
+        {
+            try
+            {
+                int index = ProcessesListView.SelectedIndex;
+                if (
+                    index >= 0
+                    && selectedProcessGroup != null
+                    && index < selectedProcessGroup.processDatas.Count
+                )
+                {
+                    return selectedProcessGroup.processDatas[index].state == ProcessState.shutDown;
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "判断流程是否为关机流程时发生错误");
+            }
+
+            return false;
         }
 
         private async void MenuItem_Click(object sender, RoutedEventArgs e)

@@ -256,7 +256,8 @@ namespace NameCube
                     Log.Error(ex, "清理临时目录失败");
                 }
                 
-                StartToDoSomething.GetUpdata();
+                // 更新检查在后台执行，不阻塞启动；方法内部已捕获所有异常，不会抛到 UI 线程。
+                _ = StartToDoSomething.GetUpdata();
                 Log.Debug("执行GetUpdata完成");
 
                 StartToDoSomething.RunAutomaticProcesses();

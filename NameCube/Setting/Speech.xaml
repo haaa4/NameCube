@@ -19,9 +19,211 @@
             Title="警告"
             IsClosable="False"
             IsOpen="True"
-            Message="系统似乎不支持TTS功能，相关功能无法正常使用，建议安装相关补丁"
+            Message="系统语音不可用（可能缺少语音组件），系统朗读无法正常工作；改用 Edge 朗读不受影响。"
             Severity="Error"
             Visibility="Collapsed" />
+        <ui:Button
+            x:Name="UseEdgeButton"
+            Margin="4,0,4,8"
+            HorizontalAlignment="Right"
+            Appearance="Primary"
+            Click="UseEdgeButton_Click"
+            Content="改用 Edge 朗读（在线）"
+            Visibility="Collapsed" />
+        <ui:InfoBar
+            x:Name="EdgeInfoBar"
+            Title="提示"
+            IsClosable="False"
+            IsOpen="True"
+            Message="Edge 朗读需要联网，首次朗读时会有短暂延迟；断网时会自动跳过本次朗读。"
+            Severity="Informational"
+            Visibility="Collapsed" />
+
+        <ui:CardControl
+            Margin="4"
+            Padding="20,10,20,10"
+            Icon="{ui:SymbolIcon Symbol=Speaker220}">
+            <ui:CardControl.Header>
+                <StackPanel>
+                    <ui:TextBlock
+                        Margin="0"
+                        FontTypography="BodyStrong"
+                        Text="朗读引擎"
+                        TextWrapping="WrapWithOverflow" />
+                    <ui:TextBlock
+                        Appearance="Secondary"
+                        Text="选择用哪种方式把文字读出来"
+                        TextWrapping="WrapWithOverflow" />
+                </StackPanel>
+            </ui:CardControl.Header>
+            <ComboBox
+                x:Name="EngineComboBox"
+                MinWidth="220"
+                SelectionChanged="EngineComboBox_SelectionChanged">
+                <ComboBoxItem Content="系统语音（离线）" />
+                <ComboBoxItem Content="Edge 朗读（在线，音色更多）" />
+            </ComboBox>
+        </ui:CardControl>
+
+        <StackPanel x:Name="EdgePanel" Visibility="Collapsed">
+            <ui:CardControl
+                Margin="4"
+                Padding="20,10,20,10"
+                Icon="{ui:SymbolIcon Symbol=PersonVoice20}">
+                <ui:CardControl.Header>
+                    <StackPanel>
+                        <ui:TextBlock
+                            Margin="0"
+                            FontTypography="BodyStrong"
+                            Text="Edge 音色"
+                            TextWrapping="WrapWithOverflow" />
+                        <ui:TextBlock
+                            Appearance="Secondary"
+                            Text="中文音色排在列表最前面，切换后下一句生效"
+                            TextWrapping="WrapWithOverflow" />
+                    </StackPanel>
+                </ui:CardControl.Header>
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <ComboBox
+                            x:Name="EdgeVoiceComboBox"
+                            MinWidth="260"
+                            MaxWidth="380"
+                            DisplayMemberPath="DisplayName"
+                            SelectionChanged="EdgeVoiceComboBox_SelectionChanged" />
+                        <Button
+                            x:Name="RefreshVoicesButton"
+                            Margin="8,0,0,0"
+                            Click="RefreshVoicesButton_Click"
+                            Content="刷新" />
+                    </StackPanel>
+                    <ui:TextBlock
+                        x:Name="VoiceStatusText"
+                        Margin="0,6,0,0"
+                        Appearance="Secondary"
+                        FontSize="12"
+                        Text="正在准备音色列表..."
+                        TextWrapping="WrapWithOverflow" />
+                </StackPanel>
+            </ui:CardControl>
+
+            <ui:CardControl
+                Margin="4"
+                Padding="20,10,20,10"
+                Icon="{ui:SymbolIcon Symbol=Save24}">
+                <ui:CardControl.Header>
+                    <StackPanel>
+                        <ui:TextBlock
+                            Margin="0"
+                            FontTypography="BodyStrong"
+                            Text="本地缓存"
+                            TextWrapping="WrapWithOverflow" />
+                        <ui:TextBlock
+                            Appearance="Secondary"
+                            Text="把合成过的音频存到本地，下次同一句话直接播放，不再联网"
+                            TextWrapping="WrapWithOverflow" />
+                    </StackPanel>
+                </ui:CardControl.Header>
+                <StackPanel>
+                    <ui:ToggleSwitch
+                        x:Name="CacheEnabledCheck"
+                        HorizontalContentAlignment="Left"
+                        Click="CacheEnabledCheck_Click"
+                        OffContent="关"
+                        OnContent="开" />
+                    <ui:TextBlock
+                        x:Name="CacheStatsText"
+                        Margin="0,6,0,0"
+                        Appearance="Secondary"
+                        FontSize="12"
+                        Text="正在统计本地缓存..."
+                        TextWrapping="WrapWithOverflow" />
+                </StackPanel>
+            </ui:CardControl>
+
+            <ui:CardControl
+                Margin="4"
+                Padding="20,10,20,10"
+                Icon="{ui:SymbolIcon Symbol=ArrowClockwise24}">
+                <ui:CardControl.Header>
+                    <StackPanel>
+                        <ui:TextBlock
+                            Margin="0"
+                            FontTypography="BodyStrong"
+                            Text="预加载与清理"
+                            TextWrapping="WrapWithOverflow" />
+                        <ui:TextBlock
+                            Appearance="Secondary"
+                            Text="提前把名单里所有人名的音频合成好，点名时不用等网络"
+                            TextWrapping="WrapWithOverflow" />
+                    </StackPanel>
+                </ui:CardControl.Header>
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Button
+                            x:Name="PreloadButton"
+                            Click="PreloadButton_Click"
+                            Content="预加载名单音频" />
+                        <Button
+                            x:Name="CleanCacheButton"
+                            Margin="8,0,0,0"
+                            Click="CleanCacheButton_Click"
+                            Content="清理名单外" />
+                        <Button
+                            x:Name="ClearCacheButton"
+                            Margin="8,0,0,0"
+                            Click="ClearCacheButton_Click"
+                            Content="清空缓存" />
+                    </StackPanel>
+                    <ui:TextBlock
+                        x:Name="CacheActionText"
+                        Margin="0,6,0,0"
+                        Appearance="Secondary"
+                        FontSize="12"
+                        Text="尚未预加载"
+                        TextWrapping="WrapWithOverflow" />
+                </StackPanel>
+            </ui:CardControl>
+        </StackPanel>
+
+        <StackPanel x:Name="SystemPanel">
+            <ui:CardControl
+                Margin="4"
+                Padding="20,10,20,10"
+                Icon="{ui:SymbolIcon Symbol=AppFolder20}">
+                <ui:CardControl.Header>
+                    <StackPanel>
+                        <ui:TextBlock
+                            Margin="0"
+                            FontTypography="BodyStrong"
+                            Text="使用系统设置"
+                            TextWrapping="WrapWithOverflow" />
+                        <ui:TextBlock
+                            Appearance="Secondary"
+                            Text="朗读人将优先使用系统朗读"
+                            TextWrapping="WrapWithOverflow" />
+                    </StackPanel>
+                </ui:CardControl.Header>
+                <ui:ToggleSwitch
+                    x:Name="SystemSpeechCheck"
+                    HorizontalContentAlignment="Left"
+                    Click="SystemSpeechCheck_Click"
+                    IsEnabled="True"
+                    OffContent="关"
+                    OnContent="开" />
+            </ui:CardControl>
+            <ui:CardAction
+                Margin="5,0"
+                Click="CardAction_Click"
+                Content="打开系统设置(Win10/Win11)"
+                Icon="{ui:SymbolIcon Symbol=WindowSettings20}" />
+            <ui:CardAction
+                Margin="5,0"
+                Click="LegacySpeechSettings_Click"
+                Content="打开旧版语音属性(Win7/控制面板)"
+                Icon="{ui:SymbolIcon Symbol=WindowSettings20}" />
+        </StackPanel>
+
         <ui:CardControl
             Margin="4"
             Padding="20,10,20,10"
@@ -77,41 +279,6 @@
                 ValueChanged="SpeedSlider_ValueChanged"
                 Value="10" />
         </ui:CardControl>
-        <ui:CardControl
-            Margin="4"
-            Padding="20,10,20,10"
-            Icon="{ui:SymbolIcon Symbol=AppFolder20}">
-            <ui:CardControl.Header>
-                <StackPanel>
-                    <ui:TextBlock
-                        Margin="0"
-                        FontTypography="BodyStrong"
-                        Text="使用系统设置"
-                        TextWrapping="WrapWithOverflow" />
-                    <ui:TextBlock
-                        Appearance="Secondary"
-                        Text="朗读人将优先使用系统朗读"
-                        TextWrapping="WrapWithOverflow" />
-                </StackPanel>
-            </ui:CardControl.Header>
-            <ui:ToggleSwitch
-                x:Name="SystemSpeechCheck"
-                HorizontalContentAlignment="Left"
-                Click="SystemSpeechCheck_Click"
-                IsEnabled="True"
-                OffContent="关"
-                OnContent="开" />
-        </ui:CardControl>
-        <ui:CardAction
-            Margin="5,0"
-            Click="CardAction_Click"
-            Content="打开系统设置(Win10/Win11)"
-            Icon="{ui:SymbolIcon Symbol=WindowSettings20}" />
-        <ui:CardAction
-            Margin="5,0"
-            Click="LegacySpeechSettings_Click"
-            Content="打开旧版语音属性(Win7/控制面板)"
-            Icon="{ui:SymbolIcon Symbol=WindowSettings20}" />
         <ui:CardControl
             Margin="4"
             Padding="20,10,20,10"

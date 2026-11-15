@@ -161,11 +161,11 @@ namespace NameCube
         /// <summary>
         /// 当前版本
         /// </summary>
-        public const string VERSION = "V1.4-Beta-4(#p11#)";
+        public const string VERSION = "V1.4-Beta-5(#p12#)";
         /// <summary>
         /// 当前版本代码
         /// </summary>
-        public const int VERSIONCODE = 11;
+        public const int VERSIONCODE = 12;
         /// <summary>
         /// 当前是否为测试版本
         /// </summary>

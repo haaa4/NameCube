@@ -1,4 +1,4 @@
-﻿// /*
+// /*
 //  * NameCube-<点名器>
 //  * Copyright (C) 2025-2026 haaa4
 //  *
@@ -11,6 +11,7 @@
 //  * but WITHOUT ANY WARRANTY
 
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Windows.Media;
 
@@ -47,6 +48,25 @@ namespace NameCube.GlobalVariables.DataClass
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
         public bool SystemSpeech { get; set; } = false;
+
+        /// <summary>
+        /// 朗读引擎：System（系统自带 TTS）或 Edge（微软 Edge 在线朗读）
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+        public string TtsEngine { get; set; } = SpeechEngines.System;
+
+        /// <summary>
+        /// Edge 朗读使用的音色短名（如 zh-CN-XiaoxiaoNeural），仅当 TtsEngine 为 Edge 时有效
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+        public string EdgeVoice { get; set; } = "zh-CN-XiaoxiaoNeural";
+
+        /// <summary>
+        /// 是否把 Edge 朗读合成过的音频存到本地（user\tts-cache），下次同一句话直接播放。
+        /// 用可空类型是为了区分“旧配置里没有这个字段”（null，按开启处理）和“用户手动关掉”（false）。
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
+        public bool? TtsCacheEnabled { get; set; } = true;
 
         /// <summary>
         /// 主窗口始终置顶
@@ -159,5 +179,24 @@ namespace NameCube.GlobalVariables.DataClass
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Populate)]
         public int? BackgroundOpacity { get; set; } = 100;
+    }
+
+    /// <summary>
+    /// 朗读引擎的取值（与 config.json 里 TtsEngine 字段对应）。
+    /// </summary>
+    public static class SpeechEngines
+    {
+        /// <summary>系统自带 TTS（System.Speech）。</summary>
+        public const string System = "System";
+
+        /// <summary>微软 Edge 在线朗读（需要联网）。</summary>
+        public const string Edge = "Edge";
+
+        /// <summary>判断配置值是不是 Edge。</summary>
+        public static bool IsEdge(string engine)
+        {
+            // 注意：本类里有个常量叫 System，会把命名空间 System 遮住，所以这里用 using System 引入的类型名
+            return string.Equals(engine, Edge, StringComparison.OrdinalIgnoreCase);
+        }
     }
 }

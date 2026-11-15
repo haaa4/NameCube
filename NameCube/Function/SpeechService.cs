@@ -10,15 +10,17 @@
 //  * This program is distributed in the hope that it will be useful,
 //  * but WITHOUT ANY WARRANTY
 
+using NameCube.GlobalVariables.DataClass;
 using Serilog;
 using System;
 using System.Speech.Synthesis;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace NameCube.Function
 {
     /// <summary>
-    /// <see cref="ISpeechService"/> 的实现：整个程序共用一个 SpeechSynthesizer。
+    /// <see cref="ISpeechService"/> 的实现：整个程序共用一个朗读引擎。
     /// </summary>
     /// <remarks>
     /// 三个要点：
@@ -26,7 +28,9 @@ namespace NameCube.Function
     ///    每个页面 new 一个既慢又容易互相抢麦。这里用 Lazy&lt;T&gt; 保证全局只有一份，且线程安全。
     /// 2. 懒初始化 + 失败缓存：真的要用语音时才创建；创建失败（阉割版 Win7）就记住失败，
     ///    之后所有调用直接静默返回，不再反复尝试、不再抛异常。
-    /// 3. 可释放：持有 SpeechSynthesizer 就必须在程序退出时 Dispose，见 App.OnExit。
+    /// 3. 双引擎：配置里 TtsEngine 决定走系统 TTS 还是 Edge 在线朗读，调用方完全不用关心。
+    ///    系统引擎是同步排队的；Edge 引擎是“后一条顶掉前一条”（在线合成有延迟，排长队没意义）。
+    /// 4. 可释放：持有 SpeechSynthesizer 就必须在程序退出时 Dispose，见 App.OnExit。
     /// </remarks>
     public sealed class SpeechService : ISpeechService
     {
@@ -50,15 +54,29 @@ namespace NameCube.Function
         private string _lastError;
         private bool _disposed;
 
+        // Edge 引擎的状态：播放器、当前朗读的取消源、以及后台任务（释放时等它结束）。
+        private readonly EdgeTtsPlayer _edgePlayer = new EdgeTtsPlayer();
+        private CancellationTokenSource _edgeCts;
+        private Task _edgeTask = Task.CompletedTask;
+
         // 私有构造函数：外部只能通过 Instance 拿到实例，防止有人 new 出第二个引擎。
         private SpeechService()
         {
         }
 
+        private bool UseEdge => SpeechEngines.IsEdge(GlobalVariablesData.config.AllSettings.TtsEngine);
+
         public bool IsAvailable
         {
             get
             {
+                if (UseEdge)
+                {
+                    // Edge 引擎不需要本地语音组件，能不能出声要等真正合成时才知道，
+                    // 这里不能因为系统没装中文语音就把整个语音功能判死。
+                    return true;
+                }
+
                 EnsureInitialized();
                 lock (_gate)
                 {
@@ -80,6 +98,12 @@ namespace NameCube.Function
 
         public void EnsureInitialized()
         {
+            // Edge 引擎不需要初始化本地语音合成器
+            if (UseEdge)
+            {
+                return;
+            }
+
             lock (_gate)
             {
                 // 已释放、已确认失败、或已经创建过，都直接返回。
@@ -114,6 +138,12 @@ namespace NameCube.Function
                 return;
             }
 
+            if (UseEdge)
+            {
+                SpeakWithEdge(text);
+                return;
+            }
+
             EnsureInitialized();
 
             lock (_gate)
@@ -137,6 +167,11 @@ namespace NameCube.Function
 
         public void CancelAll()
         {
+            if (UseEdge)
+            {
+                CancelEdge();
+            }
+
             lock (_gate)
             {
                 if (_disposed || _synthesizer == null)
@@ -157,6 +192,14 @@ namespace NameCube.Function
 
         public void ApplySettings()
         {
+            if (UseEdge)
+            {
+                // Edge 引擎每次朗读时才读配置，这里只要把正在念的旧内容停下，
+                // 让新设置从下一句开始生效即可。
+                CancelEdge();
+                return;
+            }
+
             lock (_gate)
             {
                 // 还没创建就不用管：创建时会按最新配置初始化
@@ -166,6 +209,86 @@ namespace NameCube.Function
                 }
 
                 ApplySettingsCore();
+            }
+        }
+
+        /// <summary>
+        /// 用 Edge 在线引擎朗读：先取消上一条（在线合成有延迟，排队只会越来越滞后），
+        /// 再在后台线程合成 + 播放。所有异常都吞掉并记日志，不打断点名流程。
+        /// </summary>
+        private void SpeakWithEdge(string text)
+        {
+            var settings = GlobalVariablesData.config.AllSettings;
+            string voice = string.IsNullOrWhiteSpace(settings.EdgeVoice)
+                ? "zh-CN-XiaoxiaoNeural"
+                : settings.EdgeVoice;
+
+            // 系统语音的 Speed 是 -10~10，Edge 用百分比表达，乘 10 后正好是 -100%~100%
+            int ratePercent = Math.Clamp(settings.Speed, -10, 10) * 10;
+            int volume = Math.Clamp(settings.Volume, 0, 100);
+
+            CancellationTokenSource cts;
+            lock (_gate)
+            {
+                if (_disposed)
+                {
+                    return;
+                }
+
+                _edgeCts?.Cancel();
+                _edgeCts?.Dispose();
+                cts = new CancellationTokenSource();
+                _edgeCts = cts;
+
+                // 上一条还在念的话立刻掐掉，避免两句话叠在一起
+                _edgePlayer.Stop();
+            }
+
+            _edgeTask = Task.Run(async () =>
+            {
+                try
+                {
+                    byte[] audio = await EdgeTtsClient
+                        .SynthesizeAsync(text, voice, ratePercent, cts.Token)
+                        .ConfigureAwait(false);
+                    if (cts.IsCancellationRequested)
+                    {
+                        return;
+                    }
+
+                    _edgePlayer.Play(audio, volume, cts.Token);
+                }
+                catch (OperationCanceledException)
+                {
+                    // 正常的“被下一条打断”，不算错误
+                }
+                catch (Exception ex)
+                {
+                    lock (_gate)
+                    {
+                        _lastError = ex.Message;
+                    }
+
+                    _logger.Warning(ex, "Edge 朗读失败（音色 {Voice}，文本长度 {Length}）", voice, text.Length);
+                }
+            });
+        }
+
+        /// <summary>停掉 Edge 引擎当前正在合成/播放的内容。</summary>
+        private void CancelEdge()
+        {
+            lock (_gate)
+            {
+                try
+                {
+                    _edgeCts?.Cancel();
+                }
+                catch (Exception ex)
+                {
+                    _logger.Debug(ex, "取消 Edge 朗读时发生异常，已忽略");
+                }
+
+                _edgePlayer.Stop();
             }
         }
 
@@ -217,6 +340,9 @@ namespace NameCube.Function
         /// </summary>
         public void Dispose()
         {
+            CancellationTokenSource edgeCts;
+            Task edgeTask;
+
             lock (_gate)
             {
                 if (_disposed)
@@ -225,7 +351,35 @@ namespace NameCube.Function
                 }
 
                 _disposed = true;
+                edgeCts = _edgeCts;
+                _edgeCts = null;
+                edgeTask = _edgeTask;
+            }
 
+            try
+            {
+                edgeCts?.Cancel();
+            }
+            catch (Exception ex)
+            {
+                _logger.Debug(ex, "退出时取消 Edge 朗读发生异常，已忽略");
+            }
+
+            // 给后台合成一小段时间收尾，避免进程退出时还在往已释放的播放器里写数据
+            try
+            {
+                edgeTask?.Wait(TimeSpan.FromSeconds(2));
+            }
+            catch (Exception ex)
+            {
+                _logger.Debug(ex, "等待 Edge 朗读任务结束时发生异常，已忽略");
+            }
+
+            _edgePlayer.Dispose();
+            edgeCts?.Dispose();
+
+            lock (_gate)
+            {
                 try
                 {
                     _synthesizer?.Dispose();

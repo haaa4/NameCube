@@ -1,4 +1,4 @@
-﻿// /*
+// /*
 //  * NameCube-<点名器>
 //  * Copyright (C) 2025-2026 haaa4
 //  *
@@ -86,16 +86,21 @@ namespace NameCube.Setting
             int GetVersionCode = 0;
             try
             {
-                GetInternetData.RefreshNewVersionInformationClass(true);
+                var info = await GetInternetData.RefreshNewVersionInformationClassAsync();
+                if (info == null)
+                {
+                    throw new InvalidOperationException("检查更新失败：无法从服务器获取版本信息，请检查网络连接后重试。");
+                }
+
                 if (GlobalVariablesData.config.AllSettings.UpdataGet == 0)
                 {
-                    GetVersion = GetInternetData.NewVersionInformationClass.LatestVersionName;
-                    GetVersionCode = GetInternetData.NewVersionInformationClass.LatestVersionCode;
+                    GetVersion = info.LatestVersionName;
+                    GetVersionCode = info.LatestVersionCode;
                 }
                 else
                 {
-                    GetVersion = GetInternetData.NewVersionInformationClass.PreReleaseVersionName;
-                    GetVersionCode = GetInternetData.NewVersionInformationClass.PreReleaseVersionCode;
+                    GetVersion = info.PreReleaseVersionName;
+                    GetVersionCode = info.PreReleaseVersionCode;
                 }
 
                 GlobalVariablesData.config.AllSettings.UpdataTime = DateTime.Now.ToString("f");
@@ -171,14 +176,19 @@ namespace NameCube.Setting
             string GetVersion = "";
             try
             {
-                GetInternetData.RefreshNewVersionInformationClass();
+                var info = await GetInternetData.RefreshNewVersionInformationClassAsync();
+                if (info == null)
+                {
+                    throw new InvalidOperationException("获取版本信息失败：无法从服务器获取数据，请检查网络连接后重试。");
+                }
+
                 if (GlobalVariablesData.config.AllSettings.UpdataGet == 0)
                 {
-                    GetVersion = GetInternetData.NewVersionInformationClass.LatestVersionName;
+                    GetVersion = info.LatestVersionName;
                 }
                 else
                 {
-                    GetVersion = GetInternetData.NewVersionInformationClass.PreReleaseVersionName;
+                    GetVersion = info.PreReleaseVersionName;
                 }
                 GlobalVariablesData.config.AllSettings.UpdataTime = DateTime.Now.ToString("f");
                 NowProgressBar.IsIndeterminate = false;
@@ -213,14 +223,19 @@ namespace NameCube.Setting
             string GetVersion = "";
             try
             {
-                GetInternetData.RefreshNewVersionInformationClass(true);
+                var info = await GetInternetData.RefreshNewVersionInformationClassAsync();
+                if (info == null)
+                {
+                    throw new InvalidOperationException("获取版本信息失败：无法从服务器获取数据，请检查网络连接后重试。");
+                }
+
                 if (GlobalVariablesData.config.AllSettings.UpdataGet == 0)
                 {
-                    GetVersion = GetInternetData.NewVersionInformationClass.LatestVersionName;
+                    GetVersion = info.LatestVersionName;
                 }
                 else
                 {
-                    GetVersion = GetInternetData.NewVersionInformationClass.PreReleaseVersionName;
+                    GetVersion = info.PreReleaseVersionName;
                 }
                 NowProgressBar.IsIndeterminate = false;
                 NowProgressBar.Value = NowProgressBar.Maximum;

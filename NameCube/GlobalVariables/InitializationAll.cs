@@ -1,4 +1,4 @@
-﻿// /*
+// /*
 //  * NameCube-<点名器>
 //  * Copyright (C) 2025-2026 haaa4
 //  *
@@ -35,6 +35,9 @@ namespace NameCube.GlobalVariables
                     Volume = 100,
                     Speed = 0,
                     SystemSpeech = false,
+                    TtsEngine = SpeechEngines.System,
+                    EdgeVoice = "zh-CN-XiaoxiaoNeural",
+                    TtsCacheEnabled = true,
                     Top = true,
                     NameCubeMode = 0,
                     color = (Brush)new BrushConverter().ConvertFromInvariantString("#FF005493"),
@@ -234,6 +237,20 @@ namespace NameCube.GlobalVariables
             if(GlobalVariablesData.config.MainWindowSettings == null)
             {
                 GlobalVariablesData.config.MainWindowSettings = new MainWindowSettings();
+            }
+            if (string.IsNullOrWhiteSpace(GlobalVariablesData.config.AllSettings.TtsEngine))
+            {
+                // 旧版本配置文件没有这个字段（或被人手动清空），默认回系统语音
+                GlobalVariablesData.config.AllSettings.TtsEngine = SpeechEngines.System;
+            }
+            if (string.IsNullOrWhiteSpace(GlobalVariablesData.config.AllSettings.EdgeVoice))
+            {
+                GlobalVariablesData.config.AllSettings.EdgeVoice = "zh-CN-XiaoxiaoNeural";
+            }
+            if (GlobalVariablesData.config.AllSettings.TtsCacheEnabled == null)
+            {
+                // 旧版本配置文件没有这个字段，默认开启本地缓存
+                GlobalVariablesData.config.AllSettings.TtsCacheEnabled = true;
             }
             //未来的开发请注意！！！！
             GlobalVariablesData.config.AllSettings.LowMemoryMode = false;

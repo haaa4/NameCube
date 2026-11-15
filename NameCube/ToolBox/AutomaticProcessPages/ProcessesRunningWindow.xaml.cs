@@ -1,4 +1,4 @@
-﻿// /*
+// /*
 //  * NameCube-<点名器>
 //  * Copyright (C) 2025-2026 haaa4
 //  *
@@ -26,6 +26,86 @@ namespace NameCube.ToolBox.AutomaticProcessPages
         private int allProcessesCount, index = -1;
         private bool show;
         private ProcessGroup getProcessGroup;
+
+        private WindowState beforeFullScreenState;
+        private WindowStyle beforeFullScreenStyle;
+        private ResizeMode beforeFullScreenResizeMode;
+        private bool beforeFullScreenTopmost;
+        private bool isFullScreen;
+
+        /// <summary>
+        /// 切换到全屏（无边框、置顶、铺满屏幕），用于关机这类需要强提醒的流程
+        /// </summary>
+        public void EnterFullScreenMode()
+        {
+            if (isFullScreen)
+            {
+                return;
+            }
+
+            try
+            {
+                beforeFullScreenState = WindowState;
+                beforeFullScreenStyle = WindowStyle;
+                beforeFullScreenResizeMode = ResizeMode;
+                beforeFullScreenTopmost = Topmost;
+
+                MainTitle.Visibility = Visibility.Collapsed;
+                TitleRow.Height = new GridLength(0);
+
+                // 最小化的窗口直接改 WindowStyle 不会生效，先恢复成普通状态
+                if (WindowState == WindowState.Minimized)
+                {
+                    WindowState = WindowState.Normal;
+                }
+
+                WindowStyle = WindowStyle.None;
+                ResizeMode = ResizeMode.NoResize;
+
+                if (!IsVisible)
+                {
+                    Show();
+                }
+
+                WindowState = WindowState.Maximized;
+                Topmost = true;
+                isFullScreen = true;
+
+                Log.Information("流程窗口已切换到全屏模式");
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "切换到全屏模式时发生错误");
+            }
+        }
+
+        /// <summary>
+        /// 退出全屏，恢复原来的窗口样式
+        /// </summary>
+        public void ExitFullScreenMode()
+        {
+            if (!isFullScreen)
+            {
+                return;
+            }
+
+            try
+            {
+                MainTitle.Visibility = Visibility.Visible;
+                TitleRow.Height = new GridLength(50);
+                WindowStyle = beforeFullScreenStyle;
+                ResizeMode = beforeFullScreenResizeMode;
+                WindowState = beforeFullScreenState;
+                Topmost = beforeFullScreenTopmost;
+                isFullScreen = false;
+
+                Log.Information("流程窗口已退出全屏模式");
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "退出全屏模式时发生错误");
+            }
+        }
 
         public ProcessesRunningWindow(ProcessGroup processGroup)
         {
@@ -172,14 +252,35 @@ namespace NameCube.ToolBox.AutomaticProcessPages
                             break;
 
                         case ProcessState.shutDown:
+                            // 关机提醒必须让用户看到：即使流程组设置为「不显示窗口」，也先恢复并前置窗口，
+                            // 否则最小化的窗口不会触发页面 Loaded，全屏提醒也就不会出现。
+                            if (WindowState == WindowState.Minimized)
+                            {
+                                WindowState = WindowState.Normal;
+                                Log.Debug("关机流程需要显示提醒，已把最小化的窗口恢复显示");
+                            }
+
+                            if (!IsVisible)
+                            {
+                                this.Show();
+                            }
+
+                            this.Activate();
+                            this.Topmost = true;
+
                             ProcessPages.PowerOffPage page7 = new ProcessPages.PowerOffPage(
                                 (int)currentProcess.doubleData,
                                 false,
-                                true);
+                                true,
+                                currentProcess.stringData1,
+                                getProcessGroup.canCancle,
+                                currentProcess.shutDownCountdownSeconds);
                             page7.EndThePageAction += CallNextPage;
                             MainFrame.Navigate(page7);
-                            this.Show();
-                            Log.Debug("加载关机页面，关机方式: {ShutDownWay}", currentProcess.doubleData);
+                            Log.Debug("加载关机页面，关机方式: {ShutDownWay}, 倒计时: {Countdown}秒, 可取消: {CanCancle}",
+                                currentProcess.doubleData,
+                                currentProcess.shutDownCountdownSeconds,
+                                getProcessGroup.canCancle);
                             break;
 
                         default:

@@ -1,4 +1,4 @@
-﻿// /*
+// /*
 //  * NameCube-<点名器>
 //  * Copyright (C) 2025-2026 haaa4
 //  *
@@ -67,9 +67,17 @@ namespace NameCube.ToolBox.AutomaticProcessPages.ProcessPages
        
         private async void ReadyPage_Loaded(object sender, RoutedEventArgs e)
         {
+            // 不显示窗口时构造函数会手动调用一次，窗口稍后恢复可见时 Loaded 还会再触发一次，
+            // 这里用 startedWaiting 保证等待逻辑只跑一遍，否则会连着往后跳过好几个流程
+            if (startedWaiting)
+            {
+                return;
+            }
+
+            startedWaiting = true;
             Log.Information("开始就绪等待，时间: {Time}秒", Time);
             await Task.Delay(Time * 1000);
-            if(!IsOpened)
+            if (!IsOpened)
             {
                 if (debug)
                 {
@@ -86,7 +94,8 @@ namespace NameCube.ToolBox.AutomaticProcessPages.ProcessPages
         public int Time { get; set; } = 5;
         public string Info { get; set; } = "即将执行";
         public bool debug = false;
-        private bool IsOpened=false;
+        private bool IsOpened = false;
+        private bool startedWaiting = false;
 
         public event Action<string> RequestParentAction;
 
