@@ -45,7 +45,7 @@
 - [哈阿斯(haaa4)](https://github.com/haaa4)
 ## 开始
 **请保证您的电脑满足以下要求**
-- Windows 7 64位及以上
+- Windows 7 32位及以上
 - 4GB以上内存
 - 已安装[.NET Framework4.8](https://dotnet.microsoft.com/zh-cn/download/dotnet-framework/thank-you/net48-nor)版本及以上运行时（Win7系统可能需要手动安装）
 - 已安装[.NET 6.0运行时](https://dotnet.microsoft.com/zh-cn/download/dotnet/thank-you/runtime-desktop-6.0.36-windows-x64-installer)(安装程序将自动安装)
